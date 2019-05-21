@@ -15,7 +15,7 @@ OData v2 Adapter Proxy for CDS OData v4 Services
 
 ```
 const express = require("express");
-const odatav2proxy = require("cds-odata-v2-adapter-proxy");
+const odatav2proxy = require("@sap/cds-odata-v2-adapter-proxy");
 
 const app = express();
 app.use(odatav2proxy({ path: "v2", model: "srv/index", port: 4004 }));
