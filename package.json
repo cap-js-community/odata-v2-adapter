@@ -1,5 +1,5 @@
 {
-  "name": "cds-odata-v2-adapter-proxy",
+  "name": "@sap/cds-odata-v2-adapter-proxy",
   "version": "1.0.0",
   "description": "OData v2 Adapter Proxy for CDS OData v4 Services",
   "engines": {
