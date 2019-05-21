@@ -223,20 +223,3 @@ exports[`draft-request GET $metadata 1`] = `
   </edmx:DataServices>
 </edmx:Edmx>"
 `;
-
-exports[`draft-request GET service 1`] = `
-Object {
-  "d": Object {
-    "results": Array [
-      Object {
-        "name": "Header",
-        "url": "Header",
-      },
-      Object {
-        "name": "HeaderItem",
-        "url": "HeaderItem",
-      },
-    ],
-  },
-}
-`;

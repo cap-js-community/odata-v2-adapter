@@ -1,6 +1,6 @@
 {
   "reporters": [
-    "jest-junit"
+    "default"
   ],
   "automock": false,
   "bail": false,
