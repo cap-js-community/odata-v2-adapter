@@ -1,0 +1,9 @@
+.idea/
+reports/
+test/
+.npmignore
+.xmake.cfg
+.gitignore
+jest-test.json
+junit.xml
+test-server.js

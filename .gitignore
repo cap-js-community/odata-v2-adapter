@@ -1,0 +1,33 @@
+gen/
+.gen/
+node_modules/
+target/
+*.db
+.DS_Store
+_out
+.che/
+.cds_gen.log
+package-lock.json
+*.orig
+
+# mta
+*.mtar
+.mta/
+
+# bower
+bower_components/
+
+#coverage
+reports
+
+# idea
+.idea/
+
+#JUnit
+junit.xml
+
+# xsenv
+default-env.json
+
+# temp
+temp/

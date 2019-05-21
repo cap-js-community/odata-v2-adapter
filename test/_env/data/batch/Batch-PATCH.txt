@@ -1,0 +1,19 @@
+--boundary
+Content-Type: multipart/mixed; boundary=changeset
+
+--changeset
+Content-Type: application/http
+
+PATCH Header({{ID}}) HTTP/1.1
+Content-Type: application/json
+
+{"name":"Test Update Changeset"}
+--changeset
+Content-Type: application/http
+
+MERGE HeaderItem({{ItemID}}) HTTP/1.1
+Content-Type: application/json
+
+{"name":"Test Item Update Changeset"}
+--changeset--
+--boundary--

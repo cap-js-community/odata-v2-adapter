@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`request GET $metadata 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<edmx:Edmx Version=\\"1.0\\" xmlns:edmx=\\"http://schemas.microsoft.com/ado/2007/06/edmx\\" xmlns:m=\\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\\" xmlns:sap=\\"http://www.sap.com/Protocols/SAPData\\">
+  <edmx:Reference Uri=\\"https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+    <edmx:Include Alias=\\"Common\\" Namespace=\\"com.sap.vocabularies.Common.v1\\"/>
+  </edmx:Reference>
+  <edmx:Reference Uri=\\"https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+    <edmx:Include Alias=\\"Core\\" Namespace=\\"Org.OData.Core.V1\\"/>
+  </edmx:Reference>
+  <edmx:Reference Uri=\\"https://wiki.scn.sap.com/wiki/download/attachments/448470968/UI.xml?api=v2\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+    <edmx:Include Alias=\\"UI\\" Namespace=\\"com.sap.vocabularies.UI.v1\\"/>
+  </edmx:Reference>
+  <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
+    <Schema Namespace=\\"test.MainService\\" xmlns=\\"http://schemas.microsoft.com/ado/2008/09/edm\\">
+      <EntityContainer Name=\\"EntityContainer\\" m:IsDefaultEntityContainer=\\"true\\">
+        <EntitySet Name=\\"Header\\" EntityType=\\"test.MainService.Header\\"/>
+        <FunctionImport Name=\\"Header_boundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"Header_boundFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
+        <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundDecimalFunction\\" ReturnType=\\"Edm.Decimal\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundDecimalsFunction\\" ReturnType=\\"Collection(Edm.Decimal)\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundErrorFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
+        <AssociationSet Name=\\"Header_FirstItem\\" Association=\\"test.MainService.Header_FirstItem\\">
+          <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
+          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"HeaderItem_header\\" Association=\\"test.MainService.HeaderItem_header\\">
+          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
+          <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
+        </AssociationSet>
+      </EntityContainer>
+      <EntityType Name=\\"Header\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" ConcurrencyMode=\\"Fixed\\"/>
+        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\"/>
+        <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
+        <NavigationProperty Name=\\"Items\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
+        <NavigationProperty Name=\\"FirstItem\\" Relationship=\\"test.MainService.Header_FirstItem\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
+        <Property Name=\\"FirstItem_ID\\" Type=\\"Edm.Guid\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderItem\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"startAt\\" Type=\\"Edm.DateTimeOffset\\"/>
+        <Property Name=\\"endAt\\" Type=\\"Edm.DateTimeOffset\\"/>
+        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
+        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
+      </EntityType>
+      <ComplexType Name=\\"Result\\">
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"age\\" Type=\\"Edm.Int32\\"/>
+      </ComplexType>
+      <Association Name=\\"Header_FirstItem\\">
+        <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"HeaderItem\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"Header\\">
+            <PropertyRef Name=\\"FirstItem_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"HeaderItem_header\\">
+        <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"*\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"0..1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"Header\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderItem\\">
+            <PropertyRef Name=\\"header_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Annotations Target=\\"test.MainService.Header/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"{i18n>ChangedAt}\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"{i18n>CreatedAt}\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Header/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"{i18n>CreatedBy}\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"{i18n>ChangedBy}\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>"
+`;
+
+exports[`request GET request 1`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "name": "Header",
+        "url": "Header",
+      },
+      Object {
+        "name": "HeaderItem",
+        "url": "HeaderItem",
+      },
+    ],
+  },
+}
+`;
+
+exports[`request GET service 1`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "name": "Header",
+        "url": "Header",
+      },
+      Object {
+        "name": "HeaderItem",
+        "url": "HeaderItem",
+      },
+    ],
+  },
+}
+`;

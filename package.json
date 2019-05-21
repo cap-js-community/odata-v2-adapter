@@ -1,0 +1,33 @@
+{
+  "name": "cds-odata-v2-adapter-proxy",
+  "version": "1.0.0",
+  "description": "OData v2 Adapter Proxy for CDS OData v4 Services",
+  "engines": {
+    "node": "^8.9.0"
+  },
+  "author": "Oliver Klemenz, Richard Lindner",
+  "dependencies": {
+    "@sap/cds": "^3.9.0",
+    "@sap/logging": "^5.0.1",
+    "express": "^4.16.4",
+    "http-proxy-middleware": "^0.19.1"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node test-server",
+    "test": "jest --config=jest-test.json"
+  },
+  "devDependencies": {
+    "supertest": "^4.0.2",
+    "jest": "^23.6.0",
+    "jest-junit": "^6.3.0",
+    "sqlite3": "4.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.wdf.sap.corp:cds-community/cds-odata-v2-adapter-proxy.git"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}

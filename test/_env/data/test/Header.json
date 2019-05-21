@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Header 1",
+    "description": "This is a test Header",
+    "Items": [
+      {
+        "name": "Header Item 1",
+        "description": "This is a test Header Item",
+        "startAt": "2019-01-01T00:00:00Z",
+        "endAt": "2019-12-31T00:00:00Z"
+      },
+      {
+        "name": "Header Item 2",
+        "description": "This is a test Header Item",
+        "startAt": "2020-01-01T00:00:00Z",
+        "endAt": "2020-12-31T00:00:00Z"
+      }
+    ]
+  }
+]

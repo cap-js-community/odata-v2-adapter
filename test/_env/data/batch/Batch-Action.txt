@@ -1,0 +1,16 @@
+--boundary
+Content-Type: application/http
+Content-ID: 1
+
+GET unboundFunction?num=1&text=abc1 HTTP/1.1
+Content-Type: application/json
+
+
+--boundary
+Content-Type: application/http
+
+POST unboundAction?num=2&text=abc2 HTTP/1.1
+Content-Type: application/json
+
+
+--boundary--
