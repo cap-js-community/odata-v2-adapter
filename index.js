@@ -33,6 +33,17 @@ const DataTypeMap = {
     'cds.String': {v2: `'$1'`, v4: /(.*)/gi}
 };
 
+const AggregationMap = {
+    SUM: 'sum',
+    MIN: 'min',
+    MAX: 'max',
+    AVG: 'average',
+    COUNT: 'countdistinct',
+    COUNT_DISTINCT: 'countdistinct'
+};
+
+const AggregationPrefix = '__aggregation__';
+
 /**
  * Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData v4 Server
  * @param options CDS OData v2 Adapter Proxy options
@@ -49,7 +60,7 @@ module.exports = (options) => {
     const router = express.Router();
     const base = (options && options.base) || '';
     const path = (options && options.path) || 'v2';
-    const pathRewrite = {[`^${base ? '/' + base : ''}/${path}`]: `/${base}`};
+    const pathRewrite = {[`^${base ? '/' + base : ''}/${path}`]: `${base ? '/' + base : ''}`};
     const port = (options && options.port) || '4004';
     const target = (options && options.target) || `http://localhost:${port}`;
     const services = (options && options.services) || {};
@@ -222,8 +233,8 @@ function convertUrl(urlPath, contentId, req) {
 
     convertUrlDataTypes(url, req);
     convertUrlCount(url, req);
-    convertApply(url, req);
     convertActionFunction(url, req);
+    convertAnalytics(url, req);
     convertExpandSelect(url, req);
     convertFilter(url, req);
     convertValue(url, req);
@@ -252,6 +263,12 @@ function parseURL(urlPath, req) {
         url.servicePath += '/';
         url.contextPath = url.contextPath.substr(1);
     }
+    // Normalize query parameters (no array)
+    Object.keys(url.query || {}).forEach((name) => {
+        if (Array.isArray(url.query[name])) {
+            url.query[name] = url.query[name][0] || '';
+        }
+    });
     return url;
 }
 
@@ -282,6 +299,9 @@ function lookupContext(name, context, req) {
             if (!context) {
                 context = lookupBoundDefinition(name, req);
             }
+            if (!context) {
+                trace(req, 'Context', `Definition '${name}' not found`);
+            }
             return context;
         }
     } else {
@@ -303,15 +323,19 @@ function lookupContext(name, context, req) {
                 return context;
             }
         }
+        trace(req, 'Context', `Definition '${name}' not found`);
     }
 }
 
 function enrichRequest(definition, url, contentId, req) {
     req.context = {
         url: url,
-        definition: definition,
         serviceRoot: url.contextPath.length === 0,
-        parameters: {}
+        definition: definition,
+        operation: null,
+        bodyParameters: {},
+        $value: false,
+        $apply: false
     };
     req.contexts.push(req.context);
     if (contentId) {
@@ -397,10 +421,94 @@ function convertUrlCount(url, req) {
     return url;
 }
 
-function convertApply(url, req) {
+function convertAnalytics(url, req) {
     const definition = req.context && req.context.definition;
-    if (!(req.definition && req.definition.kind === 'entity' && req.definition['@Aggregation.ApplySupported.PropertyRestrictions'])) {
+    if (!(definition && definition.kind === 'entity' && definition['@Aggregation.ApplySupported.PropertyRestrictions'] && url.query['$select'])) {
+        return;
+    }
+    const measures = [];
+    const dimensions = [];
+    const selects = url.query['$select'].split(',');
+    selects.forEach((select) => {
+        let selectDefinition = definition;
+        select.split('/').forEach((part) => {
+            const element = selectDefinition.elements && selectDefinition.elements[part];
+            if (element) {
+                if (element.type === 'cds.Composition' || element.type === 'cds.Association') {
+                    selectDefinition = element._target;
+                } else {
+                    selectDefinition = element;
+                }
+            } else {
+                selectDefinition = null;
+            }
+        });
+        if (selectDefinition) {
+            const elements = selectDefinition.kind === 'entity' ? Object.values(selectDefinition.keys) : [selectDefinition];
+            elements.forEach((element) => {
+                if (element['@Analytics.Measure']) {
+                    measures.push(element);
+                } else {
+                    dimensions.push(element);
+                }
+            });
+        }
+    });
 
+    if (dimensions.length > 0 || measures.length > 0) {
+        url.query['$apply'] = '';
+        if (dimensions.length) {
+            url.query['$apply'] = 'groupby(';
+            url.query['$apply'] += `(${dimensions.map((dimension) => {
+                return dimension.name;
+            }).join(',')})`;
+        }
+        if (measures.length > 0) {
+            if (url.query['$apply']) {
+                url.query['$apply'] += ',';
+            }
+            url.query['$apply'] += `aggregate(${measures.map((measure) => {
+                let aggregation = measure['@Aggregation.default'] || measure['@DefaultAggregation'];
+                aggregation = aggregation ? AggregationMap[(aggregation['#'] || aggregation).toUpperCase()] : 'sum';
+                return `${measure.name} with ${aggregation} as ${AggregationPrefix}${measure.name}`;
+            }).join(',')})`;
+        }
+        if (dimensions.length) {
+            url.query['$apply'] += ')';
+        }
+        delete url.query['$select'];
+        delete url.query['$expand'];
+        req.context.$apply = true;
+    }
+
+    if (url.query['$orderby']) {
+        url.query['$orderby'] = url.query['$orderby'].split(',').map((orderBy) => {
+            let orderByDefinition = definition;
+            const [name, order] = orderBy.split(" ");
+            const parts = name.split('/');
+            return parts.map((part, index) => {
+                const element = orderByDefinition.elements && orderByDefinition.elements[part];
+                if (element) {
+                    if (element.type === 'cds.Composition' || element.type === 'cds.Association') {
+                        orderByDefinition = element._target;
+                    } else {
+                        orderByDefinition = element;
+                    }
+                } else {
+                    orderByDefinition = null;
+                }
+                if (index === parts.length - 1 && orderByDefinition) {
+                    const elements = orderByDefinition.kind === 'entity' ? Object.values(orderByDefinition.keys) : [orderByDefinition];
+                    return elements.map((element) => {
+                        if (element['@Analytics.Measure']) {
+                            return `${AggregationPrefix}${element.name}`;
+                        }
+                        return element;
+                    }).join(",");
+                }
+                return part;
+            }).join("/") + (order ? ` ${order}` : "");
+        }).join((","));
     }
 }
 
@@ -848,6 +956,7 @@ function convertResponseData(data, headers, definition, proxyBody, req) {
     data.forEach((data) => {
         removeMetadata(data, headers, definition, proxyBody, req);
         addMetadata(data, headers, definition, proxyBody, req);
+        convertAggregation(data, headers, definition, proxyBody, req);
         convertDataTypesToV2(data, headers, definition, proxyBody, req);
     });
     // Recursion
@@ -922,23 +1031,6 @@ function contextElementFromBody(body, req) {
     }
 }
 
-function convertDataTypesToV2(data, headers, definition, body, req) {
-    Object.keys(data).forEach((key) => {
-        if (data[key] === null) {
-            return;
-        }
-        const element = definition.elements && definition.elements[key];
-        if (!element) {
-            return;
-        }
-        if (['cds.Decimal', 'cds.DecimalFloat', 'cds.Double', 'cds.Integer64'].includes(element.type)) {
-            data[key] = `${data[key]}`;
-        } else if (['cds.Date', 'cds.DateTime', 'cds.Timestamp'].includes(element.type)) {
-            data[key] = `/Date(${new Date(data[key]).getTime()})/`;
-        }
-    });
-}
-
 function removeMetadata(data, headers, definition, root, req) {
     Object.keys(data).forEach((key) => {
         if (key.startsWith('@')) {
@@ -960,8 +1052,64 @@ function addMetadata(data, headers, definition, root, req) {
     }
 }
 
+function convertAggregation(data, headers, definition, body, req) {
+    if (!req.context.$apply) {
+        return;
+    }
+    Object.keys(data).forEach((key) => {
+        if (key.startsWith(AggregationPrefix)) {
+            if (key.endsWith('@odata.type')) {
+                delete data[key];
+            } else {
+                data[key.substr(AggregationPrefix.length)] = String(data[key]);
+                delete data[key];
+            }
+        }
+    });
+    const aggregationKey = Object.keys(data).reduce((result, key) => {
+        if (definition.elements && definition.elements[key]) {
+            result[key] = data[key];
+        }
+        return result;
+    }, {});
+    data.__metadata.uri = entityUriKey(`${AggregationPrefix}='${JSON.stringify(aggregationKey)}'`, definition, req);
+    data.__metadata.type = AggregationPrefix + data.__metadata.type;
+    delete data.__metadata.etag;
+}
+
+function convertDataTypesToV2(data, headers, definition, body, req) {
+    Object.keys(data).forEach((key) => {
+        if (data[key] === null) {
+            return;
+        }
+        const element = definition.elements && definition.elements[key];
+        if (!element) {
+            return;
+        }
+        if (['cds.Decimal', 'cds.DecimalFloat', 'cds.Double', 'cds.Integer64'].includes(element.type)) {
+            data[key] = `${data[key]}`;
+        } else if (['cds.Date', 'cds.DateTime', 'cds.Timestamp'].includes(element.type)) {
+            data[key] = `/Date(${new Date(data[key]).getTime()})/`;
+        }
+    });
+}
+
+
+function addResultsNesting(data, headers, definition, root, req) {
+    Object.keys(data).forEach((key) => {
+        if (!(definition.elements && definition.elements[key])) {
+            return;
+        }
+        if (definition.elements[key].cardinality && definition.elements[key].cardinality.max === '*') {
+            data[key] = {
+                results: data[key]
+            };
+        }
+    });
+}
+
 function addDeferreds(data, headers, definition, root, req) {
-    if (definition.kind !== 'entity') {
+    if (definition.kind !== 'entity' || req.context.$apply) {
         return;
     }
     Object.keys(definition.elements || {}).forEach((key) => {
@@ -978,24 +1126,15 @@ function addDeferreds(data, headers, definition, root, req) {
     });
 }
 
-function addResultsNesting(data, headers, definition, root, req) {
-    Object.keys(data).forEach((key) => {
-        if (!(definition.elements && definition.elements[key])) {
-            return;
-        }
-        if (definition.elements[key].cardinality && definition.elements[key].cardinality.max === '*') {
-            data[key] = {
-                results: data[key]
-            };
-        }
-    });
+function entityUri(data, entity, req) {
+    return entityUriKey(entityKey(data, entity), entity, req);
 }
 
-function entityUri(data, entity, req) {
+function entityUriKey(key, entity, req) {
     let protocol = req.header('x-forwarded-proto') || req.protocol || 'http';
     let host = req.header('x-forwarded-host') || req.hostname || 'localhost';
     let port = req.header('x-forwarded-host') ? '' : `:${req.socket.address().port}`;
-    return `${protocol}://${host}${port}${req.baseUrl}/${entity.name.split('.').pop()}(${entityKey(data, entity)})`;
+    return `${protocol}://${host}${port}${req.baseUrl}/${entity.name.split('.').pop()}(${key})`;
 }
 
 function entityKey(data, entity) {
@@ -1177,4 +1316,8 @@ function traceRequest(req, name, method, url, body) {
 
 function traceResponse(req, name, headers, body) {
     req.loggingContext.getTracer(name).info(`\n${JSON.stringify(headers)}\n${typeof body === 'string' ? body : JSON.stringify(body)}`);
+}
+
+function trace(req, name, message) {
+    req.loggingContext.getTracer(name).info(message);
 }

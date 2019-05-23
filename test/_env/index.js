@@ -15,8 +15,8 @@ const db = cds.connect({
     }
 });
 
-module.exports = async (service, defaultPort = 0, fnInit) => {
-    let port = defaultPort;
+module.exports = async (service, defaultPort, fnInit) => {
+    let port = defaultPort || 0;
     const servicePath = `./test/_env/${service}`;
     const app = express();
 
@@ -42,7 +42,8 @@ module.exports = async (service, defaultPort = 0, fnInit) => {
             port: port,
             services: {
                 main: 'test.MainService',
-                draft: 'test.DraftService'
+                draft: 'test.DraftService',
+                analytics: 'test.AnalyticsService'
             }
         })
     );

@@ -4,18 +4,24 @@ using test from './model';
 
 service AnalyticsService {
 
+    @readonly
     @Aggregation.ApplySupported.PropertyRestrictions: true
-    @readonly entity Header as projection on test.Header {
+    entity Header as projection on test.Header {
         ID,
         description,
+        country,
         currency,
         @Analytics.Measure: true
-        @Aggregation.default: #SUM
-        stock
+        stock,
+        @Analytics.Measure: true
+        @Aggregation.default: #AVG
+        price,
+        Items
     } excluding {
         createdBy,
         createdAt,
         modifiedBy,
         modifiedAt
     };
+    entity HeaderItem as projection on test.HeaderItem;
 }

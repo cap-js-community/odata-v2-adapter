@@ -67,8 +67,10 @@ exports[`request GET $metadata 1`] = `
         <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"country\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"currency\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"stock\\" Type=\\"Edm.Int32\\"/>
+        <Property Name=\\"price\\" Type=\\"Edm.Decimal\\" Scale=\\"2\\" Precision=\\"12\\"/>
         <NavigationProperty Name=\\"Items\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <NavigationProperty Name=\\"FirstItem\\" Relationship=\\"test.MainService.Header_FirstItem\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <Property Name=\\"FirstItem_ID\\" Type=\\"Edm.Guid\\"/>

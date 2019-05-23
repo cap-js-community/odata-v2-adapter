@@ -26,10 +26,11 @@ app.use(odatav2proxy({ path: "v2", model: "srv/index", port: 4004 }));
 
 Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData v4 Server
 - **options:** CDS OData v2 Adapter Proxy options
-- **[options.path]:** Path, under which the proxy is reachable. Default is 'v2'
+- **[options.base]** Base path, under which the service is reachable. Default is ''.
+- **[options.path]:** Path, under which the proxy is reachable. Default is 'v2'.
 - **[options.model]:** CDS service model path. Default is 'all'.
-- **[options.port]:** Target port, which points to OData v4 backend port. Default is '4004'
-- **[options.target]:** Target, which points to OData v4 backend host/port. Default is 'http://localhost:4004'
+- **[options.port]:** Target port, which points to OData v4 backend port. Default is '4004'.
+- **[options.target]:** Target, which points to OData v4 backend host/port. Default is 'http://localhost:4004'.
 - **[options.services]:** Service mapping, from url path name to service name. If omitted CDS defaults apply.
 
 ## Features
