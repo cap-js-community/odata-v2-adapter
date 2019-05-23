@@ -2,6 +2,68 @@
   {
     "name": "Header 1",
     "description": "This is a test Header",
+    "currency": "EUR",
+    "stock": 10,
+    "Items": [
+      {
+        "name": "Header Item 1",
+        "description": "This is a test Header Item",
+        "startAt": "2019-01-01T00:00:00Z",
+        "endAt": "2019-12-31T00:00:00Z"
+      },
+      {
+        "name": "Header Item 2",
+        "description": "This is a test Header Item",
+        "startAt": "2020-01-01T00:00:00Z",
+        "endAt": "2020-12-31T00:00:00Z"
+      }
+    ]
+  },
+  {
+    "name": "Header 2",
+    "description": "This is a test Header",
+    "currency": "EUR",
+    "stock": 15,
+    "Items": [
+      {
+        "name": "Header Item 1",
+        "description": "This is a test Header Item",
+        "startAt": "2019-01-01T00:00:00Z",
+        "endAt": "2019-12-31T00:00:00Z"
+      },
+      {
+        "name": "Header Item 2",
+        "description": "This is a test Header Item",
+        "startAt": "2020-01-01T00:00:00Z",
+        "endAt": "2020-12-31T00:00:00Z"
+      }
+    ]
+  },
+  {
+    "name": "Header 3",
+    "description": "This is a test Header",
+    "currency": "USD",
+    "stock": 5,
+    "Items": [
+      {
+        "name": "Header Item 1",
+        "description": "This is a test Header Item",
+        "startAt": "2019-01-01T00:00:00Z",
+        "endAt": "2019-12-31T00:00:00Z"
+      },
+      {
+        "name": "Header Item 2",
+        "description": "This is a test Header Item",
+        "startAt": "2020-01-01T00:00:00Z",
+        "endAt": "2020-12-31T00:00:00Z"
+      }
+    ]
+  },
+  {
+    "name": "Header 4",
+    "description": "This is a test Header",
+    "currency": "USD",
+    "stock": 12,
     "Items": [
       {
         "name": "Header Item 1",

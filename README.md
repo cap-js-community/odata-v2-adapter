@@ -37,6 +37,7 @@ Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData 
 - GET, POST, PUT/PATCH, DELETE
 - Batch support
 - Actions, Functions
+- Analytical Annotations
 - Deep Expands/Selects
 - JSON format
 - Deep Structures

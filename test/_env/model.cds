@@ -5,6 +5,8 @@ using { managed, cuid } from '@sap/cds/common';
 entity Header: cuid, managed {
     name: String;
     description: String;
+    currency: String;
+    stock: Integer;
 
     Items: Composition of many HeaderItem on Items.header = $self;
     FirstItem: Association to HeaderItem;
@@ -38,4 +40,6 @@ service MainService {
     function unboundDecimalsFunction() returns array of Decimal(19,4);
     function unboundErrorFunction() returns Result;
     function unboundWarningFunction() returns Result;
+    function unboundNavigationFunction(num: Integer, text: String) returns Header;
+    function unboundNavigationsFunction(num: Integer, text: String) returns array of Header;
 }

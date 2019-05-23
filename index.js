@@ -43,7 +43,7 @@ const DataTypeMap = {
  * @param [options.services] Service mapping, from url path name to service name. If omitted CDS defaults apply.
  * @returns {Router}
  */
-module.exports = options => {
+module.exports = (options) => {
     const appContext = logging.createAppContext();
     const router = express.Router();
     const path = (options && options.path) || 'v2';
@@ -71,8 +71,7 @@ module.exports = options => {
         }
     });
 
-    router.use(
-        `/${path}/:service/`,
+    router.use(`/${path}/:service/`,
 
         // Body Parsers
         bodyparser.text({type: 'multipart/mixed'}),
@@ -82,19 +81,17 @@ module.exports = options => {
         (req, res, next) => {
             const servicePath = req.params.service;
             const service = normalizeService(servicePath, services);
-            loadService(service, model)
-                .then(({csn}) => {
-                    req.csn = csn;
-                    req.service = service;
-                    req.servicePath = servicePath;
-                    req.context = {};
-                    req.contexts = [];
-                    req.contentId = {};
-                    next();
-                })
-                .catch(err => {
-                    res.status(404).end();
-                });
+            loadService(service, model).then(({csn}) => {
+                req.csn = csn;
+                req.service = service;
+                req.servicePath = servicePath;
+                req.context = {};
+                req.contexts = [];
+                req.contentId = {};
+                next();
+            }).catch(() => {
+                res.status(404).end();
+            });
         },
 
         // Proxy Middleware
@@ -142,9 +139,9 @@ function lookupDefinition(name, req) {
 
 function lookupBoundDefinition(name, req) {
     let boundAction;
-    Object.keys(req.csn.definitions).find(definitionName => {
+    Object.keys(req.csn.definitions).find((definitionName) => {
         const definition = req.csn.definitions[definitionName];
-        return Object.keys(definition.actions || {}).find(actionName => {
+        return Object.keys(definition.actions || {}).find((actionName) => {
             if (name.endsWith(`_${actionName}`)) {
                 const entityName = name.substr(0, name.length - `_${actionName}`.length);
                 const entityDefinition = lookupDefinition(entityName, req);
@@ -288,13 +285,18 @@ function lookupContext(name, context, req) {
         if (name.startsWith('$')) {
             return context;
         }
-        const element = context.elements && context.elements[name];
+        if (context.kind === 'function' || context.kind === 'action') {
+            req.context.operation = context;
+            const returns = (context.returns && context.returns.items && context.returns.items) || context.returns;
+            context = lookupDefinition(returns.type, req);
+        }
+        const element = context && context.elements && context.elements[name];
         if (element) {
             if (element.type === 'cds.Composition' || element.type === 'cds.Association') {
                 // Navigation
                 return element._target;
             } else {
-                // Attribute
+                // Element
                 return context;
             }
         }
@@ -318,46 +320,43 @@ function convertUrlDataTypes(url, req) {
     // Keys
     let context;
     let stop = false;
-    url.contextPath = url.contextPath
-        .split('/')
-        .map(part => {
-            if (stop) {
-                return part;
-            }
-            let keyPart = '';
-            const keyStart = part.indexOf('(');
-            const keyEnd = part.lastIndexOf(')');
-            if (keyStart !== -1 && keyEnd === part.length - 1) {
-                keyPart = part.substring(keyStart + 1, keyEnd);
-                part = part.substr(0, keyStart);
-            }
-            context = lookupContext(part, context, req);
-            if (!context) {
-                stop = true;
-            }
-            if (context && context.elements && keyPart) {
-                const keys = keyPart.split(',');
-                return `${part}(${keys.map(key => {
-                    const [name, value] = key.split('=');
-                    if (name && value) {
-                        const type = context.elements[name] && context.elements[name].type;
-                        return `${name}=${DataTypeMap[type] ? value.replace(DataTypeMap[type].v4, '$1') : value}`;
-                    } else if (context.keys) {
-                        const keyName = Object.keys(context.keys)[0];
-                        const type = context.elements[keyName] && context.elements[keyName].type;
-                        return `${DataTypeMap[type] ? name.replace(DataTypeMap[type].v4, '$1') : name}`;
-                    }
-                })})`;
-            } else {
-                return part;
-            }
-        })
-        .join('/');
+    url.contextPath = url.contextPath.split('/').map((part) => {
+        if (stop) {
+            return part;
+        }
+        let keyPart = '';
+        const keyStart = part.indexOf('(');
+        const keyEnd = part.lastIndexOf(')');
+        if (keyStart !== -1 && keyEnd === part.length - 1) {
+            keyPart = part.substring(keyStart + 1, keyEnd);
+            part = part.substr(0, keyStart);
+        }
+        context = lookupContext(part, context, req);
+        if (!context) {
+            stop = true;
+        }
+        if (context && context.elements && keyPart) {
+            const keys = keyPart.split(',');
+            return `${part}(${keys.map((key) => {
+                const [name, value] = key.split('=');
+                if (name && value) {
+                    const type = context.elements[name] && context.elements[name].type;
+                    return `${name}=${DataTypeMap[type] ? value.replace(DataTypeMap[type].v4, '$1') : value}`;
+                } else if (context.keys) {
+                    const keyName = Object.keys(context.keys)[0];
+                    const type = context.elements[keyName] && context.elements[keyName].type;
+                    return `${DataTypeMap[type] ? name.replace(DataTypeMap[type].v4, '$1') : name}`;
+                }
+            })})`;
+        } else {
+            return part;
+        }
+    }).join('/');
 
     // Query
-    Object.keys(url.query).forEach(name => {
+    Object.keys(url.query).forEach((name) => {
         if (name === '$filter') {
-            Object.keys(DataTypeMap).forEach(type => {
+            Object.keys(DataTypeMap).forEach((type) => {
                 url.query[name] = url.query[name].replace(DataTypeMap[type].v4, '$1');
             });
         } else if (!name.startsWith('$')) {
@@ -396,42 +395,46 @@ function convertUrlCount(url, req) {
 }
 
 function convertActionFunction(url, req) {
-    const definition = req.context && req.context.definition;
+    const definition = req.context && (req.context.operation || req.context.definition);
     if (!(definition && (definition.kind === 'function' || definition.kind === 'action'))) {
         return;
+    }
+    const operationLocalName = definition.name.split('.').pop();
+    let reqContextPathSuffix = '';
+    if (url.contextPath.startsWith(operationLocalName)) {
+        reqContextPathSuffix = url.contextPath.substr(operationLocalName.length);
+        url.contextPath = url.contextPath.substr(0, operationLocalName.length);
     }
     // Key Parameters
     if (definition.parent && definition.parent.kind === 'entity') {
         url.contextPath = definition.parent.name.split('.').pop();
-        url.contextPath += `(${Object.keys(definition.parent.keys)
-            .reduce((result, name) => {
-                const element = definition.parent.elements && definition.parent.elements[name];
-                const value = url.query[name] || '';
-                result.push(`${name}=${quoteParameter(element, value, req)}`);
-                delete url.query[name];
-                return result;
-            }, [])
-            .join(',')})`;
+        url.contextPath += `(${Object.keys(definition.parent.keys).reduce((result, name) => {
+            const element = definition.parent.elements && definition.parent.elements[name];
+            const value = url.query[name] || '';
+            result.push(`${name}=${quoteParameter(element, value, req)}`);
+            delete url.query[name];
+            return result;
+        }, []).join(',')})`;
         url.contextPath += `/${req.service}.${definition.name}`;
     }
     // Function Parameters
     if (definition.kind === 'function') {
-        url.contextPath += `(${Object.keys(url.query)
-            .reduce((result, name) => {
-                if (!name.startsWith('$')) {
-                    const element = definition.params && definition.params[name];
-                    if (element) {
-                        const value = url.query[name];
-                        result.push(`${name}=${quoteParameter(element, value, req)}`);
-                        delete url.query[name];
-                    }
+        url.contextPath += `(${Object.keys(url.query).reduce((result, name) => {
+            if (!name.startsWith('$')) {
+                const element = definition.params && definition.params[name];
+                if (element) {
+                    const value = url.query[name];
+                    result.push(`${name}=${quoteParameter(element, value, req)}`);
+                    delete url.query[name];
                 }
-                return result;
-            }, [])
-            .join(',')})`;
+            }
+            return result;
+        }, []).join(',')})`;
     }
+    url.contextPath += reqContextPathSuffix;
+    // Action Body
     if (definition.kind === 'action') {
-        Object.keys(url.query).forEach(name => {
+        Object.keys(url.query).forEach((name) => {
             if (!name.startsWith('$')) {
                 const element = definition.params && definition.params[name];
                 let value = url.query[name];
@@ -477,9 +480,9 @@ function convertExpandSelect(url, req) {
         const context = {select: {}, expand: {}};
         if (url.query['$expand']) {
             const expands = url.query['$expand'].split(',');
-            expands.forEach(expand => {
+            expands.forEach((expand) => {
                 let current = context.expand;
-                expand.split('/').forEach(part => {
+                expand.split('/').forEach((part) => {
                     current[part] = current[part] || {select: {}, expand: {}};
                     current = current[part].expand;
                 });
@@ -487,10 +490,10 @@ function convertExpandSelect(url, req) {
         }
         if (url.query['$select']) {
             const selects = url.query['$select'].split(',');
-            selects.forEach(select => {
+            selects.forEach((select) => {
                 let current = context;
                 let currentDefinition = definition;
-                select.split('/').forEach(part => {
+                select.split('/').forEach((part) => {
                     if (!current) {
                         return;
                     }
@@ -508,29 +511,27 @@ function convertExpandSelect(url, req) {
             url.query['$select'] = Object.keys(context.select).join(',');
         }
         if (url.query['$expand']) {
-            const serializeExpand = expand => {
-                return Object.keys(expand || {})
-                    .map(name => {
-                        let value = expand[name];
-                        let result = name;
-                        const selects = Object.keys(value.select);
-                        const expands = Object.keys(value.expand);
-                        if (selects.length > 0 || expands.length > 0) {
-                            result += '(';
-                            if (selects.length > 0) {
-                                result += `$select=${selects.join(',')}`;
-                            }
-                            if (expands.length > 0) {
-                                if (selects.length > 0) {
-                                    result += ';';
-                                }
-                                result += `$expand=${serializeExpand(value.expand)}`;
-                            }
-                            result += ')';
+            const serializeExpand = (expand) => {
+                return Object.keys(expand || {}).map((name) => {
+                    let value = expand[name];
+                    let result = name;
+                    const selects = Object.keys(value.select);
+                    const expands = Object.keys(value.expand);
+                    if (selects.length > 0 || expands.length > 0) {
+                        result += '(';
+                        if (selects.length > 0) {
+                            result += `$select=${selects.join(',')}`;
                         }
-                        return result;
-                    })
-                    .join(',');
+                        if (expands.length > 0) {
+                            if (selects.length > 0) {
+                                result += ';';
+                            }
+                            result += `$expand=${serializeExpand(value.expand)}`;
+                        }
+                        result += ')';
+                    }
+                    return result;
+                }).join(',');
             };
             url.query['$expand'] = serializeExpand(context.expand);
         }
@@ -572,12 +573,12 @@ function convertRequestData(data, headers, definition, req) {
         return convertRequestData([data], headers, definition, req);
     }
     // Modify Payload
-    data.forEach(data => {
+    data.forEach((data) => {
         convertDataTypesToV4(data, headers, definition, data, req);
     });
     // Recursion
-    data.forEach(data => {
-        Object.keys(data).forEach(key => {
+    data.forEach((data) => {
+        Object.keys(data).forEach((key) => {
             let element = definition.elements[key];
             if (!element) {
                 return;
@@ -592,7 +593,7 @@ function convertRequestData(data, headers, definition, req) {
 function convertDataTypesToV4(data, headers, definition, body, req) {
     const contentType = headers['content-type'];
     const ieee754Compatible = contentType && contentType.includes('IEEE754Compatible=true');
-    Object.keys(data || {}).forEach(key => {
+    Object.keys(data || {}).forEach((key) => {
         if (data[key] === null) {
             return;
         }
@@ -619,49 +620,47 @@ function convertProxyResponse(proxyRes, req, res) {
     const headers = proxyRes.headers;
     normalizeContentType(headers);
 
-    parseProxyResponseBody(proxyRes, headers, req)
-        .then(body => {
-            // Trace
-            traceResponse(req, 'Proxy Response', headers, body);
+    parseProxyResponseBody(proxyRes, headers, req).then((body) => {
+        // Trace
+        traceResponse(req, 'Proxy Response', headers, body);
 
-            convertBasicHeaders(headers);
-            if (body && proxyRes.statusCode < 400) {
-                const contentType = headers['content-type'];
+        convertBasicHeaders(headers);
+        if (body && proxyRes.statusCode < 400) {
+            const contentType = headers['content-type'];
 
-                if (isMultipart(req)) {
-                    // Multipart
-                    body = processMultipart(req, body, contentType, null, ({index, statusCode, contentType, body, headers}) => {
-                        if (body && statusCode < 400) {
-                            convertHeaders(body, headers, req);
-                            if (contentType === 'application/json') {
-                                body = convertResponseBody(Object.assign({}, body), headers, req, index);
-                            }
-                        } else {
-                            body = convertResponseError(body, headers);
+            if (isMultipart(req)) {
+                // Multipart
+                body = processMultipart(req, body, contentType, null, ({index, statusCode, contentType, body, headers}) => {
+                    if (body && statusCode < 400) {
+                        convertHeaders(body, headers, req);
+                        if (contentType === 'application/json') {
+                            body = convertResponseBody(Object.assign({}, body), headers, req, index);
                         }
-                        return {body, headers};
-                    });
-                } else {
-                    // Single
-                    convertHeaders(body, headers, req);
-                    if (contentType === 'application/json') {
-                        body = convertResponseBody(Object.assign({}, body), headers, req);
+                    } else {
+                        body = convertResponseError(body, headers);
                     }
-                }
-                if (body && headers['transfer-encoding'] !== 'chunked' && proxyRes.statusCode !== 204) {
-                    headers['content-length'] = Buffer.byteLength(body);
-                }
+                    return {body, headers};
+                });
             } else {
-                body = convertResponseError(body, headers);
+                // Single
+                convertHeaders(body, headers, req);
+                if (contentType === 'application/json') {
+                    body = convertResponseBody(Object.assign({}, body), headers, req);
+                }
             }
-            respond(req, res, proxyRes.statusCode, headers, body);
-        })
-        .catch(err => {
-            // Error
-            console.log(err);
-            req.loggingContext.getTracer('Error').error(err.toString());
-            respond(req, res, proxyRes.statusCode, proxyRes.headers, convertResponseError(proxyRes.body, proxyRes.headers));
-        });
+            if (body && headers['transfer-encoding'] !== 'chunked' && proxyRes.statusCode !== 204) {
+                headers['content-length'] = Buffer.byteLength(body);
+            }
+        } else {
+            body = convertResponseError(body, headers);
+        }
+        respond(req, res, proxyRes.statusCode, headers, body);
+    }).catch((err) => {
+        // Error
+        console.log(err);
+        req.loggingContext.getTracer('Error').error(err.toString());
+        respond(req, res, proxyRes.statusCode, proxyRes.headers, convertResponseError(proxyRes.body, proxyRes.headers));
+    });
 }
 
 async function parseProxyResponseBody(proxyRes, headers, req) {
@@ -675,7 +674,7 @@ async function parseProxyResponseBody(proxyRes, headers, req) {
             bodyParser = bodyparser.text();
         }
         if (bodyParser) {
-            bodyParser(proxyRes, null, err => {
+            bodyParser(proxyRes, null, (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -743,7 +742,7 @@ function convertResponseError(body, headers) {
             body.error.innererror = body.error.innererror || {};
             body.error.innererror.errordetails = body.error.innererror.errordetails || [];
             body.error.innererror.errordetails.push(...body.error.details);
-            body.error.innererror.errordetails.forEach(detail => {
+            body.error.innererror.errordetails.forEach((detail) => {
                 detail.severity = detail.severity || SeverityMap[detail['@Common.numericSeverity'] || detail['numericSeverity']] || 'error';
                 delete detail.numericSeverity;
                 delete detail['@Common.numericSeverity'];
@@ -767,7 +766,7 @@ function convertResponseBody(proxyBody, headers, req, index = 0) {
 
     if (req.context.serviceRoot && proxyBody.value) {
         // Service Root
-        body.d.EntitySets = proxyBody.value.map(entry => {
+        body.d.EntitySets = proxyBody.value.map((entry) => {
             return entry.name;
         });
     } else {
@@ -793,10 +792,10 @@ function convertResponseBody(proxyBody, headers, req, index = 0) {
             let definition = req.context.definition;
             const data = convertResponseList(body, proxyBody);
             if (definition && (definition.kind === 'function' || definition.kind === 'action')) {
-                const returnValue = (definition.returns && definition.returns.items && definition.returns.items) || definition.returns;
-                definition = lookupDefinition(returnValue.type, req) || {
+                const returns = (definition.returns && definition.returns.items && definition.returns.items) || definition.returns;
+                definition = lookupDefinition(returns.type, req) || {
                     elements: {
-                        value: returnValue
+                        value: returns
                     }
                 };
                 req.context.definition = definition;
@@ -816,7 +815,7 @@ function convertResponseList(body, proxyBody) {
         if (proxyBody['@odata.count'] !== undefined) {
             body.d.__count = proxyBody['@odata.count'];
         }
-        body.d.results = body.d.results.map(entry => {
+        body.d.results = body.d.results.map((entry) => {
             return typeof entry == 'object' ? entry : {value: entry};
         });
     } else {
@@ -836,13 +835,13 @@ function convertResponseData(data, headers, definition, proxyBody, req) {
         return;
     }
     // Modify Payload
-    data.forEach(data => {
+    data.forEach((data) => {
         removeMetadata(data, headers, definition, proxyBody, req);
         addMetadata(data, headers, definition, proxyBody, req);
         convertDataTypesToV2(data, headers, definition, proxyBody, req);
     });
     // Recursion
-    data.forEach(data => {
+    data.forEach((data) => {
         Object.keys(data).forEach(key => {
             let element = definition.elements && definition.elements[key];
             if (!element) {
@@ -854,11 +853,11 @@ function convertResponseData(data, headers, definition, proxyBody, req) {
         });
     });
     // Structural Changes
-    data.forEach(data => {
+    data.forEach((data) => {
         addResultsNesting(data, headers, definition, proxyBody, req);
     });
     // Deferreds
-    data.forEach(data => {
+    data.forEach((data) => {
         addDeferreds(data, headers, definition, proxyBody, req);
     });
 }
@@ -914,7 +913,7 @@ function contextElementFromBody(body, req) {
 }
 
 function convertDataTypesToV2(data, headers, definition, body, req) {
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach((key) => {
         if (data[key] === null) {
             return;
         }
@@ -931,7 +930,7 @@ function convertDataTypesToV2(data, headers, definition, body, req) {
 }
 
 function removeMetadata(data, headers, definition, root, req) {
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach((key) => {
         if (key.startsWith('@')) {
             delete data[key];
         }
@@ -955,7 +954,7 @@ function addDeferreds(data, headers, definition, root, req) {
     if (definition.kind !== 'entity') {
         return;
     }
-    Object.keys(definition.elements || {}).forEach(key => {
+    Object.keys(definition.elements || {}).forEach((key) => {
         let element = definition.elements[key];
         if (element && (element.type === 'cds.Composition' || element.type === 'cds.Association')) {
             if (data[key] === undefined) {
@@ -970,7 +969,7 @@ function addDeferreds(data, headers, definition, root, req) {
 }
 
 function addResultsNesting(data, headers, definition, root, req) {
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach((key) => {
         if (!(definition.elements && definition.elements[key])) {
             return;
         }
@@ -990,26 +989,22 @@ function entityUri(data, entity, req) {
 }
 
 function entityKey(data, entity) {
-    let keyElements = Object.keys(entity.elements)
-        .filter(key => {
-            return entity.elements[key].key;
-        })
-        .map(key => {
-            return entity.elements[key];
-        });
-    return keyElements
-        .map(keyElement => {
-            let value = data[keyElement.name];
-            if (DataTypeMap[keyElement.type]) {
-                value = value.replace(/(.*)/, DataTypeMap[keyElement.type].v2);
-            }
-            if (keyElements.length === 1) {
-                return value;
-            } else {
-                return `${keyElement.name}=${value}`;
-            }
-        })
-        .join(',');
+    let keyElements = Object.keys(entity.elements).filter((key) => {
+        return entity.elements[key].key;
+    }).map((key) => {
+        return entity.elements[key];
+    });
+    return keyElements.map((keyElement) => {
+        let value = data[keyElement.name];
+        if (value !== undefined && DataTypeMap[keyElement.type]) {
+            value = value.replace(/(.*)/, DataTypeMap[keyElement.type].v2);
+        }
+        if (keyElements.length === 1) {
+            return value;
+        } else {
+            return `${keyElement.name}=${value}`;
+        }
+    }).join(',');
 }
 
 function respond(req, res, statusCode, headers, body) {
@@ -1072,7 +1067,7 @@ function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHea
     let url = '';
     let parts = multiPartBody.split('\r\n');
     const newParts = [];
-    parts.forEach(part => {
+    parts.forEach((part) => {
         let match = part.match(/^content-type:[ ]?multipart\/mixed;[ ]?boundary=(.*)$/i);
         if (match) {
             boundaryChangeSet = match.pop();

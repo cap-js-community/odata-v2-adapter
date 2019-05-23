@@ -87,6 +87,8 @@ exports[`draft-request GET $metadata 1`] = `
         <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"currency\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"stock\\" Type=\\"Edm.Int32\\"/>
         <NavigationProperty Name=\\"Items\\" Relationship=\\"test.DraftService.HeaderItem_header\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <NavigationProperty Name=\\"FirstItem\\" Relationship=\\"test.DraftService.Header_FirstItem\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <Property Name=\\"FirstItem_ID\\" Type=\\"Edm.Guid\\"/>

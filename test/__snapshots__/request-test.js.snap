@@ -38,6 +38,14 @@ exports[`request GET $metadata 1`] = `
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundNavigationFunction\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundNavigationsFunction\\" EntitySet=\\"Header\\" ReturnType=\\"Collection(test.MainService.Header)\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
         <AssociationSet Name=\\"Header_FirstItem\\" Association=\\"test.MainService.Header_FirstItem\\">
           <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
@@ -59,6 +67,8 @@ exports[`request GET $metadata 1`] = `
         <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"currency\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"stock\\" Type=\\"Edm.Int32\\"/>
         <NavigationProperty Name=\\"Items\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <NavigationProperty Name=\\"FirstItem\\" Relationship=\\"test.MainService.Header_FirstItem\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <Property Name=\\"FirstItem_ID\\" Type=\\"Edm.Guid\\"/>
