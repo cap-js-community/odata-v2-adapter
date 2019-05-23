@@ -36,6 +36,7 @@ const DataTypeMap = {
 /**
  * Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData v4 Server
  * @param options CDS OData v2 Adapter Proxy options
+ * @param [options.base] Base path, under which the service is reachable. Default is ''
  * @param [options.path] Path, under which the proxy is reachable. Default is 'v2'
  * @param [options.model] CDS service model path. Default is 'all'.
  * @param [options.port] Target port, which points to OData v4 backend port. Default is '4004'
@@ -46,8 +47,9 @@ const DataTypeMap = {
 module.exports = (options) => {
     const appContext = logging.createAppContext();
     const router = express.Router();
+    const base = (options && options.base) || '';
     const path = (options && options.path) || 'v2';
-    const pathRewrite = `^/${path}/`;
+    const pathRewrite = {[`^${base ? '/' + base : ''}/${path}`]: `/${base}`};
     const port = (options && options.port) || '4004';
     const target = (options && options.target) || `http://localhost:${port}`;
     const services = (options && options.services) || {};
@@ -83,6 +85,7 @@ module.exports = (options) => {
             const service = normalizeService(servicePath, services);
             loadService(service, model).then(({csn}) => {
                 req.csn = csn;
+                req.base = base;
                 req.service = service;
                 req.servicePath = servicePath;
                 req.context = {};
@@ -99,9 +102,7 @@ module.exports = (options) => {
             target,
             changeOrigin: true,
             selfHandleResponse: true,
-            pathRewrite: {
-                [pathRewrite]: '/'
-            },
+            pathRewrite,
             onProxyReq: (proxyReq, req, res, next) => {
                 convertProxyRequest(proxyReq, req, res);
             },
@@ -221,13 +222,14 @@ function convertUrl(urlPath, contentId, req) {
 
     convertUrlDataTypes(url, req);
     convertUrlCount(url, req);
+    convertApply(url, req);
     convertActionFunction(url, req);
     convertExpandSelect(url, req);
     convertFilter(url, req);
     convertValue(url, req);
 
     delete url.search;
-    url.pathname = url.servicePath + url.contextPath;
+    url.pathname = url.basePath + url.servicePath + url.contextPath;
     url.pathname = encodeURI(url.pathname);
     return URL.format(url);
 }
@@ -235,18 +237,19 @@ function convertUrl(urlPath, contentId, req) {
 function parseURL(urlPath, req) {
     const url = URL.parse(decodeURI(urlPath), true);
     url.pathname = decodeURI(url.pathname);
-    url.contextPath = url.pathname;
+    url.basePath = '';
     url.servicePath = '';
-    if (url.contextPath.startsWith(`/${req.servicePath}/`)) {
-        url.servicePath = `/${req.servicePath}/`;
-        url.contextPath = url.contextPath.substr(url.servicePath.length);
+    url.contextPath = url.pathname;
+    if (req.base && url.contextPath.startsWith(`/${req.base}`)) {
+        url.basePath = `/${req.base}`;
+        url.contextPath = url.contextPath.substr(url.basePath.length);
     }
-    if (url.contextPath === `/${req.servicePath}`) {
+    if (url.contextPath.startsWith(`/${req.servicePath}`)) {
         url.servicePath = `/${req.servicePath}`;
         url.contextPath = url.contextPath.substr(url.servicePath.length);
     }
     if (url.contextPath.startsWith('/')) {
-        url.servicePath = '/';
+        url.servicePath += '/';
         url.contextPath = url.contextPath.substr(1);
     }
     return url;
@@ -392,6 +395,13 @@ function convertUrlCount(url, req) {
         delete url.query['$inlinecount'];
     }
     return url;
+}
+
+function convertApply(url, req) {
+    const definition = req.context && req.context.definition;
+    if (!(req.definition && req.definition.kind === 'entity' && req.definition['@Aggregation.ApplySupported.PropertyRestrictions'])) {
+
+    }
 }
 
 function convertActionFunction(url, req) {
