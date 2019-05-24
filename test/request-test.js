@@ -59,10 +59,7 @@ describe('request', () => {
         });
         expect(response.statusCode).toEqual(201);
         const id = response.body.d.ID;
-        response = await util.callRead(
-            request,
-            `/v2/main/Header?$filter=ID eq guid'${id}'&$select=ID,name&$expand=FirstItem,Items&$skip=0&$top=1&$orderby=name asc&createdAt=datetime'123456'`
-        );
+        response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}'&$select=ID,name&$expand=FirstItem,Items&$skip=0&$top=1&$orderby=name asc&createdAt=datetime'123456'`);
         expect(response.body).toBeDefined();
         expect(response.body.d.results).toMatchObject([
             {
@@ -314,14 +311,9 @@ describe('request', () => {
         });
         expect(response.body).toBeDefined();
         const id = response.body.d.ID;
-        response = await util.callWrite(
-            request,
-            `/v2/main/Header(guid'${id}')`,
-            {
-                name: 'Test2'
-            },
-            true
-        );
+        response = await util.callWrite(request, `/v2/main/Header(guid'${id}')`, {
+            name: 'Test2'
+        }, true);
         expect(response.statusCode).toEqual(200);
         response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
         expect(response.body).toMatchObject({
@@ -341,14 +333,9 @@ describe('request', () => {
                 }
             }
         });
-        response = await util.callWrite(
-            request,
-            '/v2/main/Header',
-            {
-                name: 'Test'
-            },
-            true
-        );
+        response = await util.callWrite(request, '/v2/main/Header', {
+            name: 'Test'
+        }, true);
         expect(response.body).toMatchObject({
             error: {
                 code: null,

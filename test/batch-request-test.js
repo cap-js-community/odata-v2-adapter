@@ -122,7 +122,7 @@ describe('batch-request', () => {
         response = await util.callMultipart(request, '/v2/main/$batch', payload);
         expect(response.statusCode).toEqual(200);
         expect((response.body.match(/HTTP\/1.1 204 No Content/g) || []).length).toEqual(1);
-        response = await util.callRead(request, `/v2/main/Header(guid'${id}'`);
+        response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
         expect(response.statusCode).toEqual(404);
     });
 

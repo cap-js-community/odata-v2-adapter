@@ -234,8 +234,8 @@ function convertUrl(urlPath, contentId, req) {
     convertUrlDataTypes(url, req);
     convertUrlCount(url, req);
     convertActionFunction(url, req);
-    convertAnalytics(url, req);
     convertExpandSelect(url, req);
+    convertAnalytics(url, req);
     convertFilter(url, req);
     convertValue(url, req);
 
@@ -291,6 +291,9 @@ function contextFromUrl(url, req) {
 }
 
 function lookupContext(name, context, req) {
+    if (!name) {
+        return context;
+    }
     if (!context) {
         if (name.startsWith('$') && req.contentId[name]) {
             return contextFromUrl(req.contentId[name], req);
@@ -335,7 +338,8 @@ function enrichRequest(definition, url, contentId, req) {
         operation: null,
         bodyParameters: {},
         $value: false,
-        $apply: false
+        $apply: null,
+        aggregationKey: false
     };
     req.contexts.push(req.context);
     if (contentId) {
@@ -363,18 +367,37 @@ function convertUrlDataTypes(url, req) {
             stop = true;
         }
         if (context && context.elements && keyPart) {
-            const keys = keyPart.split(',');
-            return `${part}(${keys.map((key) => {
-                const [name, value] = key.split('=');
-                if (name && value) {
-                    const type = context.elements[name] && context.elements[name].type;
-                    return `${name}=${DataTypeMap[type] ? value.replace(DataTypeMap[type].v4, '$1') : value}`;
-                } else if (context.keys) {
-                    const keyName = Object.keys(context.keys)[0];
-                    const type = context.elements[keyName] && context.elements[keyName].type;
-                    return `${DataTypeMap[type] ? name.replace(DataTypeMap[type].v4, '$1') : name}`;
+            let aggregationMatch = keyPart.match(/^aggregation'(.*)'$/i);
+            let aggregationKey = aggregationMatch && aggregationMatch.pop();
+            if (aggregationKey) {
+                // Aggregation Key
+                try {
+                    const aggregation = JSON.parse(aggregationKey);
+                    url.query['$select'] = Object.keys(aggregation.key).concat(aggregation.value).join(',');
+                    url.query['$filter'] = Object.keys(aggregation.key).map((name) => {
+                        return `${name} eq ${aggregation.key[name]}`;
+                    }).join(' and ');
+                    req.context.aggregationKey = true;
+                    return part;
+                } catch (err) {
+                    // Error
+                    console.log(err);
+                    trace(req, 'Error', err.toString());
                 }
-            })})`;
+            } else {
+                const keys = keyPart.split(',');
+                return `${part}(${keys.map((key) => {
+                    const [name, value] = key.split('=');
+                    if (name && value) {
+                        const type = context.elements[name] && context.elements[name].type;
+                        return `${name}=${DataTypeMap[type] ? value.replace(DataTypeMap[type].v4, '$1') : value}`;
+                    } else if (context.keys) {
+                        const keyName = Object.keys(context.keys)[0];
+                        const type = context.elements[keyName] && context.elements[keyName].type;
+                        return `${DataTypeMap[type] ? name.replace(DataTypeMap[type].v4, '$1') : name}`;
+                    }
+                })})`;
+            }
         } else {
             return part;
         }
@@ -419,97 +442,6 @@ function convertUrlCount(url, req) {
         delete url.query['$inlinecount'];
     }
     return url;
-}
-
-function convertAnalytics(url, req) {
-    const definition = req.context && req.context.definition;
-    if (!(definition && definition.kind === 'entity' && definition['@Aggregation.ApplySupported.PropertyRestrictions'] && url.query['$select'])) {
-        return;
-    }
-    const measures = [];
-    const dimensions = [];
-    const selects = url.query['$select'].split(',');
-    selects.forEach((select) => {
-        let selectDefinition = definition;
-        select.split('/').forEach((part) => {
-            const element = selectDefinition.elements && selectDefinition.elements[part];
-            if (element) {
-                if (element.type === 'cds.Composition' || element.type === 'cds.Association') {
-                    selectDefinition = element._target;
-                } else {
-                    selectDefinition = element;
-                }
-            } else {
-                selectDefinition = null;
-            }
-        });
-        if (selectDefinition) {
-            const elements = selectDefinition.kind === 'entity' ? Object.values(selectDefinition.keys) : [selectDefinition];
-            elements.forEach((element) => {
-                if (element['@Analytics.Measure']) {
-                    measures.push(element);
-                } else {
-                    dimensions.push(element);
-                }
-            });
-        }
-    });
-
-    if (dimensions.length > 0 || measures.length > 0) {
-        url.query['$apply'] = '';
-        if (dimensions.length) {
-            url.query['$apply'] = 'groupby(';
-            url.query['$apply'] += `(${dimensions.map((dimension) => {
-                return dimension.name;
-            }).join(',')})`;
-        }
-        if (measures.length > 0) {
-            if (url.query['$apply']) {
-                url.query['$apply'] += ',';
-            }
-            url.query['$apply'] += `aggregate(${measures.map((measure) => {
-                let aggregation = measure['@Aggregation.default'] || measure['@DefaultAggregation'];
-                aggregation = aggregation ? AggregationMap[(aggregation['#'] || aggregation).toUpperCase()] : 'sum';
-                return `${measure.name} with ${aggregation} as ${AggregationPrefix}${measure.name}`;
-            }).join(',')})`;
-        }
-        if (dimensions.length) {
-            url.query['$apply'] += ')';
-        }
-        delete url.query['$select'];
-        delete url.query['$expand'];
-        req.context.$apply = true;
-    }
-
-    if (url.query['$orderby']) {
-        url.query['$orderby'] = url.query['$orderby'].split(',').map((orderBy) => {
-            let orderByDefinition = definition;
-            const [name, order] = orderBy.split(" ");
-            const parts = name.split('/');
-            return parts.map((part, index) => {
-                const element = orderByDefinition.elements && orderByDefinition.elements[part];
-                if (element) {
-                    if (element.type === 'cds.Composition' || element.type === 'cds.Association') {
-                        orderByDefinition = element._target;
-                    } else {
-                        orderByDefinition = element;
-                    }
-                } else {
-                    orderByDefinition = null;
-                }
-                if (index === parts.length - 1 && orderByDefinition) {
-                    const elements = orderByDefinition.kind === 'entity' ? Object.values(orderByDefinition.keys) : [orderByDefinition];
-                    return elements.map((element) => {
-                        if (element['@Analytics.Measure']) {
-                            return `${AggregationPrefix}${element.name}`;
-                        }
-                        return element;
-                    }).join(",");
-                }
-                return part;
-            }).join("/") + (order ? ` ${order}` : "");
-        }).join((","));
-    }
 }
 
 function convertActionFunction(url, req) {
@@ -656,6 +588,79 @@ function convertExpandSelect(url, req) {
     }
 }
 
+function convertAnalytics(url, req) {
+    const definition = req.context && req.context.definition;
+    if (!(definition && definition.kind === 'entity' && definition['@Aggregation.ApplySupported.PropertyRestrictions'] && url.query['$select'])) {
+        return;
+    }
+    const measures = [];
+    const dimensions = [];
+    const selects = url.query['$select'].split(',');
+    if (url.query['$filter']) {
+        Object.keys(definition.elements || {}).forEach((name) => {
+            if (url.query['$filter'].includes(name) && !selects.includes(name)) {
+                selects.push(name);
+            }
+        });
+    }
+    selects.forEach((select) => {
+        const element = definition.elements && definition.elements[select];
+        if (element) {
+            if (element['@Analytics.Measure']) {
+                measures.push(element);
+            } else {
+                dimensions.push(element);
+            }
+        }
+    });
+
+    if (dimensions.length > 0 || measures.length > 0) {
+        url.query['$apply'] = '';
+        if (dimensions.length) {
+            url.query['$apply'] = 'groupby(';
+            url.query['$apply'] += `(${dimensions.map((dimension) => {
+                return dimension.name;
+            }).join(',')})`;
+        }
+        if (measures.length > 0) {
+            if (url.query['$apply']) {
+                url.query['$apply'] += ',';
+            }
+            url.query['$apply'] += `aggregate(${measures.map((measure) => {
+                let aggregation = measure['@Aggregation.default'] || measure['@DefaultAggregation'];
+                aggregation = aggregation ? AggregationMap[(aggregation['#'] || aggregation).toUpperCase()] : 'sum';
+                return `${measure.name} with ${aggregation} as ${AggregationPrefix}${measure.name}`;
+            }).join(',')})`;
+        }
+        if (dimensions.length) {
+            url.query['$apply'] += ')';
+        }
+
+        if (url.query['$orderby']) {
+            url.query['$orderby'] = url.query['$orderby'].split(',').map((orderBy) => {
+                let [name, order] = orderBy.split(' ');
+                const element = definition.elements && definition.elements[name];
+                if (element && element['@Analytics.Measure']) {
+                    name = `${AggregationPrefix}${element.name}`;
+                }
+                return name + (order ? ` ${order}` : '');
+            }).join((','));
+        }
+
+        // Convert $filter to $apply=filter(...)/groupby((),aggregate())
+        // e.g. $apply=filter(currency eq 'USD')/groupby((currency),aggregate(stock with sum as total))
+        // Currently not supported by CDS Services
+
+        delete url.query['$select'];
+        delete url.query['$expand'];
+
+        req.context.$apply = {
+            key: dimensions,
+            value: measures
+        };
+    }
+}
+
 function convertFilter(url, req) {
     if (url.query['$filter']) {
         // substringof
@@ -776,7 +781,7 @@ function convertProxyResponse(proxyRes, req, res) {
     }).catch((err) => {
         // Error
         console.log(err);
-        req.loggingContext.getTracer('Error').error(err.toString());
+        trace(req, 'Error', err.toString());
         respond(req, res, proxyRes.statusCode, proxyRes.headers, convertResponseError(proxyRes.body, proxyRes.headers));
     });
 }
@@ -902,13 +907,13 @@ function convertResponseBody(proxyBody, headers, req, index = 0) {
                 }
                 convertResponseElementData(body, headers, definition, proxyBody, req);
             } else {
-                const data = convertResponseList(body, proxyBody);
+                const data = convertResponseList(body, proxyBody, req);
                 convertResponseData(data, headers, definition, proxyBody, req);
             }
         } else {
             // Context from Request
             let definition = req.context.definition;
-            const data = convertResponseList(body, proxyBody);
+            const data = convertResponseList(body, proxyBody, req);
             if (definition && (definition.kind === 'function' || definition.kind === 'action')) {
                 const returns = (definition.returns && definition.returns.items && definition.returns.items) || definition.returns;
                 definition = lookupDefinition(returns.type, req) || {
@@ -927,19 +932,23 @@ function convertResponseBody(proxyBody, headers, req, index = 0) {
     return JSON.stringify(body);
 }
 
-function convertResponseList(body, proxyBody) {
+function convertResponseList(body, proxyBody, req) {
     if (Array.isArray(proxyBody.value)) {
-        body.d.results = proxyBody.value || [];
-        if (proxyBody['@odata.count'] !== undefined) {
-            body.d.__count = proxyBody['@odata.count'];
+        if (req.context.aggregationKey) {
+            proxyBody = proxyBody.value[0] || {};
+        } else {
+            body.d.results = proxyBody.value || [];
+            if (proxyBody['@odata.count'] !== undefined) {
+                body.d.__count = proxyBody['@odata.count'];
+            }
+            body.d.results = body.d.results.map((entry) => {
+                return typeof entry == 'object' ? entry : {value: entry};
+            });
+            return body.d.results
         }
-        body.d.results = body.d.results.map((entry) => {
-            return typeof entry == 'object' ? entry : {value: entry};
-        });
-    } else {
-        body.d = proxyBody;
     }
-    return body.d.results || [body.d];
+    body.d = proxyBody;
+    return [body.d];
 }
 
 function convertResponseData(data, headers, definition, proxyBody, req) {
@@ -1066,14 +1075,18 @@ function convertAggregation(data, headers, definition, body, req) {
             }
         }
     });
-    const aggregationKey = Object.keys(data).reduce((result, key) => {
-        if (definition.elements && definition.elements[key]) {
-            result[key] = data[key];
-        }
-        return result;
-    }, {});
-    data.__metadata.uri = entityUriKey(`${AggregationPrefix}='${JSON.stringify(aggregationKey)}'`, definition, req);
-    data.__metadata.type = AggregationPrefix + data.__metadata.type;
+    const aggregationKey = {
+        key: req.context.$apply.key.reduce((result, keyElement) => {
+            let value = data[keyElement.name];
+            value = value.replace(/(.*)/, DataTypeMap[keyElement.type].v2);
+            result[keyElement.name] = value;
+            return result;
+        }, {}),
+        value: req.context.$apply.value.map((valueElement) => {
+            return valueElement.name;
+        })
+    };
+    data.__metadata.uri = entityUriKey(`aggregation'${JSON.stringify(aggregationKey)}'`, definition, req);
     delete data.__metadata.etag;
 }
 
@@ -1245,7 +1258,7 @@ function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHea
                     } catch (err) {
                         // Error
                         console.log(err);
-                        req.loggingContext.getTracer('Error').error(err.toString());
+                        trace(req, 'Error', err.toString());
                     }
                 }
                 Object.entries(headers).forEach(([name, value]) => {
@@ -1311,11 +1324,11 @@ function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHea
 }
 
 function traceRequest(req, name, method, url, body) {
-    req.loggingContext.getTracer(name).info(`${method} ${url}${method !== 'GET' ? '\n' + (typeof body === 'string' ? body : JSON.stringify(body)) : ''}`);
+    req.loggingContext.getTracer(name).info(`${method} ${decodeURI(url)}${method !== 'GET' ? '\n' + (typeof body === 'string' ? decodeURI(body) : decodeURI(JSON.stringify(body))) : ''}`);
 }
 
 function traceResponse(req, name, headers, body) {
-    req.loggingContext.getTracer(name).info(`\n${JSON.stringify(headers)}\n${typeof body === 'string' ? body : JSON.stringify(body)}`);
+    req.loggingContext.getTracer(name).info(`\n${decodeURI(JSON.stringify(headers))}\n${typeof body === 'string' ? decodeURI(body) : decodeURI(JSON.stringify(body))}`);
 }
 
 function trace(req, name, message) {

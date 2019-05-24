@@ -223,14 +223,9 @@ describe('draft-request', () => {
         });
         expect(response.body).toBeDefined();
         const id = response.body.d.ID;
-        response = await util.callWrite(
-            request,
-            `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
-            {
-                name: 'Test2'
-            },
-            true
-        );
+        response = await util.callWrite(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+            name: 'Test2'
+        }, true);
         expect(response.statusCode).toEqual(200);
         response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
         expect(response.body).toMatchObject({
@@ -250,14 +245,9 @@ describe('draft-request', () => {
                 }
             }
         });
-        response = await util.callWrite(
-            request,
-            '/v2/draft/Header',
-            {
-                name: 'Test'
-            },
-            true
-        );
+        response = await util.callWrite(request, '/v2/draft/Header', {
+            name: 'Test'
+        }, true);
         expect(response.body).toMatchObject({
             error: {
                 code: null,
