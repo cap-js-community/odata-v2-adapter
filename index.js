@@ -513,13 +513,12 @@ function unquoteParameter(element, value, req) {
 }
 
 function parseParameter(element, value, req) {
-    if (!element) {
-        return value;
-    }
-    if (['cds.Boolean'].includes(element.type)) {
-        return value === 'true';
-    } else if (['cds.Integer'].includes(element.type)) {
-        return parseInt(value);
+    if (element) {
+        if (['cds.Boolean'].includes(element.type)) {
+            return value === 'true';
+        } else if (['cds.Integer'].includes(element.type)) {
+            return parseInt(value);
+        }
     }
     return value;
 }
@@ -703,10 +702,7 @@ function convertRequestData(data, headers, definition, req) {
     data.forEach((data) => {
         Object.keys(data).forEach((key) => {
             let element = definition.elements[key];
-            if (!element) {
-                return;
-            }
-            if (element.type === 'cds.Composition' || element.type === 'cds.Association') {
+            if (element && (element.type === 'cds.Composition' || element.type === 'cds.Association')) {
                 convertRequestData(data[key], headers, element._target, req);
             }
         });
@@ -721,13 +717,12 @@ function convertDataTypesToV4(data, headers, definition, body, req) {
             return;
         }
         const element = definition.elements && definition.elements[key];
-        if (!element) {
-            return;
-        }
-        if (['cds.Decimal', 'cds.DecimalFloat', 'cds.Integer64'].includes(element.type)) {
-            data[key] = ieee754Compatible ? `${data[key]}` : parseFloat(data[key]);
-        } else if (['cds.Double'].includes(element.type)) {
-            data[key] = parseFloat(data[key]);
+        if (element) {
+            if (['cds.Decimal', 'cds.DecimalFloat', 'cds.Integer64'].includes(element.type)) {
+                data[key] = ieee754Compatible ? `${data[key]}` : parseFloat(data[key]);
+            } else if (['cds.Double'].includes(element.type)) {
+                data[key] = parseFloat(data[key]);
+            }
         }
     });
 }
@@ -1021,21 +1016,17 @@ function contextFromBody(body, req) {
 
 function contextElementFromBody(body, req) {
     let context = body['@odata.context'];
-    if (!context) {
+    const definition = contextFromBody(body, req);
+    if (!(context && definition)) {
         return null;
     }
-    const definition = contextFromBody(body, req);
-    if (!definition) {
-        return;
-    }
-    if (context.lastIndexOf('/') === -1) {
-        return;
-    }
-    const name = context.substr(context.lastIndexOf('/') + 1);
-    if (name && !name.startsWith('$')) {
-        const element = definition.elements && definition.elements[name];
-        if (element) {
-            return element;
+    if (context.lastIndexOf('/') !== -1) {
+        const name = context.substr(context.lastIndexOf('/') + 1);
+        if (name && !name.startsWith('$')) {
+            const element = definition.elements && definition.elements[name];
+            if (element) {
+                return element;
+            }
         }
     }
 }
