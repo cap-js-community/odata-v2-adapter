@@ -362,6 +362,7 @@ function convertUrlDataTypes(url, req) {
             keyPart = part.substring(keyStart + 1, keyEnd);
             part = part.substr(0, keyStart);
         }
+        keyPart = decodeURIKey(keyPart);
         context = lookupContext(part, context, req);
         if (!context) {
             stop = true;
@@ -597,8 +598,11 @@ function convertAnalytics(url, req) {
     const selects = url.query['$select'].split(',');
     if (url.query['$filter']) {
         Object.keys(definition.elements || {}).forEach((name) => {
-            if (url.query['$filter'].includes(name) && !selects.includes(name)) {
-                selects.push(name);
+            const element = definition.elements[name];
+            if (!(element.type === 'cds.Composition' || element.type === 'cds.Association')) {
+                if (url.query['$filter'].includes(name) && !selects.includes(name)) {
+                    selects.push(name);
+                }
             }
         });
     }
@@ -930,7 +934,7 @@ function convertResponseBody(proxyBody, headers, req, index = 0) {
 function convertResponseList(body, proxyBody, req) {
     if (Array.isArray(proxyBody.value)) {
         if (req.context.aggregationKey) {
-            proxyBody = proxyBody.value[0] || {};
+            proxyBody = proxyBody.value[0] || {};
         } else {
             body.d.results = proxyBody.value || [];
             if (proxyBody['@odata.count'] !== undefined) {
@@ -939,7 +943,7 @@ function convertResponseList(body, proxyBody, req) {
             body.d.results = body.d.results.map((entry) => {
                 return typeof entry == 'object' ? entry : {value: entry};
             });
-            return body.d.results
+            return body.d.results;
         }
     }
     body.d = proxyBody;
@@ -1069,7 +1073,9 @@ function convertAggregation(data, headers, definition, body, req) {
     const aggregationKey = {
         key: req.context.$apply.key.reduce((result, keyElement) => {
             let value = data[keyElement.name];
-            value = value.replace(/(.*)/, DataTypeMap[keyElement.type].v2);
+            if (value !== null && value !== undefined) {
+                value = value.replace(/(.*)/, DataTypeMap[keyElement.type].v2);
+            }
             result[keyElement.name] = value;
             return result;
         }, {}),
@@ -1138,7 +1144,7 @@ function entityUriKey(key, entity, req) {
     let protocol = req.header('x-forwarded-proto') || req.protocol || 'http';
     let host = req.header('x-forwarded-host') || req.hostname || 'localhost';
     let port = req.header('x-forwarded-host') ? '' : `:${req.socket.address().port}`;
-    return `${protocol}://${host}${port}${req.baseUrl}/${entity.name.split('.').pop()}(${key})`;
+    return `${protocol}://${host}${port}${req.baseUrl}/${entity.name.split('.').pop()}(${encodeURIKey(key)})`;
 }
 
 function entityKey(data, entity) {
@@ -1199,6 +1205,14 @@ function isApplicationJSON(req, headers) {
 
 function isPlainText(req, headers) {
     return headers['content-type'] === 'text/plain';
+}
+
+function encodeURIKey(key) {
+    return key.replace(/[ ]/g, '%20').replace(/[/]/g, '%2F');
+}
+
+function decodeURIKey(key) {
+    return key.replace(/%20/g, ' ').replace(/%2F/g, '/');
 }
 
 function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHeadersProcessor) {
