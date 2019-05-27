@@ -600,7 +600,7 @@ function convertAnalytics(url, req) {
         Object.keys(definition.elements || {}).forEach((name) => {
             const element = definition.elements[name];
             if (!(element.type === 'cds.Composition' || element.type === 'cds.Association')) {
-                if (url.query['$filter'].includes(name) && !selects.includes(name)) {
+                if (new RegExp(`${name}[^a-zA-Z1-9_-]`).test(url.query['$filter']) && !selects.includes(name)) {
                     selects.push(name);
                 }
             }
