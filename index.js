@@ -80,7 +80,10 @@ module.exports = (options) => {
             res.setHeader('content-type', 'application/xml');
             res.send(edmx);
         } catch (err) {
-            res.status(404).end();
+            // Error
+            console.log(err);
+            trace(req, 'Error', err.toString());
+            res.status(500).end();
         }
     });
 
@@ -103,8 +106,11 @@ module.exports = (options) => {
                 req.contexts = [];
                 req.contentId = {};
                 next();
-            }).catch(() => {
-                res.status(404).end();
+            }).catch((err) => {
+                // Error
+                console.log(err);
+                trace(req, 'Error', err.toString());
+                res.status(500).end();
             });
         },
 
@@ -392,7 +398,7 @@ function convertUrlDataTypes(url, req) {
                     if (name && value) {
                         const type = context.elements[name] && context.elements[name].type;
                         return `${name}=${DataTypeMap[type] ? value.replace(DataTypeMap[type].v4, '$1') : value}`;
-                    } else if (context.keys) {
+                    } else if (name && context.keys) {
                         const keyName = Object.keys(context.keys)[0];
                         const type = context.elements[keyName] && context.elements[keyName].type;
                         return `${DataTypeMap[type] ? name.replace(DataTypeMap[type].v4, '$1') : name}`;
@@ -474,7 +480,7 @@ function convertActionFunction(url, req) {
             if (!name.startsWith('$')) {
                 const element = definition.params && definition.params[name];
                 if (element) {
-                    const value = url.query[name];
+                    const value = url.query[name] || '';
                     result.push(`${name}=${quoteParameter(element, value, req)}`);
                     delete url.query[name];
                 }
@@ -488,7 +494,7 @@ function convertActionFunction(url, req) {
         Object.keys(url.query).forEach((name) => {
             if (!name.startsWith('$')) {
                 const element = definition.params && definition.params[name];
-                let value = url.query[name];
+                let value = url.query[name] || '';
                 value = unquoteParameter(element, value, req);
                 value = parseParameter(element, value, req);
                 url.query[name] = value;
@@ -1073,7 +1079,7 @@ function convertAggregation(data, headers, definition, body, req) {
     const aggregationKey = {
         key: req.context.$apply.key.reduce((result, keyElement) => {
             let value = data[keyElement.name];
-            if (value !== null && value !== undefined) {
+            if (value !== undefined && value !== null && DataTypeMap[keyElement.type]) {
                 value = value.replace(/(.*)/, DataTypeMap[keyElement.type].v2);
             }
             result[keyElement.name] = value;
@@ -1155,11 +1161,11 @@ function entityKey(data, entity) {
     });
     return keyElements.map((keyElement) => {
         let value = data[keyElement.name];
-        if (value !== undefined && DataTypeMap[keyElement.type]) {
+        if (value !== undefined && value !== null && DataTypeMap[keyElement.type]) {
             value = value.replace(/(.*)/, DataTypeMap[keyElement.type].v2);
         }
         if (keyElements.length === 1) {
-            return value;
+            return `${value}`;
         } else {
             return `${keyElement.name}=${value}`;
         }
