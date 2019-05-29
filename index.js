@@ -42,7 +42,7 @@ const AggregationMap = {
     COUNT_DISTINCT: 'countdistinct'
 };
 
-const AggregationPrefix = '__aggregation__';
+const AggregationPrefix = '__AGGREGATION__';
 
 /**
  * Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData v4 Server
