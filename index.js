@@ -862,9 +862,9 @@ function convertResponseError(body, headers) {
             delete body.error.numericSeverity;
             delete body.error['@Common.numericSeverity'];
         }
+        body.error.innererror = body.error.innererror || {};
+        body.error.innererror.errordetails = body.error.innererror.errordetails || [];
         if (body.error.details) {
-            body.error.innererror = body.error.innererror || {};
-            body.error.innererror.errordetails = body.error.innererror.errordetails || [];
             body.error.innererror.errordetails.push(...body.error.details);
             body.error.innererror.errordetails.forEach((detail) => {
                 detail.severity = detail.severity || SeverityMap[detail['@Common.numericSeverity'] || detail['numericSeverity']] || 'error';
