@@ -81,7 +81,6 @@ module.exports = (options) => {
             res.send(edmx);
         } catch (err) {
             // Error
-            console.log(err);
             trace(req, 'Error', err.toString());
             res.status(500).end();
         }
@@ -108,7 +107,6 @@ module.exports = (options) => {
                 next();
             }).catch((err) => {
                 // Error
-                console.log(err);
                 trace(req, 'Error', err.toString());
                 res.status(500).end();
             });
@@ -388,7 +386,6 @@ function convertUrlDataTypes(url, req) {
                     return part;
                 } catch (err) {
                     // Error
-                    console.log(err);
                     trace(req, 'Error', err.toString());
                 }
             } else {
@@ -785,7 +782,6 @@ function convertProxyResponse(proxyRes, req, res) {
         respond(req, res, proxyRes.statusCode, headers, body);
     }).catch((err) => {
         // Error
-        console.log(err);
         trace(req, 'Error', err.toString());
         respond(req, res, proxyRes.statusCode, proxyRes.headers, convertResponseError(proxyRes.body, proxyRes.headers));
     });
@@ -1268,7 +1264,6 @@ function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHea
                         headers = (result && result.headers) || headers;
                     } catch (err) {
                         // Error
-                        console.log(err);
                         trace(req, 'Error', err.toString());
                     }
                 }
