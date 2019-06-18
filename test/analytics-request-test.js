@@ -100,18 +100,18 @@ describe('analytics-request', () => {
             d: {
                 results: [{
                     __metadata: {
-                        uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock"]}')`,
-                        type: 'test.AnalyticsService.Header'
-                    },
-                    currency: 'USD',
-                    stock: '17'
-                }, {
-                    __metadata: {
                         uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock"]}')`,
                         type: 'test.AnalyticsService.Header'
                     },
                     currency: 'EUR',
                     stock: '25'
+                }, {
+                    __metadata: {
+                        uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock"]}')`,
+                        type: 'test.AnalyticsService.Header'
+                    },
+                    currency: 'USD',
+                    stock: '17'
                 }]
             }
         });
