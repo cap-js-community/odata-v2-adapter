@@ -18,18 +18,23 @@ const SeverityMap = {
     4: 'error'
 };
 
+const UUIDRegex = /(guid'[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}')/gi;
+
 const DataTypeMap = {
-    'cds.UUID': {v2: `guid'$1'`, v4: /guid'(.{36})'/gi},
-    'cds.Binary': {v2: `binary'$1'`, v4: /X'(.+)'/gi},
-    'cds.LargeBinary': {v2: `binary'$1'`, v4: /X'(.+)'/gi},
-    'cds.Time': {v2: `time'$1'`, v4: /time'(.+)'/gi},
-    'cds.Date': {v2: `datetime'$1'`, v4: /datetime'(.+)'/gi},
-    'cds.DateTime': {v2: `datetimeoffset'$1'`, v4: /datetimeoffset'(.+)'g/i},
-    'cds.Timestamp': {v2: `datetimeoffset'$1'`, v4: /datetimeoffset'(.+)'/gi},
-    'cds.Double': {v2: `$1d`, v4: /([0-9]+((\.[0-9]+)|[E[+|-][0-9]+]))d/gi},
-    'cds.Decimal': {v2: `$1m`, v4: /([0-9]+\.[0-9]+)m/gi},
-    'cds.DecimalFloat': {v2: `$1f`, v4: /([0-9]+\.[0-9]+)f/gi},
-    'cds.Integer64': {v2: `$1L`, v4: /([-]?[0-9]+)L/gi},
+    'cds.UUID': {
+        v2: `guid'$1'`,
+        v4: /guid'([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})'/gi
+    },
+    'cds.Binary': {v2: `binary'$1'`, v4: /X'(?:[0-9a-f][0-9a-f])+?'/gi},
+    'cds.LargeBinary': {v2: `binary'$1'`, v4: /X'(?:[0-9a-f][0-9a-f])+?'/gi},
+    'cds.Time': {v2: `time'$1'`, v4: /time'(.+?)'/gi},
+    'cds.Date': {v2: `datetime'$1'`, v4: /datetime'(.+?)'/gi},
+    'cds.DateTime': {v2: `datetimeoffset'$1'`, v4: /datetimeoffset'(.+?)'/gi},
+    'cds.Timestamp': {v2: `datetimeoffset'$1'`, v4: /datetimeoffset'(.+?)'/gi},
+    'cds.Double': {v2: `$1d`, v4: /[-]?[0-9]+?\.[0-9]+?(?:E[+-]?[0-9]+?)?d/gi},
+    'cds.Decimal': {v2: `$1m`, v4: /([-]?[0-9]+?\.[0-9]+?)m/gi},
+    'cds.DecimalFloat': {v2: `$1f`, v4: /([-]?[0-9]+?\.[0-9]+?)f/gi},
+    'cds.Integer64': {v2: `$1L`, v4: /([-]?[0-9]+?)L/gi},
     'cds.String': {v2: `'$1'`, v4: /(.*)/gi}
 };
 
@@ -410,9 +415,16 @@ function convertUrlDataTypes(url, req) {
     // Query
     Object.keys(url.query).forEach((name) => {
         if (name === '$filter') {
-            Object.keys(DataTypeMap).forEach((type) => {
-                url.query[name] = url.query[name].replace(DataTypeMap[type].v4, '$1');
-            });
+            url.query[name] = url.query[name].split(UUIDRegex).map((part, index) => {
+                if (index % 2 === 0) {
+                    Object.keys(DataTypeMap).forEach((type) => {
+                        part = part.replace(DataTypeMap[type].v4, '$1');
+                    });
+                    return part;
+                } else {
+                    return part.replace(DataTypeMap['cds.UUID'].v4, '$1');
+                }
+            }).join('');
         } else if (!name.startsWith('$')) {
             if (context && context.elements && context.elements[name]) {
                 const element = context.elements[name];
@@ -491,7 +503,7 @@ function convertActionFunction(url, req) {
         Object.keys(url.query).forEach((name) => {
             if (!name.startsWith('$')) {
                 const element = definition.params && definition.params[name];
-                let value = url.query[name] || '';
+                let value = url.query[name] || '';
                 value = unquoteParameter(element, value, req);
                 value = parseParameter(element, value, req);
                 url.query[name] = value;
@@ -561,7 +573,11 @@ function convertExpandSelect(url, req) {
                     }
                 });
             });
-            url.query['$select'] = Object.keys(context.select).join(',');
+            if (Object.keys(context.select).length > 0) {
+                url.query['$select'] = Object.keys(context.select).join(',');
+            } else {
+                delete url.query['$select'];
+            }
         }
         if (url.query['$expand']) {
             const serializeExpand = (expand) => {
@@ -586,7 +602,11 @@ function convertExpandSelect(url, req) {
                     return result;
                 }).join(',');
             };
-            url.query['$expand'] = serializeExpand(context.expand);
+            if (Object.keys(context.expand).length > 0) {
+                url.query['$expand'] = serializeExpand(context.expand);
+            } else {
+                delete url.query['$expand'];
+            }
         }
     }
 }

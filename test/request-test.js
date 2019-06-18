@@ -150,6 +150,37 @@ describe('request', () => {
                 ]
             }
         });
+        response = await util.callRead(
+            request,
+            `/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items&$select=Items/name`
+        );
+        expect(response.body).toBeDefined();
+        expect(response.body.d.results[0]).toMatchObject({
+            __metadata: {
+                uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+                type: 'test.MainService.Header',
+            },
+            ID: id,
+            modifiedAt: null,
+            createdBy: 'anonymous',
+            modifiedBy: null,
+            name: 'Test',
+            description: null,
+            country: null,
+            currency: null,
+            stock: null,
+            price: null,
+            FirstItem_ID: null,
+            Items: {
+                    results: [{
+                        __metadata: {
+                            type: 'test.MainService.HeaderItem',
+                        },
+                        name: 'TestItem'
+                    }]
+                }
+            }
+        );
     });
 
     it('GET request with $count', async () => {
@@ -186,6 +217,21 @@ describe('request', () => {
         const id = response.body.d.ID;
         response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',name)`);
         expect(response.body.d.results).toHaveLength(1);
+    });
+
+    it('GET request with many "or" filters on same field', async () => {
+        let response = await util.callWrite(request, '/v2/main/Header', {
+            name: 'Test',
+            country: 'US'
+        });
+        expect(response.statusCode).toEqual(201);
+        response = await util.callWrite(request, '/v2/main/Header', {
+            name: 'Test',
+            country: 'DE'
+        });
+        expect(response.statusCode).toEqual(201);
+        response = await util.callRead(request, `/v2/main/Header?$filter=country eq 'X' or country eq 'A'`);
+        expect(response.body.d.results).toHaveLength(0);
     });
 
     it('POST request', async () => {
