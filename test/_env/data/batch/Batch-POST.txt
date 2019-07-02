@@ -17,7 +17,12 @@ Content-Type: application/json
 Content-Type: application/http
 
 GET Header?$expand=FirstItem%2CItems HTTP/1.1
-Content-Type: application/json
+
+
+--boundary
+Content-Type: application/http
+
+GET Header?$filter=(name eq 'Test') HTTP/1.1
 
 
 --boundary--

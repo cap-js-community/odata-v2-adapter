@@ -1,4 +1,4 @@
-{
+module.exports = {
   "reporters": [
     "default"
   ],
@@ -38,4 +38,4 @@
   ],
   "testURL": "http://localhost/",
   "verbose": true
-}
+};
