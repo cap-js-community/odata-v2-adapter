@@ -16,11 +16,10 @@ const db = cds.connect(Object.assign({
 
 module.exports = async (service, defaultPort, fnInit) => {
     let port = defaultPort || 0;
-    const servicePath = `./test/_env/${service}`;
+    const servicePath = `./integration-test/_env/${service}`;
     const app = express();
 
     const srv = await cds.load(servicePath);
-    await cds.deploy(srv);
     await cds.serve(servicePath).in(app);
 
     // Backend
@@ -40,9 +39,7 @@ module.exports = async (service, defaultPort, fnInit) => {
             model: servicePath,
             port: port,
             services: {
-                main: 'test.MainService',
-                draft: 'test.DraftService',
-                analytics: 'test.AnalyticsService'
+                main: 'test.MainService'
             }
         })
     );

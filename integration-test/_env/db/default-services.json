@@ -15,7 +15,8 @@
         "url": "jdbc:sap://localhost:30015?encrypt=true\u0026validateCertificate=false\u0026currentschema=5010DBBF3942477091E615EADDEE0A99",
         "hostname_in_certificate": "zeus.hana.canary.eu-central-1.whitney.dbaas.ondemand.com",
         "encrypt": true,
-        "validate_certificate": false
+        "validate_certificate": false,
+        "sslValidateCertificate": false
       },
       "instance_name": "cds-community-test-hana",
       "label": "hana",

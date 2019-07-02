@@ -335,6 +335,9 @@ function lookupContext(name, context, req) {
                 return context;
             }
         }
+        if (context && context.params && name === 'Set') {
+            return context;
+        }
         trace(req, 'Context', `Definition '${name}' not found`);
     }
 }
@@ -357,7 +360,7 @@ function enrichRequest(definition, url, contentId, req) {
 }
 
 function convertUrlDataTypes(url, req) {
-    // Keys
+    // Keys & Parameters
     let context;
     let stop = false;
     url.contextPath = url.contextPath.split('/').map((part) => {
@@ -398,7 +401,13 @@ function convertUrlDataTypes(url, req) {
                 return `${part}(${keys.map((key) => {
                     const [name, value] = key.split('=');
                     if (name && value) {
-                        const type = context.elements[name] && context.elements[name].type;
+                        let type;
+                        if (context.params && context.params[name]) {
+                            type = context.params[name].type;
+                        } 
+                        if (!type) {
+                            type = context.elements[name] && context.elements[name].type;
+                        }
                         return `${name}=${DataTypeMap[type] ? value.replace(DataTypeMap[type].v4, '$1') : value}`;
                     } else if (name && context.keys) {
                         const keyName = Object.keys(context.keys)[0];
