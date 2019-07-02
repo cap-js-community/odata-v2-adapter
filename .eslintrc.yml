@@ -1,0 +1,32 @@
+---
+root: true
+#  https://eslint.org/docs/rules/
+env:
+  node: true
+parserOptions:
+  ecmaVersion: 8
+globals:
+  sap: false
+  Promise: false
+  SELECT: false
+  INSERT: false
+  UPDATE: false
+  DELETE: false
+  CREATE: false
+  DROP: false
+plugins:
+  - jest
+  - prettier
+extends:
+  - 'eslint:recommended'
+  - 'plugin:jest/recommended'
+  - 'plugin:prettier/recommended'
+rules:
+  no-console:
+    - off
+  no-unused-vars:
+    - off
+  max-len:
+    - off
+  require-atomic-updates:
+    - off

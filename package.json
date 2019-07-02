@@ -16,13 +16,20 @@
     "start": "node test-server",
     "test": "jest",
     "test:integration": "jest --config=jest-integration.json",
+    "lint": "eslint . --fix",
     "prepareRelease": "npm prune --production"
   },
   "devDependencies": {
     "@sap/cds": "^3.13.0",
     "@sap/hana-client": "2.3",
+    "eslint": "^6.0.1",
+    "eslint-config": "^0.3.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-jest": "^22.7.1",
+    "eslint-plugin-prettier": "^3.1.0",
     "jest": "^23.6.0",
     "jest-junit": "^6.3.0",
+    "prettier": "^1.18.2",
     "sqlite3": "4.0.4",
     "supertest": "^4.0.2"
   },
