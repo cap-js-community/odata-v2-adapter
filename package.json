@@ -7,7 +7,6 @@
   },
   "author": "Oliver Klemenz, Richard Lindner",
   "dependencies": {
-    "@sap/cds": "^3.13.0",
     "@sap/logging": "^5.0.1",
     "express": "^4.17.1",
     "http-proxy-middleware": "^0.19.1"
@@ -20,6 +19,7 @@
     "prepareRelease": "npm prune --production"
   },
   "devDependencies": {
+    "@sap/cds": "^3.13.0",
     "@sap/hana-client": "2.3",
     "jest": "^23.6.0",
     "jest-junit": "^6.3.0",
