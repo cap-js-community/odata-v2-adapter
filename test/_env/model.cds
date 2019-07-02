@@ -22,6 +22,10 @@ entity HeaderItem: cuid {
     header: Association to Header;
 }
 
+entity HeaderStream: cuid {
+    data: LargeBinary @Core.MediaType: 'image/png';
+}
+
 service MainService {
 
     type Result {
@@ -35,6 +39,7 @@ service MainService {
         function boundFunction(num: Integer, text: String) returns array of Result;
     };
     entity HeaderItem as projection on test.HeaderItem;
+    entity HeaderStream as projection on test.HeaderStream;
 
     action unboundAction(num: Integer, text: String) returns array of Result;
     function unboundFunction(num: Integer, text: String) returns Result;
@@ -45,3 +50,4 @@ service MainService {
     function unboundNavigationFunction(num: Integer, text: String) returns Header;
     function unboundNavigationsFunction(num: Integer, text: String) returns array of Header;
 }
+

@@ -4,13 +4,14 @@ const supertest = require('supertest');
 
 const env = require('./_env');
 const util = require('./_env/util');
+const init = require('./_env/data/init');
 
 let context;
 let request;
 
 describe('request', () => {
     beforeAll(async () => {
-        context = await env('model');
+        context = await env('model', 0, init);
         request = supertest(context.app);
     });
 
@@ -25,7 +26,7 @@ describe('request', () => {
         expect(response.body).toBeDefined();
         expect(response.body).toEqual({
             d: {
-                EntitySets: ['Header', 'HeaderItem']
+                EntitySets: ['Header', 'HeaderItem', 'HeaderStream']
             }
         });
     });
@@ -41,11 +42,11 @@ describe('request', () => {
     it('GET request', async () => {
         let response = await util.callRead(request, '/v2/main/Header');
         expect(response.body).toBeDefined();
-        expect(response.body.d.results).toHaveLength(0);
+        expect(response.body.d.results).toHaveLength(4);
         response = await util.callRead(request, '/v2/main/Header?$inlinecount=allpages');
         expect(response.body).toBeDefined();
-        expect(response.body.d.results).toHaveLength(0);
-        expect(response.body.d.__count).toEqual(0);
+        expect(response.body.d.results).toHaveLength(4);
+        expect(response.body.d.__count).toEqual(4);
     });
 
     it('GET request with $-options', async () => {
@@ -156,25 +157,25 @@ describe('request', () => {
         );
         expect(response.body).toBeDefined();
         expect(response.body.d.results[0]).toMatchObject({
-            __metadata: {
-                uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
-                type: 'test.MainService.Header',
-            },
-            ID: id,
-            modifiedAt: null,
-            createdBy: 'anonymous',
-            modifiedBy: null,
-            name: 'Test',
-            description: null,
-            country: null,
-            currency: null,
-            stock: null,
-            price: null,
-            FirstItem_ID: null,
-            Items: {
+                __metadata: {
+                    uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+                    type: 'test.MainService.Header'
+                },
+                ID: id,
+                modifiedAt: null,
+                createdBy: 'anonymous',
+                modifiedBy: null,
+                name: 'Test',
+                description: null,
+                country: null,
+                currency: null,
+                stock: null,
+                price: null,
+                FirstItem_ID: null,
+                Items: {
                     results: [{
                         __metadata: {
-                            type: 'test.MainService.HeaderItem',
+                            type: 'test.MainService.HeaderItem'
                         },
                         name: 'TestItem'
                     }]
@@ -207,6 +208,15 @@ describe('request', () => {
         });
         response = await util.callRead(request, `/v2/main/Header(guid'${id}')/ID/$value`);
         expect(response.text).toEqual(id);
+    });
+
+    it('GET request with stream', async () => {
+        let response = await util.callRead(request, `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data`);
+        expect(response.statusCode).toEqual(200);
+        expect(response.body.length).toBe(17686);
+        response = await util.callRead(request, `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data/$value`);
+        expect(response.statusCode).toEqual(200);
+        expect(response.body.length).toBe(17686);
     });
 
     it('GET request with function \'substringof\'', async () => {
@@ -406,14 +416,14 @@ describe('request', () => {
         response = await util.callWrite(request, `/v2/main/Header(guid'${id}')`, body.d, true);
         expect(response.statusCode).toEqual(200);
         response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
-        expect(response.body.d.name).toEqual("Test2");
+        expect(response.body.d.name).toEqual('Test2');
         response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items,FirstItem`);
         body = response.body;
         body.d.name = 'Test3';
         response = await util.callWrite(request, `/v2/main/Header(guid'${id}')`, body.d, true);
         expect(response.statusCode).toEqual(200);
         response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
-        expect(response.body.d.name).toEqual("Test3");
+        expect(response.body.d.name).toEqual('Test3');
     });
 
     it('DELETE request', async () => {

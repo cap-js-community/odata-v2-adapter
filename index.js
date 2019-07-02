@@ -785,13 +785,20 @@ function convertProxyResponse(proxyRes, req, res) {
     const headers = proxyRes.headers;
     normalizeContentType(headers);
 
+    // Pipe Binary Stream
+    const contentType = headers['content-type'];
+    if (contentType === 'application/octet-stream') {
+        res.setHeader('content-type', contentType);
+        proxyRes.pipe(res);
+        return;
+    }
+
     parseProxyResponseBody(proxyRes, headers, req).then((body) => {
         // Trace
         traceResponse(req, 'Proxy Response', headers, body);
 
         convertBasicHeaders(headers);
         if (body && proxyRes.statusCode < 400) {
-            const contentType = headers['content-type'];
 
             if (isMultipart(req)) {
                 // Multipart

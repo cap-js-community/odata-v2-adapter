@@ -27,6 +27,7 @@ exports[`request GET $metadata 1`] = `
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
+        <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -86,6 +87,12 @@ exports[`request GET $metadata 1`] = `
         <Property Name=\\"endAt\\" Type=\\"Edm.DateTimeOffset\\"/>
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderStream\\" m:HasStream=\\"true\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
       </EntityType>
       <ComplexType Name=\\"Result\\">
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
