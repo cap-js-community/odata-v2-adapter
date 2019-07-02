@@ -858,7 +858,9 @@ function convertProxyResponse(proxyRes, req, res) {
 async function parseProxyResponseBody(proxyRes, headers, req) {
     return new Promise((resolve, reject) => {
         let bodyParser;
-        if (isApplicationJSON(req, headers)) {
+        if (req.method === "HEAD") {
+            bodyParser = null;
+        }  else if (isApplicationJSON(req, headers)) {
             bodyParser = bodyparser.json();
         } else if (isPlainText(req, headers)) {
             bodyParser = bodyparser.text();

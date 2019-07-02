@@ -22,7 +22,7 @@ describe('request', () => {
     it('HEAD service', async () => {
         const response = await util.callHead(request, '/v2/main');
         expect(response.body).toBeDefined();
-        // TODO this should check for more stuff
+        expect(response.body).toEqual({});
     });
 
     it('GET service', async () => {
