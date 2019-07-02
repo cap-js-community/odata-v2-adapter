@@ -8,7 +8,8 @@
   "collectCoverage": true,
   "collectCoverageFrom": [
     "**/index.js",
-    "!**/test/**/*.js"
+    "!**/test/**/*.js",
+    "!**/integration-test/**/*.js"
   ],
   "coverageDirectory": "reports/coverage/unit/",
   "coverageReporters": [

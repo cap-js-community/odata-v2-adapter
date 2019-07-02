@@ -19,10 +19,11 @@
     "prepareRelease": "npm prune --production"
   },
   "devDependencies": {
-    "supertest": "^4.0.2",
+    "@sap/hana-client": "2.3",
     "jest": "^23.6.0",
     "jest-junit": "^6.3.0",
-    "sqlite3": "4.0.4"
+    "sqlite3": "4.0.4",
+    "supertest": "^4.0.2"
   },
   "repository": {
     "type": "git",

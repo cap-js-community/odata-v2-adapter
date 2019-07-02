@@ -1,0 +1,34 @@
+{
+  "hana": [
+    {
+      "binding_name": null,
+      "credentials": {
+        "certificate": "-----BEGIN CERTIFICATE-----\nMIIDrzCCApegAwIBAgIQCDvgVpBCRrGhdWrJWZHHSjANBgkqhkiG9w0BAQUFADBh\nMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\nd3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD\nQTAeFw0wNjExMTAwMDAwMDBaFw0zMTExMTAwMDAwMDBaMGExCzAJBgNVBAYTAlVT\nMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j\nb20xIDAeBgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IENBMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4jvhEXLeqKTTo1eqUKKPC3eQyaKl7hLOllsB\nCSDMAZOnTjC3U/dDxGkAV53ijSLdhwZAAIEJzs4bg7/fzTtxRuLWZscFs3YnFo97\nnh6Vfe63SKMI2tavegw5BmV/Sl0fvBf4q77uKNd0f3p4mVmFaG5cIzJLv07A6Fpt\n43C/dxC//AH2hdmoRBBYMql1GNXRor5H4idq9Joz+EkIYIvUX7Q6hL+hqkpMfT7P\nT19sdl6gSzeRntwi5m3OFBqOasv+zbMUZBfHWymeMr/y7vrTC0LUq7dBMtoM1O/4\ngdW7jVg/tRvoSSiicNoxBN33shbyTApOB6jtSj1etX+jkMOvJwIDAQABo2MwYTAO\nBgNVHQ8BAf8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUA95QNVbR\nTLtm8KPiGxvDl7I90VUwHwYDVR0jBBgwFoAUA95QNVbRTLtm8KPiGxvDl7I90VUw\nDQYJKoZIhvcNAQEFBQADggEBAMucN6pIExIK+t1EnE9SsPTfrgT1eXkIoyQY/Esr\nhMAtudXH/vTBH1jLuG2cenTnmCmrEbXjcKChzUyImZOMkXDiqw8cvpOp/2PV5Adg\n06O/nVsJ8dWO41P0jmP6P6fbtGbfYmbW0W5BjfIttep3Sp+dWOIrWcBAI+0tKIJF\nPnlUkiaY4IBIqDfv8NZ5YBberOgOzW6sRBc4L0na4UU+Krk2U886UAb3LujEV0ls\nYSEY1QSteDwsOoBrp+uvFRTp2InBuThs4pFsiv9kuXclVzDAGySj4dzp30d8tbQk\nCAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=\n-----END CERTIFICATE-----\n",
+        "driver": "com.sap.db.jdbc.Driver",
+        "hdi_password": "Wz15uD-fXeGRmWrrJ9sv_T-2Un16zw0I6UfkaB3wvthxyZtto3g7OKowwcDjGdarqjc-8ssDSsx2aPXZnr6Z2RkTXxPA3.X6HuNEs7cqf4ICrOA.ufHJJ2t8kNrhbocK",
+        "hdi_user": "5010DBBF3942477091E615EADDEE0A99_8D15P104JO2G625JA852DHFO3_DT",
+        "host": "localhost",
+        "password": "Je69gcGz5NUBIfKJm7U-D8TVekS2CrvkAPsShyVc4-7R0qY8KhmvLUGvvapIpoU_g_2gLnWcvRdWqtCuw7KBb6CaKK9dlPuGvkzQSC7GupZ_vT8r5e11iUUPcWpf6A4h",
+        "port": "30015",
+        "schema": "5010DBBF3942477091E615EADDEE0A99",
+        "user": "5010DBBF3942477091E615EADDEE0A99_8D15P104JO2G625JA852DHFO3_RT",
+        "url": "jdbc:sap://localhost:30015?encrypt=true\u0026validateCertificate=false\u0026currentschema=5010DBBF3942477091E615EADDEE0A99",
+        "hostname_in_certificate": "zeus.hana.canary.eu-central-1.whitney.dbaas.ondemand.com",
+        "encrypt": true,
+        "validate_certificate": false
+      },
+      "instance_name": "cds-community-test-hana",
+      "label": "hana",
+      "name": "cds-community-test-hana",
+      "plan": "hdi-shared",
+      "provider": null,
+      "syslog_drain_url": null,
+      "tags": [
+        "hana",
+        "database",
+        "relational"
+      ],
+      "volume_mounts": []
+    }
+  ]
+}

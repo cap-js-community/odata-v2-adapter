@@ -1,0 +1,12 @@
+{
+  "name": "cds-community-test-app",
+  "description": "CDS Community Tets",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node index"
+  },
+  "engines": {
+    "node": "8.x.x"
+  }
+}

@@ -613,7 +613,8 @@ function convertExpandSelect(url, req) {
 
 function convertAnalytics(url, req) {
     const definition = req.context && req.context.definition;
-    if (!(definition && definition.kind === 'entity' && definition['@Aggregation.ApplySupported.PropertyRestrictions'] && url.query['$select'])) {
+    if (!(definition && definition.kind === 'entity' && url.query['$select'] &&
+        (definition['@Analytics'] || definition['@Analytics.query'] || definition['@Aggregation.ApplySupported.PropertyRestrictions']))) {
         return;
     }
     const measures = [];
@@ -714,6 +715,8 @@ function convertRequestBody(body, headers, url, req) {
         }
         convertRequestData(body, headers, definition, req);
     }
+    delete body.__metadata;
+    delete body.__count;
     return JSON.stringify(body);
 }
 
@@ -730,7 +733,18 @@ function convertRequestData(data, headers, definition, req) {
         Object.keys(data).forEach((key) => {
             let element = definition.elements[key];
             if (element && (element.type === 'cds.Composition' || element.type === 'cds.Association')) {
-                convertRequestData(data[key], headers, element._target, req);
+                if (data[key] && data[key].__deferred) {
+                    delete data[key];
+                } else {
+                    if (data[key] !== null) {
+                        if (Array.isArray(data[key].results)) {
+                            data[key] = data[key].results;
+                        }
+                        convertRequestData(data[key], headers, element._target, req);
+                    } else {
+                        delete data[key];
+                    }
+                }
             }
         });
     });
@@ -749,6 +763,12 @@ function convertDataTypesToV4(data, headers, definition, body, req) {
                 data[key] = ieee754Compatible ? `${data[key]}` : parseFloat(data[key]);
             } else if (['cds.Double'].includes(element.type)) {
                 data[key] = parseFloat(data[key]);
+            } else if (['cds.DateTime'].includes(element.type)) {
+                const match = data[key].match(/\/Date\((.*)\)\//);
+                const milliseconds = match && match.pop();
+                if (milliseconds) {
+                    data[key] = new Date(parseFloat(milliseconds)).toISOString();
+                }
             }
         }
     });
@@ -1238,7 +1258,7 @@ function decodeURIKey(key) {
 }
 
 function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHeadersProcessor) {
-    let match = contentType.match(/^multipart\/mixed;[ ]?boundary=(.*)$/i);
+    const match = contentType.match(/^multipart\/mixed;[ ]?boundary=(.*)$/i);
     let boundary = match && match.pop();
     if (!boundary) {
         return multiPartBody;
@@ -1257,7 +1277,7 @@ function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHea
     let parts = multiPartBody.split('\r\n');
     const newParts = [];
     parts.forEach((part) => {
-        let match = part.match(/^content-type:[ ]?multipart\/mixed;[ ]?boundary=(.*)$/i);
+        const match = part.match(/^content-type:[ ]?multipart\/mixed;[ ]?boundary=(.*)$/i);
         if (match) {
             boundaryChangeSet = match.pop();
         }

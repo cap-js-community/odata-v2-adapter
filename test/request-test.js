@@ -393,6 +393,29 @@ describe('request', () => {
         });
     });
 
+    it('PUT request after GET', async () => {
+        let response = await util.callWrite(request, '/v2/main/Header', {
+            name: 'Test'
+        });
+        expect(response.body).toBeDefined();
+        let body = response.body;
+        const id = body.d.ID;
+        response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+        body = response.body;
+        body.d.name = 'Test2';
+        response = await util.callWrite(request, `/v2/main/Header(guid'${id}')`, body.d, true);
+        expect(response.statusCode).toEqual(200);
+        response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+        expect(response.body.d.name).toEqual("Test2");
+        response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items,FirstItem`);
+        body = response.body;
+        body.d.name = 'Test3';
+        response = await util.callWrite(request, `/v2/main/Header(guid'${id}')`, body.d, true);
+        expect(response.statusCode).toEqual(200);
+        response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+        expect(response.body.d.name).toEqual("Test3");
+    });
+
     it('DELETE request', async () => {
         let response = await util.callWrite(request, '/v2/main/Header', {
             name: 'Test'

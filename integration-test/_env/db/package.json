@@ -1,0 +1,12 @@
+{
+  "name": "@sap/cds-odata-v2-adapter-proxy-test",
+  "dependencies": {
+    "@sap/hdi-deploy": "3.11.0"
+  },
+  "private": true,
+  "scripts": {
+    "tunnel": "cf ssh -L localhost:30015:zeus.hana.canary.eu-central-1.whitney.dbaas.ondemand.com:22450 cds-community-test-app -N &",
+    "start": "node node_modules/@sap/hdi-deploy/deploy.js --exit",
+    "undeploy": "node node_modules/@sap/hdi-deploy/deploy.js --undeploy"
+  }
+}

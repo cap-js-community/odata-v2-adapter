@@ -1,0 +1,12 @@
+{
+  "name": "@sap/cds-odata-v2-adapter-proxy-test",
+  "dependencies": {
+  },
+  "private": true,
+  "scripts": {
+    "init": "cd app && cf push",
+    "build": "cds index.cds --to hana -o db/src/gen",
+    "tunnel": "cd db && npm run tunnel",
+    "deploy": "cd db && npm start"
+  }
+}
