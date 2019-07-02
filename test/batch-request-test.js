@@ -42,6 +42,7 @@ describe('batch-request', () => {
         let response = await util.callMultipart(request, '/v2/main/$batch', payload);
         expect(response.statusCode).toEqual(200);
         expect((response.body.match(/HTTP\/1.1 201 Created/g) || []).length).toEqual(2);
+        expect((response.body.match(/HTTP\/1.1 200 OK[\s\S]*?{"d":{"results":\[{.*?"name":"Test".*?}\]}}/g) || []).length).toEqual(2);
         const id = (response.body.match(/"ID":"(.*?)"/) || []).pop();
         expect(id).toBeDefined();
         expect(response.body.includes('"Items":{"results":[')).toEqual(true);

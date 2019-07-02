@@ -94,8 +94,20 @@ module.exports = (options) => {
     router.use(`/${path}/:service/`,
 
         // Body Parsers
-        bodyparser.text({type: 'multipart/mixed'}),
-        bodyparser.json(),
+        (req, res, next) => {
+            const contentType = req.header("content-type");
+            if (!contentType) {
+                return next();
+            }
+
+            if (contentType.startsWith("application/json")) {
+                (bodyparser.json())(req, res, next);
+            } else if (contentType.startsWith("multipart/mixed")) {
+                (bodyparser.text({type: "multipart/mixed"}))(req, res, next);
+            } else {
+                next();
+            }
+        },
 
         // Inject Context
         (req, res, next) => {
@@ -123,7 +135,7 @@ module.exports = (options) => {
             changeOrigin: true,
             selfHandleResponse: true,
             pathRewrite,
-            onProxyReq: (proxyReq, req, res, next) => {
+            onProxyReq: (proxyReq, req, res) => {
                 convertProxyRequest(proxyReq, req, res);
             },
             onProxyRes: (proxyRes, req, res) => {
@@ -192,7 +204,7 @@ function convertProxyRequest(proxyReq, req, res) {
     let body = req.body;
     const contentType = req.header('content-type');
 
-    if (isMultipart(req)) {
+    if (isMultipart(contentType)) {
         // Multipart
         body = processMultipart(
             req,
@@ -804,12 +816,12 @@ function convertProxyResponse(proxyRes, req, res) {
 
     parseProxyResponseBody(proxyRes, headers, req).then((body) => {
         // Trace
-        traceResponse(req, 'Proxy Response', headers, body);
+        traceResponse(req, 'Proxy Response', proxyRes.statusCode, proxyRes.statusMessage, headers, body);
 
         convertBasicHeaders(headers);
         if (body && proxyRes.statusCode < 400) {
 
-            if (isMultipart(req)) {
+            if (isMultipart(req.header('content-type'))) {
                 // Multipart
                 body = processMultipart(req, body, contentType, null, ({index, statusCode, contentType, body, headers}) => {
                     if (body && statusCode < 400) {
@@ -846,12 +858,14 @@ function convertProxyResponse(proxyRes, req, res) {
 async function parseProxyResponseBody(proxyRes, headers, req) {
     return new Promise((resolve, reject) => {
         let bodyParser;
-        if (isMultipart(req)) {
-            bodyParser = bodyparser.text({type: 'multipart/mixed'});
-        } else if (isApplicationJSON(req, headers)) {
+        if (req.method === "HEAD") {
+            bodyParser = null;
+        }  else if (isApplicationJSON(req, headers)) {
             bodyParser = bodyparser.json();
         } else if (isPlainText(req, headers)) {
             bodyParser = bodyparser.text();
+        } else if (isMultipart(req.header('content-type'))) {
+            bodyParser = bodyparser.text({type: 'multipart/mixed'});
         }
         if (bodyParser) {
             bodyParser(proxyRes, null, (err) => {
@@ -1236,7 +1250,7 @@ function respond(req, res, statusCode, headers, body) {
         res.end();
 
         // Trace
-        traceResponse(req, 'Response', headers, body);
+        traceResponse(req, 'Response', res.statusCode, res.statusMessage, headers, body);
     }
 }
 
@@ -1252,9 +1266,8 @@ function normalizeContentType(headers) {
     return contentType;
 }
 
-function isMultipart(req, headers) {
-    const contentType = req.header('content-type');
-    return contentType && (contentType.startsWith('multipart/mixed;boundary=') || contentType.startsWith('multipart/ mixed;boundary='));
+function isMultipart(contentType) {
+    return contentType && (contentType.replace(/\s/g,"").startsWith('multipart/mixed;boundary='));
 }
 
 function isApplicationJSON(req, headers) {
@@ -1274,7 +1287,7 @@ function decodeURIKey(key) {
 }
 
 function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHeadersProcessor) {
-    const match = contentType.match(/^multipart\/mixed;[ ]?boundary=(.*)$/i);
+    const match = contentType.replace(/\s/g,"").match(/^multipart\/mixed;boundary=(.*)$/i);
     let boundary = match && match.pop();
     if (!boundary) {
         return multiPartBody;
@@ -1293,7 +1306,7 @@ function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHea
     let parts = multiPartBody.split('\r\n');
     const newParts = [];
     parts.forEach((part) => {
-        const match = part.match(/^content-type:[ ]?multipart\/mixed;[ ]?boundary=(.*)$/i);
+        const match = part.replace(/\s/g,"").match(/^content-type:multipart\/mixed;boundary=(.*)$/i);
         if (match) {
             boundaryChangeSet = match.pop();
         }
@@ -1344,15 +1357,21 @@ function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHea
             urlAfterBlank = false;
             bodyAfterBlank = true;
             // Url
+            const urlParts = part.split(' ');
+            let partMethod = urlParts[0];
+            let partUrl = urlParts.slice(1, -1).join(" ");
+            let partProtocol = urlParts.pop();
             if (urlProcessor) {
-                const urlParts = part.split(' ');
-                const result = urlProcessor({method: urlParts[0], url: urlParts[1], contentId});
-                urlParts[0] = (result && result.method) || urlParts[0];
-                urlParts[1] = (result && result.url) || result;
-                method = urlParts[0];
-                url = urlParts[1];
-                part = urlParts.join(' ');
+                const result = urlProcessor({method: partMethod, url: partUrl, contentId});
+                if (result) {
+                    partMethod = result.method;
+                    partUrl = result.url;
+                    part = [partMethod, partUrl, partProtocol].join(" ");
+                }
             }
+            method = partMethod;
+            url = partUrl;
+
             newParts.push(part);
             if (part.startsWith('HTTP/')) {
                 const statusCodeMatch = part.match(/^HTTP\/[\d.]+\s+(\d{3})\s.*$/i);
@@ -1386,11 +1405,15 @@ function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHea
 }
 
 function traceRequest(req, name, method, url, body) {
-    req.loggingContext.getTracer(name).info(`${method} ${decodeURI(url)}${method !== 'GET' ? '\n' + (typeof body === 'string' ? decodeURI(body) : decodeURI(JSON.stringify(body))) : ''}`);
+    const _url = decodeURI(url) || "";
+    const _body = (typeof body === 'string') ? decodeURI(body) : body ? decodeURI(JSON.stringify(body)) : "";
+    trace(req, name, `${method} ${_url}\n${_body}`);
 }
 
-function traceResponse(req, name, headers, body) {
-    req.loggingContext.getTracer(name).info(`\n${decodeURI(JSON.stringify(headers))}\n${typeof body === 'string' ? decodeURI(body) : decodeURI(JSON.stringify(body))}`);
+function traceResponse(req, name, statusCode, statusMessage, headers, body) {
+    const _headers = decodeURI(JSON.stringify(headers));
+    const _body = (typeof body === 'string') ? decodeURI(body) : body ? decodeURI(JSON.stringify(body)) : "";
+    trace(req, name, `${statusCode} ${statusMessage}\n${_headers}\n${_body}`);
 }
 
 function trace(req, name, message) {

@@ -2,7 +2,5 @@
 Content-Type: application/http
 
 GET Header HTTP/1.1
-Content-Type: application/json
-
 
 --boundary--

@@ -4,6 +4,16 @@ const CR = '\r';
 const LF = '\n';
 const CRLF = CR + LF;
 
+function callHead(oRequest, sPath, oHeaders) {
+    oRequest = oRequest.head(sPath);
+    if (oHeaders) {
+        Object.keys(oHeaders).forEach(vKey => {
+            oRequest.set(vKey, oHeaders[vKey]);
+        });
+    }
+    return oRequest;
+}
+
 function callRead(oRequest, sPath, oHeaders) {
     oRequest = oRequest.get(sPath);
     if (oHeaders) {
@@ -51,6 +61,7 @@ function multipartMixedToTextParser(res, callback) {
 }
 
 module.exports = {
+    callHead,
     callRead,
     callWrite,
     callDelete,
