@@ -94,8 +94,20 @@ module.exports = (options) => {
     router.use(`/${path}/:service/`,
 
         // Body Parsers
-        bodyparser.text({type: 'multipart/mixed'}),
-        bodyparser.json(),
+        (req, res, next) => {
+            const contentType = req.header("content-type");
+            if (!contentType) {
+                return next();
+            }
+
+            if (contentType.startsWith("application/json")) {
+                (bodyparser.json())(req, res, next);
+            } else if (contentType.startsWith("multipart/mixed")) {
+                (bodyparser.text({type: "multipart/mixed"}))(req, res, next);
+            } else {
+                next();
+            }
+        },
 
         // Inject Context
         (req, res, next) => {
@@ -123,7 +135,7 @@ module.exports = (options) => {
             changeOrigin: true,
             selfHandleResponse: true,
             pathRewrite,
-            onProxyReq: (proxyReq, req, res, next) => {
+            onProxyReq: (proxyReq, req, res) => {
                 convertProxyRequest(proxyReq, req, res);
             },
             onProxyRes: (proxyRes, req, res) => {
@@ -804,7 +816,7 @@ function convertProxyResponse(proxyRes, req, res) {
 
     parseProxyResponseBody(proxyRes, headers, req).then((body) => {
         // Trace
-        traceResponse(req, 'Proxy Response', headers, body);
+        traceResponse(req, 'Proxy Response', proxyRes.statusCode, proxyRes.statusMessage, headers, body);
 
         convertBasicHeaders(headers);
         if (body && proxyRes.statusCode < 400) {
@@ -1236,7 +1248,7 @@ function respond(req, res, statusCode, headers, body) {
         res.end();
 
         // Trace
-        traceResponse(req, 'Response', headers, body);
+        traceResponse(req, 'Response', res.statusCode, res.statusMessage, headers, body);
     }
 }
 
@@ -1391,12 +1403,15 @@ function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHea
 }
 
 function traceRequest(req, name, method, url, body) {
-    req.loggingContext.getTracer(name).info(`${method} ${decodeURI(url)}${method !== 'GET' ? '\n' + (typeof body === 'string' ? decodeURI(body) : decodeURI(JSON.stringify(body))) : ''}`);
+    const _url = decodeURI(url) || "";
+    const _body = (typeof body === 'string') ? decodeURI(body) : body ? decodeURI(JSON.stringify(body)) : "";
+    trace(req, name, `${method} ${_url}\n${_body}`);
 }
 
-// TODO the naming here is very confusing, you need the request instead of the reponse
-function traceResponse(req, name, headers, body) {
-    req.loggingContext.getTracer(name).info(`\n${decodeURI(JSON.stringify(headers))}\n${typeof body === 'string' ? decodeURI(body) : decodeURI(JSON.stringify(body))}`);
+function traceResponse(req, name, statusCode, statusMessage, headers, body) {
+    const _headers = decodeURI(JSON.stringify(headers));
+    const _body = (typeof body === 'string') ? decodeURI(body) : body ? decodeURI(JSON.stringify(body)) : "";
+    trace(req, name, `${statusCode} ${statusMessage}\n${_headers}\n${_body}`);
 }
 
 function trace(req, name, message) {
