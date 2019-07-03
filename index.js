@@ -257,6 +257,7 @@ function convertUrl(urlPath, contentId, req) {
 
   convertUrlDataTypes(url, req);
   convertUrlCount(url, req);
+  convertDraft(url, req);
   convertActionFunction(url, req);
   convertExpandSelect(url, req);
   convertAnalytics(url, req);
@@ -492,6 +493,12 @@ function convertUrlCount(url, req) {
     delete url.query["$inlinecount"];
   }
   return url;
+}
+
+function convertDraft(url, req) {
+    if (req.context && req.context.definition && req.context.definition.kind === 'action' && req.context.definition.params && req.context.definition.params.SideEffectsQualifier) {
+        url.query.SideEffectsQualifier = url.query.SideEffectsQualifier || "";
+    }
 }
 
 function convertActionFunction(url, req) {

@@ -308,10 +308,7 @@ describe("draft-request", () => {
     expect(response.body.d.ID).toEqual(id);
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
     expect(response.statusCode).toEqual(404);
-    response = await util.callWrite(
-      request,
-      `/v2/draft/Header_draftPrepare?ID=guid'${id}'&IsActiveEntity=false&SideEffectsQualifier=''`
-    );
+    response = await util.callWrite(request, `/v2/draft/Header_draftPrepare?ID=guid'${id}'&IsActiveEntity=false`);
     expect(response.statusCode).toEqual(200);
     response = await util.callWrite(request, `/v2/draft/Header_draftActivate?ID=guid'${id}'&IsActiveEntity=false`);
     expect(response.statusCode).toEqual(201);
