@@ -220,8 +220,8 @@ function convertProxyRequest(proxyReq, req, res) {
         };
       },
       ({ contentType, body, headers, url }) => {
-        delete headers.DataServiceVersion;
-        delete headers.MaxDataServiceVersion;
+        delete headers.dataserviceversion;
+        delete headers.maxdataserviceversion;
         if (contentType === "application/json") {
           body = convertRequestBody(body, headers, url, req);
         }
@@ -1375,7 +1375,7 @@ function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHea
               url,
               contentId
             });
-            body = (result && result.body) || result;
+            body = (result && result.body) || body;
             headers = (result && result.headers) || headers;
           } catch (err) {
             // Error
@@ -1453,15 +1453,16 @@ function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHea
 function traceRequest(req, name, method, url, body) {
   const _url = decodeURI(url) || "";
   const _body = typeof body === "string" ? decodeURI(body) : body ? decodeURI(JSON.stringify(body)) : "";
-  trace(req, name, `${method} ${_url}\n${_body}`);
+  trace(req, name, `${method} ${_url}`, _body);
 }
 
 function traceResponse(req, name, statusCode, statusMessage, headers, body) {
   const _headers = decodeURI(JSON.stringify(headers));
   const _body = typeof body === "string" ? decodeURI(body) : body ? decodeURI(JSON.stringify(body)) : "";
-  trace(req, name, `${statusCode} ${statusMessage}\n${_headers}\n${_body}`);
+  trace(req, name, `${statusCode} ${statusMessage}`, _headers, _body);
 }
 
-function trace(req, name, message) {
+function trace(req, name, ...messages) {
+  const message = messages.filter(message => message !== null && message !== undefined).join("\n");
   req.loggingContext.getTracer(name).info(message);
 }

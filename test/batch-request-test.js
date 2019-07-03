@@ -25,15 +25,8 @@ describe("batch-request", () => {
     const response = await util.callMultipart(request, "/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(200);
     expect(response.body.includes("HTTP/1.1 200 OK")).toEqual(true);
-    expect(
-      response.body.includes(
-        JSON.stringify({
-          d: {
-            results: []
-          }
-        })
-      )
-    ).toEqual(true);
+    expect((response.body.match(/{"d":{"results":\[\]}}/g) || []).length).toEqual(1);
+    expect((response.body.match(/{"d":{"results":\[\],"__count":0}}/g) || []).length).toEqual(1);
   });
 
   it("POST request", async () => {

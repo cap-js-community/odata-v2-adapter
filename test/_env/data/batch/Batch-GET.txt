@@ -3,4 +3,16 @@ Content-Type: application/http
 
 GET Header HTTP/1.1
 
+--boundary
+Content-Type: application/http
+
+GET Header?$skip=0&$top=100&$orderby=name asc&$select=stock,name,name&$inlinecount=allpages HTTP/1.1
+sap-cancel-on-close: true
+sap-contextid-accept: header
+Accept: application/json
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
 --boundary--
