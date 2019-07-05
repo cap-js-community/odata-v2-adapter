@@ -23,7 +23,9 @@ entity HeaderItem: cuid {
 }
 
 entity HeaderStream: cuid {
-    data: LargeBinary @Core.MediaType: 'image/png';
+    data: LargeBinary @Core.MediaType: mediaType;
+    mediaType: String @Core.IsMediaType;
+    filename: String @Core.ContentDisposition.Filename;
 }
 
 service MainService {

@@ -26,7 +26,14 @@ async function initBinary(app) {
   await cds.connect();
   await cds.run(
     INSERT.into("test.HeaderStream")
-      .columns("ID", "data")
-      .rows([["f8a7a4f7-1901-4032-a237-3fba1d1b2343", fs.readFileSync("./test/_env/data/init/assets/file.png")]])
+      .columns("ID", "data", "mediaType", "filename")
+      .rows([
+        [
+          "f8a7a4f7-1901-4032-a237-3fba1d1b2343",
+          fs.readFileSync("./test/_env/data/init/assets/file.png"),
+          "image/png",
+          "file.png"
+        ]
+      ])
   );
 }

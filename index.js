@@ -4,6 +4,7 @@
 
 const URL = require("url");
 const express = require("express");
+const axios = require("axios");
 const bodyparser = require("body-parser");
 const proxy = require("http-proxy-middleware");
 const cds = require("@sap/cds");
@@ -200,7 +201,7 @@ function lookupBoundDefinition(name, req) {
  * @param req Request
  * @param res Response
  */
-function convertProxyRequest(proxyReq, req, res) {
+async function convertProxyRequest(proxyReq, req, res) {
   // Trace
   traceRequest(req, "Request", req.method, proxyReq.path, req.body);
 
@@ -496,9 +497,15 @@ function convertUrlCount(url, req) {
 }
 
 function convertDraft(url, req) {
-    if (req.context && req.context.definition && req.context.definition.kind === 'action' && req.context.definition.params && req.context.definition.params.SideEffectsQualifier) {
-        url.query.SideEffectsQualifier = url.query.SideEffectsQualifier || "";
-    }
+  if (
+    req.context &&
+    req.context.definition &&
+    req.context.definition.kind === "action" &&
+    req.context.definition.params &&
+    req.context.definition.params.SideEffectsQualifier
+  ) {
+    url.query.SideEffectsQualifier = url.query.SideEffectsQualifier || "";
+  }
 }
 
 function convertActionFunction(url, req) {
@@ -768,7 +775,13 @@ function convertFilter(url, req) {
 function convertValue(url, req) {
   if (url.contextPath.endsWith("/$value")) {
     url.contextPath = url.contextPath.substr(0, url.contextPath.length - "/$value".length);
-    req.context.$value = true;
+    const mediaTypeElementName =
+      req.context && req.context.definition && findElementByAnnotation(req.context.definition, "@Core.MediaType");
+    if (mediaTypeElementName && !url.contextPath.endsWith(`/${mediaTypeElementName}`)) {
+      url.contextPath += `/${mediaTypeElementName}`;
+    } else {
+      req.context.$value = true;
+    }
   }
 }
 
@@ -848,59 +861,84 @@ function convertDataTypesToV4(data, headers, definition, body, req) {
  * @param req Request
  * @param res Response
  */
-function convertProxyResponse(proxyRes, req, res) {
-  req.context = {};
-  const headers = proxyRes.headers;
-  normalizeContentType(headers);
+async function convertProxyResponse(proxyRes, req, res) {
+  try {
+    req.context = {};
+    const headers = proxyRes.headers;
+    normalizeContentType(headers);
 
-  // Pipe Binary Stream
-  const contentType = headers["content-type"];
-  if (contentType === "application/octet-stream") {
-    res.setHeader("content-type", contentType);
-    proxyRes.pipe(res);
-    return;
-  }
+    // Pipe Binary Stream
+    const contentType = headers["content-type"];
+    if (contentType === "application/octet-stream") {
+      res.setHeader("content-type", contentType);
 
-  parseProxyResponseBody(proxyRes, headers, req)
-    .then(body => {
-      // Trace
-      traceResponse(req, "Proxy Response", proxyRes.statusCode, proxyRes.statusMessage, headers, body);
-
-      convertBasicHeaders(headers);
-      if (body && proxyRes.statusCode < 400) {
-        if (isMultipart(req.header("content-type"))) {
-          // Multipart
-          body = processMultipart(req, body, contentType, null, ({ index, statusCode, contentType, body, headers }) => {
-            if (body && statusCode < 400) {
-              convertHeaders(body, headers, req);
-              if (contentType === "application/json") {
-                body = convertResponseBody(Object.assign({}, body), headers, req, index);
-              }
-            } else {
-              body = convertResponseError(body, headers);
-            }
-            return { body, headers };
+      const context = req.contexts && req.contexts[0];
+      if (context && context.definition && context.definition.elements) {
+        const contentDispositionFilenameElement = findElementByAnnotation(
+          context.definition,
+          "@Core.ContentDisposition.Filename"
+        );
+        const mediaTypeElement = findElementByAnnotation(context.definition, "@Core.MediaType");
+        if (contentDispositionFilenameElement && mediaTypeElement) {
+          const parts = fullRequestUrl(req).split("/");
+          if (parts[parts.length - 1] === "$value") {
+            parts.pop();
+          }
+          if (parts[parts.length - 1] === mediaTypeElement) {
+            parts.pop();
+          }
+          const response = await axios.get(parts.join("/"), {
+            headers: req.headers
           });
-        } else {
-          // Single
-          convertHeaders(body, headers, req);
-          if (contentType === "application/json") {
-            body = convertResponseBody(Object.assign({}, body), headers, req);
+          const filename =
+            response && response.data && response.data.d && response.data.d[contentDispositionFilenameElement];
+          if (filename) {
+            res.setHeader("content-disposition", `inline; filename="${filename}"`);
           }
         }
-        if (body && headers["transfer-encoding"] !== "chunked" && proxyRes.statusCode !== 204) {
-          headers["content-length"] = Buffer.byteLength(body);
-        }
-      } else {
-        body = convertResponseError(body, headers);
       }
-      respond(req, res, proxyRes.statusCode, headers, body);
-    })
-    .catch(err => {
-      // Error
-      trace(req, "Error", err.toString());
-      respond(req, res, proxyRes.statusCode, proxyRes.headers, convertResponseError(proxyRes.body, proxyRes.headers));
-    });
+      proxyRes.pipe(res);
+      return;
+    }
+
+    let body = await parseProxyResponseBody(proxyRes, headers, req);
+    // Trace
+    traceResponse(req, "Proxy Response", proxyRes.statusCode, proxyRes.statusMessage, headers, body);
+
+    convertBasicHeaders(headers);
+    if (body && proxyRes.statusCode < 400) {
+      if (isMultipart(req.header("content-type"))) {
+        // Multipart
+        body = processMultipart(req, body, contentType, null, ({ index, statusCode, contentType, body, headers }) => {
+          if (body && statusCode < 400) {
+            convertHeaders(body, headers, req);
+            if (contentType === "application/json") {
+              body = convertResponseBody(Object.assign({}, body), headers, req, index);
+            }
+          } else {
+            body = convertResponseError(body, headers);
+          }
+          return { body, headers };
+        });
+      } else {
+        // Single
+        convertHeaders(body, headers, req);
+        if (contentType === "application/json") {
+          body = convertResponseBody(Object.assign({}, body), headers, req);
+        }
+      }
+      if (body && headers["transfer-encoding"] !== "chunked" && proxyRes.statusCode !== 204) {
+        headers["content-length"] = Buffer.byteLength(body);
+      }
+    } else {
+      body = convertResponseError(body, headers);
+    }
+    respond(req, res, proxyRes.statusCode, headers, body);
+  } catch (err) {
+    // Error
+    trace(req, "Error", err.toString());
+    respond(req, res, proxyRes.statusCode, proxyRes.headers, convertResponseError(proxyRes.body, proxyRes.headers));
+  }
 }
 
 async function parseProxyResponseBody(proxyRes, headers, req) {
@@ -1337,6 +1375,21 @@ function encodeURIKey(key) {
 
 function decodeURIKey(key) {
   return key.replace(/%20/g, " ").replace(/%2F/g, "/");
+}
+
+function fullRequestUrl(req) {
+  return req.protocol + "://" + req.headers.host + req.originalUrl;
+}
+
+function findElementByAnnotation(definition, annotation) {
+  return (
+    definition &&
+    definition.elements &&
+    Object.keys(definition.elements).find(key => {
+      const element = definition.elements[key];
+      return element && !!element[annotation];
+    })
+  );
 }
 
 function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHeadersProcessor) {

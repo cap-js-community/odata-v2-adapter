@@ -93,6 +93,8 @@ exports[`request GET $metadata 1`] = `
           <PropertyRef Name=\\"ID\\"/>
         </Key>
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
       </EntityType>
       <ComplexType Name=\\"Result\\">
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
@@ -148,6 +150,16 @@ exports[`request GET $metadata 1`] = `
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderStream/filename\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Core.ContentDisposition\\">
+          <Record>
+            <PropertyValue Property=\\"Filename\\" Bool=\\"true\\"/>
+          </Record>
+        </Annotation>
       </Annotations>
     </Schema>
   </edmx:DataServices>

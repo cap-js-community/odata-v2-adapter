@@ -227,12 +227,21 @@ describe("request", () => {
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
+    expect(response.headers["content-type"]).toEqual("application/octet-stream");
+    expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
     response = await util.callRead(
       request,
       `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data/$value`
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
+    expect(response.headers["content-type"]).toEqual("application/octet-stream");
+    expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
+    response = await util.callRead(request, `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.length).toBe(17686);
+    expect(response.headers["content-type"]).toEqual("application/octet-stream");
+    expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
   });
 
   it("GET request with function 'substringof'", async () => {
