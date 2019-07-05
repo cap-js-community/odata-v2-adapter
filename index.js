@@ -9,8 +9,7 @@ const bodyparser = require("body-parser");
 const proxy = require("http-proxy-middleware");
 const cds = require("@sap/cds");
 const logging = require("@sap/logging");
-
-const proxyCache = {};
+const { promisify } = require("util");
 
 const SeverityMap = {
   1: "success",
@@ -48,6 +47,7 @@ const AggregationMap = {
   COUNT_DISTINCT: "countdistinct"
 };
 
+const DefaultTenant = "00000000-0000-0000-0000-000000000000";
 const AggregationPrefix = "__AGGREGATION__";
 
 /**
@@ -62,6 +62,7 @@ const AggregationPrefix = "__AGGREGATION__";
  * @returns {Router}
  */
 module.exports = options => {
+  const proxyCache = {};
   const appContext = logging.createAppContext();
   const router = express.Router();
   const base = (options && options.base) || "";
@@ -76,13 +77,17 @@ module.exports = options => {
     model = [cds.env.folders.app, cds.env.folders.srv, "services", "."].find(m => cds.resolve(m));
   }
 
+  if (cds.env.mtx && cds.env.mtx.enabled) {
+    cds.mtx.eventEmitter.on(cds.mtx.events.TENANT_UPDATED, tenantId => {
+      delete proxyCache[tenantId];
+    });
+  }
+
   router.use(`/${path}/:service/`, logging.middleware({ appContext: appContext, logNetwork: true }));
 
   router.get(`/${path}/:service/\\$metadata`, async (req, res) => {
     try {
-      const servicePath = req.params.service;
-      const service = normalizeService(servicePath, services);
-      const { edmx } = await loadService(service, model);
+      const { edmx } = await getMetadata(req);
       res.setHeader("content-type", "application/xml");
       res.send(edmx);
     } catch (err) {
@@ -112,25 +117,24 @@ module.exports = options => {
     },
 
     // Inject Context
-    (req, res, next) => {
+    async (req, res, next) => {
       const servicePath = req.params.service;
-      const service = normalizeService(servicePath, services);
-      loadService(service, model)
-        .then(({ csn }) => {
-          req.csn = csn;
-          req.base = base;
-          req.service = service;
-          req.servicePath = servicePath;
-          req.context = {};
-          req.contexts = [];
-          req.contentId = {};
-          next();
-        })
-        .catch(err => {
-          // Error
-          trace(req, "Error", err.toString());
-          res.status(500).end();
-        });
+      const service = normalizeService(servicePath);
+      try {
+        const { csn } = await getMetadata(req);
+        req.csn = csn;
+      } catch (err) {
+        // Error
+        trace(req, "Error", err.toString());
+        res.status(500).end();
+      }
+      req.base = base;
+      req.service = service;
+      req.servicePath = servicePath;
+      req.context = {};
+      req.contexts = [];
+      req.contentId = {};
+      next();
     },
 
     // Proxy Middleware
@@ -148,801 +152,850 @@ module.exports = options => {
     })
   );
 
-  return router;
-};
-
-async function loadService(service, model) {
-  if (!proxyCache[service]) {
-    const csn = await cds.load(model);
-    const reflectedCsn = cds.linked(cds.compile.for.odata(csn));
-    const edmx = await cds.compile.to.edmx(csn, { service: service });
-    proxyCache[service] = { csn: reflectedCsn, edmx };
+  function normalizeService(name) {
+    let service = (services || {})[name];
+    if (!service) {
+      service = name.charAt(0).toUpperCase() + name.slice(1) + "Service";
+    }
+    return service;
   }
-  return proxyCache[service];
-}
 
-function normalizeService(name, services) {
-  let service = (services || {})[name];
-  if (!service) {
-    service = name.charAt(0).toUpperCase() + name.slice(1) + "Service";
+  async function getMetadata(req) {
+    const servicePath = req.params.service;
+    const service = normalizeService(servicePath);
+    let metadata;
+    if (cds.env.mtx && cds.env.mtx.enabled) {
+      metadata = await getTenantMetadata(req, service);
+    }
+    if (!metadata) {
+      metadata = await getDefaultMetadata(req, service);
+    }
+    return metadata;
   }
-  return service;
-}
 
-function lookupDefinition(name, req) {
-  const definitionName = name.startsWith(`${req.service}.`) ? name : `${req.service}.${name}`;
-  return req.csn.definitions[definitionName];
-}
-
-function lookupBoundDefinition(name, req) {
-  let boundAction;
-  Object.keys(req.csn.definitions).find(definitionName => {
-    const definition = req.csn.definitions[definitionName];
-    return Object.keys(definition.actions || {}).find(actionName => {
-      if (name.endsWith(`_${actionName}`)) {
-        const entityName = name.substr(0, name.length - `_${actionName}`.length);
-        const entityDefinition = lookupDefinition(entityName, req);
-        if (entityDefinition === definition) {
-          boundAction = definition.actions[actionName];
-          boundAction.name = actionName;
-          boundAction.parent = definition;
-          return true;
-        }
+  async function getTenantMetadata(req, service) {
+    if (cds.env.requires && cds.env.requires.xsuaa && req.headers.authorization) {
+      const xssec = require("@sap/xssec");
+      const jwtToken = req.headers.authorization.substr("bearer ".length);
+      const securityContext = await promisify(xssec.createSecurityContext)(
+        jwtToken,
+        cds.env.requires.xsuaa.credentials
+      );
+      const tenantId = securityContext.getSubaccountId();
+      if (await cds.mtx.isExtended(tenantId)) {
+        return await compileService(
+          tenantId,
+          async () => {
+            return await cds.mtx.getCsn(tenantId);
+          },
+          service
+        );
       }
-      return false;
-    });
-  });
-  return boundAction;
-}
+    }
+  }
 
-/**
- * Convert Proxy Request (v2 -> v4)
- * @param proxyReq Proxy Request
- * @param req Request
- * @param res Response
- */
-async function convertProxyRequest(proxyReq, req, res) {
-  // Trace
-  traceRequest(req, "Request", req.method, proxyReq.path, req.body);
-
-  let body = req.body;
-  const contentType = req.header("content-type");
-
-  if (isMultipart(contentType)) {
-    // Multipart
-    body = processMultipart(
-      req,
-      req.body,
-      contentType,
-      ({ method, url, contentId }) => {
-        return {
-          method: method === "MERGE" ? "PATCH" : method,
-          url: convertUrl(url, contentId, req)
-        };
+  async function getDefaultMetadata(req, service) {
+    return await compileService(
+      DefaultTenant,
+      async () => {
+        return await cds.load(model);
       },
-      ({ contentType, body, headers, url }) => {
-        delete headers.dataserviceversion;
-        delete headers.maxdataserviceversion;
-        if (contentType === "application/json") {
-          body = convertRequestBody(body, headers, url, req);
-        }
-        return { body, headers };
-      }
+      service
     );
-  } else {
-    // Single
-    proxyReq.path = convertUrl(proxyReq.path, undefined, req);
-    if (contentType === "application/json") {
-      body = convertRequestBody(req.body, req.headers, proxyReq.path, req);
+  }
+
+  async function compileService(tenantId, loadCsn, service) {
+    if (!proxyCache[tenantId]) {
+      const csnRaw = await loadCsn();
+      const csn = cds.linked(cds.compile.for.odata(csnRaw));
+      proxyCache[tenantId] = {
+        csnRaw,
+        csn,
+        edmx: {}
+      };
     }
-  }
-
-  if (req.body) {
-    delete req.body;
-  }
-  if (contentType) {
-    proxyReq.setHeader("content-length", Buffer.byteLength(body));
-    proxyReq.write(body);
-  }
-  proxyReq.method = proxyReq.method === "MERGE" ? "PATCH" : proxyReq.method;
-  proxyReq.end();
-
-  // Trace
-  traceRequest(req, "Proxy Request", proxyReq.method, proxyReq.path, body);
-}
-
-function convertUrl(urlPath, contentId, req) {
-  let url = parseURL(urlPath, req);
-  const definition = contextFromUrl(url, req);
-  enrichRequest(definition, url, contentId, req);
-
-  convertUrlDataTypes(url, req);
-  convertUrlCount(url, req);
-  convertDraft(url, req);
-  convertActionFunction(url, req);
-  convertExpandSelect(url, req);
-  convertAnalytics(url, req);
-  convertFilter(url, req);
-  convertValue(url, req);
-
-  delete url.search;
-  url.pathname = url.basePath + url.servicePath + url.contextPath;
-  url.pathname = encodeURI(url.pathname);
-  return URL.format(url);
-}
-
-function parseURL(urlPath, req) {
-  const url = URL.parse(decodeURI(urlPath), true);
-  url.pathname = decodeURI(url.pathname);
-  url.basePath = "";
-  url.servicePath = "";
-  url.contextPath = url.pathname;
-  if (req.base && url.contextPath.startsWith(`/${req.base}`)) {
-    url.basePath = `/${req.base}`;
-    url.contextPath = url.contextPath.substr(url.basePath.length);
-  }
-  if (url.contextPath.startsWith(`/${req.servicePath}`)) {
-    url.servicePath = `/${req.servicePath}`;
-    url.contextPath = url.contextPath.substr(url.servicePath.length);
-  }
-  if (url.contextPath.startsWith("/")) {
-    url.servicePath += "/";
-    url.contextPath = url.contextPath.substr(1);
-  }
-  // Normalize query parameters (no array)
-  Object.keys(url.query || {}).forEach(name => {
-    if (Array.isArray(url.query[name])) {
-      url.query[name] = url.query[name][0] || "";
+    if (!proxyCache[tenantId].edmx[service]) {
+      proxyCache[tenantId].edmx[service] = await cds.compile.to.edmx(proxyCache[tenantId].csnRaw, { service });
     }
-  });
-  return url;
-}
-
-function contextFromUrl(url, req) {
-  let stop = false;
-  return url.contextPath.split("/").reduce((context, part) => {
-    if (stop) {
-      return context;
-    }
-    const keyStart = part.indexOf("(");
-    if (keyStart !== -1) {
-      part = part.substr(0, keyStart);
-    }
-    context = lookupContext(part, context, req);
-    if (!context) {
-      stop = true;
-    }
-    return context;
-  }, undefined);
-}
-
-function lookupContext(name, context, req) {
-  if (!name) {
-    return context;
+    return {
+      csn: proxyCache[tenantId].csn,
+      edmx: proxyCache[tenantId].edmx[service]
+    };
   }
-  if (!context) {
-    if (name.startsWith("$") && req.contentId[name]) {
-      return contextFromUrl(req.contentId[name], req);
+
+  function lookupDefinition(name, req) {
+    const definitionName = name.startsWith(`${req.service}.`) ? name : `${req.service}.${name}`;
+    return req.csn.definitions[definitionName];
+  }
+
+  function lookupBoundDefinition(name, req) {
+    let boundAction;
+    Object.keys(req.csn.definitions).find(definitionName => {
+      const definition = req.csn.definitions[definitionName];
+      return Object.keys(definition.actions || {}).find(actionName => {
+        if (name.endsWith(`_${actionName}`)) {
+          const entityName = name.substr(0, name.length - `_${actionName}`.length);
+          const entityDefinition = lookupDefinition(entityName, req);
+          if (entityDefinition === definition) {
+            boundAction = definition.actions[actionName];
+            boundAction.name = actionName;
+            boundAction.parent = definition;
+            return true;
+          }
+        }
+        return false;
+      });
+    });
+    return boundAction;
+  }
+
+  /**
+   * Convert Proxy Request (v2 -> v4)
+   * @param proxyReq Proxy Request
+   * @param req Request
+   * @param res Response
+   */
+  async function convertProxyRequest(proxyReq, req, res) {
+    // Trace
+    traceRequest(req, "Request", req.method, proxyReq.path, req.body);
+
+    let body = req.body;
+    const contentType = req.header("content-type");
+
+    if (isMultipart(contentType)) {
+      // Multipart
+      body = processMultipart(
+        req,
+        req.body,
+        contentType,
+        ({ method, url, contentId }) => {
+          return {
+            method: method === "MERGE" ? "PATCH" : method,
+            url: convertUrl(url, contentId, req)
+          };
+        },
+        ({ contentType, body, headers, url }) => {
+          delete headers.dataserviceversion;
+          delete headers.maxdataserviceversion;
+          if (contentType === "application/json") {
+            body = convertRequestBody(body, headers, url, req);
+          }
+          return { body, headers };
+        }
+      );
     } else {
-      context = lookupDefinition(name, req);
-      if (!context) {
-        context = lookupBoundDefinition(name, req);
+      // Single
+      proxyReq.path = convertUrl(proxyReq.path, undefined, req);
+      if (contentType === "application/json") {
+        body = convertRequestBody(req.body, req.headers, proxyReq.path, req);
       }
-      if (!context) {
-        trace(req, "Context", `Definition '${name}' not found`);
+    }
+
+    if (req.body) {
+      delete req.body;
+    }
+    if (contentType) {
+      proxyReq.setHeader("content-length", Buffer.byteLength(body));
+      proxyReq.write(body);
+    }
+    proxyReq.method = proxyReq.method === "MERGE" ? "PATCH" : proxyReq.method;
+    proxyReq.end();
+
+    // Trace
+    traceRequest(req, "Proxy Request", proxyReq.method, proxyReq.path, body);
+  }
+
+  function convertUrl(urlPath, contentId, req) {
+    let url = parseURL(urlPath, req);
+    const definition = contextFromUrl(url, req);
+    enrichRequest(definition, url, contentId, req);
+
+    convertUrlDataTypes(url, req);
+    convertUrlCount(url, req);
+    convertDraft(url, req);
+    convertActionFunction(url, req);
+    convertExpandSelect(url, req);
+    convertAnalytics(url, req);
+    convertFilter(url, req);
+    convertValue(url, req);
+
+    delete url.search;
+    url.pathname = url.basePath + url.servicePath + url.contextPath;
+    url.pathname = encodeURI(url.pathname);
+    return URL.format(url);
+  }
+
+  function parseURL(urlPath, req) {
+    const url = URL.parse(decodeURI(urlPath), true);
+    url.pathname = decodeURI(url.pathname);
+    url.basePath = "";
+    url.servicePath = "";
+    url.contextPath = url.pathname;
+    if (req.base && url.contextPath.startsWith(`/${req.base}`)) {
+      url.basePath = `/${req.base}`;
+      url.contextPath = url.contextPath.substr(url.basePath.length);
+    }
+    if (url.contextPath.startsWith(`/${req.servicePath}`)) {
+      url.servicePath = `/${req.servicePath}`;
+      url.contextPath = url.contextPath.substr(url.servicePath.length);
+    }
+    if (url.contextPath.startsWith("/")) {
+      url.servicePath += "/";
+      url.contextPath = url.contextPath.substr(1);
+    }
+    // Normalize query parameters (no array)
+    Object.keys(url.query || {}).forEach(name => {
+      if (Array.isArray(url.query[name])) {
+        url.query[name] = url.query[name][0] || "";
       }
-      return context;
-    }
-  } else {
-    if (name.startsWith("$")) {
-      return context;
-    }
-    if (context.kind === "function" || context.kind === "action") {
-      req.context.operation = context;
-      const returns = (context.returns && context.returns.items && context.returns.items) || context.returns;
-      context = lookupDefinition(returns.type, req);
-    }
-    const element = context && context.elements && context.elements[name];
-    if (element) {
-      if (element.type === "cds.Composition" || element.type === "cds.Association") {
-        // Navigation
-        return element._target;
-      } else {
-        // Element
+    });
+    return url;
+  }
+
+  function contextFromUrl(url, req) {
+    let stop = false;
+    return url.contextPath.split("/").reduce((context, part) => {
+      if (stop) {
         return context;
       }
-    }
-    if (context && context.params && name === "Set") {
-      return context;
-    }
-    trace(req, "Context", `Definition '${name}' not found`);
-  }
-}
-
-function enrichRequest(definition, url, contentId, req) {
-  req.context = {
-    url: url,
-    serviceRoot: url.contextPath.length === 0,
-    definition: definition,
-    operation: null,
-    bodyParameters: {},
-    $value: false,
-    $apply: null,
-    aggregationKey: false
-  };
-  req.contexts.push(req.context);
-  if (contentId) {
-    req.contentId[`$${contentId}`] = url;
-  }
-}
-
-function convertUrlDataTypes(url, req) {
-  // Keys & Parameters
-  let context;
-  let stop = false;
-  url.contextPath = url.contextPath
-    .split("/")
-    .map(part => {
-      if (stop) {
-        return part;
-      }
-      let keyPart = "";
       const keyStart = part.indexOf("(");
-      const keyEnd = part.lastIndexOf(")");
-      if (keyStart !== -1 && keyEnd === part.length - 1) {
-        keyPart = part.substring(keyStart + 1, keyEnd);
+      if (keyStart !== -1) {
         part = part.substr(0, keyStart);
       }
-      keyPart = decodeURIKey(keyPart);
       context = lookupContext(part, context, req);
       if (!context) {
         stop = true;
       }
-      if (context && context.elements && keyPart) {
-        let aggregationMatch = keyPart.match(/^aggregation'(.*)'$/i);
-        let aggregationKey = aggregationMatch && aggregationMatch.pop();
-        if (aggregationKey) {
-          // Aggregation Key
-          try {
-            const aggregation = JSON.parse(aggregationKey);
-            url.query["$select"] = Object.keys(aggregation.key)
-              .concat(aggregation.value)
-              .join(",");
-            url.query["$filter"] = Object.keys(aggregation.key)
-              .map(name => {
-                return `${name} eq ${aggregation.key[name]}`;
-              })
-              .join(" and ");
-            req.context.aggregationKey = true;
-            return part;
-          } catch (err) {
-            // Error
-            trace(req, "Error", err.toString());
+      return context;
+    }, undefined);
+  }
+
+  function lookupContext(name, context, req) {
+    if (!name) {
+      return context;
+    }
+    if (!context) {
+      if (name.startsWith("$") && req.contentId[name]) {
+        return contextFromUrl(req.contentId[name], req);
+      } else {
+        context = lookupDefinition(name, req);
+        if (!context) {
+          context = lookupBoundDefinition(name, req);
+        }
+        if (!context) {
+          trace(req, "Context", `Definition '${name}' not found`);
+        }
+        return context;
+      }
+    } else {
+      if (name.startsWith("$")) {
+        return context;
+      }
+      if (context.kind === "function" || context.kind === "action") {
+        req.context.operation = context;
+        const returns = (context.returns && context.returns.items && context.returns.items) || context.returns;
+        context = lookupDefinition(returns.type, req);
+      }
+      const element = context && context.elements && context.elements[name];
+      if (element) {
+        if (element.type === "cds.Composition" || element.type === "cds.Association") {
+          // Navigation
+          return element._target;
+        } else {
+          // Element
+          return context;
+        }
+      }
+      if (context && context.params && name === "Set") {
+        return context;
+      }
+      trace(req, "Context", `Definition '${name}' not found`);
+    }
+  }
+
+  function enrichRequest(definition, url, contentId, req) {
+    req.context = {
+      url: url,
+      serviceRoot: url.contextPath.length === 0,
+      definition: definition,
+      operation: null,
+      bodyParameters: {},
+      $value: false,
+      $apply: null,
+      aggregationKey: false
+    };
+    req.contexts.push(req.context);
+    if (contentId) {
+      req.contentId[`$${contentId}`] = url;
+    }
+  }
+
+  function convertUrlDataTypes(url, req) {
+    // Keys & Parameters
+    let context;
+    let stop = false;
+    url.contextPath = url.contextPath
+      .split("/")
+      .map(part => {
+        if (stop) {
+          return part;
+        }
+        let keyPart = "";
+        const keyStart = part.indexOf("(");
+        const keyEnd = part.lastIndexOf(")");
+        if (keyStart !== -1 && keyEnd === part.length - 1) {
+          keyPart = part.substring(keyStart + 1, keyEnd);
+          part = part.substr(0, keyStart);
+        }
+        keyPart = decodeURIKey(keyPart);
+        context = lookupContext(part, context, req);
+        if (!context) {
+          stop = true;
+        }
+        if (context && context.elements && keyPart) {
+          let aggregationMatch = keyPart.match(/^aggregation'(.*)'$/i);
+          let aggregationKey = aggregationMatch && aggregationMatch.pop();
+          if (aggregationKey) {
+            // Aggregation Key
+            try {
+              const aggregation = JSON.parse(aggregationKey);
+              url.query["$select"] = Object.keys(aggregation.key)
+                .concat(aggregation.value)
+                .join(",");
+              url.query["$filter"] = Object.keys(aggregation.key)
+                .map(name => {
+                  return `${name} eq ${aggregation.key[name]}`;
+                })
+                .join(" and ");
+              req.context.aggregationKey = true;
+              return part;
+            } catch (err) {
+              // Error
+              trace(req, "Error", err.toString());
+            }
+          } else {
+            const keys = keyPart.split(",");
+            return `${part}(${keys.map(key => {
+              const [name, value] = key.split("=");
+              if (name && value) {
+                let type;
+                if (context.params && context.params[name]) {
+                  type = context.params[name].type;
+                }
+                if (!type) {
+                  type = context.elements[name] && context.elements[name].type;
+                }
+                return `${name}=${DataTypeMap[type] ? value.replace(DataTypeMap[type].v4, "$1") : value}`;
+              } else if (name && context.keys) {
+                const keyName = Object.keys(context.keys)[0];
+                const type = context.elements[keyName] && context.elements[keyName].type;
+                return `${DataTypeMap[type] ? name.replace(DataTypeMap[type].v4, "$1") : name}`;
+              }
+            })})`;
           }
         } else {
-          const keys = keyPart.split(",");
-          return `${part}(${keys.map(key => {
-            const [name, value] = key.split("=");
-            if (name && value) {
-              let type;
-              if (context.params && context.params[name]) {
-                type = context.params[name].type;
-              }
-              if (!type) {
-                type = context.elements[name] && context.elements[name].type;
-              }
-              return `${name}=${DataTypeMap[type] ? value.replace(DataTypeMap[type].v4, "$1") : value}`;
-            } else if (name && context.keys) {
-              const keyName = Object.keys(context.keys)[0];
-              const type = context.elements[keyName] && context.elements[keyName].type;
-              return `${DataTypeMap[type] ? name.replace(DataTypeMap[type].v4, "$1") : name}`;
-            }
-          })})`;
+          return part;
         }
-      } else {
-        return part;
-      }
-    })
-    .join("/");
+      })
+      .join("/");
 
-  // Query
-  Object.keys(url.query).forEach(name => {
-    if (name === "$filter") {
-      url.query[name] = url.query[name]
-        .split(UUIDRegex)
-        .map((part, index) => {
-          if (index % 2 === 0) {
-            Object.keys(DataTypeMap).forEach(type => {
-              part = part.replace(DataTypeMap[type].v4, "$1");
-            });
-            return part;
-          } else {
-            return part.replace(DataTypeMap["cds.UUID"].v4, "$1");
-          }
-        })
-        .join("");
-    } else if (!name.startsWith("$")) {
-      if (context && context.elements && context.elements[name]) {
-        const element = context.elements[name];
-        if (DataTypeMap[element.type]) {
-          url.query[name] = url.query[name].replace(DataTypeMap[element.type].v4, "$1");
-        }
-      }
-      if (context && (context.kind === "function" || context.kind === "action")) {
-        if (context.params && context.params[name]) {
-          const element = context.params[name];
+    // Query
+    Object.keys(url.query).forEach(name => {
+      if (name === "$filter") {
+        url.query[name] = url.query[name]
+          .split(UUIDRegex)
+          .map((part, index) => {
+            if (index % 2 === 0) {
+              Object.keys(DataTypeMap).forEach(type => {
+                part = part.replace(DataTypeMap[type].v4, "$1");
+              });
+              return part;
+            } else {
+              return part.replace(DataTypeMap["cds.UUID"].v4, "$1");
+            }
+          })
+          .join("");
+      } else if (!name.startsWith("$")) {
+        if (context && context.elements && context.elements[name]) {
+          const element = context.elements[name];
           if (DataTypeMap[element.type]) {
             url.query[name] = url.query[name].replace(DataTypeMap[element.type].v4, "$1");
           }
         }
-        if (context.parent && context.parent.kind === "entity") {
-          if (context.parent && context.parent.elements && context.parent.elements[name]) {
-            const element = context.parent.elements[name];
+        if (context && (context.kind === "function" || context.kind === "action")) {
+          if (context.params && context.params[name]) {
+            const element = context.params[name];
             if (DataTypeMap[element.type]) {
               url.query[name] = url.query[name].replace(DataTypeMap[element.type].v4, "$1");
             }
           }
+          if (context.parent && context.parent.kind === "entity") {
+            if (context.parent && context.parent.elements && context.parent.elements[name]) {
+              const element = context.parent.elements[name];
+              if (DataTypeMap[element.type]) {
+                url.query[name] = url.query[name].replace(DataTypeMap[element.type].v4, "$1");
+              }
+            }
+          }
         }
       }
+    });
+  }
+
+  function convertUrlCount(url, req) {
+    if (url.query["$inlinecount"]) {
+      url.query["$count"] = url.query["$inlinecount"] === "allpages";
+      delete url.query["$inlinecount"];
     }
-  });
-}
+    return url;
+  }
 
-function convertUrlCount(url, req) {
-  if (url.query["$inlinecount"]) {
-    url.query["$count"] = url.query["$inlinecount"] === "allpages";
-    delete url.query["$inlinecount"];
+  function convertDraft(url, req) {
+    if (
+      req.context &&
+      req.context.definition &&
+      req.context.definition.kind === "action" &&
+      req.context.definition.params &&
+      req.context.definition.params.SideEffectsQualifier
+    ) {
+      url.query.SideEffectsQualifier = url.query.SideEffectsQualifier || "";
+    }
   }
-  return url;
-}
 
-function convertDraft(url, req) {
-  if (
-    req.context &&
-    req.context.definition &&
-    req.context.definition.kind === "action" &&
-    req.context.definition.params &&
-    req.context.definition.params.SideEffectsQualifier
-  ) {
-    url.query.SideEffectsQualifier = url.query.SideEffectsQualifier || "";
-  }
-}
-
-function convertActionFunction(url, req) {
-  const definition = req.context && (req.context.operation || req.context.definition);
-  if (!(definition && (definition.kind === "function" || definition.kind === "action"))) {
-    return;
-  }
-  const operationLocalName = definition.name.split(".").pop();
-  let reqContextPathSuffix = "";
-  if (url.contextPath.startsWith(operationLocalName)) {
-    reqContextPathSuffix = url.contextPath.substr(operationLocalName.length);
-    url.contextPath = url.contextPath.substr(0, operationLocalName.length);
-  }
-  // Key Parameters
-  if (definition.parent && definition.parent.kind === "entity") {
-    url.contextPath = definition.parent.name.split(".").pop();
-    url.contextPath += `(${Object.keys(definition.parent.keys)
-      .reduce((result, name) => {
-        const element = definition.parent.elements && definition.parent.elements[name];
-        const value = url.query[name] || "";
-        result.push(`${name}=${quoteParameter(element, value, req)}`);
-        delete url.query[name];
-        return result;
-      }, [])
-      .join(",")})`;
-    url.contextPath += `/${req.service}.${definition.name}`;
-  }
-  // Function Parameters
-  if (definition.kind === "function") {
-    url.contextPath += `(${Object.keys(url.query)
-      .reduce((result, name) => {
+  function convertActionFunction(url, req) {
+    const definition = req.context && (req.context.operation || req.context.definition);
+    if (!(definition && (definition.kind === "function" || definition.kind === "action"))) {
+      return;
+    }
+    const operationLocalName = definition.name.split(".").pop();
+    let reqContextPathSuffix = "";
+    if (url.contextPath.startsWith(operationLocalName)) {
+      reqContextPathSuffix = url.contextPath.substr(operationLocalName.length);
+      url.contextPath = url.contextPath.substr(0, operationLocalName.length);
+    }
+    // Key Parameters
+    if (definition.parent && definition.parent.kind === "entity") {
+      url.contextPath = definition.parent.name.split(".").pop();
+      url.contextPath += `(${Object.keys(definition.parent.keys)
+        .reduce((result, name) => {
+          const element = definition.parent.elements && definition.parent.elements[name];
+          const value = url.query[name] || "";
+          result.push(`${name}=${quoteParameter(element, value, req)}`);
+          delete url.query[name];
+          return result;
+        }, [])
+        .join(",")})`;
+      url.contextPath += `/${req.service}.${definition.name}`;
+    }
+    // Function Parameters
+    if (definition.kind === "function") {
+      url.contextPath += `(${Object.keys(url.query)
+        .reduce((result, name) => {
+          if (!name.startsWith("$")) {
+            const element = definition.params && definition.params[name];
+            if (element) {
+              const value = url.query[name] || "";
+              result.push(`${name}=${quoteParameter(element, value, req)}`);
+              delete url.query[name];
+            }
+          }
+          return result;
+        }, [])
+        .join(",")})`;
+    }
+    url.contextPath += reqContextPathSuffix;
+    // Action Body
+    if (definition.kind === "action") {
+      Object.keys(url.query).forEach(name => {
         if (!name.startsWith("$")) {
           const element = definition.params && definition.params[name];
-          if (element) {
-            const value = url.query[name] || "";
-            result.push(`${name}=${quoteParameter(element, value, req)}`);
-            delete url.query[name];
+          let value = url.query[name] || "";
+          value = unquoteParameter(element, value, req);
+          value = parseParameter(element, value, req);
+          url.query[name] = value;
+        }
+      });
+      req.context.bodyParameters = url.query || {};
+      url.query = {};
+    }
+  }
+
+  function quoteParameter(element, value, req) {
+    if (
+      !element ||
+      ["cds.Date", "cds.Time", "cds.DateTime", "cds.Timestamp", "cds.String", "cds.LargeString"].includes(element.type)
+    ) {
+      return `'${value.replace(/^["'](.*)["']$/, "$1")}'`;
+    }
+    return value;
+  }
+
+  function unquoteParameter(element, value, req) {
+    if (
+      !element ||
+      ["cds.Date", "cds.Time", "cds.DateTime", "cds.Timestamp", "cds.String", "cds.LargeString"].includes(element.type)
+    ) {
+      return value.replace(/^["'](.*)["']$/, "$1");
+    }
+    return value;
+  }
+
+  function parseParameter(element, value, req) {
+    if (element) {
+      if (["cds.Boolean"].includes(element.type)) {
+        return value === "true";
+      } else if (["cds.Integer"].includes(element.type)) {
+        return parseInt(value);
+      }
+    }
+    return value;
+  }
+
+  function convertExpandSelect(url, req) {
+    const definition = req.context && req.context.definition;
+    if (definition) {
+      const context = { select: {}, expand: {} };
+      if (url.query["$expand"]) {
+        const expands = url.query["$expand"].split(",");
+        expands.forEach(expand => {
+          let current = context.expand;
+          expand.split("/").forEach(part => {
+            current[part] = current[part] || { select: {}, expand: {} };
+            current = current[part].expand;
+          });
+        });
+      }
+      if (url.query["$select"]) {
+        const selects = url.query["$select"].split(",");
+        selects.forEach(select => {
+          let current = context;
+          let currentDefinition = definition;
+          select.split("/").forEach(part => {
+            if (!current) {
+              return;
+            }
+            const element = currentDefinition.elements && currentDefinition.elements[part];
+            if (element) {
+              if (element.type === "cds.Composition" || element.type === "cds.Association") {
+                current = current && current.expand[part];
+                currentDefinition = element._target;
+              } else if (current && current.select) {
+                current.select[part] = true;
+              }
+            }
+          });
+        });
+        if (Object.keys(context.select).length > 0) {
+          url.query["$select"] = Object.keys(context.select).join(",");
+        } else {
+          delete url.query["$select"];
+        }
+      }
+      if (url.query["$expand"]) {
+        const serializeExpand = expand => {
+          return Object.keys(expand || {})
+            .map(name => {
+              let value = expand[name];
+              let result = name;
+              const selects = Object.keys(value.select);
+              const expands = Object.keys(value.expand);
+              if (selects.length > 0 || expands.length > 0) {
+                result += "(";
+                if (selects.length > 0) {
+                  result += `$select=${selects.join(",")}`;
+                }
+                if (expands.length > 0) {
+                  if (selects.length > 0) {
+                    result += ";";
+                  }
+                  result += `$expand=${serializeExpand(value.expand)}`;
+                }
+                result += ")";
+              }
+              return result;
+            })
+            .join(",");
+        };
+        if (Object.keys(context.expand).length > 0) {
+          url.query["$expand"] = serializeExpand(context.expand);
+        } else {
+          delete url.query["$expand"];
+        }
+      }
+    }
+  }
+
+  function convertAnalytics(url, req) {
+    const definition = req.context && req.context.definition;
+    if (
+      !(
+        definition &&
+        definition.kind === "entity" &&
+        url.query["$select"] &&
+        (definition["@Analytics"] ||
+          definition["@Analytics.query"] ||
+          definition["@Aggregation.ApplySupported.PropertyRestrictions"])
+      )
+    ) {
+      return;
+    }
+    const measures = [];
+    const dimensions = [];
+    const selects = url.query["$select"].split(",");
+    if (url.query["$filter"]) {
+      Object.keys(definition.elements || {}).forEach(name => {
+        const element = definition.elements[name];
+        if (!(element.type === "cds.Composition" || element.type === "cds.Association")) {
+          if (new RegExp(`${name}[^a-zA-Z1-9_-]`).test(url.query["$filter"]) && !selects.includes(name)) {
+            selects.push(name);
           }
         }
-        return result;
-      }, [])
-      .join(",")})`;
-  }
-  url.contextPath += reqContextPathSuffix;
-  // Action Body
-  if (definition.kind === "action") {
-    Object.keys(url.query).forEach(name => {
-      if (!name.startsWith("$")) {
-        const element = definition.params && definition.params[name];
-        let value = url.query[name] || "";
-        value = unquoteParameter(element, value, req);
-        value = parseParameter(element, value, req);
-        url.query[name] = value;
+      });
+    }
+    selects.forEach(select => {
+      const element = definition.elements && definition.elements[select];
+      if (element) {
+        if (element["@Analytics.Measure"]) {
+          measures.push(element);
+        } else {
+          dimensions.push(element);
+        }
       }
     });
-    req.context.bodyParameters = url.query || {};
-    url.query = {};
-  }
-}
 
-function quoteParameter(element, value, req) {
-  if (
-    !element ||
-    ["cds.Date", "cds.Time", "cds.DateTime", "cds.Timestamp", "cds.String", "cds.LargeString"].includes(element.type)
-  ) {
-    return `'${value.replace(/^["'](.*)["']$/, "$1")}'`;
-  }
-  return value;
-}
-
-function unquoteParameter(element, value, req) {
-  if (
-    !element ||
-    ["cds.Date", "cds.Time", "cds.DateTime", "cds.Timestamp", "cds.String", "cds.LargeString"].includes(element.type)
-  ) {
-    return value.replace(/^["'](.*)["']$/, "$1");
-  }
-  return value;
-}
-
-function parseParameter(element, value, req) {
-  if (element) {
-    if (["cds.Boolean"].includes(element.type)) {
-      return value === "true";
-    } else if (["cds.Integer"].includes(element.type)) {
-      return parseInt(value);
-    }
-  }
-  return value;
-}
-
-function convertExpandSelect(url, req) {
-  const definition = req.context && req.context.definition;
-  if (definition) {
-    const context = { select: {}, expand: {} };
-    if (url.query["$expand"]) {
-      const expands = url.query["$expand"].split(",");
-      expands.forEach(expand => {
-        let current = context.expand;
-        expand.split("/").forEach(part => {
-          current[part] = current[part] || { select: {}, expand: {} };
-          current = current[part].expand;
-        });
-      });
-    }
-    if (url.query["$select"]) {
-      const selects = url.query["$select"].split(",");
-      selects.forEach(select => {
-        let current = context;
-        let currentDefinition = definition;
-        select.split("/").forEach(part => {
-          if (!current) {
-            return;
-          }
-          const element = currentDefinition.elements && currentDefinition.elements[part];
-          if (element) {
-            if (element.type === "cds.Composition" || element.type === "cds.Association") {
-              current = current && current.expand[part];
-              currentDefinition = element._target;
-            } else if (current && current.select) {
-              current.select[part] = true;
-            }
-          }
-        });
-      });
-      if (Object.keys(context.select).length > 0) {
-        url.query["$select"] = Object.keys(context.select).join(",");
-      } else {
-        delete url.query["$select"];
+    if (dimensions.length > 0 || measures.length > 0) {
+      url.query["$apply"] = "";
+      if (dimensions.length) {
+        url.query["$apply"] = "groupby(";
+        url.query["$apply"] += `(${dimensions
+          .map(dimension => {
+            return dimension.name;
+          })
+          .join(",")})`;
       }
-    }
-    if (url.query["$expand"]) {
-      const serializeExpand = expand => {
-        return Object.keys(expand || {})
-          .map(name => {
-            let value = expand[name];
-            let result = name;
-            const selects = Object.keys(value.select);
-            const expands = Object.keys(value.expand);
-            if (selects.length > 0 || expands.length > 0) {
-              result += "(";
-              if (selects.length > 0) {
-                result += `$select=${selects.join(",")}`;
-              }
-              if (expands.length > 0) {
-                if (selects.length > 0) {
-                  result += ";";
-                }
-                result += `$expand=${serializeExpand(value.expand)}`;
-              }
-              result += ")";
+      if (measures.length > 0) {
+        if (url.query["$apply"]) {
+          url.query["$apply"] += ",";
+        }
+        url.query["$apply"] += `aggregate(${measures
+          .map(measure => {
+            let aggregation = measure["@Aggregation.default"] || measure["@DefaultAggregation"];
+            aggregation = aggregation ? AggregationMap[(aggregation["#"] || aggregation).toUpperCase()] : "sum";
+            return `${measure.name} with ${aggregation} as ${AggregationPrefix}${measure.name}`;
+          })
+          .join(",")})`;
+      }
+      if (dimensions.length) {
+        url.query["$apply"] += ")";
+      }
+
+      if (url.query["$orderby"]) {
+        url.query["$orderby"] = url.query["$orderby"]
+          .split(",")
+          .map(orderBy => {
+            let [name, order] = orderBy.split(" ");
+            const element = definition.elements && definition.elements[name];
+            if (element && element["@Analytics.Measure"]) {
+              name = `${AggregationPrefix}${element.name}`;
             }
-            return result;
+            return name + (order ? ` ${order}` : "");
           })
           .join(",");
+      }
+
+      // Convert $filter to $apply=filter(...)/groupby((),aggregate())
+      // e.g. $apply=filter(currency eq 'USD')/groupby((currency),aggregate(stock with sum as total))
+      // Currently not supported by CDS Services
+
+      delete url.query["$select"];
+      delete url.query["$expand"];
+
+      req.context.$apply = {
+        key: dimensions,
+        value: measures
       };
-      if (Object.keys(context.expand).length > 0) {
-        url.query["$expand"] = serializeExpand(context.expand);
+    }
+  }
+
+  function convertFilter(url, req) {
+    if (url.query["$filter"]) {
+      // substringof
+      url.query["$filter"] = url.query["$filter"].replace(/substringof\((.*?),(.*?)\)/gi, "contains($2,$1)");
+      // gettotaloffsetminutes
+      url.query["$filter"] = url.query["$filter"].replace(/gettotaloffsetminutes\(/gi, "totaloffsetminutes(");
+    }
+  }
+
+  function convertValue(url, req) {
+    if (url.contextPath.endsWith("/$value")) {
+      url.contextPath = url.contextPath.substr(0, url.contextPath.length - "/$value".length);
+      const mediaTypeElementName =
+        req.context && req.context.definition && findElementByAnnotation(req.context.definition, "@Core.MediaType");
+      if (mediaTypeElementName && !url.contextPath.endsWith(`/${mediaTypeElementName}`)) {
+        url.contextPath += `/${mediaTypeElementName}`;
       } else {
-        delete url.query["$expand"];
+        req.context.$value = true;
       }
     }
   }
-}
 
-function convertAnalytics(url, req) {
-  const definition = req.context && req.context.definition;
-  if (
-    !(
-      definition &&
-      definition.kind === "entity" &&
-      url.query["$select"] &&
-      (definition["@Analytics"] ||
-        definition["@Analytics.query"] ||
-        definition["@Aggregation.ApplySupported.PropertyRestrictions"])
-    )
-  ) {
-    return;
-  }
-  const measures = [];
-  const dimensions = [];
-  const selects = url.query["$select"].split(",");
-  if (url.query["$filter"]) {
-    Object.keys(definition.elements || {}).forEach(name => {
-      const element = definition.elements[name];
-      if (!(element.type === "cds.Composition" || element.type === "cds.Association")) {
-        if (new RegExp(`${name}[^a-zA-Z1-9_-]`).test(url.query["$filter"]) && !selects.includes(name)) {
-          selects.push(name);
-        }
+  function convertRequestBody(body, headers, url, req) {
+    let definition = req.context && req.context.definition;
+    if (definition) {
+      if (definition.kind === "action") {
+        body = req.context.bodyParameters || {};
+        definition = {
+          elements: definition.params || {}
+        };
       }
+      convertRequestData(body, headers, definition, req);
+    }
+    delete body.__metadata;
+    delete body.__count;
+    return JSON.stringify(body);
+  }
+
+  function convertRequestData(data, headers, definition, req) {
+    if (!Array.isArray(data)) {
+      return convertRequestData([data], headers, definition, req);
+    }
+    // Modify Payload
+    data.forEach(data => {
+      convertDataTypesToV4(data, headers, definition, data, req);
     });
-  }
-  selects.forEach(select => {
-    const element = definition.elements && definition.elements[select];
-    if (element) {
-      if (element["@Analytics.Measure"]) {
-        measures.push(element);
-      } else {
-        dimensions.push(element);
-      }
-    }
-  });
-
-  if (dimensions.length > 0 || measures.length > 0) {
-    url.query["$apply"] = "";
-    if (dimensions.length) {
-      url.query["$apply"] = "groupby(";
-      url.query["$apply"] += `(${dimensions
-        .map(dimension => {
-          return dimension.name;
-        })
-        .join(",")})`;
-    }
-    if (measures.length > 0) {
-      if (url.query["$apply"]) {
-        url.query["$apply"] += ",";
-      }
-      url.query["$apply"] += `aggregate(${measures
-        .map(measure => {
-          let aggregation = measure["@Aggregation.default"] || measure["@DefaultAggregation"];
-          aggregation = aggregation ? AggregationMap[(aggregation["#"] || aggregation).toUpperCase()] : "sum";
-          return `${measure.name} with ${aggregation} as ${AggregationPrefix}${measure.name}`;
-        })
-        .join(",")})`;
-    }
-    if (dimensions.length) {
-      url.query["$apply"] += ")";
-    }
-
-    if (url.query["$orderby"]) {
-      url.query["$orderby"] = url.query["$orderby"]
-        .split(",")
-        .map(orderBy => {
-          let [name, order] = orderBy.split(" ");
-          const element = definition.elements && definition.elements[name];
-          if (element && element["@Analytics.Measure"]) {
-            name = `${AggregationPrefix}${element.name}`;
-          }
-          return name + (order ? ` ${order}` : "");
-        })
-        .join(",");
-    }
-
-    // Convert $filter to $apply=filter(...)/groupby((),aggregate())
-    // e.g. $apply=filter(currency eq 'USD')/groupby((currency),aggregate(stock with sum as total))
-    // Currently not supported by CDS Services
-
-    delete url.query["$select"];
-    delete url.query["$expand"];
-
-    req.context.$apply = {
-      key: dimensions,
-      value: measures
-    };
-  }
-}
-
-function convertFilter(url, req) {
-  if (url.query["$filter"]) {
-    // substringof
-    url.query["$filter"] = url.query["$filter"].replace(/substringof\((.*?),(.*?)\)/gi, "contains($2,$1)");
-    // gettotaloffsetminutes
-    url.query["$filter"] = url.query["$filter"].replace(/gettotaloffsetminutes\(/gi, "totaloffsetminutes(");
-  }
-}
-
-function convertValue(url, req) {
-  if (url.contextPath.endsWith("/$value")) {
-    url.contextPath = url.contextPath.substr(0, url.contextPath.length - "/$value".length);
-    const mediaTypeElementName =
-      req.context && req.context.definition && findElementByAnnotation(req.context.definition, "@Core.MediaType");
-    if (mediaTypeElementName && !url.contextPath.endsWith(`/${mediaTypeElementName}`)) {
-      url.contextPath += `/${mediaTypeElementName}`;
-    } else {
-      req.context.$value = true;
-    }
-  }
-}
-
-function convertRequestBody(body, headers, url, req) {
-  let definition = req.context && req.context.definition;
-  if (definition) {
-    if (definition.kind === "action") {
-      body = req.context.bodyParameters || {};
-      definition = {
-        elements: definition.params || {}
-      };
-    }
-    convertRequestData(body, headers, definition, req);
-  }
-  delete body.__metadata;
-  delete body.__count;
-  return JSON.stringify(body);
-}
-
-function convertRequestData(data, headers, definition, req) {
-  if (!Array.isArray(data)) {
-    return convertRequestData([data], headers, definition, req);
-  }
-  // Modify Payload
-  data.forEach(data => {
-    convertDataTypesToV4(data, headers, definition, data, req);
-  });
-  // Recursion
-  data.forEach(data => {
-    Object.keys(data).forEach(key => {
-      let element = definition.elements[key];
-      if (element && (element.type === "cds.Composition" || element.type === "cds.Association")) {
-        if (data[key] && data[key].__deferred) {
-          delete data[key];
-        } else {
-          if (data[key] !== null) {
-            if (Array.isArray(data[key].results)) {
-              data[key] = data[key].results;
-            }
-            convertRequestData(data[key], headers, element._target, req);
-          } else {
+    // Recursion
+    data.forEach(data => {
+      Object.keys(data).forEach(key => {
+        let element = definition.elements[key];
+        if (element && (element.type === "cds.Composition" || element.type === "cds.Association")) {
+          if (data[key] && data[key].__deferred) {
             delete data[key];
+          } else {
+            if (data[key] !== null) {
+              if (Array.isArray(data[key].results)) {
+                data[key] = data[key].results;
+              }
+              convertRequestData(data[key], headers, element._target, req);
+            } else {
+              delete data[key];
+            }
+          }
+        }
+      });
+    });
+  }
+
+  function convertDataTypesToV4(data, headers, definition, body, req) {
+    const contentType = headers["content-type"];
+    const ieee754Compatible = contentType && contentType.includes("IEEE754Compatible=true");
+    Object.keys(data || {}).forEach(key => {
+      if (data[key] === null) {
+        return;
+      }
+      const element = definition.elements && definition.elements[key];
+      if (element) {
+        if (["cds.Decimal", "cds.DecimalFloat", "cds.Integer64"].includes(element.type)) {
+          data[key] = ieee754Compatible ? `${data[key]}` : parseFloat(data[key]);
+        } else if (["cds.Double"].includes(element.type)) {
+          data[key] = parseFloat(data[key]);
+        } else if (["cds.DateTime"].includes(element.type)) {
+          const match = data[key].match(/\/Date\((.*)\)\//);
+          const milliseconds = match && match.pop();
+          if (milliseconds) {
+            data[key] = new Date(parseFloat(milliseconds)).toISOString();
           }
         }
       }
     });
-  });
-}
-
-function convertDataTypesToV4(data, headers, definition, body, req) {
-  const contentType = headers["content-type"];
-  const ieee754Compatible = contentType && contentType.includes("IEEE754Compatible=true");
-  Object.keys(data || {}).forEach(key => {
-    if (data[key] === null) {
-      return;
-    }
-    const element = definition.elements && definition.elements[key];
-    if (element) {
-      if (["cds.Decimal", "cds.DecimalFloat", "cds.Integer64"].includes(element.type)) {
-        data[key] = ieee754Compatible ? `${data[key]}` : parseFloat(data[key]);
-      } else if (["cds.Double"].includes(element.type)) {
-        data[key] = parseFloat(data[key]);
-      } else if (["cds.DateTime"].includes(element.type)) {
-        const match = data[key].match(/\/Date\((.*)\)\//);
-        const milliseconds = match && match.pop();
-        if (milliseconds) {
-          data[key] = new Date(parseFloat(milliseconds)).toISOString();
-        }
-      }
-    }
-  });
-}
-
-/**
- * Convert Proxy Response (v4 -> v2)
- * @param proxyRes Proxy Request
- * @param req Request
- * @param res Response
- */
-async function convertProxyResponse(proxyRes, req, res) {
-  try {
-    req.context = {};
-    const headers = proxyRes.headers;
-    normalizeContentType(headers);
-
-    // Pipe Binary Stream
-    const contentType = headers["content-type"];
-    if (contentType === "application/octet-stream") {
-      res.setHeader("content-type", contentType);
-
-      const context = req.contexts && req.contexts[0];
-      if (context && context.definition && context.definition.elements) {
-        const contentDispositionFilenameElement = findElementByAnnotation(
-          context.definition,
-          "@Core.ContentDisposition.Filename"
-        );
-        const mediaTypeElement = findElementByAnnotation(context.definition, "@Core.MediaType");
-        if (contentDispositionFilenameElement && mediaTypeElement) {
-          const parts = fullRequestUrl(req).split("/");
-          if (parts[parts.length - 1] === "$value") {
-            parts.pop();
-          }
-          if (parts[parts.length - 1] === mediaTypeElement) {
-            parts.pop();
-          }
-          const response = await axios.get(parts.join("/"), {
-            headers: req.headers
-          });
-          const filename =
-            response && response.data && response.data.d && response.data.d[contentDispositionFilenameElement];
-          if (filename) {
-            res.setHeader("content-disposition", `inline; filename="${filename}"`);
-          }
-        }
-      }
-      proxyRes.pipe(res);
-      return;
-    }
-
-    let body = await parseProxyResponseBody(proxyRes, headers, req);
-    // Trace
-    traceResponse(req, "Proxy Response", proxyRes.statusCode, proxyRes.statusMessage, headers, body);
-
-    convertBasicHeaders(headers);
-    if (body && proxyRes.statusCode < 400) {
-      if (isMultipart(req.header("content-type"))) {
-        // Multipart
-        body = processMultipart(req, body, contentType, null, ({ index, statusCode, contentType, body, headers }) => {
-          if (body && statusCode < 400) {
-            convertHeaders(body, headers, req);
-            if (contentType === "application/json") {
-              body = convertResponseBody(Object.assign({}, body), headers, req, index);
-            }
-          } else {
-            body = convertResponseError(body, headers);
-          }
-          return { body, headers };
-        });
-      } else {
-        // Single
-        convertHeaders(body, headers, req);
-        if (contentType === "application/json") {
-          body = convertResponseBody(Object.assign({}, body), headers, req);
-        }
-      }
-      if (body && headers["transfer-encoding"] !== "chunked" && proxyRes.statusCode !== 204) {
-        headers["content-length"] = Buffer.byteLength(body);
-      }
-    } else {
-      body = convertResponseError(body, headers);
-    }
-    respond(req, res, proxyRes.statusCode, headers, body);
-  } catch (err) {
-    // Error
-    trace(req, "Error", err.toString());
-    respond(req, res, proxyRes.statusCode, proxyRes.headers, convertResponseError(proxyRes.body, proxyRes.headers));
   }
-}
 
-async function parseProxyResponseBody(proxyRes, headers, req) {
-  return new Promise((resolve, reject) => {
+  /**
+   * Convert Proxy Response (v4 -> v2)
+   * @param proxyRes Proxy Request
+   * @param req Request
+   * @param res Response
+   */
+  async function convertProxyResponse(proxyRes, req, res) {
+    try {
+      req.context = {};
+      const headers = proxyRes.headers;
+      normalizeContentType(headers);
+
+      // Pipe Binary Stream
+      const contentType = headers["content-type"];
+      if (contentType === "application/octet-stream") {
+        res.setHeader("content-type", contentType);
+
+        const context = req.contexts && req.contexts[0];
+        if (context && context.definition && context.definition.elements) {
+          const contentDispositionFilenameElement = findElementByAnnotation(
+            context.definition,
+            "@Core.ContentDisposition.Filename"
+          );
+          const mediaTypeElement = findElementByAnnotation(context.definition, "@Core.MediaType");
+          if (contentDispositionFilenameElement && mediaTypeElement) {
+            const parts = fullRequestUrl(req).split("/");
+            if (parts[parts.length - 1] === "$value") {
+              parts.pop();
+            }
+            if (parts[parts.length - 1] === mediaTypeElement) {
+              parts.pop();
+            }
+            const response = await axios.get(parts.join("/"), {
+              headers: req.headers
+            });
+            const filename =
+              response && response.data && response.data.d && response.data.d[contentDispositionFilenameElement];
+            if (filename) {
+              res.setHeader("content-disposition", `inline; filename="${filename}"`);
+            }
+          }
+        }
+        proxyRes.pipe(res);
+        return;
+      }
+
+      let body = await parseProxyResponseBody(proxyRes, headers, req);
+      // Trace
+      traceResponse(req, "Proxy Response", proxyRes.statusCode, proxyRes.statusMessage, headers, body);
+
+      convertBasicHeaders(headers);
+      if (body && proxyRes.statusCode < 400) {
+        if (isMultipart(req.header("content-type"))) {
+          // Multipart
+          body = processMultipart(req, body, contentType, null, ({ index, statusCode, contentType, body, headers }) => {
+            if (body && statusCode < 400) {
+              convertHeaders(body, headers, req);
+              if (contentType === "application/json") {
+                body = convertResponseBody(Object.assign({}, body), headers, req, index);
+              }
+            } else {
+              body = convertResponseError(body, headers);
+            }
+            return { body, headers };
+          });
+        } else {
+          // Single
+          convertHeaders(body, headers, req);
+          if (contentType === "application/json") {
+            body = convertResponseBody(Object.assign({}, body), headers, req);
+          }
+        }
+        if (body && headers["transfer-encoding"] !== "chunked" && proxyRes.statusCode !== 204) {
+          headers["content-length"] = Buffer.byteLength(body);
+        }
+      } else {
+        body = convertResponseError(body, headers);
+      }
+      respond(req, res, proxyRes.statusCode, headers, body);
+    } catch (err) {
+      // Error
+      trace(req, "Error", err.toString());
+      respond(req, res, proxyRes.statusCode, proxyRes.headers, convertResponseError(proxyRes.body, proxyRes.headers));
+    }
+  }
+
+  async function parseProxyResponseBody(proxyRes, headers, req) {
     let bodyParser;
     if (req.method === "HEAD") {
       bodyParser = null;
@@ -954,575 +1007,570 @@ async function parseProxyResponseBody(proxyRes, headers, req) {
       bodyParser = bodyparser.text({ type: "multipart/mixed" });
     }
     if (bodyParser) {
-      bodyParser(proxyRes, null, err => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(proxyRes.body);
-        }
-      });
-    } else {
-      resolve(undefined);
+      await promisify(bodyParser)(proxyRes, null);
+      return proxyRes.body;
     }
-  });
-}
-
-function convertBasicHeaders(headers) {
-  delete headers["odata-version"];
-  headers.dataserviceversion = "2.0";
-}
-
-function convertHeaders(body, headers, req) {
-  convertBasicHeaders(headers);
-  const definition = contextFromBody(body, req);
-  if (definition && definition.kind === "entity") {
-    convertLocation(body, headers, definition, req);
   }
-  convertMessages(body, headers, definition, req);
-  return headers;
-}
 
-function convertLocation(body, headers, entity, req) {
-  if (headers.location && entity) {
-    headers.location = entityUri(body, entity, req);
+  function convertBasicHeaders(headers) {
+    delete headers["odata-version"];
+    headers.dataserviceversion = "2.0";
   }
-}
 
-function convertMessages(body, headers, entity, req) {
-  if (headers["sap-messages"]) {
-    const messages = JSON.parse(headers["sap-messages"]);
-    if (messages && messages.length > 0) {
-      const message = messages[0];
-      message.severity = SeverityMap[message["@Common.numericSeverity"] || message.numericSeverity];
-      delete message.numericSeverity;
-      delete message["@Common.numericSeverity"];
-      headers["sap-message"] = JSON.stringify(message);
+  function convertHeaders(body, headers, req) {
+    convertBasicHeaders(headers);
+    const definition = contextFromBody(body, req);
+    if (definition && definition.kind === "entity") {
+      convertLocation(body, headers, definition, req);
     }
-    delete headers["sap-messages"];
+    convertMessages(body, headers, definition, req);
+    return headers;
   }
-}
 
-function convertResponseError(body, headers) {
-  if (!body) {
+  function convertLocation(body, headers, entity, req) {
+    if (headers.location && entity) {
+      headers.location = entityUri(body, entity, req);
+    }
+  }
+
+  function convertMessages(body, headers, entity, req) {
+    if (headers["sap-messages"]) {
+      const messages = JSON.parse(headers["sap-messages"]);
+      if (messages && messages.length > 0) {
+        const message = messages[0];
+        message.severity = SeverityMap[message["@Common.numericSeverity"] || message.numericSeverity];
+        delete message.numericSeverity;
+        delete message["@Common.numericSeverity"];
+        headers["sap-message"] = JSON.stringify(message);
+      }
+      delete headers["sap-messages"];
+    }
+  }
+
+  function convertResponseError(body, headers) {
+    if (!body) {
+      return body;
+    }
+    if (body.error) {
+      if (body.error.message) {
+        body.error.message = {
+          lang: headers["content-language"] || "en",
+          value: body.error.message
+        };
+      }
+      if (body.error["@Common.numericSeverity"] || body.error["numericSeverity"]) {
+        body.error.severity = SeverityMap[body.error["@Common.numericSeverity"] || body.error["numericSeverity"]];
+        delete body.error.numericSeverity;
+        delete body.error["@Common.numericSeverity"];
+      }
+      body.error.innererror = body.error.innererror || {};
+      body.error.innererror.errordetails = body.error.innererror.errordetails || [];
+      if (body.error.details) {
+        body.error.innererror.errordetails.push(...body.error.details);
+        body.error.innererror.errordetails.forEach(detail => {
+          detail.severity =
+            detail.severity || SeverityMap[detail["@Common.numericSeverity"] || detail["numericSeverity"]] || "error";
+          delete detail.numericSeverity;
+          delete detail["@Common.numericSeverity"];
+        });
+      }
+      delete body.error.details;
+    }
+    if (typeof body === "object") {
+      body = JSON.stringify(body);
+    }
+    body = `${body}`;
+    headers["content-length"] = Buffer.byteLength(body);
     return body;
   }
-  if (body.error) {
-    if (body.error.message) {
-      body.error.message = {
-        lang: headers["content-language"] || "en",
-        value: body.error.message
-      };
-    }
-    if (body.error["@Common.numericSeverity"] || body.error["numericSeverity"]) {
-      body.error.severity = SeverityMap[body.error["@Common.numericSeverity"] || body.error["numericSeverity"]];
-      delete body.error.numericSeverity;
-      delete body.error["@Common.numericSeverity"];
-    }
-    body.error.innererror = body.error.innererror || {};
-    body.error.innererror.errordetails = body.error.innererror.errordetails || [];
-    if (body.error.details) {
-      body.error.innererror.errordetails.push(...body.error.details);
-      body.error.innererror.errordetails.forEach(detail => {
-        detail.severity =
-          detail.severity || SeverityMap[detail["@Common.numericSeverity"] || detail["numericSeverity"]] || "error";
-        delete detail.numericSeverity;
-        delete detail["@Common.numericSeverity"];
+
+  function convertResponseBody(proxyBody, headers, req, index = 0) {
+    const body = {
+      d: {}
+    };
+    req.context = req.contexts[index] || {};
+
+    if (req.context.serviceRoot && proxyBody.value) {
+      // Service Root
+      body.d.EntitySets = proxyBody.value.map(entry => {
+        return entry.name;
       });
-    }
-    delete body.error.details;
-  }
-  if (typeof body === "object") {
-    body = JSON.stringify(body);
-  }
-  body = `${body}`;
-  headers["content-length"] = Buffer.byteLength(body);
-  return body;
-}
-
-function convertResponseBody(proxyBody, headers, req, index = 0) {
-  const body = {
-    d: {}
-  };
-  req.context = req.contexts[index] || {};
-
-  if (req.context.serviceRoot && proxyBody.value) {
-    // Service Root
-    body.d.EntitySets = proxyBody.value.map(entry => {
-      return entry.name;
-    });
-  } else {
-    // Context from Body
-    const definition = contextFromBody(proxyBody, req);
-    if (definition) {
-      req.context.definition = definition;
-      const definitionElement = contextElementFromBody(proxyBody, req);
-      if (definitionElement) {
-        if (req.context.$value) {
-          headers["content-type"] = "text/plain";
-          return `${proxyBody.value}`;
-        } else {
-          body.d[definitionElement.name] = proxyBody.value;
-        }
-        convertResponseElementData(body, headers, definition, proxyBody, req);
-      } else {
-        const data = convertResponseList(body, proxyBody, req);
-        convertResponseData(data, headers, definition, proxyBody, req);
-      }
     } else {
-      // Context from Request
-      let definition = req.context.definition;
-      const data = convertResponseList(body, proxyBody, req);
-      if (definition && (definition.kind === "function" || definition.kind === "action")) {
-        const returns =
-          (definition.returns && definition.returns.items && definition.returns.items) || definition.returns;
-        definition = lookupDefinition(returns.type, req) || {
-          elements: {
-            value: returns
-          }
-        };
+      // Context from Body
+      const definition = contextFromBody(proxyBody, req);
+      if (definition) {
         req.context.definition = definition;
-        convertResponseData(data, headers, definition, proxyBody, req);
+        const definitionElement = contextElementFromBody(proxyBody, req);
+        if (definitionElement) {
+          if (req.context.$value) {
+            headers["content-type"] = "text/plain";
+            return `${proxyBody.value}`;
+          } else {
+            body.d[definitionElement.name] = proxyBody.value;
+          }
+          convertResponseElementData(body, headers, definition, proxyBody, req);
+        } else {
+          const data = convertResponseList(body, proxyBody, req);
+          convertResponseData(data, headers, definition, proxyBody, req);
+        }
       } else {
-        convertResponseData(data, headers, definition, proxyBody, req);
+        // Context from Request
+        let definition = req.context.definition;
+        const data = convertResponseList(body, proxyBody, req);
+        if (definition && (definition.kind === "function" || definition.kind === "action")) {
+          const returns =
+            (definition.returns && definition.returns.items && definition.returns.items) || definition.returns;
+          definition = lookupDefinition(returns.type, req) || {
+            elements: {
+              value: returns
+            }
+          };
+          req.context.definition = definition;
+          convertResponseData(data, headers, definition, proxyBody, req);
+        } else {
+          convertResponseData(data, headers, definition, proxyBody, req);
+        }
       }
     }
+
+    return JSON.stringify(body);
   }
 
-  return JSON.stringify(body);
-}
-
-function convertResponseList(body, proxyBody, req) {
-  if (Array.isArray(proxyBody.value)) {
-    if (req.context.aggregationKey) {
-      proxyBody = proxyBody.value[0] || {};
-    } else {
-      body.d.results = proxyBody.value || [];
-      if (proxyBody["@odata.count"] !== undefined) {
-        body.d.__count = proxyBody["@odata.count"];
+  function convertResponseList(body, proxyBody, req) {
+    if (Array.isArray(proxyBody.value)) {
+      if (req.context.aggregationKey) {
+        proxyBody = proxyBody.value[0] || {};
+      } else {
+        body.d.results = proxyBody.value || [];
+        if (proxyBody["@odata.count"] !== undefined) {
+          body.d.__count = proxyBody["@odata.count"];
+        }
+        body.d.results = body.d.results.map(entry => {
+          return typeof entry == "object" ? entry : { value: entry };
+        });
+        return body.d.results;
       }
-      body.d.results = body.d.results.map(entry => {
-        return typeof entry == "object" ? entry : { value: entry };
+    }
+    body.d = proxyBody;
+    return [body.d];
+  }
+
+  function convertResponseData(data, headers, definition, proxyBody, req) {
+    if (data === null) {
+      return;
+    }
+    if (!Array.isArray(data)) {
+      return convertResponseData([data], headers, definition, proxyBody, req);
+    }
+    if (!definition) {
+      return;
+    }
+    // Modify Payload
+    data.forEach(data => {
+      removeMetadata(data, headers, definition, proxyBody, req);
+      addMetadata(data, headers, definition, proxyBody, req);
+      convertAggregation(data, headers, definition, proxyBody, req);
+      convertDataTypesToV2(data, headers, definition, proxyBody, req);
+    });
+    // Recursion
+    data.forEach(data => {
+      Object.keys(data).forEach(key => {
+        let element = definition.elements && definition.elements[key];
+        if (!element) {
+          return;
+        }
+        if (element.type === "cds.Composition" || element.type === "cds.Association") {
+          convertResponseData(data[key], headers, element._target, proxyBody, req);
+        }
       });
-      return body.d.results;
+    });
+    // Structural Changes
+    data.forEach(data => {
+      addResultsNesting(data, headers, definition, proxyBody, req);
+    });
+    // Deferreds
+    data.forEach(data => {
+      addDeferreds(data, headers, definition, proxyBody, req);
+    });
+  }
+
+  function convertResponseElementData(data, headers, definition, proxyBody, req) {
+    if (!definition) {
+      return;
+    }
+    // Modify Payload
+    convertDataTypesToV2(data, headers, definition, proxyBody, req);
+  }
+
+  function contextFromBody(body, req) {
+    let context = body["@odata.context"];
+    if (!context) {
+      return null;
+    }
+    context = context.substr(context.indexOf("#") + 1);
+    if (context.startsWith("Collection(")) {
+      context = context.substring("Collection(".length, context.indexOf(")"));
+    } else {
+      if (context.indexOf("(") !== -1) {
+        context = context.substr(0, context.indexOf("("));
+      }
+    }
+    if (context.indexOf("/") !== -1) {
+      context = context.substr(0, context.indexOf("/"));
+    }
+    if (context) {
+      return lookupDefinition(context, req);
     }
   }
-  body.d = proxyBody;
-  return [body.d];
-}
 
-function convertResponseData(data, headers, definition, proxyBody, req) {
-  if (data === null) {
-    return;
+  function contextElementFromBody(body, req) {
+    let context = body["@odata.context"];
+    const definition = contextFromBody(body, req);
+    if (!(context && definition)) {
+      return null;
+    }
+    if (context.lastIndexOf("/") !== -1) {
+      const name = context.substr(context.lastIndexOf("/") + 1);
+      if (name && !name.startsWith("$")) {
+        const element = definition.elements && definition.elements[name];
+        if (element) {
+          return element;
+        }
+      }
+    }
   }
-  if (!Array.isArray(data)) {
-    return convertResponseData([data], headers, definition, proxyBody, req);
-  }
-  if (!definition) {
-    return;
-  }
-  // Modify Payload
-  data.forEach(data => {
-    removeMetadata(data, headers, definition, proxyBody, req);
-    addMetadata(data, headers, definition, proxyBody, req);
-    convertAggregation(data, headers, definition, proxyBody, req);
-    convertDataTypesToV2(data, headers, definition, proxyBody, req);
-  });
-  // Recursion
-  data.forEach(data => {
+
+  function removeMetadata(data, headers, definition, root, req) {
     Object.keys(data).forEach(key => {
-      let element = definition.elements && definition.elements[key];
+      if (key.startsWith("@")) {
+        delete data[key];
+      }
+    });
+  }
+
+  function addMetadata(data, headers, definition, root, req) {
+    if (definition.kind !== "entity") {
+      return;
+    }
+    data.__metadata = {
+      uri: entityUri(data, definition, req),
+      type: definition.name
+    };
+    if (root["@odata.metadataEtag"]) {
+      data.__metadata.etag = root["@odata.metadataEtag"];
+    }
+  }
+
+  function convertAggregation(data, headers, definition, body, req) {
+    if (!req.context.$apply) {
+      return;
+    }
+    Object.keys(data).forEach(key => {
+      if (key.startsWith(AggregationPrefix)) {
+        if (key.endsWith("@odata.type")) {
+          delete data[key];
+        } else {
+          data[key.substr(AggregationPrefix.length)] = String(data[key]);
+          delete data[key];
+        }
+      }
+    });
+    const aggregationKey = {
+      key: req.context.$apply.key.reduce((result, keyElement) => {
+        let value = data[keyElement.name];
+        if (value !== undefined && value !== null && DataTypeMap[keyElement.type]) {
+          value = value.replace(/(.*)/, DataTypeMap[keyElement.type].v2);
+        }
+        result[keyElement.name] = value;
+        return result;
+      }, {}),
+      value: req.context.$apply.value.map(valueElement => {
+        return valueElement.name;
+      })
+    };
+    data.__metadata.uri = entityUriKey(`aggregation'${JSON.stringify(aggregationKey)}'`, definition, req);
+    delete data.__metadata.etag;
+  }
+
+  function convertDataTypesToV2(data, headers, definition, body, req) {
+    Object.keys(data).forEach(key => {
+      if (data[key] === null) {
+        return;
+      }
+      const element = definition.elements && definition.elements[key];
       if (!element) {
         return;
       }
-      if (element.type === "cds.Composition" || element.type === "cds.Association") {
-        convertResponseData(data[key], headers, element._target, proxyBody, req);
+      if (["cds.Decimal", "cds.DecimalFloat", "cds.Double", "cds.Integer64"].includes(element.type)) {
+        data[key] = `${data[key]}`;
+      } else if (["cds.Date", "cds.DateTime", "cds.Timestamp"].includes(element.type)) {
+        data[key] = `/Date(${new Date(data[key]).getTime()})/`;
       }
     });
-  });
-  // Structural Changes
-  data.forEach(data => {
-    addResultsNesting(data, headers, definition, proxyBody, req);
-  });
-  // Deferreds
-  data.forEach(data => {
-    addDeferreds(data, headers, definition, proxyBody, req);
-  });
-}
+  }
 
-function convertResponseElementData(data, headers, definition, proxyBody, req) {
-  if (!definition) {
-    return;
-  }
-  // Modify Payload
-  convertDataTypesToV2(data, headers, definition, proxyBody, req);
-}
-
-function contextFromBody(body, req) {
-  let context = body["@odata.context"];
-  if (!context) {
-    return null;
-  }
-  context = context.substr(context.indexOf("#") + 1);
-  if (context.startsWith("Collection(")) {
-    context = context.substring("Collection(".length, context.indexOf(")"));
-  } else {
-    if (context.indexOf("(") !== -1) {
-      context = context.substr(0, context.indexOf("("));
-    }
-  }
-  if (context.indexOf("/") !== -1) {
-    context = context.substr(0, context.indexOf("/"));
-  }
-  if (context) {
-    return lookupDefinition(context, req);
-  }
-}
-
-function contextElementFromBody(body, req) {
-  let context = body["@odata.context"];
-  const definition = contextFromBody(body, req);
-  if (!(context && definition)) {
-    return null;
-  }
-  if (context.lastIndexOf("/") !== -1) {
-    const name = context.substr(context.lastIndexOf("/") + 1);
-    if (name && !name.startsWith("$")) {
-      const element = definition.elements && definition.elements[name];
-      if (element) {
-        return element;
+  function addResultsNesting(data, headers, definition, root, req) {
+    Object.keys(data).forEach(key => {
+      if (!(definition.elements && definition.elements[key])) {
+        return;
       }
-    }
-  }
-}
-
-function removeMetadata(data, headers, definition, root, req) {
-  Object.keys(data).forEach(key => {
-    if (key.startsWith("@")) {
-      delete data[key];
-    }
-  });
-}
-
-function addMetadata(data, headers, definition, root, req) {
-  if (definition.kind !== "entity") {
-    return;
-  }
-  data.__metadata = {
-    uri: entityUri(data, definition, req),
-    type: definition.name
-  };
-  if (root["@odata.metadataEtag"]) {
-    data.__metadata.etag = root["@odata.metadataEtag"];
-  }
-}
-
-function convertAggregation(data, headers, definition, body, req) {
-  if (!req.context.$apply) {
-    return;
-  }
-  Object.keys(data).forEach(key => {
-    if (key.startsWith(AggregationPrefix)) {
-      if (key.endsWith("@odata.type")) {
-        delete data[key];
-      } else {
-        data[key.substr(AggregationPrefix.length)] = String(data[key]);
-        delete data[key];
-      }
-    }
-  });
-  const aggregationKey = {
-    key: req.context.$apply.key.reduce((result, keyElement) => {
-      let value = data[keyElement.name];
-      if (value !== undefined && value !== null && DataTypeMap[keyElement.type]) {
-        value = value.replace(/(.*)/, DataTypeMap[keyElement.type].v2);
-      }
-      result[keyElement.name] = value;
-      return result;
-    }, {}),
-    value: req.context.$apply.value.map(valueElement => {
-      return valueElement.name;
-    })
-  };
-  data.__metadata.uri = entityUriKey(`aggregation'${JSON.stringify(aggregationKey)}'`, definition, req);
-  delete data.__metadata.etag;
-}
-
-function convertDataTypesToV2(data, headers, definition, body, req) {
-  Object.keys(data).forEach(key => {
-    if (data[key] === null) {
-      return;
-    }
-    const element = definition.elements && definition.elements[key];
-    if (!element) {
-      return;
-    }
-    if (["cds.Decimal", "cds.DecimalFloat", "cds.Double", "cds.Integer64"].includes(element.type)) {
-      data[key] = `${data[key]}`;
-    } else if (["cds.Date", "cds.DateTime", "cds.Timestamp"].includes(element.type)) {
-      data[key] = `/Date(${new Date(data[key]).getTime()})/`;
-    }
-  });
-}
-
-function addResultsNesting(data, headers, definition, root, req) {
-  Object.keys(data).forEach(key => {
-    if (!(definition.elements && definition.elements[key])) {
-      return;
-    }
-    if (definition.elements[key].cardinality && definition.elements[key].cardinality.max === "*") {
-      data[key] = {
-        results: data[key]
-      };
-    }
-  });
-}
-
-function addDeferreds(data, headers, definition, root, req) {
-  if (definition.kind !== "entity" || req.context.$apply) {
-    return;
-  }
-  Object.keys(definition.elements || {}).forEach(key => {
-    let element = definition.elements[key];
-    if (element && (element.type === "cds.Composition" || element.type === "cds.Association")) {
-      if (data[key] === undefined) {
+      if (definition.elements[key].cardinality && definition.elements[key].cardinality.max === "*") {
         data[key] = {
-          __deferred: {
-            uri: `${entityUri(data, definition, req)}/${key}`
-          }
+          results: data[key]
         };
       }
-    }
-  });
-}
-
-function entityUri(data, entity, req) {
-  return entityUriKey(entityKey(data, entity), entity, req);
-}
-
-function entityUriKey(key, entity, req) {
-  let protocol = req.header("x-forwarded-proto") || req.protocol || "http";
-  let host = req.header("x-forwarded-host") || req.hostname || "localhost";
-  let port = req.header("x-forwarded-host") ? "" : `:${req.socket.address().port}`;
-  return `${protocol}://${host}${port}${req.baseUrl}/${entity.name.split(".").pop()}(${encodeURIKey(key)})`;
-}
-
-function entityKey(data, entity) {
-  let keyElements = Object.keys(entity.elements)
-    .filter(key => {
-      return entity.elements[key].key;
-    })
-    .map(key => {
-      return entity.elements[key];
     });
-  return keyElements
-    .map(keyElement => {
-      let value = data[keyElement.name];
-      if (value !== undefined && value !== null && DataTypeMap[keyElement.type]) {
-        value = value.replace(/(.*)/, DataTypeMap[keyElement.type].v2);
-      }
-      if (keyElements.length === 1) {
-        return `${value}`;
-      } else {
-        return `${keyElement.name}=${value}`;
-      }
-    })
-    .join(",");
-}
-
-function respond(req, res, statusCode, headers, body) {
-  if (!res.headersSent) {
-    Object.entries(headers).forEach(([name, value]) => {
-      res.setHeader(name, value);
-    });
-    res.status(statusCode);
-    if (body && statusCode !== 204) {
-      res.write(body);
-    }
-    res.end();
-
-    // Trace
-    traceResponse(req, "Response", res.statusCode, res.statusMessage, headers, body);
   }
-}
 
-function normalizeContentType(headers) {
-  let contentType = headers["content-type"];
-  if (contentType) {
-    contentType = contentType.trim();
-    if (contentType.startsWith("application/json")) {
-      contentType = contentType.replace(/(application\/json).*/gi, "$1").trim();
+  function addDeferreds(data, headers, definition, root, req) {
+    if (definition.kind !== "entity" || req.context.$apply) {
+      return;
     }
-    headers["content-type"] = contentType;
-  }
-  return contentType;
-}
-
-function isMultipart(contentType) {
-  return contentType && contentType.replace(/\s/g, "").startsWith("multipart/mixed;boundary=");
-}
-
-function isApplicationJSON(req, headers) {
-  return headers["content-type"] === "application/json";
-}
-
-function isPlainText(req, headers) {
-  return headers["content-type"] === "text/plain";
-}
-
-function encodeURIKey(key) {
-  return key.replace(/[ ]/g, "%20").replace(/[/]/g, "%2F");
-}
-
-function decodeURIKey(key) {
-  return key.replace(/%20/g, " ").replace(/%2F/g, "/");
-}
-
-function fullRequestUrl(req) {
-  return req.protocol + "://" + req.headers.host + req.originalUrl;
-}
-
-function findElementByAnnotation(definition, annotation) {
-  return (
-    definition &&
-    definition.elements &&
-    Object.keys(definition.elements).find(key => {
-      const element = definition.elements[key];
-      return element && !!element[annotation];
-    })
-  );
-}
-
-function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHeadersProcessor) {
-  const match = contentType.replace(/\s/g, "").match(/^multipart\/mixed;boundary=(.*)$/i);
-  let boundary = match && match.pop();
-  if (!boundary) {
-    return multiPartBody;
-  }
-  let boundaryChangeSet = "";
-  let urlAfterBlank = false;
-  let bodyAfterBlank = false;
-  let previousLineIsBlank = false;
-  let index = 0;
-  let statusCode;
-  let contentId;
-  let body = "";
-  let headers = {};
-  let method = "";
-  let url = "";
-  let parts = multiPartBody.split("\r\n");
-  const newParts = [];
-  parts.forEach(part => {
-    const match = part.replace(/\s/g, "").match(/^content-type:multipart\/mixed;boundary=(.*)$/i);
-    if (match) {
-      boundaryChangeSet = match.pop();
-    }
-    if (part.startsWith(`--${boundary}`) || (boundaryChangeSet && part.startsWith(`--${boundaryChangeSet}`))) {
-      // Body & Headers
-      if (bodyAfterBlank) {
-        if (bodyHeadersProcessor) {
-          try {
-            const contentType = normalizeContentType(headers);
-            if (contentType === "application/json") {
-              body = (body && JSON.parse(body)) || {};
+    Object.keys(definition.elements || {}).forEach(key => {
+      let element = definition.elements[key];
+      if (element && (element.type === "cds.Composition" || element.type === "cds.Association")) {
+        if (data[key] === undefined) {
+          data[key] = {
+            __deferred: {
+              uri: `${entityUri(data, definition, req)}/${key}`
             }
-            const result = bodyHeadersProcessor({
-              index,
-              statusCode,
-              contentType,
-              body,
-              headers,
-              method,
-              url,
-              contentId
-            });
-            body = (result && result.body) || body;
-            headers = (result && result.headers) || headers;
-          } catch (err) {
-            // Error
-            trace(req, "Error", err.toString());
+          };
+        }
+      }
+    });
+  }
+
+  function entityUri(data, entity, req) {
+    return entityUriKey(entityKey(data, entity), entity, req);
+  }
+
+  function entityUriKey(key, entity, req) {
+    let protocol = req.header("x-forwarded-proto") || req.protocol || "http";
+    let host = req.header("x-forwarded-host") || req.hostname || "localhost";
+    let port = req.header("x-forwarded-host") ? "" : `:${req.socket.address().port}`;
+    return `${protocol}://${host}${port}${req.baseUrl}/${entity.name.split(".").pop()}(${encodeURIKey(key)})`;
+  }
+
+  function entityKey(data, entity) {
+    let keyElements = Object.keys(entity.elements)
+      .filter(key => {
+        return entity.elements[key].key;
+      })
+      .map(key => {
+        return entity.elements[key];
+      });
+    return keyElements
+      .map(keyElement => {
+        let value = data[keyElement.name];
+        if (value !== undefined && value !== null && DataTypeMap[keyElement.type]) {
+          value = value.replace(/(.*)/, DataTypeMap[keyElement.type].v2);
+        }
+        if (keyElements.length === 1) {
+          return `${value}`;
+        } else {
+          return `${keyElement.name}=${value}`;
+        }
+      })
+      .join(",");
+  }
+
+  function respond(req, res, statusCode, headers, body) {
+    if (!res.headersSent) {
+      Object.entries(headers).forEach(([name, value]) => {
+        res.setHeader(name, value);
+      });
+      res.status(statusCode);
+      if (body && statusCode !== 204) {
+        res.write(body);
+      }
+      res.end();
+
+      // Trace
+      traceResponse(req, "Response", res.statusCode, res.statusMessage, headers, body);
+    }
+  }
+
+  function normalizeContentType(headers) {
+    let contentType = headers["content-type"];
+    if (contentType) {
+      contentType = contentType.trim();
+      if (contentType.startsWith("application/json")) {
+        contentType = contentType.replace(/(application\/json).*/gi, "$1").trim();
+      }
+      headers["content-type"] = contentType;
+    }
+    return contentType;
+  }
+
+  function isMultipart(contentType) {
+    return contentType && contentType.replace(/\s/g, "").startsWith("multipart/mixed;boundary=");
+  }
+
+  function isApplicationJSON(req, headers) {
+    return headers["content-type"] === "application/json";
+  }
+
+  function isPlainText(req, headers) {
+    return headers["content-type"] === "text/plain";
+  }
+
+  function encodeURIKey(key) {
+    return key.replace(/[ ]/g, "%20").replace(/[/]/g, "%2F");
+  }
+
+  function decodeURIKey(key) {
+    return key.replace(/%20/g, " ").replace(/%2F/g, "/");
+  }
+
+  function fullRequestUrl(req) {
+    return req.protocol + "://" + req.headers.host + req.originalUrl;
+  }
+
+  function findElementByAnnotation(definition, annotation) {
+    return (
+      definition &&
+      definition.elements &&
+      Object.keys(definition.elements).find(key => {
+        const element = definition.elements[key];
+        return element && !!element[annotation];
+      })
+    );
+  }
+
+  function processMultipart(req, multiPartBody, contentType, urlProcessor, bodyHeadersProcessor) {
+    const match = contentType.replace(/\s/g, "").match(/^multipart\/mixed;boundary=(.*)$/i);
+    let boundary = match && match.pop();
+    if (!boundary) {
+      return multiPartBody;
+    }
+    let boundaryChangeSet = "";
+    let urlAfterBlank = false;
+    let bodyAfterBlank = false;
+    let previousLineIsBlank = false;
+    let index = 0;
+    let statusCode;
+    let contentId;
+    let body = "";
+    let headers = {};
+    let method = "";
+    let url = "";
+    let parts = multiPartBody.split("\r\n");
+    const newParts = [];
+    parts.forEach(part => {
+      const match = part.replace(/\s/g, "").match(/^content-type:multipart\/mixed;boundary=(.*)$/i);
+      if (match) {
+        boundaryChangeSet = match.pop();
+      }
+      if (part.startsWith(`--${boundary}`) || (boundaryChangeSet && part.startsWith(`--${boundaryChangeSet}`))) {
+        // Body & Headers
+        if (bodyAfterBlank) {
+          if (bodyHeadersProcessor) {
+            try {
+              const contentType = normalizeContentType(headers);
+              if (contentType === "application/json") {
+                body = (body && JSON.parse(body)) || {};
+              }
+              const result = bodyHeadersProcessor({
+                index,
+                statusCode,
+                contentType,
+                body,
+                headers,
+                method,
+                url,
+                contentId
+              });
+              body = (result && result.body) || body;
+              headers = (result && result.headers) || headers;
+            } catch (err) {
+              // Error
+              trace(req, "Error", err.toString());
+            }
+          }
+          Object.entries(headers).forEach(([name, value]) => {
+            newParts.splice(-1, 0, `${name}: ${value}`);
+          });
+          newParts.push(body);
+          statusCode = undefined;
+          contentId = undefined;
+          body = "";
+          headers = {};
+          url = "";
+          index++;
+        }
+        urlAfterBlank = true;
+        bodyAfterBlank = false;
+        newParts.push(part);
+        if (boundaryChangeSet && part === `--${boundaryChangeSet}--`) {
+          boundaryChangeSet = "";
+        }
+      } else if (urlAfterBlank && previousLineIsBlank) {
+        urlAfterBlank = false;
+        bodyAfterBlank = true;
+        // Url
+        const urlParts = part.split(" ");
+        let partMethod = urlParts[0];
+        let partUrl = urlParts.slice(1, -1).join(" ");
+        let partProtocol = urlParts.pop();
+        if (urlProcessor) {
+          const result = urlProcessor({ method: partMethod, url: partUrl, contentId });
+          if (result) {
+            partMethod = result.method;
+            partUrl = result.url;
+            part = [partMethod, partUrl, partProtocol].join(" ");
           }
         }
-        Object.entries(headers).forEach(([name, value]) => {
-          newParts.splice(-1, 0, `${name}: ${value}`);
-        });
-        newParts.push(body);
-        statusCode = undefined;
-        contentId = undefined;
-        body = "";
-        headers = {};
-        url = "";
-        index++;
-      }
-      urlAfterBlank = true;
-      bodyAfterBlank = false;
-      newParts.push(part);
-      if (boundaryChangeSet && part === `--${boundaryChangeSet}--`) {
-        boundaryChangeSet = "";
-      }
-    } else if (urlAfterBlank && previousLineIsBlank) {
-      urlAfterBlank = false;
-      bodyAfterBlank = true;
-      // Url
-      const urlParts = part.split(" ");
-      let partMethod = urlParts[0];
-      let partUrl = urlParts.slice(1, -1).join(" ");
-      let partProtocol = urlParts.pop();
-      if (urlProcessor) {
-        const result = urlProcessor({ method: partMethod, url: partUrl, contentId });
-        if (result) {
-          partMethod = result.method;
-          partUrl = result.url;
-          part = [partMethod, partUrl, partProtocol].join(" ");
-        }
-      }
-      method = partMethod;
-      url = partUrl;
+        method = partMethod;
+        url = partUrl;
 
-      newParts.push(part);
-      if (part.startsWith("HTTP/")) {
-        const statusCodeMatch = part.match(/^HTTP\/[\d.]+\s+(\d{3})\s.*$/i);
-        if (statusCodeMatch) {
-          statusCode = statusCodeMatch.pop();
+        newParts.push(part);
+        if (part.startsWith("HTTP/")) {
+          const statusCodeMatch = part.match(/^HTTP\/[\d.]+\s+(\d{3})\s.*$/i);
+          if (statusCodeMatch) {
+            statusCode = statusCodeMatch.pop();
+          }
         }
-      }
-    } else if (bodyAfterBlank && (previousLineIsBlank || body !== "")) {
-      body = body ? `${body}\r\n${part}` : part;
-    } else if (part !== "") {
-      if (!bodyAfterBlank) {
-        if (part.toLowerCase().startsWith("content-id:")) {
+      } else if (bodyAfterBlank && (previousLineIsBlank || body !== "")) {
+        body = body ? `${body}\r\n${part}` : part;
+      } else if (part !== "") {
+        if (!bodyAfterBlank) {
+          if (part.toLowerCase().startsWith("content-id:")) {
+            let colonIndex = part.indexOf(":");
+            if (colonIndex !== -1) {
+              contentId = part.substr(colonIndex + 1).trim();
+            }
+          }
+          newParts.push(part);
+        } else {
           let colonIndex = part.indexOf(":");
           if (colonIndex !== -1) {
-            contentId = part.substr(colonIndex + 1).trim();
+            headers[part.substr(0, colonIndex).toLowerCase()] = part.substr(colonIndex + 1).trim();
           }
         }
-        newParts.push(part);
       } else {
-        let colonIndex = part.indexOf(":");
-        if (colonIndex !== -1) {
-          headers[part.substr(0, colonIndex).toLowerCase()] = part.substr(colonIndex + 1).trim();
-        }
+        newParts.push(part);
       }
-    } else {
-      newParts.push(part);
-    }
-    previousLineIsBlank = part === "";
-  });
-  return newParts.join("\r\n");
-}
+      previousLineIsBlank = part === "";
+    });
+    return newParts.join("\r\n");
+  }
 
-function traceRequest(req, name, method, url, body) {
-  const _url = decodeURI(url) || "";
-  const _body = typeof body === "string" ? decodeURI(body) : body ? decodeURI(JSON.stringify(body)) : "";
-  trace(req, name, `${method} ${_url}`, _body);
-}
+  function traceRequest(req, name, method, url, body) {
+    const _url = decodeURI(url) || "";
+    const _body = typeof body === "string" ? decodeURI(body) : body ? decodeURI(JSON.stringify(body)) : "";
+    trace(req, name, `${method} ${_url}`, _body);
+  }
 
-function traceResponse(req, name, statusCode, statusMessage, headers, body) {
-  const _headers = decodeURI(JSON.stringify(headers));
-  const _body = typeof body === "string" ? decodeURI(body) : body ? decodeURI(JSON.stringify(body)) : "";
-  trace(req, name, `${statusCode} ${statusMessage}`, _headers, _body);
-}
+  function traceResponse(req, name, statusCode, statusMessage, headers, body) {
+    const _headers = decodeURI(JSON.stringify(headers));
+    const _body = typeof body === "string" ? decodeURI(body) : body ? decodeURI(JSON.stringify(body)) : "";
+    trace(req, name, `${statusCode} ${statusMessage}`, _headers, _body);
+  }
 
-function trace(req, name, ...messages) {
-  const message = messages.filter(message => message !== null && message !== undefined).join("\n");
-  req.loggingContext.getTracer(name).info(message);
-}
+  function trace(req, name, ...messages) {
+    const message = messages.filter(message => message !== null && message !== undefined).join("\n");
+    req.loggingContext.getTracer(name).info(message);
+  }
+
+  return router;
+};

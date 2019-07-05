@@ -23,6 +23,7 @@
   "devDependencies": {
     "@sap/cds": "^3.13.0",
     "@sap/hana-client": "2.3",
+    "@sap/xssec": "^2.2.2",
     "eslint": "^6.0.1",
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^6.0.0",

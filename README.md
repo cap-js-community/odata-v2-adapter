@@ -49,6 +49,7 @@ Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData 
 - $inlinecount / $count / $value
 - Entity with Parameters
 - Octet Stream, Content Disposition
+- Multitenancy, Extensibility (proxy in same process only)
 - Content-ID
 - Tracing
 
