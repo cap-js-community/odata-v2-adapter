@@ -51,14 +51,16 @@ const DefaultTenant = "00000000-0000-0000-0000-000000000000";
 const AggregationPrefix = "__AGGREGATION__";
 
 /**
- * Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData v4 Server
- * @param options CDS OData v2 Adapter Proxy options
- * @param [options.base] Base path, under which the service is reachable. Default is ''
- * @param [options.path] Path, under which the proxy is reachable. Default is 'v2'
+ * Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData v4 Server.
+ * @param options CDS OData v2 Adapter Proxy options.
+ * @param [options.base] Base path, under which the service is reachable. Default is ''.
+ * @param [options.path] Path, under which the proxy is reachable. Default is 'v2'.
  * @param [options.model] CDS service model path. Default is 'all'.
- * @param [options.port] Target port, which points to OData v4 backend port. Default is '4004'
- * @param [options.target] Target, which points to OData v4 backend host/port. Default is 'http://localhost:4004'
+ * @param [options.port] Target port, which points to OData v4 backend port. Default is '4004'.
+ * @param [options.target] Target, which points to OData v4 backend host/port. Default is 'http://localhost:4004'.
  * @param [options.services] Service mapping, from url path name to service name. If omitted CDS defaults apply.
+ * @param [options.standalone] Indication, that OData v2 Adapter proxy is a standalone process. Default is 'false'.
+ * @param [options.mtxEndpoint] Endpoint to retrieve MTX metadata. Default is '/mtx/v1'
  * @returns {Router}
  */
 module.exports = options => {
@@ -71,6 +73,8 @@ module.exports = options => {
   const port = (options && options.port) || "4004";
   const target = (options && options.target) || `http://localhost:${port}`;
   const services = (options && options.services) || {};
+  const standalone = (options && options.standalone) || false;
+  const mtxEndpoint = (options && options.mtxEndpoint) || '/mtx/v1';
 
   let model = (options && options.model) || "all";
   if (model === "all" || (Array.isArray(model) && model[0] === "all")) {
@@ -164,8 +168,10 @@ module.exports = options => {
     const servicePath = req.params.service;
     const service = normalizeService(servicePath);
     let metadata;
-    if (cds.env.mtx && cds.env.mtx.enabled) {
-      metadata = await getTenantMetadata(req, service);
+    if (standalone && mtxEndpoint) {
+      metadata = await getTenantMetadataRemote(req, service);
+    } else if (cds.env.mtx && cds.env.mtx.enabled) {
+      metadata = await getTenantMetadataLocal(req, service);
     }
     if (!metadata) {
       metadata = await getDefaultMetadata(req, service);
@@ -173,7 +179,7 @@ module.exports = options => {
     return metadata;
   }
 
-  async function getTenantMetadata(req, service) {
+  async function getTenantId(req) {
     if (cds.env.requires && cds.env.requires.xsuaa && req.headers.authorization) {
       const xssec = require("@sap/xssec");
       const jwtToken = req.headers.authorization.substr("bearer ".length);
@@ -181,16 +187,36 @@ module.exports = options => {
         jwtToken,
         cds.env.requires.xsuaa.credentials
       );
-      const tenantId = securityContext.getSubaccountId();
-      if (await cds.mtx.isExtended(tenantId)) {
-        return await compileService(
-          tenantId,
-          async () => {
-            return await cds.mtx.getCsn(tenantId);
-          },
-          service
-        );
-      }
+      return securityContext.getSubaccountId();
+    }
+  }
+
+  async function getTenantMetadataRemote(req, service) {
+    const tenantId = await getTenantId(req);
+    if (tenantId) {
+      return await compileService(
+        tenantId,
+        async () => {
+          const response = await axios.get(getBaseUrl(req) + mtxEndpoint + `/metadata/csn/${tenantId}`, {
+            headers: req.headers
+          });
+          return response && response.data;
+        },
+        service
+      );
+    }
+  }
+
+  async function getTenantMetadataLocal(req, service) {
+    const tenantId = await getTenantId(req);
+    if (tenantId && await cds.mtx.isExtended(tenantId)) {
+      return await compileService(
+        tenantId,
+        async () => {
+          return await cds.mtx.getCsn(tenantId);
+        },
+        service
+      );
     }
   }
 
@@ -215,7 +241,10 @@ module.exports = options => {
       };
     }
     if (!proxyCache[tenantId].edmx[service]) {
-      proxyCache[tenantId].edmx[service] = await cds.compile.to.edmx(proxyCache[tenantId].csnRaw, { service });
+      proxyCache[tenantId].edmx[service] = await cds.compile.to.edmx(proxyCache[tenantId].csnRaw, {
+        service,
+        version: "v2"
+      });
     }
     return {
       csn: proxyCache[tenantId].csn,
@@ -934,7 +963,7 @@ module.exports = options => {
           );
           const mediaTypeElement = findElementByAnnotation(context.definition, "@Core.MediaType");
           if (contentDispositionFilenameElement && mediaTypeElement) {
-            const parts = fullRequestUrl(req).split("/");
+            const parts = getRequestUrl(req).split("/");
             if (parts[parts.length - 1] === "$value") {
               parts.pop();
             }
@@ -1422,8 +1451,12 @@ module.exports = options => {
     return key.replace(/%20/g, " ").replace(/%2F/g, "/");
   }
 
-  function fullRequestUrl(req) {
-    return req.protocol + "://" + req.headers.host + req.originalUrl;
+  function getRequestUrl(req) {
+    return getBaseUrl(req) + req.originalUrl;
+  }
+
+  function getBaseUrl(req) {
+    return req.protocol + "://" + req.get('host');
   }
 
   function findElementByAnnotation(definition, annotation) {
