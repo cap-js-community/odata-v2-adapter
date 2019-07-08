@@ -1,10 +1,13 @@
 .idea/
 reports/
 test/
-.npmignore
-.xmake.cfg
+.eslintignore
+.eslintrc.yml
 .gitignore
-jest-test.json
+.npmignore
+.prettierrc.yml
+.xmake.cfg
+jest.config.js
 jest-integration-test.json
 junit.xml
 test-server.js
