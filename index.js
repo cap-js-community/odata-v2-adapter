@@ -74,7 +74,7 @@ module.exports = options => {
   const target = (options && options.target) || `http://localhost:${port}`;
   const services = (options && options.services) || {};
   const standalone = (options && options.standalone) || false;
-  const mtxEndpoint = (options && options.mtxEndpoint) || '/mtx/v1';
+  const mtxEndpoint = (options && options.mtxEndpoint) || "/mtx/v1";
 
   let model = (options && options.model) || "all";
   if (model === "all" || (Array.isArray(model) && model[0] === "all")) {
@@ -209,7 +209,7 @@ module.exports = options => {
 
   async function getTenantMetadataLocal(req, service) {
     const tenantId = await getTenantId(req);
-    if (tenantId && await cds.mtx.isExtended(tenantId)) {
+    if (tenantId && (await cds.mtx.isExtended(tenantId))) {
       return await compileService(
         tenantId,
         async () => {
@@ -506,8 +506,8 @@ module.exports = options => {
             const keys = keyPart.split(",");
             return `${part}(${keys.map(key => {
               const [name, value] = key.split("=");
+              let type;
               if (name && value) {
-                let type;
                 if (context.params && context.params[name]) {
                   type = context.params[name].type;
                 }
@@ -516,9 +516,11 @@ module.exports = options => {
                 }
                 return `${name}=${DataTypeMap[type] ? value.replace(DataTypeMap[type].v4, "$1") : value}`;
               } else if (name && context.keys) {
-                const keyName = Object.keys(context.keys)[0];
-                const type = context.elements[keyName] && context.elements[keyName].type;
-                return `${DataTypeMap[type] ? name.replace(DataTypeMap[type].v4, "$1") : name}`;
+                const key = Object.keys(context.keys).find(key => {
+                  return context.keys[key].type !== "cds.Composition" && context.keys[key].type !== "cds.Association";
+                });
+                type = key && context.elements[key] && context.elements[key].type;
+                return type && `${DataTypeMap[type] ? name.replace(DataTypeMap[type].v4, "$1") : name}`;
               }
             })})`;
           }
@@ -953,35 +955,7 @@ module.exports = options => {
       // Pipe Binary Stream
       const contentType = headers["content-type"];
       if (contentType === "application/octet-stream") {
-        res.setHeader("content-type", contentType);
-
-        const context = req.contexts && req.contexts[0];
-        if (context && context.definition && context.definition.elements) {
-          const contentDispositionFilenameElement = findElementByAnnotation(
-            context.definition,
-            "@Core.ContentDisposition.Filename"
-          );
-          const mediaTypeElement = findElementByAnnotation(context.definition, "@Core.MediaType");
-          if (contentDispositionFilenameElement && mediaTypeElement) {
-            const parts = getRequestUrl(req).split("/");
-            if (parts[parts.length - 1] === "$value") {
-              parts.pop();
-            }
-            if (parts[parts.length - 1] === mediaTypeElement) {
-              parts.pop();
-            }
-            const response = await axios.get(parts.join("/"), {
-              headers: req.headers
-            });
-            const filename =
-              response && response.data && response.data.d && response.data.d[contentDispositionFilenameElement];
-            if (filename) {
-              res.setHeader("content-disposition", `inline; filename="${filename}"`);
-            }
-          }
-        }
-        proxyRes.pipe(res);
-        return;
+        return await processStream(proxyRes, req, res, headers);
       }
 
       let body = await parseProxyResponseBody(proxyRes, headers, req);
@@ -1022,6 +996,45 @@ module.exports = options => {
       trace(req, "Error", err.toString());
       respond(req, res, proxyRes.statusCode, proxyRes.headers, convertResponseError(proxyRes.body, proxyRes.headers));
     }
+  }
+
+  async function processStream(proxyRes, req, res, headers) {
+    // Trace
+    traceResponse(req, "Proxy Response", proxyRes.statusCode, proxyRes.statusMessage, headers, {});
+
+    convertBasicHeaders(headers);
+    const context = req.contexts && req.contexts[0];
+    if (context && context.definition && context.definition.elements) {
+      const contentDispositionFilenameElement = findElementByAnnotation(
+        context.definition,
+        "@Core.ContentDisposition.Filename"
+      );
+      const mediaTypeElement = findElementByAnnotation(context.definition, "@Core.MediaType");
+      if (contentDispositionFilenameElement && mediaTypeElement) {
+        const parts = getRequestUrl(req).split("/");
+        if (parts[parts.length - 1] === "$value") {
+          parts.pop();
+        }
+        if (parts[parts.length - 1] === mediaTypeElement) {
+          parts.pop();
+        }
+        const response = await axios.get(parts.join("/"), {
+          headers: req.headers
+        });
+        const filename =
+          response && response.data && response.data.d && response.data.d[contentDispositionFilenameElement];
+        if (filename) {
+          headers["content-disposition"] = `inline; filename="${filename}"`;
+        }
+      }
+    }
+    Object.entries(headers).forEach(([name, value]) => {
+      res.setHeader(name, value);
+    });
+    proxyRes.pipe(res);
+
+    // Trace
+    traceResponse(req, "Response", res.statusCode, res.statusMessage, headers, {});
   }
 
   async function parseProxyResponseBody(proxyRes, headers, req) {
@@ -1456,7 +1469,7 @@ module.exports = options => {
   }
 
   function getBaseUrl(req) {
-    return req.protocol + "://" + req.get('host');
+    return req.protocol + "://" + req.get("host");
   }
 
   function findElementByAnnotation(definition, annotation) {
@@ -1597,7 +1610,7 @@ module.exports = options => {
   function traceResponse(req, name, statusCode, statusMessage, headers, body) {
     const _headers = decodeURI(JSON.stringify(headers));
     const _body = typeof body === "string" ? decodeURI(body) : body ? decodeURI(JSON.stringify(body)) : "";
-    trace(req, name, `${statusCode} ${statusMessage}`, _headers, _body);
+    trace(req, name, `${statusCode || ""} ${statusMessage || ""}`, _headers, _body);
   }
 
   function trace(req, name, ...messages) {

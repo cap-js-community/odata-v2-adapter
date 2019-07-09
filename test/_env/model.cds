@@ -28,6 +28,10 @@ entity HeaderStream: cuid {
     filename: String @Core.ContentDisposition.Filename;
 }
 
+entity HeaderAssocKey {
+    key header: Association to Header;
+}
+
 service MainService {
 
     type Result {
@@ -42,6 +46,7 @@ service MainService {
     };
     entity HeaderItem as projection on test.HeaderItem;
     entity HeaderStream as projection on test.HeaderStream;
+    entity HeaderAssocKey as projection on test.HeaderAssocKey;
 
     action unboundAction(num: Integer, text: String) returns array of Result;
     function unboundFunction(num: Integer, text: String) returns Result;

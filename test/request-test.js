@@ -32,7 +32,7 @@ describe("request", () => {
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Header", "HeaderItem", "HeaderStream"]
+        EntitySets: ["Header", "HeaderAssocKey", "HeaderItem", "HeaderStream"]
       }
     });
   });
@@ -53,6 +53,20 @@ describe("request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(4);
     expect(response.body.d.__count).toEqual(4);
+    const id = response.body.d.results[0].ID;
+    response = await util.callRead(request, `/v2/main/HeaderAssocKey(guid'${id}')`);
+    expect(response.body).toBeDefined();
+    expect(response.status).toEqual(404);
+    expect(response.body.error).toEqual({
+      code: "404",
+      message: {
+        lang: "en",
+        value: "Not Found"
+      },
+      innererror: {
+        errordetails: []
+      }
+    });
   });
 
   it("GET request with $-options", async () => {

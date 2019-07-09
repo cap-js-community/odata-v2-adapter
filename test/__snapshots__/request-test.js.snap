@@ -26,6 +26,7 @@ exports[`request GET $metadata 1`] = `
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
@@ -52,6 +53,10 @@ exports[`request GET $metadata 1`] = `
           <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
         </AssociationSet>
+        <AssociationSet Name=\\"HeaderAssocKey_header\\" Association=\\"test.MainService.HeaderAssocKey_header\\">
+          <End Role=\\"HeaderAssocKey\\" EntitySet=\\"HeaderAssocKey\\"/>
+          <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
+        </AssociationSet>
         <AssociationSet Name=\\"HeaderItem_header\\" Association=\\"test.MainService.HeaderItem_header\\">
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
           <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
@@ -75,6 +80,13 @@ exports[`request GET $metadata 1`] = `
         <NavigationProperty Name=\\"Items\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <NavigationProperty Name=\\"FirstItem\\" Relationship=\\"test.MainService.Header_FirstItem\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <Property Name=\\"FirstItem_ID\\" Type=\\"Edm.Guid\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderAssocKey\\">
+        <Key>
+          <PropertyRef Name=\\"header_ID\\"/>
+        </Key>
+        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderAssocKey_header\\" FromRole=\\"HeaderAssocKey\\" ToRole=\\"Header\\"/>
+        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderItem\\">
         <Key>
@@ -110,6 +122,18 @@ exports[`request GET $metadata 1`] = `
           </Principal>
           <Dependent Role=\\"Header\\">
             <PropertyRef Name=\\"FirstItem_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"HeaderAssocKey_header\\">
+        <End Role=\\"HeaderAssocKey\\" Type=\\"test.MainService.HeaderAssocKey\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"0..1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"Header\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderAssocKey\\">
+            <PropertyRef Name=\\"header_ID\\"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
