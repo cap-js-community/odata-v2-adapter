@@ -2,6 +2,9 @@
 
 OData v2 Adapter Proxy for CDS OData v4 Services
 
+## Build Status
+[![Build Status](https://prod-build10300.wdf.sap.corp:443/job/cds-community/job/cds-community-cds-odata-v2-adapter-proxy-master-CI-linuxx86_64/badge/icon)](https://prod-build10300.wdf.sap.corp:443/job/cds-community/job/cds-community-cds-odata-v2-adapter-proxy-master-CI-linuxx86_64/)
+
 ## Getting Started
 
 - Install: `npm install`
