@@ -81,7 +81,7 @@ module.exports = options => {
     model = [cds.env.folders.app, cds.env.folders.srv, "services", "."].find(m => cds.resolve(m));
   }
 
-  if (cds.env.mtx && cds.env.mtx.enabled) {
+  if (cds.env.mtx && cds.env.mtx.enabled && cds.mtx) {
     cds.mtx.eventEmitter.on(cds.mtx.events.TENANT_UPDATED, tenantId => {
       delete proxyCache[tenantId];
     });
