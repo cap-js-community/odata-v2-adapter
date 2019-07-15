@@ -19,8 +19,32 @@ describe("request", () => {
   });
 
   it("GET with parameters", async () => {
-    let response = await util.callRead(request, `/v2/main/HeaderParameters(aStock=10,aCurrency='USD')/Set`);
+    const stock = Math.round(new Date().getTime() / 1000);
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      stock: stock,
+      currency: "USD"
+    });
+    response = await util.callWrite(request, "/v2/main/Header", {
+      stock: 1,
+      currency: "EUR"
+    });
+    response = await util.callRead(request, `/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='USD')/Set`);
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(0);
+    expect(response.body.d.results).toHaveLength(1);
+    expect(response.body.d.results).toMatchObject([{
+        __metadata: {
+          type: "test.MainService.HeaderParameters"
+        },
+        country: null,
+        createdBy: "anonymous",
+        currency: "USD",
+        description: null,
+        modifiedAt: null,
+        modifiedBy: null,
+        name: null,
+        price: null,
+        stock: stock
+      }]
+    );
   });
 });

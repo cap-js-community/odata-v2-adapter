@@ -16,8 +16,8 @@ service MainService {
     entity Header as projection on test.Header;
 
     define entity HeaderParameters (
-        aStock: Integer,
-        aCurrency: String
-    ) as SELECT * from test.Header where stock=:aStock and currency=:aCurrency;
+        STOCK: Integer,
+        CURRENCY: String
+    ) as SELECT * from test.Header where stock=:STOCK and currency=:CURRENCY;
 
 }

@@ -81,7 +81,7 @@ module.exports = options => {
     model = [cds.env.folders.app, cds.env.folders.srv, "services", "."].find(m => cds.resolve(m));
   }
 
-  if (cds.env.mtx && cds.env.mtx.enabled && cds.mtx) {
+  if (cds.env.mtx && cds.mtx) {
     cds.mtx.eventEmitter.on(cds.mtx.events.TENANT_UPDATED, tenantId => {
       delete proxyCache[tenantId];
     });
@@ -170,7 +170,7 @@ module.exports = options => {
     let metadata;
     if (standalone && mtxEndpoint) {
       metadata = await getTenantMetadataRemote(req, service);
-    } else if (cds.env.mtx && cds.env.mtx.enabled) {
+    } else if (cds.env.mtx && cds.mtx) {
       metadata = await getTenantMetadataLocal(req, service);
     }
     if (!metadata) {
@@ -339,13 +339,14 @@ module.exports = options => {
     const definition = contextFromUrl(url, req);
     enrichRequest(definition, url, contentId, req);
 
+    // Order is important
     convertUrlDataTypes(url, req);
     convertUrlCount(url, req);
     convertDraft(url, req);
     convertActionFunction(url, req);
     convertExpandSelect(url, req);
-    convertAnalytics(url, req);
     convertFilter(url, req);
+    convertAnalytics(url, req);
     convertValue(url, req);
 
     delete url.search;
@@ -756,6 +757,15 @@ module.exports = options => {
     }
   }
 
+  function convertFilter(url, req) {
+    if (url.query["$filter"]) {
+      // substringof
+      url.query["$filter"] = url.query["$filter"].replace(/substringof\((.*?),(.*?)\)/gi, "contains($2,$1)");
+      // gettotaloffsetminutes
+      url.query["$filter"] = url.query["$filter"].replace(/gettotaloffsetminutes\(/gi, "totaloffsetminutes(");
+    }
+  }
+
   function convertAnalytics(url, req) {
     const definition = req.context && req.context.definition;
     if (
@@ -820,6 +830,10 @@ module.exports = options => {
         url.query["$apply"] += ")";
       }
 
+      if (url.query["$filter"]) {
+        url.query["$apply"] = `filter(${url.query["$filter"]})/` + url.query["$apply"];
+      }
+
       if (url.query["$orderby"]) {
         url.query["$orderby"] = url.query["$orderby"]
           .split(",")
@@ -834,10 +848,7 @@ module.exports = options => {
           .join(",");
       }
 
-      // Convert $filter to $apply=filter(...)/groupby((),aggregate())
-      // e.g. $apply=filter(currency eq 'USD')/groupby((currency),aggregate(stock with sum as total))
-      // Currently not supported by CDS Services
-
+      delete url.query["$filter"];
       delete url.query["$select"];
       delete url.query["$expand"];
 
@@ -845,15 +856,6 @@ module.exports = options => {
         key: dimensions,
         value: measures
       };
-    }
-  }
-
-  function convertFilter(url, req) {
-    if (url.query["$filter"]) {
-      // substringof
-      url.query["$filter"] = url.query["$filter"].replace(/substringof\((.*?),(.*?)\)/gi, "contains($2,$1)");
-      // gettotaloffsetminutes
-      url.query["$filter"] = url.query["$filter"].replace(/gettotaloffsetminutes\(/gi, "totaloffsetminutes(");
     }
   }
 
@@ -1144,13 +1146,12 @@ module.exports = options => {
         req.context.definition = definition;
         const definitionElement = contextElementFromBody(proxyBody, req);
         if (definitionElement) {
+          body.d[definitionElement.name] = proxyBody.value;
+          convertResponseElementData(body, headers, definition, proxyBody, req);
           if (req.context.$value) {
             headers["content-type"] = "text/plain";
-            return `${proxyBody.value}`;
-          } else {
-            body.d[definitionElement.name] = proxyBody.value;
+            return `${body.d[definitionElement.name]}`;
           }
-          convertResponseElementData(body, headers, definition, proxyBody, req);
         } else {
           const data = convertResponseList(body, proxyBody, req);
           convertResponseData(data, headers, definition, proxyBody, req);

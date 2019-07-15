@@ -243,7 +243,7 @@ describe("draft-request", () => {
           type: "test.DraftService.Header"
         },
         createdBy: "anonymous",
-        modifiedBy: "anonymous",
+        modifiedBy: null,
         name: "Test2",
         description: null,
         Items: {

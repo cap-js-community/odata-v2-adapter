@@ -231,6 +231,7 @@ describe("request", () => {
       }
     });
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')/ID/$value`);
+    expect(response.headers["content-type"]).toEqual("text/plain");
     expect(response.text).toEqual(id);
   });
 
