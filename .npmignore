@@ -1,5 +1,6 @@
 .idea/
 reports/
+integration-test/
 test/
 .eslintignore
 .eslintrc.yml
