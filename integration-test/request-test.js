@@ -31,7 +31,8 @@ describe("request", () => {
     response = await util.callRead(request, `/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='USD')/Set`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    expect(response.body.d.results).toMatchObject([{
+    expect(response.body.d.results).toMatchObject([
+      {
         __metadata: {
           type: "test.MainService.HeaderParameters"
         },
@@ -44,7 +45,7 @@ describe("request", () => {
         name: null,
         price: null,
         stock: stock
-      }]
-    );
+      }
+    ]);
   });
 });

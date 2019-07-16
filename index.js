@@ -97,7 +97,7 @@ module.exports = options => {
     } catch (err) {
       // Error
       trace(req, "Error", err.toString());
-      res.status(500).end();
+      res.status(500).send("Internal Server Error");
     }
   });
 
@@ -130,7 +130,8 @@ module.exports = options => {
       } catch (err) {
         // Error
         trace(req, "Error", err.toString());
-        res.status(500).end();
+        res.status(500).send("Internal Server Error");
+        return;
       }
       req.base = base;
       req.service = service;
