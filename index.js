@@ -63,13 +63,15 @@ const AggregationPrefix = "__AGGREGATION__";
  * @param [options.mtxEndpoint] Endpoint to retrieve MTX metadata. Default is '/mtx/v1'
  * @returns {Router}
  */
-module.exports = options => {
+module.exports = (options = undefined) => {
   const proxyCache = {};
   const appContext = logging.createAppContext();
   const router = express.Router();
   const base = (options && options.base) || "";
   const path = (options && options.path) || "v2";
-  const pathRewrite = { [`^${base ? "/" + base : ""}/${path}`]: `${base ? "/" + base : ""}` };
+  const sourcePath = `${base ? "/" + base : ""}/${path}`;
+  const targetPath = base ? "/" + base : "";
+  const pathRewrite = { [`^${sourcePath}`]: targetPath };
   const port = (options && options.port) || "4004";
   const target = (options && options.target) || `http://localhost:${port}`;
   const services = (options && options.services) || {};
@@ -87,11 +89,14 @@ module.exports = options => {
     });
   }
 
-  router.use(`/${path}/:service/`, logging.middleware({ appContext: appContext, logNetwork: true }));
+  router.use(`/${path}/*`, logging.middleware({ appContext: appContext, logNetwork: true }));
 
-  router.get(`/${path}/:service/\\$metadata`, async (req, res) => {
+  router.get(`/${path}/*/\\$metadata`, async (req, res) => {
     try {
-      const { edmx } = await getMetadata(req);
+      const { csn } = await getMetadata(req);
+      req.csn = csn;
+      const service = serviceFromRequest(req);
+      const { edmx } = await getMetadata(req, service.name);
       res.setHeader("content-type", "application/xml");
       res.send(edmx);
     } catch (err) {
@@ -102,7 +107,7 @@ module.exports = options => {
   });
 
   router.use(
-    `/${path}/:service/`,
+    `/${path}/*`,
 
     // Body Parsers
     (req, res, next) => {
@@ -122,8 +127,6 @@ module.exports = options => {
 
     // Inject Context
     async (req, res, next) => {
-      const servicePath = req.params.service;
-      const service = normalizeService(servicePath);
       try {
         const { csn } = await getMetadata(req);
         req.csn = csn;
@@ -133,9 +136,10 @@ module.exports = options => {
         res.status(500).send("Internal Server Error");
         return;
       }
+      const service = serviceFromRequest(req);
       req.base = base;
-      req.service = service;
-      req.servicePath = servicePath;
+      req.service = service.name;
+      req.servicePath = service.path;
       req.context = {};
       req.contexts = [];
       req.contentId = {};
@@ -157,17 +161,50 @@ module.exports = options => {
     })
   );
 
-  function normalizeService(name) {
-    let service = (services || {})[name];
+  function serviceFromRequest(req) {
+    const requestPath = req.params["0"];
+    const normalizedRequestPath = requestPath.replace(/^\/?(.*)\/?$/g, "$1");
+
+    let servicePath;
+    let service = Object.keys(req.csn.definitions).find(definitionName => {
+      const definition = req.csn.definitions[definitionName];
+      if (definition && definition.kind === "service" && definition["@path"]) {
+        const normalizedDefinitionPath = definition["@path"].replace(/\/?(.*)\/?/g, "$1");
+        if (
+          normalizedRequestPath === normalizedDefinitionPath ||
+          normalizedRequestPath.startsWith(`${normalizedDefinitionPath}/`)
+        ) {
+          servicePath = normalizedDefinitionPath;
+          return true;
+        }
+      }
+      return false;
+    });
     if (!service) {
-      service = name.charAt(0).toUpperCase() + name.slice(1) + "Service";
+      Object.keys(services).find(configServicePath => {
+        const normalizedConfigServicePath = configServicePath.replace(/\/?(.*)\/?/g, "$1");
+        if (
+          normalizedRequestPath === normalizedConfigServicePath ||
+          normalizedRequestPath.startsWith(`${normalizedConfigServicePath}/`)
+        ) {
+          service = services[configServicePath];
+          servicePath = normalizedConfigServicePath;
+          return true;
+        }
+        return false;
+      });
     }
-    return service;
+    if (!service) {
+      service = requestPath.charAt(0).toUpperCase() + requestPath.slice(1) + "Service";
+      servicePath = requestPath;
+    }
+    return {
+      name: service,
+      path: servicePath
+    };
   }
 
-  async function getMetadata(req) {
-    const servicePath = req.params.service;
-    const service = normalizeService(servicePath);
+  async function getMetadata(req, service) {
     let metadata;
     if (standalone && mtxEndpoint) {
       metadata = await getTenantMetadataRemote(req, service);
@@ -241,15 +278,17 @@ module.exports = options => {
         edmx: {}
       };
     }
-    if (!proxyCache[tenantId].edmx[service]) {
-      proxyCache[tenantId].edmx[service] = await cds.compile.to.edmx(proxyCache[tenantId].csnRaw, {
-        service,
-        version: "v2"
-      });
+    if (service) {
+      if (!proxyCache[tenantId].edmx[service]) {
+        proxyCache[tenantId].edmx[service] = await cds.compile.to.edmx(proxyCache[tenantId].csnRaw, {
+          service,
+          version: "v2"
+        });
+      }
     }
     return {
       csn: proxyCache[tenantId].csn,
-      edmx: proxyCache[tenantId].edmx[service]
+      edmx: service && proxyCache[tenantId].edmx[service]
     };
   }
 
@@ -1392,7 +1431,7 @@ module.exports = options => {
     let protocol = req.header("x-forwarded-proto") || req.protocol || "http";
     let host = req.header("x-forwarded-host") || req.hostname || "localhost";
     let port = req.header("x-forwarded-host") ? "" : `:${req.socket.address().port}`;
-    return `${protocol}://${host}${port}${req.baseUrl}/${entity.name.split(".").pop()}(${encodeURIKey(key)})`;
+    return `${protocol}://${host}${port}${sourcePath}/${req.servicePath}/${entity.name.split(".").pop()}(${encodeURIKey(key)})`;
   }
 
   function entityKey(data, entity) {
