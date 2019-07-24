@@ -101,7 +101,7 @@ module.exports = (options = undefined) => {
       res.send(edmx);
     } catch (err) {
       // Error
-      trace(req, "Error", err.toString());
+      trace(req, "Error", err.stack || err.message);
       res.status(500).send("Internal Server Error");
     }
   });
@@ -132,7 +132,7 @@ module.exports = (options = undefined) => {
         req.csn = csn;
       } catch (err) {
         // Error
-        trace(req, "Error", err.toString());
+        trace(req, "Error", err.stack || err.message);
         res.status(500).send("Internal Server Error");
         return;
       }
@@ -541,7 +541,7 @@ module.exports = (options = undefined) => {
               return part;
             } catch (err) {
               // Error
-              trace(req, "Error", err.toString());
+              trace(req, "Error", err.stack || err.message);
             }
           } else {
             const keys = keyPart.split(",");
@@ -1035,7 +1035,7 @@ module.exports = (options = undefined) => {
       respond(req, res, proxyRes.statusCode, headers, body);
     } catch (err) {
       // Error
-      trace(req, "Error", err.toString());
+      trace(req, "Error", err.stack || err.message);
       respond(req, res, proxyRes.statusCode, proxyRes.headers, convertResponseError(proxyRes.body, proxyRes.headers));
     }
   }
@@ -1571,7 +1571,7 @@ module.exports = (options = undefined) => {
               headers = (result && result.headers) || headers;
             } catch (err) {
               // Error
-              trace(req, "Error", err.toString());
+              trace(req, "Error", err.stack || err.message);
             }
           }
           Object.entries(headers).forEach(([name, value]) => {
