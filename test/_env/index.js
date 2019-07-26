@@ -6,7 +6,7 @@ const cds = require("@sap/cds");
 
 process.env.XS_APP_LOG_LEVEL = "debug";
 
-const odatav2proxy = require("../../");
+const odatav2proxy = require("../../lib");
 
 const db = cds.connect({
   kind: "sqlite",

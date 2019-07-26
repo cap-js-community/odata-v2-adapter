@@ -12,7 +12,10 @@
     "express": "^4.17.1",
     "http-proxy-middleware": "^0.19.1"
   },
-  "main": "index.js",
+  "files": [
+    "lib/"
+  ],
+  "main": "lib/index.js",
   "scripts": {
     "start": "node test-server",
     "test": "jest",

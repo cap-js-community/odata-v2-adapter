@@ -3,7 +3,7 @@
 const express = require("express");
 const http = require("http");
 const cds = require("@sap/cds");
-const odatav2proxy = require("../../");
+const odatav2proxy = require("../../lib");
 
 process.env.XS_APP_LOG_LEVEL = "debug";
 
