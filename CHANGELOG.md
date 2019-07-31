@@ -9,4 +9,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- First release
+- GET, POST, PUT/PATCH, DELETE
+- Batch support
+- Actions, Functions
+- Analytical Annotations
+- Deep Expands/Selects
+- JSON format
+- Deep Structures
+- Data Type Mapping (incl. Date Time)
+- IEEE754Compatible
+- Messages/Error Handling
+- Location Header
+- $inlinecount / $count / $value
+- Entity with Parameters
+- Octet Stream, Content Disposition
+- Multitenancy, Extensibility (proxy in same process only)
+- Content-ID
+- Tracing
