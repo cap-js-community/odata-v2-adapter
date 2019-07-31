@@ -1,8 +1,8 @@
 {
   "userKey": "b81e3a66bf75424b843ab1160ed98c83999bf7a88b47492885043fcca068468b",
-  "projectToken": "a2ccfb860cdc4202b28d58a7890542b6bbee764f9aaf4b5a91eda0217abc5e9d",
+  "projectToken": "b65708956c314874a668c4a4cb44e9686530c0fc7b404b7787651e4510f30174",
   "apiKey": "6971b2eec2d3420bad0caf173ec629f6a3c7d3ba63f3445ab99ffdbf1acfb1d0",
-  "productName": "SHC - XSA CDX NODEJS 1",
+  "productName": "SHC - CDS_RUNTIME 1.0",
   "devDep": "false",
   "forceUpdate": true,
   "checkPolicies": true
