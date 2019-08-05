@@ -3,7 +3,7 @@
 OData v2 Adapter Proxy for CDS OData v4 Services
 
 ## Build Status
-[![Build Status](https://prod-build10300.wdf.sap.corp:443/buildStatus/icon?job=cds-community%2Fcds-community-cds-odata-v2-adapter-proxy-master-CI-linuxx86_64)](https://prod-build10300.wdf.sap.corp:443/job/cds-community/job/cds-community-cds-odata-v2-adapter-proxy-master-CI-linuxx86_64/)
+[![Build Status](https://gkecdxodata.jaas-gcp.cloud.sap.corp/buildStatus/icon?job=cds-community%2Fcds-odata-v2-adapter-proxy%2Fmaster)](https://gkecdxodata.jaas-gcp.cloud.sap.corp/job/cds-community/job/cds-odata-v2-adapter-proxy/job/master/)
 
 ## Getting Started
 
