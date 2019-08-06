@@ -25,4 +25,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Octet Stream, Content Disposition
 - Multitenancy, Extensibility (proxy in same process only)
 - Content-ID
+- Localization
 - Tracing
