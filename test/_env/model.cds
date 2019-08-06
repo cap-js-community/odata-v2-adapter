@@ -23,6 +23,7 @@ entity HeaderItem: cuid {
 }
 
 entity HeaderStream: cuid {
+    // @odata.mediaContentType: mediaType
     data: LargeBinary @Core.MediaType: mediaType;
     mediaType: String @Core.IsMediaType;
     filename: String @Core.ContentDisposition.Filename;

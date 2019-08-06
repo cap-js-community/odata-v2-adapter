@@ -1,7 +1,5 @@
 "use strict";
 
-const fs = require("fs");
-
 const CR = "\r";
 const LF = "\n";
 const CRLF = CR + LF;
@@ -50,17 +48,14 @@ function callMultipart(request, path, payload) {
     .send(payload);
 }
 
-function callStream(request, path, filename, headers) {
+function callStream(request, path, headers) {
   request = request.put(path);
   headers = headers || {};
   Object.keys(headers).forEach(vKey => {
     request.set(vKey, headers[vKey]);
   });
   request = request.set("content-type", headers["content-type"] || "application/octet-stream");
-  request.pipe(
-    fs.createReadStream(filename),
-    { end: false }
-  );
+  request = request.expect(204);
   return request;
 }
 

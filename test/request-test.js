@@ -1,6 +1,7 @@
 "use strict";
 
 const supertest = require("supertest");
+const fs = require("fs");
 
 const env = require("./_env");
 const util = require("./_env/util");
@@ -255,6 +256,7 @@ describe("request", () => {
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
+    expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("application/octet-stream");
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
     response = await util.callRead(
@@ -263,38 +265,50 @@ describe("request", () => {
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
+    expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("application/octet-stream");
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
     response = await util.callRead(request, `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
+    expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("application/octet-stream");
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
   });
 
-  it.skip("POST request with stream", async () => {
-    let response = await util.callWrite(request, "/v2/main/HeaderStream", {
+  it.skip("POST request with stream", (done) => {
+    util.callWrite(request, "/v2/main/HeaderStream", {
       mediaType: "image/png",
       filename: "test.png"
+    }).then((createResponse) => {
+      expect(createResponse.statusCode).toEqual(201);
+      const id = createResponse.body.d.ID;
+
+      const stream = fs.createReadStream("./test/_env/data/init/assets/file.png");
+      const req = util.callStream(
+        request,
+        `/v2/main/HeaderStream(guid'${id}')/data`,
+        {
+          "content-type": "image/png"
+        }
+      );
+      stream.on('end', () => {
+        req.end(() => {});
+        setTimeout(() => {
+          util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((readResponse) => {
+            expect(readResponse.statusCode).toEqual(200);
+            expect(readResponse.headers["content-type"]).toEqual("application/octet-stream");
+            expect(readResponse.body.length).toEqual(17686);
+            // TODO: Test Delete, set null
+            done();
+          });
+        }, 1000);
+      });
+      stream.pipe(
+        req,
+        { end: false }
+      )
     });
-    expect(response.statusCode).toEqual(201);
-    const id = response.body.d.ID;
-    request = await util.callStream(
-      request,
-      `/v2/main/HeaderStream(guid'${id}')/data`,
-      "./test/_env/data/init/assets/file.png",
-      {
-        "content-type": "image/png"
-      }
-    );
-    expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
-    expect(response.statusCode).toEqual(200);
-    expect(response.body.length).toBe(17686);
-    response = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
-    expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
-    expect(response.statusCode).toEqual(404);
   });
 
   it("GET request with function 'substringof'", async () => {
