@@ -1,51 +1,67 @@
 "use strict";
 
+const fs = require("fs");
+
 const CR = "\r";
 const LF = "\n";
 const CRLF = CR + LF;
 
-function callHead(oRequest, sPath, oHeaders) {
-  oRequest = oRequest.head(sPath);
-  if (oHeaders) {
-    Object.keys(oHeaders).forEach(vKey => {
-      oRequest.set(vKey, oHeaders[vKey]);
+function callHead(request, path, headers) {
+  request = request.head(path);
+  if (headers) {
+    Object.keys(headers).forEach(vKey => {
+      request.set(vKey, headers[vKey]);
     });
   }
-  return oRequest;
+  return request;
 }
 
-function callRead(oRequest, sPath, oHeaders) {
-  oRequest = oRequest.get(sPath);
-  if (oHeaders) {
-    Object.keys(oHeaders).forEach(vKey => {
-      oRequest.set(vKey, oHeaders[vKey]);
+function callRead(request, path, headers) {
+  request = request.get(path);
+  if (headers) {
+    Object.keys(headers).forEach(vKey => {
+      request.set(vKey, headers[vKey]);
     });
   }
-  return oRequest;
+  return request;
 }
 
-function callWrite(oRequest, sPath, oPayload, bUpdate, oHeaders) {
-  oRequest = bUpdate ? oRequest.patch(sPath) : oRequest.post(sPath);
-  oHeaders = oHeaders || {};
-  Object.keys(oHeaders).forEach(vKey => {
-    oRequest.set(vKey, oHeaders[vKey]);
+function callWrite(request, path, payload, update, headers) {
+  request = update ? request.patch(path) : request.post(path);
+  headers = headers || {};
+  Object.keys(headers).forEach(vKey => {
+    request.set(vKey, headers[vKey]);
   });
-  oRequest = oRequest.set("content-type", oHeaders["content-type"] || "application/json").send(oPayload);
-  return oRequest;
+  request = request.set("content-type", headers["content-type"] || "application/json").send(payload);
+  return request;
 }
 
-function callDelete(oRequest, sPath) {
-  return oRequest.delete(sPath);
+function callDelete(request, path) {
+  return request.delete(path);
 }
 
-function callMultipart(oRequest, sPath, sPayload) {
-  sPayload = sPayload.split(LF).join(CRLF);
-  return oRequest
-    .post(sPath)
+function callMultipart(request, path, payload) {
+  payload = payload.split(LF).join(CRLF);
+  return request
+    .post(path)
     .accept("multipart/mixed,application/json")
     .type("multipart/mixed;boundary=boundary")
     .parse(multipartMixedToTextParser)
-    .send(sPayload);
+    .send(payload);
+}
+
+function callStream(request, path, filename, headers) {
+  request = request.put(path);
+  headers = headers || {};
+  Object.keys(headers).forEach(vKey => {
+    request.set(vKey, headers[vKey]);
+  });
+  request = request.set("content-type", headers["content-type"] || "application/octet-stream");
+  request.pipe(
+    fs.createReadStream(filename),
+    { end: false }
+  );
+  return request;
 }
 
 function multipartMixedToTextParser(res, callback) {
@@ -65,5 +81,6 @@ module.exports = {
   callRead,
   callWrite,
   callDelete,
-  callMultipart
+  callMultipart,
+  callStream
 };

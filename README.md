@@ -56,6 +56,7 @@ Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData 
 - Octet Stream, Content Disposition
 - Multitenancy, Extensibility (proxy in same process only)
 - Content-ID
+- Localization
 - Tracing
 
 ## OData v2/v4 Delta

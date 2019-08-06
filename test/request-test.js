@@ -45,6 +45,19 @@ describe("request", () => {
     expect(response.text).toMatchSnapshot();
   });
 
+  it("GET $metadata localized", async () => {
+    let response = await util.callRead(request, "/v2/main/$metadata?sap-language=de", {
+      accept: "application/xml"
+    });
+    expect(response.body).toBeDefined();
+    expect(response.text).toMatchSnapshot();
+    response = await util.callRead(request, "/v2/main/$metadata", {
+      "accept-language": "de-DE"
+    });
+    expect(response.body).toBeDefined();
+    expect(response.text).toMatchSnapshot();
+  });
+
   it("GET request", async () => {
     let response = await util.callRead(request, "/v2/main/Header");
     expect(response.body).toBeDefined();
@@ -257,6 +270,31 @@ describe("request", () => {
     expect(response.body.length).toBe(17686);
     expect(response.headers["content-type"]).toEqual("application/octet-stream");
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
+  });
+
+  it.skip("POST request with stream", async () => {
+    let response = await util.callWrite(request, "/v2/main/HeaderStream", {
+      mediaType: "image/png",
+      filename: "test.png"
+    });
+    expect(response.statusCode).toEqual(201);
+    const id = response.body.d.ID;
+    request = await util.callStream(
+      request,
+      `/v2/main/HeaderStream(guid'${id}')/data`,
+      "./test/_env/data/init/assets/file.png",
+      {
+        "content-type": "image/png"
+      }
+    );
+    expect(response.statusCode).toEqual(200);
+    response = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.length).toBe(17686);
+    response = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
+    expect(response.statusCode).toEqual(200);
+    response = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
+    expect(response.statusCode).toEqual(404);
   });
 
   it("GET request with function 'substringof'", async () => {

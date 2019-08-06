@@ -193,25 +193,25 @@ exports[`draft-request GET $metadata 1`] = `
         </Annotation>
       </Annotations>
       <Annotations Target=\\"test.DraftService.Header/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Common.Label\\" String=\\"{i18n>ChangedAt}\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Changed At\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Common.Label\\" String=\\"{i18n>CreatedAt}\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Created At\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.Header/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Common.Label\\" String=\\"{i18n>CreatedBy}\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Created By\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Common.Label\\" String=\\"{i18n>ChangedBy}\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
