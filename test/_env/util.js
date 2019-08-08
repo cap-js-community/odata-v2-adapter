@@ -34,8 +34,13 @@ function callWrite(request, path, payload, update, headers) {
   return request;
 }
 
-function callDelete(request, path) {
-  return request.delete(path);
+function callDelete(request, path, headers) {
+  request = request.delete(path);
+  headers = headers || {};
+  Object.keys(headers).forEach(vKey => {
+    request.set(vKey, headers[vKey]);
+  });
+  return request;
 }
 
 function callMultipart(request, path, payload) {

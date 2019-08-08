@@ -276,39 +276,37 @@ describe("request", () => {
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
   });
 
-  it.skip("POST request with stream", (done) => {
-    util.callWrite(request, "/v2/main/HeaderStream", {
-      mediaType: "image/png",
-      filename: "test.png"
-    }).then((createResponse) => {
-      expect(createResponse.statusCode).toEqual(201);
-      const id = createResponse.body.d.ID;
+  it.skip("POST request with stream", done => {
+    util
+      .callWrite(request, "/v2/main/HeaderStream", {
+        mediaType: "image/png",
+        filename: "test.png"
+      })
+      .then(createResponse => {
+        expect(createResponse.statusCode).toEqual(201);
+        const id = createResponse.body.d.ID;
 
-      const stream = fs.createReadStream("./test/_env/data/init/assets/file.png");
-      const req = util.callStream(
-        request,
-        `/v2/main/HeaderStream(guid'${id}')/data`,
-        {
+        const stream = fs.createReadStream("./test/_env/data/init/assets/file.png");
+        const req = util.callStream(request, `/v2/main/HeaderStream(guid'${id}')/data`, {
           "content-type": "image/png"
-        }
-      );
-      stream.on('end', () => {
-        req.end(() => {});
-        setTimeout(() => {
-          util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((readResponse) => {
-            expect(readResponse.statusCode).toEqual(200);
-            expect(readResponse.headers["content-type"]).toEqual("application/octet-stream");
-            expect(readResponse.body.length).toEqual(17686);
-            // TODO: Test Delete, set null
-            done();
-          });
-        }, 1000);
+        });
+        stream.on("end", () => {
+          req.end(() => {});
+          setTimeout(() => {
+            util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(readResponse => {
+              expect(readResponse.statusCode).toEqual(200);
+              expect(readResponse.headers["content-type"]).toEqual("application/octet-stream");
+              expect(readResponse.body.length).toEqual(17686);
+              // TODO: Test Delete, set null
+              done();
+            });
+          }, 1000);
+        });
+        stream.pipe(
+          req,
+          { end: false }
+        );
       });
-      stream.pipe(
-        req,
-        { end: false }
-      )
-    });
   });
 
   it("GET request with function 'substringof'", async () => {

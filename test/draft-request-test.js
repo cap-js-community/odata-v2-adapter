@@ -318,4 +318,23 @@ describe("draft-request", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.ID).toEqual(id);
   });
+
+  it("DELETE draft request", async () => {
+    let response = await util.callWrite(request, "/v2/draft/Header", {
+      name: "Test Create"
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.ID).toEqual(id);
+    response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+      "If-Match": "*"
+    });
+    expect(response.statusCode).toEqual(204);
+    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.statusCode).toEqual(404);
+  });
 });
