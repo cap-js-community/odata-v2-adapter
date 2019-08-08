@@ -25,6 +25,8 @@ app.use(odatav2proxy({ path: "v2", model: "srv/index", port: 4004 }));
 ...
 ```
 
+Note that `@sap/cds` is a peer dependency and needs to be available as module as well.
+
 ## Documentation
 
 Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData v4 Server
@@ -56,6 +58,7 @@ Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData 
 - Octet Stream, Content Disposition
 - Multitenancy, Extensibility (proxy in same process only)
 - Content-ID
+- Draft Support
 - Localization
 - Tracing
 
