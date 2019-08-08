@@ -5,7 +5,7 @@
         <email>oliver.klemenz@sap.com</email>
     </contact>
 
-    <repository id="1" description="cds-odata-v2-adapter-proxy>
+    <repository id="1" description="cds-odata-v2-adapter-proxy">
         <type>git</type>
         <host>git@github.wdf.sap.corp:cds-community/cds-odata-v2-adapter-proxy.git</host>
         <paths id="1" cat="src" description="git:ssh">
