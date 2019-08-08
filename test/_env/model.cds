@@ -58,4 +58,3 @@ service MainService {
     function unboundNavigationFunction(num: Integer, text: String) returns Header;
     function unboundNavigationsFunction(num: Integer, text: String) returns array of Header;
 }
-
