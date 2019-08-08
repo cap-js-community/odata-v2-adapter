@@ -276,7 +276,7 @@ describe("request", () => {
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
   });
 
-  it.skip("POST request with stream", done => {
+  it.skip("PUT request with stream", done => {
     util
       .callWrite(request, "/v2/main/HeaderStream", {
         mediaType: "image/png",
@@ -297,8 +297,13 @@ describe("request", () => {
               expect(readResponse.statusCode).toEqual(200);
               expect(readResponse.headers["content-type"]).toEqual("application/octet-stream");
               expect(readResponse.body.length).toEqual(17686);
-              // TODO: Test Delete, set null
-              done();
+              return util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(deleteResponse => {
+                expect(deleteResponse.statusCode).toEqual(204);
+                return util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(readResponse => {
+                  expect(readResponse.statusCode).toEqual(204);
+                  done();
+                });
+              });
             });
           }, 1000);
         });
