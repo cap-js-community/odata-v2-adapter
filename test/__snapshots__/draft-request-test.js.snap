@@ -67,10 +67,10 @@ exports[`draft-request GET $metadata 1`] = `
           <PropertyRef Name=\\"DraftUUID\\"/>
         </Key>
         <Property Name=\\"DraftUUID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"CreationDateTime\\" Type=\\"Edm.DateTimeOffset\\"/>
+        <Property Name=\\"CreationDateTime\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"CreatedByUser\\" Type=\\"Edm.String\\" MaxLength=\\"256\\"/>
         <Property Name=\\"DraftIsCreatedByMe\\" Type=\\"Edm.Boolean\\"/>
-        <Property Name=\\"LastChangeDateTime\\" Type=\\"Edm.DateTimeOffset\\"/>
+        <Property Name=\\"LastChangeDateTime\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"LastChangedByUser\\" Type=\\"Edm.String\\" MaxLength=\\"256\\"/>
         <Property Name=\\"InProcessByUser\\" Type=\\"Edm.String\\" MaxLength=\\"256\\"/>
         <Property Name=\\"DraftIsProcessedByMe\\" Type=\\"Edm.Boolean\\"/>
@@ -109,8 +109,8 @@ exports[`draft-request GET $metadata 1`] = `
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"startAt\\" Type=\\"Edm.DateTimeOffset\\"/>
-        <Property Name=\\"endAt\\" Type=\\"Edm.DateTimeOffset\\"/>
+        <Property Name=\\"startAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
+        <Property Name=\\"endAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.DraftService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"IsActiveEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
