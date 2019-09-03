@@ -11,7 +11,7 @@ const odatav2proxy = require("../../lib");
 const db = cds.connect({
   kind: "sqlite",
   credentials: {
-    database: ":memory:"
+    database: ":memory:" // "./test/_env/test.db"
   }
 });
 
@@ -43,7 +43,8 @@ module.exports = async (service, defaultPort, fnInit) => {
       services: {
         main: "test.MainService",
         draft: "test.DraftService",
-        analytics: "test.AnalyticsService"
+        analytics: "test.AnalyticsService",
+        todo: "todo.TodoService"
       }
     })
   );

@@ -11,9 +11,9 @@ service AnalyticsService {
         description,
         country,
         currency,
-        @Analytics.Measure: true
+        @Analytics.Measure
         stock,
-        @Analytics.Measure: true
+        @Analytics.Measure
         @Aggregation.default: #AVG
         price,
         Items

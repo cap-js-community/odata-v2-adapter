@@ -10,7 +10,7 @@ const init = require("./_env/data/init");
 let context;
 let request;
 
-describe("request", () => {
+describe("service-request", () => {
   beforeAll(async () => {
     context = await env("servicemodel", 0, init);
     request = supertest(context.app);

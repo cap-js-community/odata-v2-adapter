@@ -16,7 +16,8 @@
     "test:integration": "jest --config=jest-integration.json",
     "lint": "eslint . --fix",
     "prepareRelease": "npm prune --production",
-    "tunnel": "cd integration-test/_env/db && npm run tunnel"
+    "tunnel": "cd integration-test/_env/db && npm run tunnel",
+    "test:deploy": "cd test/_env && cds deploy index.cds --to sqlite:test.db"
   },
   "dependencies": {
     "@sap/logging": "^5.0.2",
