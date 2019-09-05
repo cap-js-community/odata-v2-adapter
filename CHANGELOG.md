@@ -8,13 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 <!-- New version information is automatically added after line 8 -->
 ## Version 1.4.0 - tbd
 
-### Added
-
-### Changed
-
 ### Fixed
 
-### Removed
+- Raise error message for not supported aggregation function (e.g. #FORMULA)
+- Fixed entity key calculation for key associations
+- Fixed DateTime representation in entity key structure
 
 ## Version 1.3.0 - 2019-08-30
 
