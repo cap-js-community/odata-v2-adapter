@@ -22,7 +22,6 @@ module.exports = async (service, defaultPort, fnInit) => {
 
   const srv = await cds.load(servicePath);
   await cds.deploy(srv);
-  await cds.serve(servicePath).in(app);
 
   // Backend
   await new Promise(resolve => {
@@ -48,6 +47,8 @@ module.exports = async (service, defaultPort, fnInit) => {
       }
     })
   );
+
+  await cds.serve(servicePath).in(app);
 
   const context = { port, app, cds, srv, db, tx: db.transaction() };
   if (fnInit) {
