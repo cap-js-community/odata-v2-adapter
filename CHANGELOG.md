@@ -6,15 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- New version information is automatically added after line 8 -->
-## Version 1.5.0 - tbd
-
-### Added
-
-### Changed
+## Version 1.4.1 - 2019-09-11
 
 ### Fixed
-
-### Removed
+- Fixed compatibility to CDS 3.17.0
+- Propagate x-request-id, x-correlationid
 
 ## Version 1.4.0 - 2019-09-09
 

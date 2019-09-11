@@ -61,6 +61,7 @@ Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData 
 - Draft Support
 - Localization
 - Tracing
+- Logging Correlation
 
 ## OData v2/v4 Delta
  

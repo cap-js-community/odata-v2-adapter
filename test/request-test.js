@@ -257,7 +257,7 @@ describe("request", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
-    expect(response.headers["content-type"]).toEqual("application/octet-stream");
+    expect(response.headers["content-type"]).toEqual("image/png");
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
     response = await util.callRead(
       request,
@@ -266,17 +266,17 @@ describe("request", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
-    expect(response.headers["content-type"]).toEqual("application/octet-stream");
+    expect(response.headers["content-type"]).toEqual("image/png");
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
     response = await util.callRead(request, `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
-    expect(response.headers["content-type"]).toEqual("application/octet-stream");
+    expect(response.headers["content-type"]).toEqual("image/png");
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
   });
 
-  it.skip("PUT request with stream", done => {
+  it("PUT request with stream", done => {
     util
       .callWrite(request, "/v2/main/HeaderStream", {
         mediaType: "image/png",
@@ -295,8 +295,8 @@ describe("request", () => {
           setTimeout(() => {
             util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(readResponse => {
               expect(readResponse.statusCode).toEqual(200);
-              expect(readResponse.headers["content-type"]).toEqual("application/octet-stream");
-              expect(readResponse.body.length).toEqual(17686);
+              expect(readResponse.headers["content-type"]).toEqual("image/png");
+              expect(readResponse.body.length).toEqual(35372);
               return util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(deleteResponse => {
                 expect(deleteResponse.statusCode).toEqual(204);
                 return util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(readResponse => {
