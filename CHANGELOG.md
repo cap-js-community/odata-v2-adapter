@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+## Version 1.4.2 - 2019-09-24
+
+### Fixed
+- Looser declaration or peer dependency to be compatible with snapshots
+
 ## Version 1.4.1 - 2019-09-11
 
 ### Fixed
