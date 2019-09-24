@@ -42,7 +42,7 @@
     "supertest": "^4.0.2"
   },
   "peerDependencies": {
-    "@sap/cds": "^3.14.0"
+    "@sap/cds": "*"
   },
   "repository": {
     "type": "git",
