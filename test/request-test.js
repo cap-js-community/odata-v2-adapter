@@ -339,6 +339,16 @@ describe("request", () => {
     expect(response.body.d.results).toHaveLength(0);
   });
 
+  it('GET request with filter with data type conversion', async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+      stock: 999,
+      country: "US"
+    });
+    response = await util.callRead(request, `/v2/main/Header?$filter=stock eq 999L`);
+    expect(response.body.d.results).toHaveLength(1);
+  });
+
   it("POST request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test Create",
