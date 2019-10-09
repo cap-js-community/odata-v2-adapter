@@ -26,7 +26,7 @@ describe("batch-request", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body.includes("HTTP/1.1 200 OK")).toEqual(true);
     expect((response.body.match(/{"d":{"results":\[\]}}/g) || []).length).toEqual(1);
-    expect((response.body.match(/{"d":{"results":\[\],"__count":0}}/g) || []).length).toEqual(1);
+    expect((response.body.match(/{"d":{"results":\[\],"__count":"0"}}/g) || []).length).toEqual(1);
   });
 
   it("POST request", async () => {

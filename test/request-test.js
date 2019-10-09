@@ -66,7 +66,7 @@ describe("request", () => {
     response = await util.callRead(request, "/v2/main/Header?$inlinecount=allpages");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(4);
-    expect(response.body.d.__count).toEqual(4);
+    expect(response.body.d.__count).toEqual("4");
     const id = response.body.d.results[0].ID;
     response = await util.callRead(request, `/v2/main/HeaderAssocKey(guid'${id}')`);
     expect(response.body).toBeDefined();
@@ -339,7 +339,7 @@ describe("request", () => {
     expect(response.body.d.results).toHaveLength(0);
   });
 
-  it('GET request with filter with data type conversion', async () => {
+  it("GET request with filter with data type conversion", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
       stock: 999,

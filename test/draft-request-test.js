@@ -46,7 +46,7 @@ describe("draft-request", () => {
     response = await util.callRead(request, "/v2/draft/Header?$inlinecount=allpages");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(0);
-    expect(response.body.d.__count).toEqual(0);
+    expect(response.body.d.__count).toEqual("0");
   });
 
   it("GET request with parameters", async () => {
