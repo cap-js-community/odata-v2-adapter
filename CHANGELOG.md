@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Version 1.4.5 - tbd
 
 ### Fixed
+- __count is now of type String
+- Aggregation values are converted according to dynamic type
 
 ## Version 1.4.4 - 2019-10-07
 
