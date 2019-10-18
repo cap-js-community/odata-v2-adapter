@@ -207,12 +207,14 @@ exports[`draft-request GET $metadata 1`] = `
       <Annotations Target=\\"test.DraftService.Header/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Created By\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"A user's unique ID\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"A user's unique ID\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
