@@ -2,6 +2,10 @@ namespace test;
 
 using { managed, cuid } from '@sap/cds/common';
 
+annotate managed with {
+    modifiedAt @odata.etag;
+}
+
 entity Header: cuid, managed {
     name: String;
     description: String;

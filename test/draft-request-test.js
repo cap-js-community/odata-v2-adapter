@@ -331,7 +331,7 @@ describe("draft-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d.ID).toEqual(id);
     response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
-      "If-Match": "*"
+      // "If-Match": "*"
     });
     expect(response.statusCode).toEqual(204);
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);

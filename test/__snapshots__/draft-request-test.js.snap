@@ -81,7 +81,7 @@ exports[`draft-request GET $metadata 1`] = `
           <PropertyRef Name=\\"IsActiveEntity\\"/>
         </Key>
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\"/>
+        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" ConcurrencyMode=\\"Fixed\\"/>
         <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\"/>
         <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
         <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
