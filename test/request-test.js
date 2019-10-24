@@ -222,6 +222,20 @@ describe("request", () => {
     });
   });
 
+  it("GET request with search", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test"
+    });
+    expect(response.statusCode).toEqual(201);
+    response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Search Instance"
+    });
+    expect(response.statusCode).toEqual(201);
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header?search=Search%20Instance`);
+    expect(response.body.d.results.length).toEqual(1);
+  });
+
   it("GET request with $count", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test"

@@ -59,6 +59,7 @@ Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData 
 - Multitenancy, Extensibility (proxy in same process only)
 - Content-ID
 - Draft Support
+- Search Support
 - Localization
 - Tracing
 - Logging Correlation
