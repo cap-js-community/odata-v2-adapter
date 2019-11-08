@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Version 1.4.6 - tbd
 
 ### Fixed
+- Increased body size limit
 
 ## Version 1.4.5 - 2019-10-25
 
