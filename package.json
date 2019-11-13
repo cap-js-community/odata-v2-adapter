@@ -3,7 +3,7 @@
   "version": "1.4.7-SNAPSHOT",
   "description": "OData v2 Adapter Proxy for CDS OData v4 Services",
   "engines": {
-    "node": "^8.9.0"
+    "node": ">=8.9.0"
   },
   "author": "Oliver Klemenz, Richard Lindner",
   "files": [
