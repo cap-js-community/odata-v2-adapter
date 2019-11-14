@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Increased body size limit
 - Fix engine config, to allow Node >= 8
+- Map cds.DateTime and cds.Timestamp to Edm.DateTimeOffset 
 
 ## Version 1.4.6 - 2019-11-07
 

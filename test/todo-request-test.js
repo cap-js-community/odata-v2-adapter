@@ -38,19 +38,19 @@ describe("todo-request", () => {
             {
               __metadata: {
                 type: "todo.TodoService.PlannedTasks",
-                uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-23T00:00:00Z',endDate=datetime'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)`
+                uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)`
               },
               endDate: "/Date(1566518400000)/",
               person: {
                 __deferred: {
-                  uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-23T00:00:00Z',endDate=datetime'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/person`
+                  uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/person`
                 }
               },
               person_ID: 1,
               startDate: "/Date(1566518400000)/",
               task: {
                 __deferred: {
-                  uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-23T00:00:00Z',endDate=datetime'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/task`
+                  uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/task`
                 }
               },
               task_ID: 1,
@@ -82,19 +82,19 @@ describe("todo-request", () => {
             {
               __metadata: {
                 type: "todo.TodoService.PlannedTasks",
-                uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-24T00:00:00Z',endDate=datetime'2019-08-24T00:00:00Z',task_ID=2,person_ID=3)`
+                uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',task_ID=2,person_ID=3)`
               },
               endDate: "/Date(1566604800000)/",
               person: {
                 __deferred: {
-                  uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-24T00:00:00Z',endDate=datetime'2019-08-24T00:00:00Z',task_ID=2,person_ID=3)/person`
+                  uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',task_ID=2,person_ID=3)/person`
                 }
               },
               person_ID: 3,
               startDate: "/Date(1566604800000)/",
               task: {
                 __deferred: {
-                  uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-24T00:00:00Z',endDate=datetime'2019-08-24T00:00:00Z',task_ID=2,person_ID=3)/task`
+                  uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',task_ID=2,person_ID=3)/task`
                 }
               },
               task_ID: 2,
@@ -119,19 +119,19 @@ describe("todo-request", () => {
     expect(response.body.d).toEqual({
       __metadata: {
         type: "todo.TodoService.PlannedTasks",
-        uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-23T00:00:00Z',endDate=datetime'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)`
+        uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)`
       },
       endDate: "/Date(1566518400000)/",
       person: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-23T00:00:00Z',endDate=datetime'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/person`
+          uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/person`
         }
       },
       person_ID: 1,
       startDate: "/Date(1566518400000)/",
       task: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-23T00:00:00Z',endDate=datetime'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/task`
+          uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/task`
         }
       },
       task_ID: 1,
@@ -156,19 +156,19 @@ describe("todo-request", () => {
     expect(response.body.d).toEqual({
       __metadata: {
         type: "todo.TodoService.PlannedTasks",
-        uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-23T00:00:00Z',endDate=datetime'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)`
+        uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)`
       },
       endDate: "/Date(1566518400000)/",
       person: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-23T00:00:00Z',endDate=datetime'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/person`
+          uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/person`
         }
       },
       person_ID: 1,
       startDate: "/Date(1566518400000)/",
       task: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetime'2019-08-23T00:00:00Z',endDate=datetime'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/task`
+          uri: `http://${response.request.host}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',task_ID=1,person_ID=1)/task`
         }
       },
       task_ID: 1,
