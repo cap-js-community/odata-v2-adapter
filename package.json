@@ -12,7 +12,7 @@
   "main": "lib/index.js",
   "scripts": {
     "start": "node test-server",
-    "test": "jest",
+    "test": "jest --updateSnapshot",
     "test:integration": "jest --config=jest-integration.json",
     "lint": "eslint . --fix",
     "prepareRelease": "npm prune --production",
@@ -22,7 +22,6 @@
   "dependencies": {
     "@sap/logging": "^5.0.2",
     "axios": "^0.19.0",
-    "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "http-proxy-middleware": "^0.19.1"
   },
