@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Allow CSN object as model option
+- Error for not found service
+- Fix service paths with hyphen
 
 ## Version 1.4.8 - 2019-11-14
 
