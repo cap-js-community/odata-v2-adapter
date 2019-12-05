@@ -21,6 +21,18 @@ describe("service-request", () => {
   });
 
   it("GET service", async () => {
+    const response = await util.callRead(request, "/v2/dummy", {
+      accept: "application/json"
+    });
+    expect(response.body).toBeDefined();
+    expect(response.body).toEqual({
+      d: {
+        EntitySets: ["Header", "HeaderItem"]
+      }
+    });
+  });
+
+  it("GET service data", async () => {
     const response = await util.callRead(request, "/v2/dummy/Header", {
       accept: "application/json"
     });
