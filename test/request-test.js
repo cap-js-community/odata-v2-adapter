@@ -321,10 +321,7 @@ describe("request", () => {
             });
           }, 1000);
         });
-        stream.pipe(
-          req,
-          { end: false }
-        );
+        stream.pipe(req, { end: false });
       });
   });
 

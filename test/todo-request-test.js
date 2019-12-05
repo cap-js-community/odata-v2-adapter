@@ -147,7 +147,7 @@ describe("todo-request", () => {
       {
         tentative: false,
         keyDateEdit: "/Date(1577836800000)/",
-        keyTimeEdit: "PT13H35M57.99S",
+        keyTimeEdit: "PT13H35M57.99S"
       },
       true,
       {
