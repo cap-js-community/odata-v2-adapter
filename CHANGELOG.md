@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Version 1.4.10 - 2019-12-05
 
 ### Fixed
-- Fix service detection
+- Fix service and CSN model detection
 
 ## Version 1.4.9 - 2019-12-05
 
