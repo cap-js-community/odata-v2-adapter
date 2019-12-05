@@ -19,6 +19,10 @@ entity PlannedTasks {
     key person: Association to People;
     key startDate: DateTime;
     key endDate: DateTime;
+    key keyDate: Date;
+    key keyTime: Time;
+    keyDateEdit: Date;
+    keyTimeEdit: Time;
     tentative: Boolean;
 }
 
