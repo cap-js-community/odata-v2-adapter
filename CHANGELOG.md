@@ -6,11 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- New version information is automatically added after line 8 -->
-## Version 1.4.12 - tbd
-
-### Fixed
-
-## Version 1.4.11 - 2019-12-06
+## Version 1.4.12 - 2019-12-06
 
 ### Fixed
 - Fix service and CSN model detection
