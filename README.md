@@ -17,7 +17,7 @@ OData v2 Adapter Proxy for CDS OData v4 Services
 ## Usage
 
 In your existing `@sap/cds` project:
-- Run npm install `@sap/cds-odata-v2-adapter-proxy`
+- Run `npm install @sap/cds-odata-v2-adapter-proxy`
     - Internal NPM Registry: `http://nexus.wdf.sap.corp:8081/nexus/content/groups/build.releases.npm/`
     - External NPM Registry: `https://npm.sap.com`
 - Create new file e.g. `index.js` at the root of your project:
@@ -57,7 +57,7 @@ const port = 4004;
 })();
 ```
 
-- Run `node index.js` to start your server
+- Run `node index` to start your server
     - OData v2 service will be availabe at http://localhost:4004/v2/service
     - OData v4 service will be availabe at http://localhost:4004/service
 
