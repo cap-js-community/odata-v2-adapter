@@ -42,10 +42,7 @@ module.exports = async (service, defaultPort, fnInit) => {
     odatav2proxy({
       path: "v2",
       model: servicePath,
-      port: port,
-      services: {
-        main: "test.MainService"
-      }
+      port: port
     })
   );
 

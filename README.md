@@ -72,7 +72,6 @@ Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData 
   - **[options.model]:** CDS service model path. Default is 'all'.
   - **[options.port]:** Target port, which points to OData v4 backend port. Default is '4004'.
   - **[options.target]:** Target, which points to OData v4 backend host/port. Default is 'http://localhost:4004'.
-  - **[options.services]:** Service mapping, from url path name to service name. If omitted CDS defaults apply.
   - **[options.standalone]** Indication, that OData v2 Adapter proxy is a standalone process. Default is 'false'.
   - **[options.mtxEndpoint]** Endpoint to retrieve MTX metadata. Default is '/mtx/v1'
 

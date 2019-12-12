@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 ## Version 1.4.13 - tbd
+- Remove "services" configuration, as it is obsolete
+- Fix nested functions in $filter 
 
 ### Fixed
 

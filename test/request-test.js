@@ -333,6 +333,21 @@ describe("request", () => {
     const id = response.body.d.ID;
     response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',name)`);
     expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',tolower(name))`
+    );
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',tolower(name)) or name eq 'ABC'`
+    );
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',tolower(name))%20or%20name%20eq 'ABC'`
+    );
+    expect(response.body.d.results).toHaveLength(1);
   });
 
   it('GET request with many "or" filters on same field', async () => {
