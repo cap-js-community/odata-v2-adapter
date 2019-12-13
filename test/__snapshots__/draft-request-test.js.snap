@@ -95,8 +95,8 @@ exports[`draft-request GET $metadata 1`] = `
         <NavigationProperty Name=\\"FirstItem\\" Relationship=\\"test.DraftService.Header_FirstItem\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <Property Name=\\"FirstItem_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"IsActiveEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
-        <Property Name=\\"HasActiveEntity\\" Type=\\"Edm.Boolean\\"/>
-        <Property Name=\\"HasDraftEntity\\" Type=\\"Edm.Boolean\\"/>
+        <Property Name=\\"HasActiveEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
+        <Property Name=\\"HasDraftEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
         <NavigationProperty Name=\\"DraftAdministrativeData\\" Relationship=\\"test.DraftService.Header_DraftAdministrativeData\\" FromRole=\\"Header\\" ToRole=\\"DraftAdministrativeData\\"/>
         <Property Name=\\"DraftAdministrativeData_DraftUUID\\" Type=\\"Edm.Guid\\"/>
         <NavigationProperty Name=\\"SiblingEntity\\" Relationship=\\"test.DraftService.Header_SiblingEntity\\" FromRole=\\"Header\\" ToRole=\\"Header1\\"/>
@@ -114,8 +114,8 @@ exports[`draft-request GET $metadata 1`] = `
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.DraftService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"IsActiveEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
-        <Property Name=\\"HasActiveEntity\\" Type=\\"Edm.Boolean\\"/>
-        <Property Name=\\"HasDraftEntity\\" Type=\\"Edm.Boolean\\"/>
+        <Property Name=\\"HasActiveEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
+        <Property Name=\\"HasDraftEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
         <NavigationProperty Name=\\"DraftAdministrativeData\\" Relationship=\\"test.DraftService.HeaderItem_DraftAdministrativeData\\" FromRole=\\"HeaderItem\\" ToRole=\\"DraftAdministrativeData\\"/>
         <Property Name=\\"DraftAdministrativeData_DraftUUID\\" Type=\\"Edm.Guid\\"/>
         <NavigationProperty Name=\\"SiblingEntity\\" Relationship=\\"test.DraftService.HeaderItem_SiblingEntity\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
@@ -227,9 +227,6 @@ exports[`draft-request GET $metadata 1`] = `
       <Annotations Target=\\"test.DraftService.Header/HasDraftEntity\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
       </Annotations>
-      <Annotations Target=\\"test.DraftService.Header/DraftAdministrativeData\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
-      </Annotations>
       <Annotations Target=\\"test.DraftService.Header/DraftAdministrativeData_DraftUUID\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
       </Annotations>
@@ -247,9 +244,6 @@ exports[`draft-request GET $metadata 1`] = `
         <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.HeaderItem/HasDraftEntity\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
-      </Annotations>
-      <Annotations Target=\\"test.DraftService.HeaderItem/DraftAdministrativeData\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.HeaderItem/DraftAdministrativeData_DraftUUID\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
