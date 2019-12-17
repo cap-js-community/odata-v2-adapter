@@ -15,4 +15,16 @@ DataServiceVersion: 2.0
 MaxDataServiceVersion: 2.0
 
 
+--boundary
+Content-Type: application/http
+
+GET Header(guid'{{ID}}') HTTP/1.1
+sap-cancel-on-close: true
+sap-contextid-accept: header
+Accept: application/json
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
 --boundary--

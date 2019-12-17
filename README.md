@@ -30,7 +30,7 @@ const proxy = require('@sap/cds-odata-v2-adapter-proxy');
 
 // config
 const host = '0.0.0.0';
-const port = 4004;
+const port = process.env.PORT || 4004;
 
 (async () => {
   // create new app

@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Version 1.4.14 - tbd
 
 ### Fixed
-- Improve $filter handling, incl. negative tests 
+- Protect $metadata call
+- Fix $filter parentheses nesting
+- Improve $filter handling, incl. negative tests
 
 ## Version 1.4.13 - 2019-12-12
 

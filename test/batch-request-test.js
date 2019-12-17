@@ -5,13 +5,14 @@ const supertest = require("supertest");
 
 const env = require("./_env");
 const util = require("./_env/util");
+const init = require("./_env/data/init");
 
 let context;
 let request;
 
 describe("batch-request", () => {
   beforeAll(async () => {
-    context = await env("model");
+    context = await env("model", 0, init);
     request = supertest(context.app);
   });
 
@@ -20,13 +21,20 @@ describe("batch-request", () => {
   });
 
   it("GET request", async () => {
+    let response = await util.callRead(request, "/v2/main/Header?$top=1");
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toHaveLength(1);
+    const ID = response.body.d.results[0].ID;
+
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-GET.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
-    const response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    payload = payload.replace(/{{ID}}/g, ID);
+    response = await util.callMultipart(request, "/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(200);
     expect(response.body.includes("HTTP/1.1 200 OK")).toEqual(true);
-    expect((response.body.match(/{"d":{"results":\[\]}}/g) || []).length).toEqual(1);
-    expect((response.body.match(/{"d":{"results":\[\],"__count":"0"}}/g) || []).length).toEqual(1);
+    expect((response.body.match(/{"d":{"results":\[.+\]}}/g) || []).length).toEqual(1);
+    expect((response.body.match(/{"d":{"results":\[.+\],"__count":"4"}}/g) || []).length).toEqual(1);
+    expect((response.body.match(new RegExp(`{"d":{"ID":"${ID}".*}}`, "g")) || []).length).toEqual(1);
   });
 
   it("POST request", async () => {
