@@ -76,11 +76,38 @@ function multipartMixedToTextParser(res, callback) {
   });
 }
 
+function splitMultipartResponse(body, boundary = "boundary") {
+  return body
+    .split(new RegExp(`(?:^|\r\n)--${boundary}(?:\r\n|--\r\n$)`))
+    .slice(1, -1)
+    .map(part => {
+      const [_meta, ..._rest] = part.split("\r\n\r\n");
+      const multipart = _meta.match(/content-type:\s*multipart\/mixed;\s*boundary=(\w+)/i);
+      if (multipart !== null) {
+        const subBoundary = multipart[1];
+        return splitMultipartResponse(_rest.join("\r\n\r\n"), subBoundary);
+      } else {
+        const [_info, _body] = _rest;
+        const body = _body && _body.startsWith("{") ? JSON.parse(_body) : _body;
+        const [_status, ..._headers] = _info.split("\r\n");
+        const [protocol, _statusCode, statusText] = _status.split(/\s+/);
+        const statusCode = parseInt(_statusCode);
+        let headers = {};
+        _headers.forEach(_header => {
+          const [key, value] = _header.split(": ");
+          headers[key] = value;
+        });
+        return { statusCode, statusText, headers, body };
+      }
+    });
+}
+
 module.exports = {
   callHead,
   callRead,
   callWrite,
   callDelete,
   callMultipart,
+  splitMultipartResponse,
   callStream
 };

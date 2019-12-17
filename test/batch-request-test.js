@@ -31,10 +31,16 @@ describe("batch-request", () => {
     payload = payload.replace(/{{ID}}/g, ID);
     response = await util.callMultipart(request, "/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(200);
-    expect(response.body.includes("HTTP/1.1 200 OK")).toEqual(true);
-    expect((response.body.match(/{"d":{"results":\[.+\]}}/g) || []).length).toEqual(1);
-    expect((response.body.match(/{"d":{"results":\[.+\],"__count":"4"}}/g) || []).length).toEqual(1);
-    expect((response.body.match(new RegExp(`{"d":{"ID":"${ID}".*}}`, "g")) || []).length).toEqual(1);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(3);
+    expect(responses.filter(response => response.statusCode === 200).length).toEqual(3);
+    const [first, second, third] = responses;
+    expect(first.body.d.results.length).toEqual(4);
+
+    expect(second.body.d.results.length).toEqual(4);
+
+    expect(third.body.d.hasOwnProperty("results")).toEqual(false);
+    expect(third.body.d.ID).toEqual(ID);
   });
 
   it("POST request", async () => {
@@ -42,14 +48,23 @@ describe("batch-request", () => {
     payload = payload.replace(/\r\n/g, "\n");
     let response = await util.callMultipart(request, "/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(200);
-    expect((response.body.match(/HTTP\/1.1 201 Created/g) || []).length).toEqual(2);
+
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(4);
+    const [first, second, third, fourth] = responses;
+    expect(responses.filter(response => response.statusCode === 201)).toEqual([first, second]);
+    expect(responses.filter(response => response.statusCode === 200)).toEqual([third, fourth]);
+
     expect(
-      (response.body.match(/HTTP\/1.1 200 OK[\s\S]*?{"d":{"results":\[{.*?"name":"Test".*?}\]}}/g) || []).length
-    ).toEqual(2);
-    const id = (response.body.match(/"ID":"(.*?)"/) || []).pop();
+      third.body.d.results.filter(
+        result => result.name === "Test" && result.Items.results.length === 1 && result.FirstItem === null
+      ).length
+    ).toEqual(1);
+
+    expect(fourth.body.d.results.filter(result => result.name === "Test").length).toEqual(1);
+
+    const id = first.body.d.ID;
     expect(id).toBeDefined();
-    expect(response.body.includes('"Items":{"results":[')).toEqual(true);
-    expect(response.body.includes('"FirstItem":null')).toEqual(true);
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body.d).toMatchObject({
       __metadata: {
@@ -82,7 +97,12 @@ describe("batch-request", () => {
     payload = payload.replace(/{{ID}}/g, id);
     response = await util.callMultipart(request, "/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(200);
-    expect((response.body.match(/HTTP\/1.1 200 OK/g) || []).length).toEqual(1);
+
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    const [first] = responses;
+    expect(first.statusCode).toEqual(200);
+
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body.d.name).toEqual("Test Update");
   });
@@ -107,7 +127,10 @@ describe("batch-request", () => {
     payload = payload.replace(/{{ItemID}}/g, itemId);
     response = await util.callMultipart(request, "/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(200);
-    expect((response.body.match(/HTTP\/1.1 200 OK/g) || []).length).toEqual(2);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    const [[first]] = responses;
+    expect(first.statusCode).toEqual(200);
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items`);
     expect(response.body.d.name).toEqual("Test Update Changeset");
     expect(response.body.d.Items.results[0].name).toEqual("Test Item Update Changeset");
@@ -125,7 +148,10 @@ describe("batch-request", () => {
     payload = payload.replace(/{{ID}}/g, id);
     response = await util.callMultipart(request, "/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(200);
-    expect((response.body.match(/HTTP\/1.1 204 No Content/g) || []).length).toEqual(1);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    const [first] = responses;
+    expect(first.statusCode).toEqual(204);
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(404);
   });
@@ -135,20 +161,22 @@ describe("batch-request", () => {
     payload = payload.replace(/\r\n/g, "\n");
     let response = await util.callMultipart(request, "/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(200);
-    expect(
-      response.body.includes(
-        JSON.stringify({
-          d: {
-            name: "abc1",
-            code: "TEST",
-            age: 1
-          }
-        })
-      )
-    ).toEqual(true);
-    expect(
-      response.body.includes(
-        JSON.stringify({
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(2);
+    expect(responses.filter(response => response.statusCode === 200).length).toEqual(2);
+    const [first, second] = responses;
+    expect(first.body).toEqual(
+      expect.objectContaining({
+        d: {
+          name: "abc1",
+          code: "TEST",
+          age: 1
+        }
+      })
+    );
+    expect(second.body).toEqual(
+      expect.objectContaining({
+        d: {
           results: [
             {
               name: "abc2",
@@ -156,8 +184,8 @@ describe("batch-request", () => {
               age: 2
             }
           ]
-        })
-      )
-    ).toEqual(true);
+        }
+      })
+    );
   });
 });
