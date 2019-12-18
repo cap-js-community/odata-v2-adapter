@@ -6,12 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- New version information is automatically added after line 8 -->
-## Version 1.4.14 - tbd
+## Version 1.4.14 - 2019-12-18
 
 ### Fixed
 - Protect $metadata call
 - Fix $filter parentheses nesting
-- Improve $filter handling, incl. negative tests
+- Fix "all" model loading from app, srv
+- Improve $filter handling, incl. data type and negative tests
 
 ## Version 1.4.13 - 2019-12-12
 

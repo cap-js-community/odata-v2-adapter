@@ -206,4 +206,119 @@ describe("todo-request", () => {
       }
     });
   });
+
+  it("Filter expression on data types", async () => {
+    let response = await util.callRead(
+      request,
+      "/v2/todo/Tasks?$filter=uuid eq guid'05db01e5-28e6-4668-9fdb-7da666c2eec8' or title eq 'ABC' or value1 ge 5.5d",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(
+      request,
+      "/v2/todo/Tasks?$filter=value1 eq 0.9d or title eq 'ABC' or value1 ge 5.5d",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(
+      request,
+      "/v2/todo/Tasks?$filter=title eq 'ABC' or value1 ge 5.5d or value2 eq 1.1m",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(
+      request,
+      "/v2/todo/Tasks?$filter=value3 eq 1.2f or title eq 'ABC' or value1 ge 5.5d",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(request, "/v2/todo/Tasks?$filter=value4 eq 3L or title eq 'ABC' or value1 ge 5.5d", {
+      accept: "application/json"
+    });
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(
+      request,
+      "/v2/todo/People(3)/plannedTasks?$filter=startDate eq datetimeoffset'2019-08-24T00:00:00Z'",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(
+      request,
+      "/v2/todo/People(3)/plannedTasks?$filter=keyDate eq datetime'2019-12-31T00:00' or tentative eq true",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(
+      request,
+      "/v2/todo/People(3)/plannedTasks?$filter=tentative eq true or keyTime eq time'PT12H34M56.7S'",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(
+      request,
+      "/v2/todo/People(3)/plannedTasks?$filter=tentative eq true or day(keyDate) eq 31",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+  });
+
+  it("Filter expression on data types with quotes", async () => {
+    let response = await util.callRead(
+      request,
+      "/v2/todo/Tasks?$filter=uuid eq guid'05db01e5-28e6-4668-9fdb-7da666c2eec8' or uuid eq guid'775863cf-9bf2-42a3-ac07-caf67a0b7955'",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(2);
+    response = await util.callRead(
+      request,
+      "/v2/todo/Tasks?$filter=uuid eq guid'05db01e5-28e6-4668-9fdb-7da666c2eec8' and title eq 'guid''05db01e5-28e6-4668-9fdb-7da666c2eec8'''",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(0);
+    response = await util.callRead(
+      request,
+      "/v2/todo/Tasks?$filter=((value4 eq 3L or title eq 'ABC' or value1 ge 5.5d or uuid eq guid'05db01e5-28e6-4668-9fdb-7da666c2eec8') and (title eq 'guid''05db01e5-28e6-4668-9fdb-7da666c2eec8''''' or uuid eq guid'05db01e5-28e6-4668-9fdb-7da666c2eec8' or value2 ge 5.5m))",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(request, "/v2/todo/Tasks?$filter='''ABC''''' ne title or value4 eq 3L", {
+      accept: "application/json"
+    });
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(2);
+  });
 });

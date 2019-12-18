@@ -39,4 +39,13 @@ describe("service-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length > 0).toEqual(true);
   });
+
+  it("GET service case sensitive", async () => {
+    const response = await util.callRead(request, "/v2/Dummy/Header", {
+      accept: "application/json"
+    });
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length > 0).toEqual(true);
+    expect(response.body.d.results[0].__metadata).toBeDefined();
+  });
 });

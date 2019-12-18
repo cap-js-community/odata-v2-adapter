@@ -2,6 +2,11 @@ namespace todo;
 
 entity Tasks {
     key ID: Integer;
+    uuid: UUID;
+    value1: Double;
+    value2: Decimal;
+    value3: DecimalFloat;
+    value4: Integer64;
     title: String;
     done: Boolean;
     items: Association to many TasksItems on items.task = $self;

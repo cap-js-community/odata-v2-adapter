@@ -1,3 +1,3 @@
-ID;title;done
-1;Build CAP application;1
-2;Fix some bugs;0
+ID;uuid;value1;value2;value3;value4;title;done
+1;05db01e5-28e6-4668-9fdb-7da666c2eec8;1.5;1.6;1.7;8;Build CAP application;1
+2;775863cf-9bf2-42a3-ac07-caf67a0b7955;0.9;1.1;1.2;3;Fix some bugs;0
