@@ -9,9 +9,27 @@ const util = require("./_env/util");
 let context;
 let request;
 
+const options = {
+  passport: {
+    strategy: "mock",
+    users: {
+      alice: {
+        password: "alice",
+        ID: "alice@wonder.land",
+        roles: ["XYZ4711"]
+      },
+      bob: {
+        password: "bob",
+        ID: "bob@builder.com",
+        roles: []
+      }
+    }
+  }
+};
+
 describe("auth-request", () => {
   beforeAll(async () => {
-    context = await env("authmodel");
+    context = await env("authmodel", 0, undefined, options);
     request = supertest(context.app);
   });
 
@@ -20,11 +38,28 @@ describe("auth-request", () => {
   });
 
   it("GET $metadata auth", async () => {
-    const response = await util.callRead(request, "/v2/auth/$metadata", {
+    let response = await util.callRead(request, "/v2/auth/$metadata", {
+      accept: "application/xml"
+    });
+    expect(response.status).toEqual(401);
+    expect(response.headers["www-authenticate"]).toEqual('Basic realm="Users"');
+
+    let authorization = `basic ${Buffer.from(
+      `${options.passport.users.bob.ID}:${options.passport.users.bob.password}`
+    ).toString("base64")}`;
+    response = await util.callRead(request, "/v2/auth/$metadata", {
       accept: "application/xml",
-      connection: "keep-alive",
-      "user-agent": "Mozilla/5.0"
-  });
+      Authorization: authorization
+    });
     expect(response.status).toEqual(403);
+
+    authorization = `basic ${Buffer.from(
+      `${options.passport.users.alice.ID}:${options.passport.users.alice.password}`
+    ).toString("base64")}`;
+    response = await util.callRead(request, "/v2/auth/$metadata", {
+      accept: "application/xml",
+      Authorization: authorization
+    });
+    expect(response.status).toEqual(200);
   });
 });

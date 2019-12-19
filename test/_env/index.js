@@ -15,7 +15,7 @@ const db = cds.connect({
   }
 });
 
-module.exports = async (service, defaultPort, fnInit) => {
+module.exports = async (service, defaultPort, fnInit, options) => {
   let port = defaultPort || 0;
   const servicePath = `./test/_env/${service}`;
   const app = express();
@@ -42,7 +42,7 @@ module.exports = async (service, defaultPort, fnInit) => {
     })
   );
 
-  await cds.serve(servicePath).in(app);
+  await cds.serve(servicePath, options).in(app);
 
   const context = { port, app, cds, srv, db, tx: db.transaction() };
   if (fnInit) {

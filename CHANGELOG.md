@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Version 1.4.15 - tbd
 
 ### Fixed
+- Fix authentication prompt for $metadata
+- Improve trace handling
 
 ## Version 1.4.14 - 2019-12-19
 
