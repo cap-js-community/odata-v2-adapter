@@ -8,7 +8,7 @@ const util = require("./_env/util");
 let context;
 let request;
 
-describe("request", () => {
+describe("main-requests", () => {
   beforeAll(async () => {
     context = await env("model");
     request = supertest(context.app);

@@ -9,7 +9,7 @@ const util = require("./_env/util");
 let context;
 let request;
 
-describe("request", () => {
+describe("auth-request", () => {
   beforeAll(async () => {
     context = await env("authmodel");
     request = supertest(context.app);
@@ -21,8 +21,10 @@ describe("request", () => {
 
   it("GET $metadata auth", async () => {
     const response = await util.callRead(request, "/v2/auth/$metadata", {
-      accept: "application/xml"
-    });
+      accept: "application/xml",
+      connection: "keep-alive",
+      "user-agent": "Mozilla/5.0"
+  });
     expect(response.status).toEqual(403);
   });
 });

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`request GET $metadata 1`] = `
+exports[`main-request GET $metadata 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <edmx:Edmx Version=\\"1.0\\" xmlns:edmx=\\"http://schemas.microsoft.com/ado/2007/06/edmx\\" xmlns:m=\\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\\" xmlns:sap=\\"http://www.sap.com/Protocols/SAPData\\">
   <edmx:Reference Uri=\\"https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
@@ -192,7 +192,7 @@ exports[`request GET $metadata 1`] = `
 </edmx:Edmx>"
 `;
 
-exports[`request GET $metadata localized 1`] = `
+exports[`main-request GET $metadata localized 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <edmx:Edmx Version=\\"1.0\\" xmlns:edmx=\\"http://schemas.microsoft.com/ado/2007/06/edmx\\" xmlns:m=\\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\\" xmlns:sap=\\"http://www.sap.com/Protocols/SAPData\\">
   <edmx:Reference Uri=\\"https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
@@ -384,7 +384,7 @@ exports[`request GET $metadata localized 1`] = `
 </edmx:Edmx>"
 `;
 
-exports[`request GET $metadata localized 2`] = `
+exports[`main-request GET $metadata localized 2`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <edmx:Edmx Version=\\"1.0\\" xmlns:edmx=\\"http://schemas.microsoft.com/ado/2007/06/edmx\\" xmlns:m=\\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\\" xmlns:sap=\\"http://www.sap.com/Protocols/SAPData\\">
   <edmx:Reference Uri=\\"https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
