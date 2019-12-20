@@ -16,7 +16,7 @@
     "test:integration": "jest --config=jest-integration.json",
     "lint": "eslint . --fix",
     "prepareRelease": "npm prune --production",
-    "update-lock": "pushpull .npmrc --on '#WRITE_LOCK' && npm i && npm up && npm ddp && pushpull .npmrc --off '#WRITE_LOCK'",
+    "update-lock": "pushpull .npmrc --on '#WRITE_LOCK' && npm i && npm ddp && pushpull .npmrc --off '#WRITE_LOCK'",
     "test:tunnel": "cd integration-test/_env/db && npm run tunnel",
     "test:deploy": "cd test/_env && cds deploy index.cds --to sqlite:test.db --no-save"
   },
