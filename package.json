@@ -13,7 +13,7 @@
   "scripts": {
     "start": "node test-server",
     "test": "jest --updateSnapshot",
-    "test:integration": "jest --config=jest-integration.json",
+    "test:integration": "jest --config=jest-integration.config.js",
     "lint": "eslint . --fix",
     "prepareRelease": "npm prune --production",
     "update-lock": "pushpull .npmrc --on '#WRITE_LOCK' && npm i && npm ddp && pushpull .npmrc --off '#WRITE_LOCK'",
@@ -24,11 +24,11 @@
     "@sap/logging": "^5.1.0",
     "axios": "^0.19.0",
     "express": "^4.17.1",
-    "http-proxy-middleware": "^0.19.1"
+    "http-proxy-middleware": "^0.20.0"
   },
   "devDependencies": {
     "@sap/cds": "^3.21.0",
-    "@sap/hana-client": "^2.4.171",
+    "@sap/hana-client": "^2.5.25",
     "@sap/xssec": "^2.2.4",
     "eslint": "^6.7.2",
     "eslint-config": "^0.3.0",

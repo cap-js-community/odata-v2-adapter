@@ -4,9 +4,50 @@
   },
   "private": true,
   "scripts": {
-    "init": "cd app && cf push",
-    "build": "cds index.cds --to hana -o db/src/gen",
+    "hdi": "cf cs hana hdi-shared cds-community-test-hana  -c '{\"database_id\": \"dbd3bfa0-ab0a-40af-8682-d58c83a4d139\"}'",
+    "hdi:cloud": "cf cs hana hdi-shared cds-community-test-hana-cloud  -c '{\"database_id\": \"f44e4187-209a-46cc-a2b2-3ca4a7a451c8\"}'",
+    "push": "cd app && cf push",
+    "build": "cds build/all --clean",
     "tunnel": "cd db && npm run tunnel",
-    "deploy": "cd db && npm start"
+    "deploy": "cd gen/db && npm start"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "multiTenant": false,
+        "kind": "hana",
+        "vcap": {
+          "tag": "hana"
+        }
+      }
+    },
+    "hana": {
+      "syntax": "hdi"
+    },
+    "build": {
+      "new-csn": true,
+      "tasks": [
+        {
+          "src": "db",
+          "for": "hana",
+          "options": {
+            "model": [
+              "db",
+              "srv"
+            ]
+          }
+        },
+        {
+          "src": "srv",
+          "for": "node-cf",
+          "options": {
+            "model": [
+              "db",
+              "srv"
+            ]
+          }
+        }
+      ]
+    }
   }
 }

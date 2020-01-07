@@ -10,7 +10,7 @@ let request;
 
 describe("main-requests", () => {
   beforeAll(async () => {
-    context = await env("model");
+    context = await env("index");
     request = supertest(context.app);
   });
 

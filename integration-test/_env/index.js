@@ -7,21 +7,16 @@ const odatav2proxy = require("../../lib");
 
 process.env.XS_APP_LOG_LEVEL = "debug";
 
-const hana = require("./db/default-services").hana[0].credentials;
-delete hana.url;
+const hanaCredentials = require("./db/default-services").hana[0].credentials;
 
-const db = cds.connect(
-  Object.assign(
-    {
-      kind: "hana"
-    },
-    hana
-  )
-);
+const db = cds.connect({
+  kind: "hana",
+  credentials: hanaCredentials
+});
 
 module.exports = async (service, defaultPort, fnInit) => {
   let port = defaultPort || 0;
-  const servicePath = `./integration-test/_env/${service}`;
+  const servicePath = `./integration-test/_env/srv/${service}`;
   const app = express();
 
   const srv = await cds.load(servicePath);
