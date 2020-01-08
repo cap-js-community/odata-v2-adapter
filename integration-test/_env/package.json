@@ -4,8 +4,8 @@
   },
   "private": true,
   "scripts": {
-    "hdi": "cf cs hana hdi-shared cds-community-test-hana  -c '{\"database_id\": \"dbd3bfa0-ab0a-40af-8682-d58c83a4d139\"}'",
-    "hdi:cloud": "cf cs hana hdi-shared cds-community-test-hana-cloud  -c '{\"database_id\": \"f44e4187-209a-46cc-a2b2-3ca4a7a451c8\"}'",
+    "hdi": "cf cs hana hdi-shared cds-community-test-hana-cloud  -c '{\"database_id\": \"c4e10277-2a1a-4860-8a33-1119b5da63f5\"}'",
+    "hdi:alt": "cf cs hana hdi-shared cds-community-test-hana  -c '{\"database_id\": \"dbd3bfa0-ab0a-40af-8682-d58c83a4d139\"}'",
     "push": "cd app && cf push",
     "build": "cds build/all --clean",
     "tunnel": "cd db && npm run tunnel",
