@@ -17,7 +17,6 @@
     "lint": "eslint . --fix",
     "prepareRelease": "npm prune --production",
     "update-lock": "pushpull .npmrc --on '#WRITE_LOCK' && npm i && npm ddp && pushpull .npmrc --off '#WRITE_LOCK'",
-    "upgrade-lock": "pushpull .npmrc --on '#WRITE_LOCK' && rm -rf 'package-lock.json node_modules' && npm i && npm ddp && pushpull .npmrc --off '#WRITE_LOCK'",
     "test:deploy": "cd test/_env && cds deploy index.cds --to sqlite:test.db --no-save"
   },
   "dependencies": {
