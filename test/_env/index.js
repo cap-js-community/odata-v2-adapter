@@ -24,9 +24,8 @@ module.exports = async (service, defaultPort, fnInit, options) => {
   await cds.deploy(srv);
 
   // Backend
-  let server;
   await new Promise(resolve => {
-    server = new http.Server(app);
+    const server = new http.Server(app);
     server.listen(port, () => {
       port = server.address().port;
       console.info(`Server listening on port ${port}`);
@@ -45,7 +44,7 @@ module.exports = async (service, defaultPort, fnInit, options) => {
 
   await cds.serve(servicePath, options).in(app);
 
-  const context = { port, server, app, cds, srv, db, tx: db.transaction() };
+  const context = { port, app, cds, srv, db, tx: db.transaction() };
   if (fnInit) {
     await fnInit(context);
   }
@@ -54,5 +53,5 @@ module.exports = async (service, defaultPort, fnInit, options) => {
 
 module.exports.end = context => {
   context.cds.disconnect();
-  context.server.close();
+  context.app.close();
 };
