@@ -321,4 +321,44 @@ describe("todo-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length).toEqual(2);
   });
+
+  it("tests IEEE754Compatible on decimals", async () => {
+    let response = await util.callRead(request, "/v2/todo/Tasks(1)", {
+      accept: "application/json"
+    });
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d.ID).toEqual(1);
+    expect(response.body.d.value2).toEqual("1.6");
+    let taskUri = response.body.d.__metadata.uri;
+    response = await util.callWrite(
+      request,
+      "/v2/todo/Tasks(1)",
+      {
+        value2: "1.61"
+      },
+      true,
+      {
+        "content-type": "application/json",
+        accept: "application/json"
+      }
+    );
+    expect(response.statusCode).toEqual(200);
+    response = await util.callRead(request, "/v2/todo/Tasks(1)", {
+      accept: "application/json"
+    });
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d.ID).toEqual(1);
+    expect(response.body.d.value2).toEqual("1.61");
+
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-PUT-Decimal.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    response = await util.callMultipart(request, "/v2/todo/$batch", payload);
+    expect(response.statusCode).toEqual(200);
+    response = await util.callRead(request, "/v2/todo/Tasks(1)", {
+      accept: "application/json"
+    });
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d.ID).toEqual(1);
+    expect(response.body.d.value2).toEqual("1.62");
+  });
 });

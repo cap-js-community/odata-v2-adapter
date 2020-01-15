@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Version 1.4.17 - tbd
 
 ### Fixed
+- Fix IEEE754 compatibility for single requests
+- Add IEEE754 compatibility option switch
 
 ## Version 1.4.16 - 2020-01-14
 
