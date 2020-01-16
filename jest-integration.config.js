@@ -1,3 +1,5 @@
+require("@sap/hana-client/lib/index.js");
+
 module.exports = {
   reporters: ["default"],
   automock: false,
@@ -11,6 +13,5 @@ module.exports = {
   testMatch: ["**/integration-test/**/*-test.js"],
   testPathIgnorePatterns: ["/node_modules/"],
   testURL: "http://localhost/",
-  verbose: true,
-  globalSetup: "./integration-test/_env/sapHana.config.js"
+  verbose: true
 };
