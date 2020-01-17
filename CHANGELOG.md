@@ -6,9 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- New version information is automatically added after line 8 -->
-## Version 1.4.17 - tbd
+## Version 1.4.17 - 2020-01-20
 
 ### Fixed
+- Support for virtual hosts (e.g. Cloud Connector)
 - Fix IEEE754 compatibility for single requests
 - Add IEEE754 compatibility option switch
 
@@ -80,7 +81,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Version 1.4.3 - 2019-10-01
 
 ### Fixed
-- Check CDS multitenancy/extensibility (mtx) with flag `cds.env.requires.db.multiTenant`, see https://github.wdf.sap.corp/cap/issues/issues/2032
+- Check CDS multitenancy/extensibility (mtx)
 - Allow options that are falsy for Javascript
 
 ## Version 1.4.2 - 2019-09-24
@@ -112,23 +113,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Version 1.2.0 - 2019-08-08
 
 ### Added
+- External Release
 
-- GET, POST, PUT/PATCH, DELETE
-- Batch support
-- Actions, Functions
-- Analytical Annotations
-- Deep Expands/Selects
-- JSON format
-- Deep Structures
-- Data Type Mapping (incl. Date Time)
-- IEEE754Compatible
-- Messages/Error Handling
-- Location Header
-- $inlinecount / $count / $value
-- Entity with Parameters
-- Octet Stream, Content Disposition
-- Multitenancy, Extensibility (proxy in same process only)
-- Content-ID
-- Draft Support
-- Localization
-- Tracing
+## Version 1.0.0 - 2019-05-21
+
+### Added
+- Internal Release
