@@ -57,7 +57,7 @@ const port = process.env.PORT || 4004;
 })();
 ```
 
-- Run `node srv/index` to start your server
+- Run `node srv/index` from the project root to start the server:
     - OData v2 service will be available at http://localhost:4004/v2/service
     - OData v4 service will be available at http://localhost:4004/service
 
