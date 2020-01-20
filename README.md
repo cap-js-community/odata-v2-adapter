@@ -20,7 +20,7 @@ In your existing `@sap/cds` project:
 - Run `npm install @sap/cds-odata-v2-adapter-proxy`
     - Internal NPM Registry: `http://nexus.wdf.sap.corp:8081/nexus/content/groups/build.releases.npm/`
     - External NPM Registry: `https://npm.sap.com`
-- Create new file e.g. `index.js` in folder `srv' of your project:
+- Create new file e.g. `index.js` in the service folder `srv` of your project:
 
 ```
 // load modules
