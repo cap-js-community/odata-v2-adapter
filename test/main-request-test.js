@@ -375,13 +375,30 @@ describe("main-request", () => {
     expect(response.body.d.results).toHaveLength(0);
   });
 
-  it("GET request with filter with data type conversion", async () => {
+  it("GET request with filter and data type conversion", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
       stock: 999,
       country: "US"
     });
     response = await util.callRead(request, `/v2/main/Header?$filter=stock eq 999L`);
+    expect(response.body.d.results).toHaveLength(1);
+  });
+
+  it("GET request with uri escape character", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test %22",
+      country: "US"
+    });
+    expect(response.statusCode).toEqual(201);
+    const ID = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header(guid'${ID}')`);
+    expect(response.body.d).toMatchObject({
+      ID,
+      name: "Test %22",
+      country: "US"
+    });
+    response = await util.callRead(request, encodeURI(`/v2/main/Header?$filter=name eq 'Test %22'`));
     expect(response.body.d.results).toHaveLength(1);
   });
 

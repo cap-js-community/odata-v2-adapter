@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Support for virtual hosts (e.g. Cloud Connector)
+- Fix decode URI for path name
 - Fix IEEE754 compatibility for single requests
 - Add IEEE754 compatibility option switch
 

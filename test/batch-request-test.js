@@ -43,6 +43,23 @@ describe("batch-request", () => {
     expect(third.body.d.ID).toEqual(ID);
   });
 
+  it("GET request with uri escape character", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test %22",
+      country: "US"
+    });
+    expect(response.statusCode).toEqual(201);
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-GET-Escaped.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    expect(response.statusCode).toEqual(200);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    expect(responses.filter(response => response.statusCode === 200).length).toEqual(1);
+    const [first] = responses;
+    expect(first.body.d.results.length).toEqual(1);
+  });
+
   it("POST request", async () => {
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
