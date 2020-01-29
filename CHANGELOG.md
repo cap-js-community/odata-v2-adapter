@@ -7,12 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 ## Version 1.4.18 - tbd
+
+### Fixed
 - Improve $value handling for streaming
 - Fix stream filename retrieval
 - Optimize edmx optimization 
 - Improve logging and tracing handling
-
-### Fixed
 
 ## Version 1.4.17 - 2020-01-20
 
