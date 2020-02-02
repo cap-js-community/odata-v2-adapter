@@ -19,7 +19,12 @@ async function initData(app) {
       });
     })
   );
-  console.log("Test Instances: " + responses.length);
+  console.log(
+    "Test Instances: " +
+      responses.filter(entry => {
+        return entry.statusCode === 201;
+      }).length
+  );
 }
 
 async function initBinary(app) {

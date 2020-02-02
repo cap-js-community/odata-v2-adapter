@@ -27,7 +27,7 @@
     "http-proxy-middleware": "^0.20.0"
   },
   "devDependencies": {
-    "@sap/cds": "^3.21.1",
+    "@sap/cds": "^3.21.2",
     "@sap/hana-client": "^2.4.177",
     "@sap/xssec": "^2.2.4",
     "eslint": "^6.7.2",
