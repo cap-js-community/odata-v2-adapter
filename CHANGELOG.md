@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- New version information is automatically added after line 8 -->
-## Version 1.4.18 - 2020-02-04
+## Version 1.4.18 - 2020-02-03
 
 ### Fixed
 - Improve $value handling for streaming
