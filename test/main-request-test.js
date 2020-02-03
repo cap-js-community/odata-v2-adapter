@@ -228,7 +228,7 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Search Instance"
+      name: "Search Instance_Test"
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
