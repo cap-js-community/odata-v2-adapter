@@ -30,3 +30,5 @@ default-env.json
 
 # temp
 temp/
+memheap.txt
+memleaks.txt

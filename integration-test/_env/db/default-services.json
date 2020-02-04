@@ -20,11 +20,7 @@
       "plan": "hdi-shared",
       "provider": null,
       "syslog_drain_url": null,
-      "tags": [
-        "hana",
-        "database",
-        "relational"
-      ],
+      "tags": ["hana", "database", "relational"],
       "volume_mounts": []
     }
   ]

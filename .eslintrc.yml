@@ -3,11 +3,11 @@ root: true
 #  https://eslint.org/docs/rules/
 env:
   node: true
+  es2017: true
 parserOptions:
   ecmaVersion: 8
 globals:
   sap: false
-  Promise: false
   SELECT: false
   INSERT: false
   UPDATE: false
@@ -16,17 +16,11 @@ globals:
   DROP: false
 plugins:
   - jest
-  - prettier
 extends:
-  - 'eslint:recommended'
-  - 'plugin:jest/recommended'
-  - 'plugin:prettier/recommended'
+  - "eslint:recommended"
+  - "plugin:jest/recommended"
+  - prettier
 rules:
-  no-console:
-    - off
-  no-unused-vars:
-    - off
-  max-len:
-    - off
-  require-atomic-updates:
-    - off
+  no-console: [off]
+  no-unused-vars: [off]
+  require-atomic-updates: [off]

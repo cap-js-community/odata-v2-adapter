@@ -13,18 +13,22 @@
   "scripts": {
     "start": "node test-server",
     "test": "jest --updateSnapshot",
+    "test:mem:install": "npm install --no-save weak-napi",
+    "test:mem:heap": "node --expose-gc node_modules/jest/bin/jest --runInBand --logHeapUsage 2>memheap.txt",
+    "test:mem:leaks": "jest --runInBand --detectLeaks 2>memleaks.txt",
     "test:integration": "jest --config=jest-integration.config.js",
-    "lint": "eslint . --fix",
+    "lint": "npm run prettier && npm run eslint",
+    "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --loglevel error",
+    "eslint": "eslint . --fix",
     "prepareRelease": "npm prune --production",
-    "update-lock": "pushpull .npmrc --on '#WRITE_LOCK' && npm i && npm ddp && pushpull .npmrc --off '#WRITE_LOCK'",
-    "upgrade-lock": "pushpull .npmrc --on '#WRITE_LOCK' && rm -rf package-lock.json node_modules && npm i && npm ddp && pushpull .npmrc --off '#WRITE_LOCK'",
+    "upgrade-lock": "rm -rf package-lock.json node_modules && npm i --package-lock=true",
     "test:deploy": "cd test/_env && cds deploy index.cds --to sqlite:test.db --no-save"
   },
   "dependencies": {
     "@sap/logging": "^5.1.0",
-    "axios": "0.19.0",
     "express": "^4.17.1",
-    "http-proxy-middleware": "^0.20.0"
+    "http-proxy-middleware": "^0.20.0",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "@sap/cds": "^3.21.2",
@@ -34,12 +38,10 @@
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-jest": "^22.21.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "jest": "^24.9.0",
+    "jest": "^25.1.0",
     "jest-junit": "^10.0.0",
     "passport": "^0.4.1",
     "prettier": "^1.19.1",
-    "pushpulljs": "^1.0.4",
     "sqlite3": "4.0.7",
     "supertest": "^4.0.2"
   },

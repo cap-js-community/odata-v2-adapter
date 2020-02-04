@@ -1,7 +1,6 @@
 {
   "name": "@sap/cds-odata-v2-adapter-proxy-test",
-  "dependencies": {
-  },
+  "dependencies": {},
   "private": true,
   "scripts": {
     "hdi": "cf cs hana hdi-shared cds-community-test-hana-cloud  -c '{\"database_id\": \"c4e10277-2a1a-4860-8a33-1119b5da63f5\"}'",
