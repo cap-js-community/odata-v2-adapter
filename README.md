@@ -80,7 +80,7 @@ In a new Node.js project:
 const express = require("express");
 const http = require("http");
 
-const odatav2proxy = require("@sap/cds-odata-v2-adapter-proxy");
+const proxy = require("@sap/cds-odata-v2-adapter-proxy");
 
 const host = "0.0.0.0";
 const port = process.env.PORT || 4004;
@@ -90,7 +90,7 @@ const port = process.env.PORT || 4004;
 
   // serve odata v2
   process.env.XS_APP_LOG_LEVEL = "warning";
-  app.use(odatav2proxy({
+  app.use(proxy({
     path: "v2",
     port: 8080, // target port
     services: {
