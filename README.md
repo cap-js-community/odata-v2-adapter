@@ -67,10 +67,11 @@ Note that `@sap/cds` and `express` are peer dependency and needs to be available
 ### CDS standalone backend (e.g. Java)
 
 In a new Node.js project:
+
 - Run `npm install @sap/cds`
 - Run `npm install @sap/cds-odata-v2-adapter-proxy`
-    - Internal NPM Registry: `http://nexus.wdf.sap.corp:8081/nexus/content/groups/build.releases.npm/`
-    - External NPM Registry: `https://npm.sap.com`
+  - Internal NPM Registry: `http://nexus.wdf.sap.corp:8081/nexus/content/groups/build.releases.npm/`
+  - External NPM Registry: `https://npm.sap.com`
 - Place CDS models in `db` and `srv` model folders
 - Create new file e.g. `index.js` in the service folder `srv` of the project:
 
@@ -105,8 +106,8 @@ const port = process.env.PORT || 4004;
 ```
 
 - Run `node srv/index` from the project root to start the server:
-    - OData v2 service will be available at http://localhost:4004/v2/<odata-v4-service-path>
-    - OData v4 service shall be available at http://localhost:8080/<odata-v4-service-path>
+  - OData v2 service will be available at http://localhost:4004/v2/<odata-v4-service-path>
+  - OData v4 service shall be available at http://localhost:8080/<odata-v4-service-path>
 
 Note that `@sap/cds` and `express` are peer dependency and needs to be available as module as well.
 
@@ -124,6 +125,7 @@ Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData 
   - **[options.standalone]** Indication, that OData v2 Adapter proxy is a standalone process. Default is 'false'.
   - **[options.mtxEndpoint]** Endpoint to retrieve MTX metadata for standalone proxy. Default is '/mtx/v1'
   - **[options.ieee754Compatible]** Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is 'true'.
+  - **[options.pathRewrite]** Custom path rewrite rules. Default uses 'path' option as rule: { "^/odata/v2": "" }
 
 Logging is controlled with XSA environment variable `XS_APP_LOG_LEVEL`.
 Details can be found at [xs2/node-logging](https://github.wdf.sap.corp/xs2).
