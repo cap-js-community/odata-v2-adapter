@@ -24,8 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix stream filename retrieval
 - Optimize edmx localization
 - Improve logging and tracing handling
-- Fix for external service (Java) support
-- Re-add "services" configuration, for external service mapping
+- Fix for external services (e.g. Java backend) support
+- Re-add "services" configuration for external service mapping
 - Fix for search phrase
 
 ## Version 1.4.17 - 2020-01-20
