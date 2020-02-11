@@ -131,9 +131,9 @@ const port = process.env.PORT || 4004;
 })();
 ```
 
-- Make sure, that your CDS models are also available in the project. 
-Those reside either in `db` and `srv` folders, or a compiled `csn.json` is provided. 
-If not detected automatically, the model path can be set with option `model`.   
+- Make sure, that your CDS models are also available in the project.
+  Those reside either in `db` and `srv` folders, or a compiled `csn.json` is provided.
+  If not detected automatically, the model path can be set with option `model`.
 
 - Run `node srv/index` from the project root to start the server:
   - OData v2 service will be available at http://localhost:4004/v2/<odata-v4-service-path>
