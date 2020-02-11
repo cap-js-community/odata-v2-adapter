@@ -31,7 +31,7 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "@sap/cds": "^3.21.3",
+    "@sap/cds": "3.21.3",
     "@sap/hana-client": "^2.4.177",
     "@sap/xssec": "^2.2.4",
     "eslint": "^6.7.2",
