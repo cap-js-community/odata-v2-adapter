@@ -265,8 +265,10 @@ describe("draft-request", () => {
     });
     expect(response.body).toBeDefined();
     expect(response.statusCode).toEqual(201);
-    const etag = response.body.d.__metadata.etag;
+    let etag = response.body.d.__metadata.etag;
     expect(typeof etag).toEqual("string");
+
+    // 428 precondition required
     const id = response.body.d.ID;
     response = await util.callWrite(
       request,
@@ -277,6 +279,8 @@ describe("draft-request", () => {
       true
     );
     expect(response.statusCode).toEqual(428);
+
+    // 1st Patch OK
     response = await util.callWrite(
       request,
       `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
@@ -289,7 +293,55 @@ describe("draft-request", () => {
       }
     );
     expect(response.statusCode).toEqual(200);
+    etag = response.body.d.__metadata.etag;
+
+    // 2nd Patch OK
+    response = await util.callWrite(
+      request,
+      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+      {
+        name: "Test3"
+      },
+      true,
+      {
+        "If-Match": etag
+      }
+    );
+    expect(response.statusCode).toEqual(200);
+    etag = response.body.d.__metadata.etag;
+
+    // 1st Batch Patch OK
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-MERGE-Draft.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, id);
+    payload = payload.replace(/{{ETAG}}/g, etag);
+    response = await util.callMultipart(request, "/v2/draft/$batch", payload);
+    expect(response.statusCode).toEqual(200);
+    let responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    response = responses[0][0];
+    expect(response.statusCode).toEqual(200);
+    etag = response.headers.etag;
+    expect(response.body.d.__metadata.etag).toEqual(etag);
+
+    // 2nd Batch Patch OK
+    payload = fs.readFileSync("./test/_env/data/batch/Batch-MERGE-Draft.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, id);
+    payload = payload.replace(/{{ETAG}}/g, etag);
+    response = await util.callMultipart(request, "/v2/draft/$batch", payload);
+    expect(response.statusCode).toEqual(200);
+    responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    response = responses[0][0];
+    expect(response.statusCode).toEqual(200);
+    etag = response.headers.etag;
+    expect(response.body.d.__metadata.etag).toEqual(etag);
+
+    // Read OK
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.__metadata.etag).toEqual(etag);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
@@ -298,7 +350,7 @@ describe("draft-request", () => {
         },
         createdBy: "anonymous",
         modifiedBy: "anonymous",
-        name: "Test2",
+        name: "Test4",
         description: null,
         Items: {
           __deferred: {
@@ -307,6 +359,8 @@ describe("draft-request", () => {
         }
       }
     });
+
+    // Update collection not allowed
     response = await util.callWrite(
       request,
       "/v2/draft/Header",

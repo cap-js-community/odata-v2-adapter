@@ -78,7 +78,7 @@ function multipartMixedToTextParser(res, callback) {
 
 function splitMultipartResponse(body, boundary = "boundary") {
   return body
-    .split(new RegExp(`(?:^|\r\n)--${boundary}(?:\r\n|--\r\n$)`))
+    .split(new RegExp(`(?:^|\r\n)--${boundary}(?:\r\n|--\r\n$|--$)`))
     .slice(1, -1)
     .map(part => {
       const [_meta, ..._rest] = part.split("\r\n\r\n");
