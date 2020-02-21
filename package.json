@@ -12,6 +12,7 @@
   "main": "lib/index.js",
   "scripts": {
     "start": "node test-server",
+    "cds:run": "cds run",
     "test": "jest --updateSnapshot",
     "test:mem:install": "npm install --no-save weak-napi",
     "test:mem:heap": "node --expose-gc node_modules/jest/bin/jest --runInBand --logHeapUsage 2>memheap.txt",
@@ -31,7 +32,7 @@
     "request": "2.88.2"
   },
   "devDependencies": {
-    "@sap/cds": "3.21.3",
+    "@sap/cds": "^3.31.0",
     "@sap/hana-client": "^2.4.177",
     "@sap/xssec": "^2.2.4",
     "eslint": "^6.7.2",

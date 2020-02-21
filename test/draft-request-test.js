@@ -55,12 +55,47 @@ describe("draft-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
+    const etag = response.body.d.__metadata.etag;
+    expect(typeof etag).toEqual("string");
+    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toMatchObject({
+      __metadata: {
+        uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+        type: "test.DraftService.Header",
+        etag: etag
+      },
+      HasActiveEntity: false,
+      HasDraftEntity: false,
+      ID: id,
+      IsActiveEntity: false,
+      createdBy: "anonymous",
+      modifiedBy: "anonymous",
+      name: "Test",
+      description: null,
+      Items: {
+        __deferred: {
+          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`
+        }
+      },
+      SiblingEntity: {
+        __deferred: {
+          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`
+        }
+      },
+      DraftAdministrativeData: {
+        __deferred: {
+          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`
+        }
+      }
+    });
     response = await util.callRead(
       request,
       `/v2/draft/Header?$filter=ID eq guid'${id}' and IsActiveEntity eq false&$select=ID,name&$expand=Items&$skip=0&$top=1&$orderby=name asc`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
+    expect(response.body.d.results[0].__metadata.etag).toEqual(etag);
   });
 
   it("POST request", async () => {
@@ -68,6 +103,8 @@ describe("draft-request", () => {
       name: "Test Create"
     });
     expect(response.statusCode).toEqual(201);
+    const etag = response.body.d.__metadata.etag;
+    expect(typeof etag).toEqual("string");
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
     const id = response.body.d.ID;
@@ -75,15 +112,15 @@ describe("draft-request", () => {
       d: {
         __metadata: {
           uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
-          type: "test.DraftService.Header"
+          type: "test.DraftService.Header",
+          etag: etag
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
         ID: id,
         IsActiveEntity: false,
-        modifiedAt: null,
         createdBy: "anonymous",
-        modifiedBy: null,
+        modifiedBy: "anonymous",
         name: "Test Create",
         description: null,
         Items: {
@@ -111,15 +148,15 @@ describe("draft-request", () => {
       d: {
         __metadata: {
           uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
-          type: "test.DraftService.Header"
+          type: "test.DraftService.Header",
+          etag: etag
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
         ID: id,
         IsActiveEntity: false,
-        modifiedAt: null,
         createdBy: "anonymous",
-        modifiedBy: null,
+        modifiedBy: "anonymous",
         name: "Test Create",
         description: null,
         Items: {
@@ -149,6 +186,8 @@ describe("draft-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
     const itemId = response.body.d.ID;
+    const itemEtag = response.body.d.__metadata.etag;
+    expect(itemEtag).not.toBeDefined();
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
@@ -225,6 +264,9 @@ describe("draft-request", () => {
       name: "Test"
     });
     expect(response.body).toBeDefined();
+    expect(response.statusCode).toEqual(201);
+    const etag = response.body.d.__metadata.etag;
+    expect(typeof etag).toEqual("string");
     const id = response.body.d.ID;
     response = await util.callWrite(
       request,
@@ -233,6 +275,18 @@ describe("draft-request", () => {
         name: "Test2"
       },
       true
+    );
+    expect(response.statusCode).toEqual(428);
+    response = await util.callWrite(
+      request,
+      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+      {
+        name: "Test2"
+      },
+      true,
+      {
+        "If-Match": etag
+      }
     );
     expect(response.statusCode).toEqual(200);
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
@@ -263,7 +317,7 @@ describe("draft-request", () => {
     );
     expect(response.body).toMatchObject({
       error: {
-        code: null,
+        code: "null",
         message: {
           lang: "en",
           value: "Method PATCH not allowed for ENTITY.COLLECTION"
@@ -278,11 +332,16 @@ describe("draft-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    const etag = response.body.d.__metadata.etag;
+    response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+      "If-Match": etag
+    });
     expect(response.statusCode).toEqual(204);
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
-    response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+      "If-Match": "*"
+    });
     expect(response.statusCode).toEqual(404);
     expect(response.body).toMatchObject({
       error: {
@@ -303,18 +362,51 @@ describe("draft-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
     const id = response.body.d.ID;
+    let etag = response.body.d.__metadata.etag;
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.body).toBeDefined();
     expect(response.body.d.ID).toEqual(id);
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
     expect(response.statusCode).toEqual(404);
-    response = await util.callWrite(request, `/v2/draft/Header_draftPrepare?ID=guid'${id}'&IsActiveEntity=false`);
+    response = await util.callWrite(
+      request,
+      `/v2/draft/Header_draftPrepare?ID=guid'${id}'&IsActiveEntity=false`,
+      {},
+      false,
+      {
+        "If-Match": etag
+      }
+    );
     expect(response.statusCode).toEqual(200);
-    response = await util.callWrite(request, `/v2/draft/Header_draftActivate?ID=guid'${id}'&IsActiveEntity=false`);
+    response = await util.callWrite(
+      request,
+      `/v2/draft/Header_draftActivate?ID=guid'${id}'&IsActiveEntity=false`,
+      {},
+      false,
+      {
+        "If-Match": etag
+      }
+    );
     expect(response.statusCode).toEqual(201);
+    etag = response.body.d.__metadata.etag;
+    // expect(etag).toBeDefined(); // TODO odata-server/issues/84
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.ID).toEqual(id);
+    etag = response.body.d.__metadata.etag;
+    response = await util.callWrite(
+      request,
+      `/v2/draft/Header_draftEdit?ID=guid'${id}'&IsActiveEntity=true`,
+      {},
+      false,
+      {
+        "If-Match": etag
+      }
+    );
+    expect(response.statusCode).toEqual(201);
+    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.ID).toEqual(id);
   });
@@ -331,7 +423,7 @@ describe("draft-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d.ID).toEqual(id);
     response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
-      // "If-Match": "*"
+      "If-Match": "*"
     });
     expect(response.statusCode).toEqual(204);
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);

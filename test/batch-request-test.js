@@ -91,8 +91,7 @@ describe("batch-request", () => {
       ID: id,
       createdBy: "anonymous",
       description: null,
-      modifiedAt: null,
-      modifiedBy: null,
+      modifiedBy: "anonymous",
       name: "Test",
       Items: {
         __deferred: {

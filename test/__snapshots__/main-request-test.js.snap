@@ -3,13 +3,13 @@
 exports[`main-request GET $metadata 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <edmx:Edmx Version=\\"1.0\\" xmlns:edmx=\\"http://schemas.microsoft.com/ado/2007/06/edmx\\" xmlns:m=\\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\\" xmlns:sap=\\"http://www.sap.com/Protocols/SAPData\\">
-  <edmx:Reference Uri=\\"https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+  <edmx:Reference Uri=\\"https://sap.github.io/odata-vocabularies/vocabularies/Common.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
     <edmx:Include Alias=\\"Common\\" Namespace=\\"com.sap.vocabularies.Common.v1\\"/>
   </edmx:Reference>
   <edmx:Reference Uri=\\"https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
     <edmx:Include Alias=\\"Core\\" Namespace=\\"Org.OData.Core.V1\\"/>
   </edmx:Reference>
-  <edmx:Reference Uri=\\"https://wiki.scn.sap.com/wiki/download/attachments/448470968/UI.xml?api=v2\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+  <edmx:Reference Uri=\\"https://sap.github.io/odata-vocabularies/vocabularies/UI.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
     <edmx:Include Alias=\\"UI\\" Namespace=\\"com.sap.vocabularies.UI.v1\\"/>
   </edmx:Reference>
   <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
@@ -67,9 +67,9 @@ exports[`main-request GET $metadata 1`] = `
           <PropertyRef Name=\\"ID\\"/>
         </Key>
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\"/>
-        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\"/>
+        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
@@ -151,12 +151,6 @@ exports[`main-request GET $metadata 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
-      <Annotations Target=\\"test.MainService.Header/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Common.Label\\" String=\\"Changed At\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-      </Annotations>
       <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Created At\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
@@ -170,11 +164,15 @@ exports[`main-request GET $metadata 1`] = `
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
+      <Annotations Target=\\"test.MainService.Header/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Changed At\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+      </Annotations>
       <Annotations Target=\\"test.MainService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Description\\" String=\\"A user's unique ID\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
@@ -195,13 +193,13 @@ exports[`main-request GET $metadata 1`] = `
 exports[`main-request GET $metadata localized 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <edmx:Edmx Version=\\"1.0\\" xmlns:edmx=\\"http://schemas.microsoft.com/ado/2007/06/edmx\\" xmlns:m=\\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\\" xmlns:sap=\\"http://www.sap.com/Protocols/SAPData\\">
-  <edmx:Reference Uri=\\"https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+  <edmx:Reference Uri=\\"https://sap.github.io/odata-vocabularies/vocabularies/Common.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
     <edmx:Include Alias=\\"Common\\" Namespace=\\"com.sap.vocabularies.Common.v1\\"/>
   </edmx:Reference>
   <edmx:Reference Uri=\\"https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
     <edmx:Include Alias=\\"Core\\" Namespace=\\"Org.OData.Core.V1\\"/>
   </edmx:Reference>
-  <edmx:Reference Uri=\\"https://wiki.scn.sap.com/wiki/download/attachments/448470968/UI.xml?api=v2\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+  <edmx:Reference Uri=\\"https://sap.github.io/odata-vocabularies/vocabularies/UI.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
     <edmx:Include Alias=\\"UI\\" Namespace=\\"com.sap.vocabularies.UI.v1\\"/>
   </edmx:Reference>
   <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
@@ -259,9 +257,9 @@ exports[`main-request GET $metadata localized 1`] = `
           <PropertyRef Name=\\"ID\\"/>
         </Key>
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\"/>
-        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\"/>
+        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
@@ -343,12 +341,6 @@ exports[`main-request GET $metadata localized 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
-      <Annotations Target=\\"test.MainService.Header/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Common.Label\\" String=\\"Geändert am\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-      </Annotations>
       <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Angelegt am\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
@@ -362,11 +354,15 @@ exports[`main-request GET $metadata localized 1`] = `
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
+      <Annotations Target=\\"test.MainService.Header/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Geändert am\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+      </Annotations>
       <Annotations Target=\\"test.MainService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Geändert von\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
@@ -387,13 +383,13 @@ exports[`main-request GET $metadata localized 1`] = `
 exports[`main-request GET $metadata localized 2`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <edmx:Edmx Version=\\"1.0\\" xmlns:edmx=\\"http://schemas.microsoft.com/ado/2007/06/edmx\\" xmlns:m=\\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\\" xmlns:sap=\\"http://www.sap.com/Protocols/SAPData\\">
-  <edmx:Reference Uri=\\"https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+  <edmx:Reference Uri=\\"https://sap.github.io/odata-vocabularies/vocabularies/Common.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
     <edmx:Include Alias=\\"Common\\" Namespace=\\"com.sap.vocabularies.Common.v1\\"/>
   </edmx:Reference>
   <edmx:Reference Uri=\\"https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
     <edmx:Include Alias=\\"Core\\" Namespace=\\"Org.OData.Core.V1\\"/>
   </edmx:Reference>
-  <edmx:Reference Uri=\\"https://wiki.scn.sap.com/wiki/download/attachments/448470968/UI.xml?api=v2\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+  <edmx:Reference Uri=\\"https://sap.github.io/odata-vocabularies/vocabularies/UI.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
     <edmx:Include Alias=\\"UI\\" Namespace=\\"com.sap.vocabularies.UI.v1\\"/>
   </edmx:Reference>
   <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
@@ -451,9 +447,9 @@ exports[`main-request GET $metadata localized 2`] = `
           <PropertyRef Name=\\"ID\\"/>
         </Key>
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\"/>
-        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\"/>
+        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
@@ -535,12 +531,6 @@ exports[`main-request GET $metadata localized 2`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
-      <Annotations Target=\\"test.MainService.Header/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Common.Label\\" String=\\"Geändert am\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-      </Annotations>
       <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Angelegt am\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
@@ -554,11 +544,15 @@ exports[`main-request GET $metadata localized 2`] = `
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
+      <Annotations Target=\\"test.MainService.Header/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Geändert am\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+      </Annotations>
       <Annotations Target=\\"test.MainService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Geändert von\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">

@@ -32,7 +32,7 @@ describe("analytics-request", () => {
               type: "test.AnalyticsService.Header"
             },
             currency: "EUR",
-            stock: "25"
+            stock: 25
           },
           {
             __metadata: {
@@ -40,7 +40,7 @@ describe("analytics-request", () => {
               type: "test.AnalyticsService.Header"
             },
             currency: "USD",
-            stock: "17"
+            stock: 17
           }
         ]
       }
@@ -57,7 +57,7 @@ describe("analytics-request", () => {
           type: "test.AnalyticsService.Header"
         },
         currency: "USD",
-        stock: "17"
+        stock: 17
       }
     });
   });
@@ -75,7 +75,7 @@ describe("analytics-request", () => {
             },
             country: "Germany",
             currency: "EUR",
-            stock: "10",
+            stock: 10,
             price: "12.12"
           },
           {
@@ -85,7 +85,7 @@ describe("analytics-request", () => {
             },
             country: "Spain",
             currency: "EUR",
-            stock: "15",
+            stock: 15,
             price: "11.11"
           },
           {
@@ -95,7 +95,7 @@ describe("analytics-request", () => {
             },
             country: "Texas",
             currency: "USD",
-            stock: "17",
+            stock: 17,
             price: "10.165000000000001"
           }
         ]
@@ -118,7 +118,7 @@ describe("analytics-request", () => {
               type: "test.AnalyticsService.Header"
             },
             currency: "USD",
-            stock: "17"
+            stock: 17
           },
           {
             __metadata: {
@@ -126,7 +126,7 @@ describe("analytics-request", () => {
               type: "test.AnalyticsService.Header"
             },
             currency: "EUR",
-            stock: "25"
+            stock: 25
           }
         ]
       }
@@ -148,7 +148,7 @@ describe("analytics-request", () => {
               type: "test.AnalyticsService.Header"
             },
             currency: "USD",
-            stock: "17"
+            stock: 17
           }
         ]
       }

@@ -17,7 +17,7 @@ OData v2 Adapter Proxy for CDS OData v4 Services
 
 ## Usage
 
-### CDS combined backend (Node.js) - integrated (only with CDS 3.30.0 or later)
+### CDS combined backend (Node.js) - integrated
 
 In your existing `@sap/cds` project:
 
@@ -119,7 +119,7 @@ const port = process.env.PORT || 4004;
   process.env.XS_APP_LOG_LEVEL = "warning";
   app.use(proxy({
     path: "v2",
-    port: 8080, // target port
+    target: "http://localhost:8080",
     services: {
       "<odata-v4-service-path>": "<qualified.ServiceName>"
     }
@@ -136,8 +136,13 @@ const port = process.env.PORT || 4004;
   If not detected automatically, the model path can be set with option `model`.
 
 - Run `node srv/index` from the project root to start the server:
+
   - OData v2 service will be available at http://localhost:4004/v2/<odata-v4-service-path>
   - OData v4 service shall be available at http://localhost:8080/<odata-v4-service-path>
+
+- A deployed version of OData v2 proxy shall have option `target` set to the deployed OData v4 backend URL.
+  This can be retrieved from the CF environment using [node-xsenv](https://github.wdf.sap.corp/xs2/node-xsenv) module, e.g.
+  from the `destinations` environment variable.
 
 Note that `@sap/cds` and `express` are peer dependency and needs to be available as module as well.
 
@@ -183,6 +188,7 @@ Details can be found at [xs2/node-logging](https://github.wdf.sap.corp/xs2).
 - Localization
 - Tracing
 - Logging Correlation
+- ETag Support (Concurrency Control)
 
 ## OData v2/v4 Delta
 

@@ -27,7 +27,16 @@ describe("main-request", () => {
   });
 
   it("GET service", async () => {
-    const response = await util.callRead(request, "/v2/main", {
+    let response = await util.callRead(request, "/v2/main", {
+      accept: "application/json"
+    });
+    expect(response.body).toBeDefined();
+    expect(response.body).toEqual({
+      d: {
+        EntitySets: ["Header", "HeaderAssocKey", "HeaderItem", "HeaderStream"]
+      }
+    });
+    response = await util.callRead(request, "/v2/main/", {
       accept: "application/json"
     });
     expect(response.body).toBeDefined();
@@ -199,9 +208,8 @@ describe("main-request", () => {
         type: "test.MainService.Header"
       },
       ID: id,
-      modifiedAt: null,
       createdBy: "anonymous",
-      modifiedBy: null,
+      modifiedBy: "anonymous",
       name: "Test",
       description: null,
       country: null,
@@ -424,9 +432,9 @@ describe("main-request", () => {
           uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
           type: "test.MainService.Header"
         },
-        modifiedAt: null,
+        ID: id,
         createdBy: "anonymous",
-        modifiedBy: null,
+        modifiedBy: "anonymous",
         name: "Test Create",
         description: null,
         Items: {
@@ -437,7 +445,7 @@ describe("main-request", () => {
               },
               description: null,
               endAt: null,
-              header_ID: null,
+              header_ID: id,
               name: "Test Create Item",
               startAt: null
             }
@@ -459,7 +467,7 @@ describe("main-request", () => {
           type: "test.MainService.Header"
         },
         createdBy: "anonymous",
-        modifiedBy: null,
+        modifiedBy: "anonymous",
         name: "Test Create",
         description: null,
         Items: {
@@ -562,7 +570,7 @@ describe("main-request", () => {
     );
     expect(response.body).toMatchObject({
       error: {
-        code: null,
+        code: "null",
         message: {
           lang: "en",
           value: "Method PATCH not allowed for ENTITY.COLLECTION"
@@ -681,13 +689,12 @@ describe("main-request", () => {
         name: "Test"
       }
     });
-    expect(response.headers["sap-message"]).toEqual(
-      JSON.stringify({
-        message: "An Warning occurred",
-        code: "WARN01",
-        severity: "warning"
-      })
-    );
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      message: "An Warning occurred",
+      code: "WARN01",
+      severity: "warning",
+      target: "Items"
+    });
   });
 
   it("GET unbound function with navigation", async () => {
@@ -708,9 +715,8 @@ describe("main-request", () => {
           type: "test.MainService.Header",
           uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`
         },
-        modifiedAt: null,
         createdBy: "anonymous",
-        modifiedBy: null,
+        modifiedBy: "anonymous",
         name: "Test",
         description: null
       }
@@ -720,7 +726,7 @@ describe("main-request", () => {
     response = await util.callRead(request, `/v2/main/unboundNavigationFunction/Items?num=1&text=abc`);
     expect(response.body).toMatchObject({
       error: {
-        code: null,
+        code: "null",
         message: {
           lang: "en",
           value: `Current function 'unboundNavigationFunction' is not composable; trailing segment 'Items' ist not allowed`

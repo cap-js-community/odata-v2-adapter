@@ -25,7 +25,7 @@ function callRead(request, path, headers) {
 }
 
 function callWrite(request, path, payload, update, headers) {
-  request = update ? request.patch(path) : request.post(path);
+  request = update ? request.merge(path) : request.post(path);
   headers = headers || {};
   Object.keys(headers).forEach(vKey => {
     request.set(vKey, headers[vKey]);

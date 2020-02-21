@@ -11,10 +11,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Fix ETag Support (Concurrency Control)
+- Custom server.js support
 - General housekeeping
 - Moving from Axios to Request
 - Misc fixes and improvements
 - Adding custom path rewrite
+- Fix for rendering aggregation of integers as JSON number
 
 ## Version 1.4.18 - 2020-02-03
 

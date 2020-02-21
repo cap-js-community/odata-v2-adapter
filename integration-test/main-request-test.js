@@ -40,8 +40,7 @@ describe("main-requests", () => {
         createdBy: "anonymous",
         currency: "USD",
         description: null,
-        modifiedAt: null,
-        modifiedBy: null,
+        modifiedBy: "anonymous",
         name: null,
         price: null,
         stock: stock
