@@ -29,11 +29,11 @@
     "@sap/logging": "5.2.0",
     "express": "4.17.1",
     "http-proxy-middleware": "0.20.0",
-    "request": "2.88.2"
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "@sap/cds": "^3.31.0",
-    "@sap/hana-client": "^2.4.177",
+    "@sap/hana-client": "^2.4.182",
     "@sap/xssec": "^2.2.4",
     "eslint": "^6.7.2",
     "eslint-config": "^0.3.0",
