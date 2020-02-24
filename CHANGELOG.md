@@ -7,17 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.4.19 - tbd
+## Version 1.4.19 - 2020-02-25
 
 ### Fixed
 
 - Fix ETag Support (Concurrency Control)
 - Custom server.js support
-- General housekeeping
-- Moving from Axios to Request
-- Misc fixes and improvements
 - Adding custom path rewrite
 - Fix for rendering aggregation of integers as JSON number
+- Fix time duration parsing
+- Misc fixes and improvements
+- General housekeeping
+- Moving from axios to node-fetch
 
 ## Version 1.4.18 - 2020-02-03
 
