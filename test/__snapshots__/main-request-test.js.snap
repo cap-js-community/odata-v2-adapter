@@ -29,6 +29,7 @@ exports[`main-request GET $metadata 1`] = `
         <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
+        <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -101,6 +102,14 @@ exports[`main-request GET $metadata 1`] = `
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderStream\\" m:HasStream=\\"true\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderUrlStream\\" m:HasStream=\\"true\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
         </Key>
@@ -185,6 +194,16 @@ exports[`main-request GET $metadata 1`] = `
           </Record>
         </Annotation>
       </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderUrlStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderUrlStream/filename\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Core.ContentDisposition\\">
+          <Record>
+            <PropertyValue Property=\\"Filename\\" Bool=\\"true\\"/>
+          </Record>
+        </Annotation>
+      </Annotations>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>"
@@ -219,6 +238,7 @@ exports[`main-request GET $metadata localized 1`] = `
         <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
+        <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -291,6 +311,14 @@ exports[`main-request GET $metadata localized 1`] = `
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderStream\\" m:HasStream=\\"true\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderUrlStream\\" m:HasStream=\\"true\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
         </Key>
@@ -375,6 +403,16 @@ exports[`main-request GET $metadata localized 1`] = `
           </Record>
         </Annotation>
       </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderUrlStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderUrlStream/filename\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Core.ContentDisposition\\">
+          <Record>
+            <PropertyValue Property=\\"Filename\\" Bool=\\"true\\"/>
+          </Record>
+        </Annotation>
+      </Annotations>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>"
@@ -409,6 +447,7 @@ exports[`main-request GET $metadata localized 2`] = `
         <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
+        <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -488,6 +527,14 @@ exports[`main-request GET $metadata localized 2`] = `
         <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
       </EntityType>
+      <EntityType Name=\\"HeaderUrlStream\\" m:HasStream=\\"true\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
+      </EntityType>
       <ComplexType Name=\\"Result\\">
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
@@ -559,6 +606,16 @@ exports[`main-request GET $metadata localized 2`] = `
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/filename\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Core.ContentDisposition\\">
+          <Record>
+            <PropertyValue Property=\\"Filename\\" Bool=\\"true\\"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderUrlStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderUrlStream/filename\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Core.ContentDisposition\\">
           <Record>
             <PropertyValue Property=\\"Filename\\" Bool=\\"true\\"/>

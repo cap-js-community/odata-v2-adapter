@@ -12,9 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Fix ETag Support (Concurrency Control)
-- Custom server.js support
+- Support streaming from URL media
 - Adding custom path rewrite
-- Fix for rendering aggregation of integers as JSON number
+- Custom server.js support
+- Fix for rendering aggregation of integers
 - Fix time duration parsing
 - Misc fixes and improvements
 - General housekeeping

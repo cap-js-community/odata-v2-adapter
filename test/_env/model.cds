@@ -23,10 +23,22 @@ entity HeaderItem: cuid {
 }
 
 entity HeaderStream: cuid {
-    // @odata.mediaContentType: mediaType
-    data: LargeBinary @Core.MediaType: mediaType;
-    mediaType: String @Core.IsMediaType;
-    filename: String @Core.ContentDisposition.Filename;
+    @Core.MediaType: mediaType
+    data: LargeBinary;
+    @Core.IsMediaType
+    mediaType: String;
+    @Core.ContentDisposition.Filename
+    filename: String;
+}
+
+entity HeaderUrlStream: cuid {
+    @Core.MediaType: mediaType
+    @Core.IsURL: true
+    link: String;
+    @Core.IsMediaType
+    mediaType: String;
+    @Core.ContentDisposition.Filename
+    filename: String;
 }
 
 entity HeaderAssocKey {
@@ -47,6 +59,7 @@ service MainService {
     };
     entity HeaderItem as projection on test.HeaderItem;
     entity HeaderStream as projection on test.HeaderStream;
+    entity HeaderUrlStream as projection on test.HeaderUrlStream;
     entity HeaderAssocKey as projection on test.HeaderAssocKey;
 
     action unboundAction(num: Integer, text: String) returns array of Result;
