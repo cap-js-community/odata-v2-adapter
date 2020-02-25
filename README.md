@@ -180,7 +180,7 @@ Details can be found at [xs2/node-logging](https://github.wdf.sap.corp/xs2).
 - Location Header
 - $inlinecount / $count / \$value
 - Entity with Parameters
-- Octet Stream, Content Disposition
+- Stream Support (Octet and Url), Content Disposition
 - Multitenancy, Extensibility (proxy in same process only)
 - Content-ID
 - Draft Support
