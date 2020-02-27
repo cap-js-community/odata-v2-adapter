@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.4.20 - tbd
+## Version 1.4.20 - 2020-02-27
 
 ### Fixed
+
+- Fix CDS backwards compatibility 
 
 ## Version 1.4.19 - 2020-02-25
 
