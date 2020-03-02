@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Improve $metadata logging
+
 ## Version 1.4.20 - 2020-02-27
 
 ### Fixed
