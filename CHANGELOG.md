@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Improve $metadata logging
+- Fix $metadata call headers
 
 ## Version 1.4.20 - 2020-02-27
 
