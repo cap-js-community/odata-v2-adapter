@@ -28,8 +28,8 @@
   "dependencies": {
     "@sap/logging": "5.2.0",
     "express": "4.17.1",
-    "http-proxy-middleware": "0.20.0",
-    "node-fetch": "^2.6.0"
+    "http-proxy-middleware": "1.0.1",
+    "node-fetch": "2.6.0"
   },
   "devDependencies": {
     "@sap/cds": "^3.31.1",
