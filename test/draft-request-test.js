@@ -443,7 +443,7 @@ describe("draft-request", () => {
     );
     expect(response.statusCode).toEqual(201);
     etag = response.body.d.__metadata.etag;
-    // expect(etag).toBeDefined(); // TODO odata-server/issues/84
+    expect(etag).toBeDefined();
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
