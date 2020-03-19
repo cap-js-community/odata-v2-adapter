@@ -225,6 +225,9 @@ exports[`draft-request GET $metadata 1`] = `
       <Annotations Target=\\"test.DraftService.Header/HasDraftEntity\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
       </Annotations>
+      <Annotations Target=\\"test.DraftService.Header/DraftAdministrativeData\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
+      </Annotations>
       <Annotations Target=\\"test.DraftService.Header/DraftAdministrativeData_DraftUUID\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
       </Annotations>
@@ -242,6 +245,9 @@ exports[`draft-request GET $metadata 1`] = `
         <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.HeaderItem/HasDraftEntity\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.HeaderItem/DraftAdministrativeData\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.HeaderItem/DraftAdministrativeData_DraftUUID\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
