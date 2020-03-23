@@ -193,7 +193,7 @@ exports[`draft-request GET $metadata 1`] = `
         </Annotation>
       </Annotations>
       <Annotations Target=\\"test.DraftService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Common.Label\\" String=\\"Created At\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Created On\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
@@ -206,7 +206,7 @@ exports[`draft-request GET $metadata 1`] = `
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.Header/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Common.Label\\" String=\\"Changed At\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Changed On\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
