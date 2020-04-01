@@ -260,7 +260,25 @@ describe("todo-request", () => {
     expect(response.body.d.results.length).toEqual(1);
     response = await util.callRead(
       request,
+      "/v2/todo/People(3)/plannedTasks?$filter=startDate le datetimeoffset'2019-08-24T00:00:00Z' or startDate ge datetimeoffset'2019-08-24T00:00:00Z'",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(
+      request,
       "/v2/todo/People(3)/plannedTasks?$filter=keyDate eq datetime'2019-12-31T00:00' or tentative eq true",
+      {
+        accept: "application/json"
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(
+      request,
+      "/v2/todo/People(3)/plannedTasks?$filter=keyDate le datetime'2019-12-31T00:00' or keyDate ge datetime'2019-12-31T00:00' or tentative eq true",
       {
         accept: "application/json"
       }
