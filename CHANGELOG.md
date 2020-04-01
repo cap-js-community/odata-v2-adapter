@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Version 1.4.23 - 2002-04-01
 
 ### Fixed
+
 - Fix type conversion for "le" operator
 
 ## Version 1.4.22 - 2020-03-27
