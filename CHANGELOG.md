@@ -6,9 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- New version information is automatically added after line 8 -->
-## Version 1.4.24 - tbd
+## Version 1.4.24 - 2002-04-07
 
 ### Fixed
+
+- Fix for metadata transfer-encoding chunked
+- Filter '@' attributes
 
 ## Version 1.4.23 - 2002-04-01
 
