@@ -317,13 +317,19 @@ describe("main-request", () => {
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
-    response = await util.callRead(request, `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`);
+    response = await util.callRead(
+      request,
+      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`
+    );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
-    response = await util.callRead(request, `/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`);
+    response = await util.callRead(
+      request,
+      `/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`
+    );
     expect(response.statusCode).toEqual(500);
     expect(response.body).toEqual({
       error: {
@@ -334,7 +340,8 @@ describe("main-request", () => {
         },
         message: {
           lang: "en",
-          value: "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888"
+          value:
+            "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888"
         },
         type: "system"
       }
@@ -347,7 +354,7 @@ describe("main-request", () => {
     expect(response.body).toEqual({
       error: {
         code: "null",
-        message: { "lang": "en", "value": "Expected uri token 'EOF' could not be found in '$value2' at position 7" },
+        message: { lang: "en", value: "Expected uri token 'EOF' could not be found in '$value2' at position 7" },
         innererror: { errordetails: [] }
       }
     });
@@ -368,8 +375,7 @@ describe("main-request", () => {
           "content-type": "image/png"
         });
         stream.on("end", () => {
-          req.end(() => {
-          });
+          req.end(() => {});
           setTimeout(() => {
             util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(readResponse => {
               expect(readResponse.statusCode).toEqual(200);
@@ -746,8 +752,16 @@ describe("main-request", () => {
       }
     });
     expect(JSON.parse(response.headers["sap-message"])).toEqual({
-      message: "An Warning occurred",
       code: "WARN01",
+      details: [
+        {
+          code: "WARN02",
+          message: "Another Warning occurred",
+          severity: "warning",
+          target: "Root"
+        }
+      ],
+      message: "An Warning occurred",
       severity: "warning",
       target: "Items"
     });

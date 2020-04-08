@@ -6,9 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- New version information is automatically added after line 8 -->
+
 ## Version 1.4.25 - tbd
 
 ### Fixed
+
+- Add additional messages as details
 
 ## Version 1.4.24 - 2002-04-07
 
@@ -34,14 +37,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Improve $metadata logging
-- Fix $metadata call headers
+- Improve \$metadata logging
+- Fix \$metadata call headers
 
 ## Version 1.4.20 - 2020-02-27
 
 ### Fixed
 
-- Fix CDS backwards compatibility 
+- Fix CDS backwards compatibility
 
 ## Version 1.4.19 - 2020-02-25
 

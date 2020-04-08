@@ -36,12 +36,20 @@ module.exports = srv => {
   });
 
   srv.on("test.MainService.unboundWarningFunction", async req => {
-    const info = new Error("This is a warning");
-    info.code = "WARN01";
-    info.target = "Items";
-    info.message = "An Warning occurred";
-    info.numericSeverity = 3;
-    req.info(info);
+    const info1 = new Error("This is a warning");
+    info1.code = "WARN01";
+    info1.target = "Items";
+    info1.message = "An Warning occurred";
+    info1.numericSeverity = 3;
+    req.info(info1);
+
+    const info2 = new Error("This is another warning");
+    info2.code = "WARN02";
+    info2.target = "Root";
+    info2.message = "Another Warning occurred";
+    info2.numericSeverity = 3;
+    req.info(info2);
+
     return {
       name: "Test",
       code: "TEST",
