@@ -44,7 +44,7 @@ describe("auth-request", () => {
     expect(response.status).toEqual(401);
     expect(response.headers["www-authenticate"]).toEqual('Basic realm="Users"');
 
-    let authorization = `basic ${Buffer.from(
+    let authorization = `Basic ${Buffer.from(
       `${options.passport.users.bob.ID}:${options.passport.users.bob.password}`
     ).toString("base64")}`;
     response = await util.callRead(request, "/v2/auth/$metadata", {
@@ -53,7 +53,7 @@ describe("auth-request", () => {
     });
     expect(response.status).toEqual(403);
 
-    authorization = `basic ${Buffer.from(
+    authorization = `Basic ${Buffer.from(
       `${options.passport.users.alice.ID}:${options.passport.users.alice.password}`
     ).toString("base64")}`;
     response = await util.callRead(request, "/v2/auth/$metadata", {

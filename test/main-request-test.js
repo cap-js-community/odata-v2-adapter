@@ -460,26 +460,38 @@ describe("main-request", () => {
       name: "Test",
       stock: 1001,
       country: "US",
-      Items: [{
-        name: "TestItem1001",
-        startAt: "/Date(1586815200000)/"
-      }]
+      Items: [
+        {
+          name: "TestItem1001",
+          startAt: "/Date(1586815200000)/"
+        }
+      ]
     });
     response = await util.callRead(request, `/v2/main/Header?$expand=Items&$filter=stock eq 1001L`);
     expect(response.body.d.results).toHaveLength(1);
     const ID = response.body.d.results[0].ID;
     expect(response.body.d.results[0].Items.results).toHaveLength(1);
     const itemID = response.body.d.results[0].Items.results[0].ID;
-    response = await util.callWrite(request, `/v2/main/Header(${ID})`, {
-      ID,
-      FirstItem_ID: itemID
-    }, true);
+    response = await util.callWrite(
+      request,
+      `/v2/main/Header(${ID})`,
+      {
+        ID,
+        FirstItem_ID: itemID
+      },
+      true
+    );
     expect(response.statusCode).toBe(200);
-    response = await util.callRead(request, `/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001L and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'`);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001L and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'`
+    );
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callRead(request, `/v2/main/Header?$expand=FirstItem&$filter=FirstItem/name eq 'TestItem1001'`);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$expand=FirstItem&$filter=FirstItem/name eq 'TestItem1001'`
+    );
     expect(response.body.d.results).toHaveLength(1);
-
   });
 
   it("GET request with uri escape character", async () => {
