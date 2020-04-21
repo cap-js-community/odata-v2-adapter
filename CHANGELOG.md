@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Only add root error, if no details messages
+
 ## Version 1.4.27 - 2020-04-21
 
 ### Fixed

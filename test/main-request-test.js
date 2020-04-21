@@ -803,15 +803,6 @@ describe("main-request", () => {
         innererror: {
           errordetails: [
             {
-              code: "ERR01",
-              message: {
-                lang: "en",
-                value: "An error occurred"
-              },
-              target: "Items",
-              severity: "error"
-            },
-            {
               code: "ERR02-transition",
               message: "Error details",
               target: "Items",
