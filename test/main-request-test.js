@@ -378,13 +378,15 @@ describe("main-request", () => {
           value: "Expected uri token 'EOF' could not be found in '$value2' at position 7"
         },
         innererror: {
-          errordetails: [{
-            code: "null",
-            message: {
-              lang: "en",
-              value: "Expected uri token 'EOF' could not be found in '$value2' at position 7"
+          errordetails: [
+            {
+              code: "null",
+              message: {
+                lang: "en",
+                value: "Expected uri token 'EOF' could not be found in '$value2' at position 7"
+              }
             }
-          }]
+          ]
         }
       }
     });
@@ -405,8 +407,7 @@ describe("main-request", () => {
           "content-type": "image/png"
         });
         stream.on("end", () => {
-          req.end(() => {
-          });
+          req.end(() => {});
           setTimeout(() => {
             util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(readResponse => {
               expect(readResponse.statusCode).toEqual(200);
@@ -486,6 +487,7 @@ describe("main-request", () => {
     expect(response.body.d.results).toHaveLength(1);
   });
 
+  // TODO: cap/issues/4468
   it.skip("GET request with filter and data type conversion on navigation fields", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
