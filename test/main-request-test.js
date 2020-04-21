@@ -87,7 +87,15 @@ describe("main-request", () => {
         value: "Not Found"
       },
       innererror: {
-        errordetails: []
+        errordetails: [
+          {
+            code: "404",
+            message: {
+              lang: "en",
+              value: "Not Found"
+            }
+          }
+        ]
       }
     });
   });
@@ -336,7 +344,18 @@ describe("main-request", () => {
         code: "ECONNREFUSED",
         errno: "ECONNREFUSED",
         innererror: {
-          errordetails: []
+          errordetails: [
+            {
+              code: "ECONNREFUSED",
+              errno: "ECONNREFUSED",
+              message: {
+                lang: "en",
+                value:
+                  "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888"
+              },
+              type: "system"
+            }
+          ]
         },
         message: {
           lang: "en",
@@ -354,8 +373,19 @@ describe("main-request", () => {
     expect(response.body).toEqual({
       error: {
         code: "null",
-        message: { lang: "en", value: "Expected uri token 'EOF' could not be found in '$value2' at position 7" },
-        innererror: { errordetails: [] }
+        message: {
+          lang: "en",
+          value: "Expected uri token 'EOF' could not be found in '$value2' at position 7"
+        },
+        innererror: {
+          errordetails: [{
+            code: "null",
+            message: {
+              lang: "en",
+              value: "Expected uri token 'EOF' could not be found in '$value2' at position 7"
+            }
+          }]
+        }
       }
     });
   });
@@ -375,7 +405,8 @@ describe("main-request", () => {
           "content-type": "image/png"
         });
         stream.on("end", () => {
-          req.end(() => {});
+          req.end(() => {
+          });
           setTimeout(() => {
             util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(readResponse => {
               expect(readResponse.statusCode).toEqual(200);
@@ -770,10 +801,20 @@ describe("main-request", () => {
         innererror: {
           errordetails: [
             {
-              code: "ERR02",
-              message: "Error details",
+              code: "ERR01",
+              message: {
+                lang: "en",
+                value: "An error occurred"
+              },
               target: "Items",
               severity: "error"
+            },
+            {
+              code: "ERR02-transition",
+              message: "Error details",
+              target: "Items",
+              severity: "error",
+              transition: true
             }
           ]
         }

@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Add root error as first detail message
+- Error code including "transition", marks transition message  
+
 ## Version 1.4.26 - 2020-04-20
 
 ### Fixed

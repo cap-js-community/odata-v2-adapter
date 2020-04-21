@@ -26,7 +26,7 @@ module.exports = srv => {
     error["@Common.numericSeverity"] = 4;
     error.details = [
       {
-        code: "ERR02",
+        code: "ERR02-transition",
         target: "Items",
         message: "Error details",
         "@Common.numericSeverity": 4
