@@ -28,7 +28,7 @@ describe("analytics-request", () => {
         results: [
           {
             __metadata: {
-              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock"]}')`,
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header"
             },
             currency: "EUR",
@@ -36,7 +36,7 @@ describe("analytics-request", () => {
           },
           {
             __metadata: {
-              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock"]}')`,
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header"
             },
             currency: "USD",
@@ -47,13 +47,13 @@ describe("analytics-request", () => {
     });
     response = await util.callRead(
       request,
-      `/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock"]}')`
+      `/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
         __metadata: {
-          uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock"]}')`,
+          uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
           type: "test.AnalyticsService.Header"
         },
         currency: "USD",
@@ -70,7 +70,7 @@ describe("analytics-request", () => {
         results: [
           {
             __metadata: {
-              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"country":"'Germany'","currency":"'EUR'"},"value":["stock","price"]}')`,
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"country":"'Germany'","currency":"'EUR'"},"value":["country","currency","stock","price"]}')`,
               type: "test.AnalyticsService.Header"
             },
             country: "Germany",
@@ -80,7 +80,7 @@ describe("analytics-request", () => {
           },
           {
             __metadata: {
-              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"country":"'Spain'","currency":"'EUR'"},"value":["stock","price"]}')`,
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"country":"'Spain'","currency":"'EUR'"},"value":["country","currency","stock","price"]}')`,
               type: "test.AnalyticsService.Header"
             },
             country: "Spain",
@@ -90,7 +90,7 @@ describe("analytics-request", () => {
           },
           {
             __metadata: {
-              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"country":"'Texas'","currency":"'USD'"},"value":["stock","price"]}')`,
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"country":"'Texas'","currency":"'USD'"},"value":["country","currency","stock","price"]}')`,
               type: "test.AnalyticsService.Header"
             },
             country: "Texas",
@@ -114,7 +114,7 @@ describe("analytics-request", () => {
         results: [
           {
             __metadata: {
-              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock"]}')`,
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header"
             },
             currency: "USD",
@@ -122,7 +122,7 @@ describe("analytics-request", () => {
           },
           {
             __metadata: {
-              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock"]}')`,
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header"
             },
             currency: "EUR",
@@ -144,7 +144,7 @@ describe("analytics-request", () => {
         results: [
           {
             __metadata: {
-              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock"]}')`,
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock","currency"]}')`,
               type: "test.AnalyticsService.Header"
             },
             currency: "USD",
@@ -153,6 +153,49 @@ describe("analytics-request", () => {
         ]
       }
     });
+    response = await util.callRead(
+      request,
+      "/v2/analytics/Header?$select=stock,currency&$top=4&$filter=(currency eq 'USD' or currency eq 'EUR')"
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body).toEqual({
+      d: {
+        results: [
+          {
+            __metadata: {
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock","currency"]}')`,
+              type: "test.AnalyticsService.Header"
+            },
+            currency: "EUR",
+            stock: 25
+          },
+          {
+            __metadata: {
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock","currency"]}')`,
+              type: "test.AnalyticsService.Header"
+            },
+            currency: "USD",
+            stock: 17
+          }
+        ]
+      }
+    });
+    response = await util.callRead(
+      request,
+      '/v2/analytics/Header(aggregation\'{"key":{"currency":"\'EUR\'"},"value":["stock","currency"]}\')'
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body).toEqual({
+      d: {
+        __metadata: {
+          uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock","currency"]}')`,
+          type: "test.AnalyticsService.Header"
+        },
+        currency: "EUR",
+        stock: 25
+      }
+    });
+
     response = await util.callRead(request, "/v2/analytics/Header?$select=stock&$top=4&$filter=currency eq 'USD'");
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -163,7 +206,6 @@ describe("analytics-request", () => {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock"]}')`,
               type: "test.AnalyticsService.Header"
             },
-            currency: "USD",
             stock: 17
           }
         ]
@@ -182,7 +224,6 @@ describe("analytics-request", () => {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock"]}')`,
               type: "test.AnalyticsService.Header"
             },
-            currency: "EUR",
             stock: 25
           },
           {
@@ -190,7 +231,6 @@ describe("analytics-request", () => {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock"]}')`,
               type: "test.AnalyticsService.Header"
             },
-            currency: "USD",
             stock: 17
           }
         ]
@@ -207,7 +247,6 @@ describe("analytics-request", () => {
           uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock"]}')`,
           type: "test.AnalyticsService.Header"
         },
-        currency: "EUR",
         stock: 25
       }
     });

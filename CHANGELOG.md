@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Fix \$filter in analytics query
 - Fix count for empty analytics result
+- Fix result projection for analytics query
+- Fix analytics "null" result values  
 
 ### Fixed
 
