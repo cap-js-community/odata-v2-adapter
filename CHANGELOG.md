@@ -7,15 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
+## Version 1.4.29 - tbd
+
+### Fixed
+
 ## Version 1.4.28 - 2020-04-27
+
+### Fixed
 
 - Fix \$filter in analytics query
 - Fix count for empty analytics result
 - Fix result projection for analytics query
 - Fix analytics "null" result values  
-
-### Fixed
-
 - Only add root error, if no details messages
 
 ## Version 1.4.27 - 2020-04-21
