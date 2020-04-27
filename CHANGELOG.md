@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Fix analytics default value for all OData types
+
 ## Version 1.4.28 - 2020-04-27
 
 ### Fixed
