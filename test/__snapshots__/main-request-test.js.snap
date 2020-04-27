@@ -169,7 +169,7 @@ exports[`main-request GET $metadata 1`] = `
       <Annotations Target=\\"test.MainService.Header/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Created By\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"A user's unique ID\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
@@ -181,7 +181,7 @@ exports[`main-request GET $metadata 1`] = `
       <Annotations Target=\\"test.MainService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"A user's unique ID\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">

@@ -183,6 +183,33 @@ exports[`draft-request GET $metadata 1`] = `
         <End Role=\\"HeaderItem\\" Type=\\"test.DraftService.HeaderItem\\" Multiplicity=\\"*\\"/>
         <End Role=\\"HeaderItem1\\" Type=\\"test.DraftService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
       </Association>
+      <Annotations Target=\\"test.DraftService.DraftAdministrativeData/DraftUUID\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Draft (Technical ID)\\"/>
+        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.DraftAdministrativeData/CreationDateTime\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Draft Created On\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.DraftAdministrativeData/CreatedByUser\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Draft Created By\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.DraftAdministrativeData/DraftIsCreatedByMe\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Draft Created By Me\\"/>
+        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.DraftAdministrativeData/LastChangeDateTime\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Draft Last Changed On\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.DraftAdministrativeData/LastChangedByUser\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Draft Last Changed By\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.DraftAdministrativeData/InProcessByUser\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Draft In Process By\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.DraftAdministrativeData/DraftIsProcessedByMe\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Draft In Process By Me\\"/>
+        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
+      </Annotations>
       <Annotations Target=\\"test.DraftService.EntityContainer/Header\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.DraftRoot\\">
           <Record Type=\\"Common.DraftRootType\\">
@@ -201,7 +228,7 @@ exports[`draft-request GET $metadata 1`] = `
       <Annotations Target=\\"test.DraftService.Header/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Created By\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"A user's unique ID\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
@@ -213,7 +240,7 @@ exports[`draft-request GET $metadata 1`] = `
       <Annotations Target=\\"test.DraftService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"A user's unique ID\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.Header/IsActiveEntity\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
