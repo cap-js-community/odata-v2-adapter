@@ -517,7 +517,7 @@ describe("main-request", () => {
     expect(response.statusCode).toBe(200);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001L and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'`
+      `/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(

@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.4.29 - tbd
+## Version 1.4.29 - 2020-04-28
 
 ### Fixed
 
 - Fix analytics default value for all OData types
+- Fix long running data type conversion for filter elements
 
 ## Version 1.4.28 - 2020-04-27
 
