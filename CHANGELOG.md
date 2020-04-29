@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Make function call with request body more robust
+
 ## Version 1.4.29 - 2020-04-28
 
 ### Fixed
@@ -25,7 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix \$filter in analytics query
 - Fix count for empty analytics result
 - Fix result projection for analytics query
-- Fix analytics "null" result values  
+- Fix analytics "null" result values
 - Only add root error, if no details messages
 
 ## Version 1.4.27 - 2020-04-21

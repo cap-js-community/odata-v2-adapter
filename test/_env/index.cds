@@ -5,3 +5,4 @@ using { test as testServiceModel } from './servicemodel';
 using { todo as todoTodoModel } from './todomodel';
 using { acme.cloud as acmeCloud } from './incidentsmodel';
 using { auth } from './authmodel';
+using from './navigatemodel';

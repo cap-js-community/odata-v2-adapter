@@ -768,6 +768,17 @@ describe("main-request", () => {
         name: "abc"
       }
     });
+    const _request = util.callRead(request, `/v2/main/unboundFunction?num=1&text=abc`);
+    // Set wrong body for GET
+    _request.set("content-type", "application/json").send({ code: "TEST" });
+    response = await _request;
+    expect(response.body).toMatchObject({
+      d: {
+        age: 1,
+        code: "TEST",
+        name: "abc"
+      }
+    });
     response = await util.callRead(request, `/v2/main/unboundDecimalFunction`);
     expect(response.body).toMatchObject({
       d: {
