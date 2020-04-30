@@ -20,7 +20,7 @@ describe("todo-request", () => {
     env.end(context);
   });
 
-  it.skip("CRUD test", async () => {
+  it("CRUD test", async () => {
     let response = await util.callRead(request, "/v2/todo/People?$expand=plannedTasks", {
       accept: "application/json"
     });
