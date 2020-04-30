@@ -22,5 +22,6 @@ module.exports = {
   testMatch: ["**/test/**/*-test.js"],
   testPathIgnorePatterns: ["/node_modules/"],
   testURL: "http://localhost/",
-  verbose: true
+  verbose: true,
+  setupFilesAfterEnv: ["./jest.setup.js"],
 };
