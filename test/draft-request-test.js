@@ -21,19 +21,19 @@ describe("draft-request", () => {
 
   it("GET service", async () => {
     const response = await util.callRead(request, "/v2/draft", {
-      accept: "application/json"
+      accept: "application/json",
     });
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Header", "HeaderItem"]
-      }
+        EntitySets: ["Header", "HeaderItem"],
+      },
     });
   });
 
   it("GET $metadata", async () => {
     const response = await util.callRead(request, "/v2/draft/$metadata", {
-      accept: "application/xml"
+      accept: "application/xml",
     });
     expect(response.body).toBeDefined();
     expect(response.text).toMatchSnapshot();
@@ -51,7 +51,7 @@ describe("draft-request", () => {
 
   it("GET request with parameters", async () => {
     let response = await util.callWrite(request, "/v2/draft/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
@@ -63,7 +63,7 @@ describe("draft-request", () => {
       __metadata: {
         uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
         type: "test.DraftService.Header",
-        etag: etag
+        etag: etag,
       },
       HasActiveEntity: false,
       HasDraftEntity: false,
@@ -75,19 +75,19 @@ describe("draft-request", () => {
       description: null,
       Items: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`
-        }
+          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+        },
       },
       SiblingEntity: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`
-        }
+          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
+        },
       },
       DraftAdministrativeData: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`
-        }
-      }
+          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
+        },
+      },
     });
     response = await util.callRead(
       request,
@@ -100,7 +100,7 @@ describe("draft-request", () => {
 
   it("POST request", async () => {
     let response = await util.callWrite(request, "/v2/draft/Header", {
-      name: "Test Create"
+      name: "Test Create",
     });
     expect(response.statusCode).toEqual(201);
     const etag = response.body.d.__metadata.etag;
@@ -113,7 +113,7 @@ describe("draft-request", () => {
         __metadata: {
           uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
           type: "test.DraftService.Header",
-          etag: etag
+          etag: etag,
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -125,20 +125,20 @@ describe("draft-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`
-          }
+            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+          },
         },
         SiblingEntity: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`
-          }
+            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
+          },
         },
         DraftAdministrativeData: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`
-          }
-        }
-      }
+            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
+          },
+        },
+      },
     });
     response = await util.callRead(request, "/v2/draft/Header?$filter=name eq 'Test Create'");
     expect(response.body).toBeDefined();
@@ -149,7 +149,7 @@ describe("draft-request", () => {
         __metadata: {
           uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
           type: "test.DraftService.Header",
-          etag: etag
+          etag: etag,
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -161,26 +161,26 @@ describe("draft-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`
-          }
+            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+          },
         },
         SiblingEntity: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`
-          }
+            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
+          },
         },
         DraftAdministrativeData: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`
-          }
-        }
-      }
+            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
+          },
+        },
+      },
     });
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(0);
     response = await util.callWrite(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`, {
-      name: "Test Update"
+      name: "Test Update",
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -192,7 +192,7 @@ describe("draft-request", () => {
       d: {
         __metadata: {
           type: "test.DraftService.HeaderItem",
-          uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`
+          uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -205,20 +205,20 @@ describe("draft-request", () => {
         startAt: null,
         header: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`
-          }
+            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
+          },
         },
         SiblingEntity: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`
-          }
+            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
+          },
         },
         DraftAdministrativeData: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`
-          }
-        }
-      }
+            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
+          },
+        },
+      },
     });
     response = await util.callRead(
       request,
@@ -229,7 +229,7 @@ describe("draft-request", () => {
       d: {
         __metadata: {
           type: "test.DraftService.HeaderItem",
-          uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`
+          uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -242,26 +242,26 @@ describe("draft-request", () => {
         startAt: null,
         header: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`
-          }
+            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
+          },
         },
         SiblingEntity: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`
-          }
+            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
+          },
         },
         DraftAdministrativeData: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`
-          }
-        }
-      }
+            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
+          },
+        },
+      },
     });
   });
 
   it("PUT request", async () => {
     let response = await util.callWrite(request, "/v2/draft/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.body).toBeDefined();
     expect(response.statusCode).toEqual(201);
@@ -274,7 +274,7 @@ describe("draft-request", () => {
       request,
       `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
       {
-        name: "Test2"
+        name: "Test2",
       },
       true
     );
@@ -285,11 +285,11 @@ describe("draft-request", () => {
       request,
       `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
       {
-        name: "Test2"
+        name: "Test2",
       },
       true,
       {
-        "If-Match": etag
+        "If-Match": etag,
       }
     );
     expect(response.statusCode).toEqual(200);
@@ -300,11 +300,11 @@ describe("draft-request", () => {
       request,
       `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
       {
-        name: "Test3"
+        name: "Test3",
       },
       true,
       {
-        "If-Match": etag
+        "If-Match": etag,
       }
     );
     expect(response.statusCode).toEqual(200);
@@ -346,7 +346,7 @@ describe("draft-request", () => {
       d: {
         __metadata: {
           uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
-          type: "test.DraftService.Header"
+          type: "test.DraftService.Header",
         },
         createdBy: "anonymous",
         modifiedBy: "anonymous",
@@ -354,10 +354,10 @@ describe("draft-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`
-          }
-        }
-      }
+            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+          },
+        },
+      },
     });
 
     // Update collection not allowed
@@ -365,7 +365,7 @@ describe("draft-request", () => {
       request,
       "/v2/draft/Header",
       {
-        name: "Test"
+        name: "Test",
       },
       true
     );
@@ -374,27 +374,27 @@ describe("draft-request", () => {
         code: "null",
         message: {
           lang: "en",
-          value: "Method PATCH not allowed for ENTITY.COLLECTION"
-        }
-      }
+          value: "Method PATCH not allowed for ENTITY.COLLECTION",
+        },
+      },
     });
   });
 
   it("DELETE request", async () => {
     let response = await util.callWrite(request, "/v2/draft/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
     const etag = response.body.d.__metadata.etag;
     response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
-      "If-Match": etag
+      "If-Match": etag,
     });
     expect(response.statusCode).toEqual(204);
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
     response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
-      "If-Match": "*"
+      "If-Match": "*",
     });
     expect(response.statusCode).toEqual(404);
     expect(response.body).toMatchObject({
@@ -402,15 +402,15 @@ describe("draft-request", () => {
         code: "404",
         message: {
           lang: "en",
-          value: "Not Found"
-        }
-      }
+          value: "Not Found",
+        },
+      },
     });
   });
 
   it("POST activate request", async () => {
     let response = await util.callWrite(request, "/v2/draft/Header", {
-      name: "Test Create"
+      name: "Test Create",
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -428,7 +428,7 @@ describe("draft-request", () => {
       {},
       false,
       {
-        "If-Match": etag
+        "If-Match": etag,
       }
     );
     expect(response.statusCode).toEqual(200);
@@ -438,7 +438,7 @@ describe("draft-request", () => {
       {},
       false,
       {
-        "If-Match": etag
+        "If-Match": etag,
       }
     );
     expect(response.statusCode).toEqual(201);
@@ -456,7 +456,7 @@ describe("draft-request", () => {
       {},
       false,
       {
-        "If-Match": etag
+        "If-Match": etag,
       }
     );
     expect(response.statusCode).toEqual(201);
@@ -467,7 +467,7 @@ describe("draft-request", () => {
 
   it("DELETE draft request", async () => {
     let response = await util.callWrite(request, "/v2/draft/Header", {
-      name: "Test Create"
+      name: "Test Create",
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -477,7 +477,7 @@ describe("draft-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d.ID).toEqual(id);
     response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
-      "If-Match": "*"
+      "If-Match": "*",
     });
     expect(response.statusCode).toEqual(204);
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);

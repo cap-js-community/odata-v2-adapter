@@ -29,21 +29,21 @@ describe("analytics-request", () => {
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["currency","stock"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
             currency: "EUR",
-            stock: 25
+            stock: 25,
           },
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
             currency: "USD",
-            stock: 17
-          }
-        ]
-      }
+            stock: 17,
+          },
+        ],
+      },
     });
     response = await util.callRead(
       request,
@@ -54,11 +54,11 @@ describe("analytics-request", () => {
       d: {
         __metadata: {
           uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
-          type: "test.AnalyticsService.Header"
+          type: "test.AnalyticsService.Header",
         },
         currency: "USD",
-        stock: 17
-      }
+        stock: 17,
+      },
     });
   });
 
@@ -71,35 +71,35 @@ describe("analytics-request", () => {
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"country":"'Germany'","currency":"'EUR'"},"value":["country","currency","stock","price"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
             country: "Germany",
             currency: "EUR",
             stock: 10,
-            price: "12.12"
+            price: "12.12",
           },
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"country":"'Spain'","currency":"'EUR'"},"value":["country","currency","stock","price"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
             country: "Spain",
             currency: "EUR",
             stock: 15,
-            price: "11.11"
+            price: "11.11",
           },
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"country":"'Texas'","currency":"'USD'"},"value":["country","currency","stock","price"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
             country: "Texas",
             currency: "USD",
             stock: 17,
-            price: "10.165000000000001"
-          }
-        ]
-      }
+            price: "10.165000000000001",
+          },
+        ],
+      },
     });
   });
 
@@ -115,21 +115,21 @@ describe("analytics-request", () => {
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
             currency: "USD",
-            stock: 17
+            stock: 17,
           },
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["currency","stock"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
             currency: "EUR",
-            stock: 25
-          }
-        ]
-      }
+            stock: 25,
+          },
+        ],
+      },
     });
   });
 
@@ -145,13 +145,13 @@ describe("analytics-request", () => {
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock","currency"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
             currency: "USD",
-            stock: 17
-          }
-        ]
-      }
+            stock: 17,
+          },
+        ],
+      },
     });
     response = await util.callRead(
       request,
@@ -164,21 +164,21 @@ describe("analytics-request", () => {
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock","currency"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
             currency: "EUR",
-            stock: 25
+            stock: 25,
           },
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock","currency"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
             currency: "USD",
-            stock: 17
-          }
-        ]
-      }
+            stock: 17,
+          },
+        ],
+      },
     });
     response = await util.callRead(
       request,
@@ -189,11 +189,11 @@ describe("analytics-request", () => {
       d: {
         __metadata: {
           uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock","currency"]}')`,
-          type: "test.AnalyticsService.Header"
+          type: "test.AnalyticsService.Header",
         },
         currency: "EUR",
-        stock: 25
-      }
+        stock: 25,
+      },
     });
 
     response = await util.callRead(request, "/v2/analytics/Header?$select=stock&$top=4&$filter=currency eq 'USD'");
@@ -204,12 +204,12 @@ describe("analytics-request", () => {
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
-            stock: 17
-          }
-        ]
-      }
+            stock: 17,
+          },
+        ],
+      },
     });
     response = await util.callRead(
       request,
@@ -222,19 +222,19 @@ describe("analytics-request", () => {
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
-            stock: 25
+            stock: 25,
           },
           {
             __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock"]}')`,
-              type: "test.AnalyticsService.Header"
+              type: "test.AnalyticsService.Header",
             },
-            stock: 17
-          }
-        ]
-      }
+            stock: 17,
+          },
+        ],
+      },
     });
     response = await util.callRead(
       request,
@@ -245,10 +245,10 @@ describe("analytics-request", () => {
       d: {
         __metadata: {
           uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock"]}')`,
-          type: "test.AnalyticsService.Header"
+          type: "test.AnalyticsService.Header",
         },
-        stock: 25
-      }
+        stock: 25,
+      },
     });
   });
 });

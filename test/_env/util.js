@@ -7,7 +7,7 @@ const CRLF = CR + LF;
 function callHead(request, path, headers) {
   request = request.head(path);
   if (headers) {
-    Object.keys(headers).forEach(vKey => {
+    Object.keys(headers).forEach((vKey) => {
       request.set(vKey, headers[vKey]);
     });
   }
@@ -17,7 +17,7 @@ function callHead(request, path, headers) {
 function callRead(request, path, headers) {
   request = request.get(path);
   if (headers) {
-    Object.keys(headers).forEach(vKey => {
+    Object.keys(headers).forEach((vKey) => {
       request.set(vKey, headers[vKey]);
     });
   }
@@ -27,7 +27,7 @@ function callRead(request, path, headers) {
 function callWrite(request, path, payload, update, headers) {
   request = update ? request.merge(path) : request.post(path);
   headers = headers || {};
-  Object.keys(headers).forEach(vKey => {
+  Object.keys(headers).forEach((vKey) => {
     request.set(vKey, headers[vKey]);
   });
   request = request.set("content-type", headers["content-type"] || "application/json").send(payload);
@@ -37,7 +37,7 @@ function callWrite(request, path, payload, update, headers) {
 function callDelete(request, path, headers) {
   request = request.delete(path);
   headers = headers || {};
-  Object.keys(headers).forEach(vKey => {
+  Object.keys(headers).forEach((vKey) => {
     request.set(vKey, headers[vKey]);
   });
   return request;
@@ -56,7 +56,7 @@ function callMultipart(request, path, payload) {
 function callStream(request, path, headers) {
   request = request.put(path);
   headers = headers || {};
-  Object.keys(headers).forEach(vKey => {
+  Object.keys(headers).forEach((vKey) => {
     request.set(vKey, headers[vKey]);
   });
   request = request.set("content-type", headers["content-type"] || "application/octet-stream");
@@ -67,7 +67,7 @@ function callStream(request, path, headers) {
 function multipartMixedToTextParser(res, callback) {
   let text = "";
   res.setEncoding("utf8");
-  res.on("data", chunk => {
+  res.on("data", (chunk) => {
     text += chunk;
   });
   res.on("end", () => {
@@ -80,7 +80,7 @@ function splitMultipartResponse(body, boundary = "boundary") {
   return body
     .split(new RegExp(`(?:^|\r\n)--${boundary}(?:\r\n|--\r\n$|--$)`))
     .slice(1, -1)
-    .map(part => {
+    .map((part) => {
       const [_meta, ..._rest] = part.split("\r\n\r\n");
       const multipart = _meta.match(/content-type:\s*multipart\/mixed;\s*boundary=(\w+)/i);
       if (multipart !== null) {
@@ -93,7 +93,7 @@ function splitMultipartResponse(body, boundary = "boundary") {
         const [protocol, _statusCode, statusText] = _status.split(/\s+/);
         const statusCode = parseInt(_statusCode);
         let headers = {};
-        _headers.forEach(_header => {
+        _headers.forEach((_header) => {
           const [key, value] = _header.split(": ");
           headers[key] = value;
         });
@@ -109,5 +109,5 @@ module.exports = {
   callDelete,
   callMultipart,
   splitMultipartResponse,
-  callStream
+  callStream,
 };

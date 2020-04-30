@@ -11,7 +11,7 @@ const hanaCredentials = require("./db/default-services").hana[0].credentials;
 
 const db = cds.connect({
   kind: "hana",
-  credentials: hanaCredentials
+  credentials: hanaCredentials,
 });
 
 module.exports = async (service, defaultPort, fnInit) => {
@@ -24,7 +24,7 @@ module.exports = async (service, defaultPort, fnInit) => {
 
   // Backend
   let server;
-  await new Promise(resolve => {
+  await new Promise((resolve) => {
     server = new http.Server(app);
     server.listen(port, () => {
       port = server.address().port;
@@ -38,7 +38,7 @@ module.exports = async (service, defaultPort, fnInit) => {
     odatav2proxy({
       path: "v2",
       model: servicePath,
-      port: port
+      port: port,
     })
   );
 
@@ -49,7 +49,7 @@ module.exports = async (service, defaultPort, fnInit) => {
   return context;
 };
 
-module.exports.end = context => {
+module.exports.end = (context) => {
   context.cds.disconnect();
   context.server.close();
 };

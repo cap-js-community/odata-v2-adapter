@@ -13,8 +13,8 @@
   "scripts": {
     "start": "node test-server",
     "cds:run": "cds run",
-    "test": "XS_APP_LOG_LEVEL=debug jest --runInBand --updateSnapshot",
-    "test:debug": "XS_APP_LOG_LEVEL=debug jest --updateSnapshot",
+    "test": "jest --runInBand --updateSnapshot",
+    "test:debug": "XS_APP_LOG_LEVEL=debug jest --runInBand --updateSnapshot",
     "test:mem:install": "npm install --no-save weak-napi",
     "test:mem:heap": "node --expose-gc node_modules/jest/bin/jest --runInBand --logHeapUsage 2>memheap.txt",
     "test:mem:leaks": "jest --runInBand --detectLeaks 2>memleaks.txt",
@@ -28,9 +28,9 @@
     "test:deploy": "cd test/_env && cds deploy index.cds --to sqlite:test.db --no-save"
   },
   "dependencies": {
-    "@sap/logging": "^5.3.0",
+    "@sap/logging": "5.3.0",
     "express": "4.17.1",
-    "http-proxy-middleware": "^1.0.3",
+    "http-proxy-middleware": "1.0.1",
     "node-fetch": "2.6.0"
   },
   "devDependencies": {

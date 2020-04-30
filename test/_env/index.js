@@ -9,8 +9,8 @@ const odatav2proxy = require("../../lib");
 const db = cds.connect({
   kind: "sqlite",
   credentials: {
-    database: ":memory:" // "./test/_env/test.db"
-  }
+    database: ":memory:", // "./test/_env/test.db"
+  },
 });
 
 module.exports = async (service, defaultPort, fnInit, options) => {
@@ -23,7 +23,7 @@ module.exports = async (service, defaultPort, fnInit, options) => {
 
   // Backend
   let server;
-  await new Promise(resolve => {
+  await new Promise((resolve) => {
     server = new http.Server(app);
     server.listen(port, () => {
       port = server.address().port;
@@ -37,7 +37,7 @@ module.exports = async (service, defaultPort, fnInit, options) => {
     odatav2proxy({
       path: "v2",
       model: servicePath,
-      port: port
+      port: port,
     })
   );
 
@@ -50,7 +50,7 @@ module.exports = async (service, defaultPort, fnInit, options) => {
   return context;
 };
 
-module.exports.end = context => {
+module.exports.end = (context) => {
   context.cds.disconnect();
   context.server.close();
 };

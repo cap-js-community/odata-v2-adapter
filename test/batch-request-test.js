@@ -33,7 +33,7 @@ describe("batch-request", () => {
     expect(response.statusCode).toEqual(200);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(3);
-    expect(responses.filter(response => response.statusCode === 200).length).toEqual(3);
+    expect(responses.filter((response) => response.statusCode === 200).length).toEqual(3);
     const [first, second, third] = responses;
     expect(first.body.d.results.length).toEqual(4);
 
@@ -46,7 +46,7 @@ describe("batch-request", () => {
   it("GET request with uri escape character", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test %22",
-      country: "US"
+      country: "US",
     });
     expect(response.statusCode).toEqual(201);
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-GET-Escaped.txt", "utf8");
@@ -55,7 +55,7 @@ describe("batch-request", () => {
     expect(response.statusCode).toEqual(200);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
-    expect(responses.filter(response => response.statusCode === 200).length).toEqual(1);
+    expect(responses.filter((response) => response.statusCode === 200).length).toEqual(1);
     const [first] = responses;
     expect(first.body.d.results.length).toEqual(1);
   });
@@ -69,16 +69,16 @@ describe("batch-request", () => {
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(4);
     const [first, second, third, fourth] = responses;
-    expect(responses.filter(response => response.statusCode === 201)).toEqual([first, second]);
-    expect(responses.filter(response => response.statusCode === 200)).toEqual([third, fourth]);
+    expect(responses.filter((response) => response.statusCode === 201)).toEqual([first, second]);
+    expect(responses.filter((response) => response.statusCode === 200)).toEqual([third, fourth]);
 
     expect(
       third.body.d.results.filter(
-        result => result.name === "Test" && result.Items.results.length === 1 && result.FirstItem === null
+        (result) => result.name === "Test" && result.Items.results.length === 1 && result.FirstItem === null
       ).length
     ).toEqual(1);
 
-    expect(fourth.body.d.results.filter(result => result.name === "Test").length).toEqual(1);
+    expect(fourth.body.d.results.filter((result) => result.name === "Test").length).toEqual(1);
 
     const id = first.body.d.ID;
     expect(id).toBeDefined();
@@ -86,7 +86,7 @@ describe("batch-request", () => {
     expect(response.body.d).toMatchObject({
       __metadata: {
         type: "test.MainService.Header",
-        uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`
+        uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
       },
       ID: id,
       createdBy: "anonymous",
@@ -95,15 +95,15 @@ describe("batch-request", () => {
       name: "Test",
       Items: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')/Items`
-        }
-      }
+          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')/Items`,
+        },
+      },
     });
   });
 
   it("PUT request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
@@ -128,9 +128,9 @@ describe("batch-request", () => {
       name: "Test",
       Items: [
         {
-          name: "TestItem"
-        }
-      ]
+          name: "TestItem",
+        },
+      ],
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
@@ -154,7 +154,7 @@ describe("batch-request", () => {
 
   it("DELETE request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
@@ -179,15 +179,15 @@ describe("batch-request", () => {
     expect(response.statusCode).toEqual(200);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(2);
-    expect(responses.filter(response => response.statusCode === 200).length).toEqual(2);
+    expect(responses.filter((response) => response.statusCode === 200).length).toEqual(2);
     const [first, second] = responses;
     expect(first.body).toEqual(
       expect.objectContaining({
         d: {
           name: "abc1",
           code: "TEST",
-          age: 1
-        }
+          age: 1,
+        },
       })
     );
     expect(second.body).toEqual(
@@ -197,10 +197,10 @@ describe("batch-request", () => {
             {
               name: "abc2",
               code: "TEST",
-              age: 2
-            }
-          ]
-        }
+              age: 2,
+            },
+          ],
+        },
       })
     );
   });

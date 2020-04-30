@@ -28,28 +28,28 @@ describe("main-request", () => {
 
   it("GET service", async () => {
     let response = await util.callRead(request, "/v2/main", {
-      accept: "application/json"
+      accept: "application/json",
     });
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream"]
-      }
+        EntitySets: ["Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream"],
+      },
     });
     response = await util.callRead(request, "/v2/main/", {
-      accept: "application/json"
+      accept: "application/json",
     });
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream"]
-      }
+        EntitySets: ["Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream"],
+      },
     });
   });
 
   it("GET $metadata", async () => {
     const response = await util.callRead(request, "/v2/main/$metadata", {
-      accept: "application/xml"
+      accept: "application/xml",
     });
     expect(response.body).toBeDefined();
     expect(response.text).toMatchSnapshot();
@@ -57,12 +57,12 @@ describe("main-request", () => {
 
   it("GET $metadata localized", async () => {
     let response = await util.callRead(request, "/v2/main/$metadata?sap-language=de", {
-      accept: "application/xml"
+      accept: "application/xml",
     });
     expect(response.body).toBeDefined();
     expect(response.text).toMatchSnapshot();
     response = await util.callRead(request, "/v2/main/$metadata", {
-      "accept-language": "de-DE"
+      "accept-language": "de-DE",
     });
     expect(response.body).toBeDefined();
     expect(response.text).toMatchSnapshot();
@@ -77,20 +77,14 @@ describe("main-request", () => {
     expect(response.body.d.results).toHaveLength(4);
     expect(response.body.d.__count).toEqual("4");
     const id = response.body.d.results[0].ID;
-    console.log("!!!=============");
-    try {
-      response = await util.callRead(request, `/v2/main/HeaderAssocKey(guid'${id}')`);
-      console.log(JSON.stringify(response.body));
-    } catch(err) {
-      console.error(err.stack || err.message);
-    }
+    response = await util.callRead(request, `/v2/main/HeaderAssocKey(guid'${id}')`);
     expect(response.body).toBeDefined();
     expect(response.status).toEqual(404);
     expect(response.body.error).toEqual({
       code: "404",
       message: {
         lang: "en",
-        value: "Not Found"
+        value: "Not Found",
       },
       innererror: {
         errordetails: [
@@ -98,11 +92,12 @@ describe("main-request", () => {
             code: "404",
             message: {
               lang: "en",
-              value: "Not Found"
-            }
-          }
-        ]
-      }
+              value: "Not Found",
+            },
+            severity: "error",
+          },
+        ],
+      },
     });
   });
 
@@ -111,9 +106,9 @@ describe("main-request", () => {
       name: "Test",
       Items: [
         {
-          name: "TestItem"
-        }
-      ]
+          name: "TestItem",
+        },
+      ],
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
@@ -126,7 +121,7 @@ describe("main-request", () => {
       {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`
+          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
         },
         ID: id,
         FirstItem: null,
@@ -134,21 +129,21 @@ describe("main-request", () => {
           results: [
             {
               __metadata: {
-                type: "test.MainService.HeaderItem"
+                type: "test.MainService.HeaderItem",
               },
               description: null,
               endAt: null,
               header: {
-                __deferred: {}
+                __deferred: {},
               },
               header_ID: id,
               name: "TestItem",
-              startAt: null
-            }
-          ]
+              startAt: null,
+            },
+          ],
         },
-        name: "Test"
-      }
+        name: "Test",
+      },
     ]);
   });
 
@@ -157,9 +152,9 @@ describe("main-request", () => {
       name: "Test",
       Items: [
         {
-          name: "TestItem"
-        }
-      ]
+          name: "TestItem",
+        },
+      ],
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
@@ -171,7 +166,7 @@ describe("main-request", () => {
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
         uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
-        type: "test.MainService.Header"
+        type: "test.MainService.Header",
       },
       ID: id,
       name: "Test",
@@ -179,13 +174,13 @@ describe("main-request", () => {
         results: [
           {
             __metadata: {
-              type: "test.MainService.HeaderItem"
+              type: "test.MainService.HeaderItem",
             },
             name: "TestItem",
             header: {
               __metadata: {
                 uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
-                type: "test.MainService.Header"
+                type: "test.MainService.Header",
               },
               ID: id,
               name: "Test",
@@ -193,7 +188,7 @@ describe("main-request", () => {
                 results: [
                   {
                     __metadata: {
-                      type: "test.MainService.HeaderItem"
+                      type: "test.MainService.HeaderItem",
                     },
                     name: "TestItem",
                     description: null,
@@ -201,15 +196,15 @@ describe("main-request", () => {
                     endAt: null,
                     header_ID: id,
                     header: {
-                      __deferred: {}
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        ]
-      }
+                      __deferred: {},
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      },
     });
     response = await util.callRead(
       request,
@@ -219,7 +214,7 @@ describe("main-request", () => {
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
         uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
-        type: "test.MainService.Header"
+        type: "test.MainService.Header",
       },
       ID: id,
       createdBy: "anonymous",
@@ -235,22 +230,22 @@ describe("main-request", () => {
         results: [
           {
             __metadata: {
-              type: "test.MainService.HeaderItem"
+              type: "test.MainService.HeaderItem",
             },
-            name: "TestItem"
-          }
-        ]
-      }
+            name: "TestItem",
+          },
+        ],
+      },
     });
   });
 
   it("GET request with search", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Search Instance_Test"
+      name: "Search Instance_Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
@@ -260,7 +255,7 @@ describe("main-request", () => {
 
   it("GET request with $count", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
@@ -270,15 +265,15 @@ describe("main-request", () => {
 
   it("GET request with $value", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')/ID`);
     expect(response.body).toEqual({
       d: {
-        ID: id
-      }
+        ID: id,
+      },
     });
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')/ID/$value`);
     expect(response.headers["content-type"]).toEqual("text/plain");
@@ -357,19 +352,20 @@ describe("main-request", () => {
               message: {
                 lang: "en",
                 value:
-                  "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888"
+                  "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888",
               },
-              type: "system"
-            }
-          ]
+              severity: "error",
+              type: "system",
+            },
+          ],
         },
         message: {
           lang: "en",
           value:
-            "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888"
+            "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888",
         },
-        type: "system"
-      }
+        type: "system",
+      },
     });
     response = await util.callRead(
       request,
@@ -381,7 +377,7 @@ describe("main-request", () => {
         code: "null",
         message: {
           lang: "en",
-          value: "Expected uri token 'EOF' could not be found in '$value2' at position 7"
+          value: "Expected uri token 'EOF' could not be found in '$value2' at position 7",
         },
         innererror: {
           errordetails: [
@@ -389,39 +385,40 @@ describe("main-request", () => {
               code: "null",
               message: {
                 lang: "en",
-                value: "Expected uri token 'EOF' could not be found in '$value2' at position 7"
-              }
-            }
-          ]
-        }
-      }
+                value: "Expected uri token 'EOF' could not be found in '$value2' at position 7",
+              },
+              severity: "error",
+            },
+          ],
+        },
+      },
     });
   });
 
-  it("PUT request with stream", done => {
+  it("PUT request with stream", (done) => {
     util
       .callWrite(request, "/v2/main/HeaderStream", {
         mediaType: "image/png",
-        filename: "test.png"
+        filename: "test.png",
       })
-      .then(createResponse => {
+      .then((createResponse) => {
         expect(createResponse.statusCode).toEqual(201);
         const id = createResponse.body.d.ID;
 
         const stream = fs.createReadStream("./test/_env/data/init/assets/file.png");
         const req = util.callStream(request, `/v2/main/HeaderStream(guid'${id}')/data`, {
-          "content-type": "image/png"
+          "content-type": "image/png",
         });
         stream.on("end", () => {
           req.end(() => {});
           setTimeout(() => {
-            util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(readResponse => {
+            util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((readResponse) => {
               expect(readResponse.statusCode).toEqual(200);
               expect(readResponse.headers["content-type"]).toEqual("image/png");
               expect(readResponse.body.length).toEqual(35372);
-              return util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(deleteResponse => {
+              return util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((deleteResponse) => {
                 expect(deleteResponse.statusCode).toEqual(204);
-                return util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then(readResponse => {
+                return util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((readResponse) => {
                   expect(readResponse.statusCode).toEqual(204);
                   done();
                 });
@@ -435,7 +432,7 @@ describe("main-request", () => {
 
   it("GET request with function 'substringof'", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
@@ -471,12 +468,12 @@ describe("main-request", () => {
   it('GET request with many "or" filters on same field', async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
-      country: "US"
+      country: "US",
     });
     expect(response.statusCode).toEqual(201);
     response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
-      country: "DE"
+      country: "DE",
     });
     expect(response.statusCode).toEqual(201);
     response = await util.callRead(request, `/v2/main/Header?$filter=country eq 'X' or country eq 'A'`);
@@ -487,7 +484,7 @@ describe("main-request", () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
       stock: 999,
-      country: "US"
+      country: "US",
     });
     response = await util.callRead(request, `/v2/main/Header?$filter=stock eq 999L`);
     expect(response.body.d.results).toHaveLength(1);
@@ -502,9 +499,9 @@ describe("main-request", () => {
       Items: [
         {
           name: "TestItem1001",
-          startAt: "/Date(1586815200000)/"
-        }
-      ]
+          startAt: "/Date(1586815200000)/",
+        },
+      ],
     });
     response = await util.callRead(request, `/v2/main/Header?$expand=Items&$filter=stock eq 1001L`);
     expect(response.body.d.results).toHaveLength(1);
@@ -516,7 +513,7 @@ describe("main-request", () => {
       `/v2/main/Header(${ID})`,
       {
         ID,
-        FirstItem_ID: itemID
+        FirstItem_ID: itemID,
       },
       true
     );
@@ -536,7 +533,7 @@ describe("main-request", () => {
   it("GET request with uri escape character", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test %22",
-      country: "US"
+      country: "US",
     });
     expect(response.statusCode).toEqual(201);
     const ID = response.body.d.ID;
@@ -544,7 +541,7 @@ describe("main-request", () => {
     expect(response.body.d).toMatchObject({
       ID,
       name: "Test %22",
-      country: "US"
+      country: "US",
     });
     response = await util.callRead(request, encodeURI(`/v2/main/Header?$filter=name eq 'Test %22'`));
     expect(response.body.d.results).toHaveLength(1);
@@ -555,9 +552,9 @@ describe("main-request", () => {
       name: "Test Create",
       Items: [
         {
-          name: "Test Create Item"
-        }
-      ]
+          name: "Test Create Item",
+        },
+      ],
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -570,7 +567,7 @@ describe("main-request", () => {
       d: {
         __metadata: {
           uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
-          type: "test.MainService.Header"
+          type: "test.MainService.Header",
         },
         ID: id,
         createdBy: "anonymous",
@@ -581,17 +578,17 @@ describe("main-request", () => {
           results: [
             {
               __metadata: {
-                type: "test.MainService.HeaderItem"
+                type: "test.MainService.HeaderItem",
               },
               description: null,
               endAt: null,
               header_ID: id,
               name: "Test Create Item",
-              startAt: null
-            }
-          ]
-        }
-      }
+              startAt: null,
+            },
+          ],
+        },
+      },
     });
     expect(/\/Date\(.+?\)\//.test(response.body.d.createdAt)).toEqual(true);
     const createdAt = new Date(parseInt(response.body.d.createdAt.substring(6, response.body.d.createdAt.length - 2)));
@@ -604,7 +601,7 @@ describe("main-request", () => {
       d: {
         __metadata: {
           uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
-          type: "test.MainService.Header"
+          type: "test.MainService.Header",
         },
         createdBy: "anonymous",
         modifiedBy: "anonymous",
@@ -612,16 +609,16 @@ describe("main-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/main/Header(guid'${id}')/Items`
-          }
-        }
-      }
+            uri: `http://${response.request.host}/v2/main/Header(guid'${id}')/Items`,
+          },
+        },
+      },
     });
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')/Items`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callWrite(request, `/v2/main/Header(guid'${id}')/Items`, {
-      name: "Test Update"
+      name: "Test Update",
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -631,7 +628,7 @@ describe("main-request", () => {
       d: {
         __metadata: {
           uri: `http://${response.request.host}/v2/main/HeaderItem(guid'${itemId}')`,
-          type: "test.MainService.HeaderItem"
+          type: "test.MainService.HeaderItem",
         },
         name: "Test Update",
         description: null,
@@ -640,10 +637,10 @@ describe("main-request", () => {
         header_ID: id,
         header: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/main/HeaderItem(guid'${itemId}')/header`
-          }
-        }
-      }
+            uri: `http://${response.request.host}/v2/main/HeaderItem(guid'${itemId}')/header`,
+          },
+        },
+      },
     });
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')/Items(guid'${itemId}')`);
     expect(response.body).toBeDefined();
@@ -651,7 +648,7 @@ describe("main-request", () => {
       d: {
         __metadata: {
           uri: `http://${response.request.host}/v2/main/HeaderItem(guid'${itemId}')`,
-          type: "test.MainService.HeaderItem"
+          type: "test.MainService.HeaderItem",
         },
         name: "Test Update",
         description: null,
@@ -660,16 +657,16 @@ describe("main-request", () => {
         header_ID: id,
         header: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/main/HeaderItem(guid'${itemId}')/header`
-          }
-        }
-      }
+            uri: `http://${response.request.host}/v2/main/HeaderItem(guid'${itemId}')/header`,
+          },
+        },
+      },
     });
   });
 
   it("PUT request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
@@ -677,7 +674,7 @@ describe("main-request", () => {
       request,
       `/v2/main/Header(guid'${id}')`,
       {
-        name: "Test2"
+        name: "Test2",
       },
       true
     );
@@ -687,7 +684,7 @@ describe("main-request", () => {
       d: {
         __metadata: {
           uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
-          type: "test.MainService.Header"
+          type: "test.MainService.Header",
         },
         createdBy: "anonymous",
         modifiedBy: "anonymous",
@@ -695,16 +692,16 @@ describe("main-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/main/Header(guid'${id}')/Items`
-          }
-        }
-      }
+            uri: `http://${response.request.host}/v2/main/Header(guid'${id}')/Items`,
+          },
+        },
+      },
     });
     response = await util.callWrite(
       request,
       "/v2/main/Header",
       {
-        name: "Test"
+        name: "Test",
       },
       true
     );
@@ -713,15 +710,15 @@ describe("main-request", () => {
         code: "null",
         message: {
           lang: "en",
-          value: "Method PATCH not allowed for ENTITY.COLLECTION"
-        }
-      }
+          value: "Method PATCH not allowed for ENTITY.COLLECTION",
+        },
+      },
     });
   });
 
   it("PUT request after GET", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.body).toBeDefined();
     let body = response.body;
@@ -744,7 +741,7 @@ describe("main-request", () => {
 
   it("DELETE request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
@@ -759,9 +756,9 @@ describe("main-request", () => {
         code: "404",
         message: {
           lang: "en",
-          value: "Not Found"
-        }
-      }
+          value: "Not Found",
+        },
+      },
     });
   });
 
@@ -771,8 +768,8 @@ describe("main-request", () => {
       d: {
         age: 1,
         code: "TEST",
-        name: "abc"
-      }
+        name: "abc",
+      },
     });
     const _request = util.callRead(request, `/v2/main/unboundFunction?num=1&text=abc`);
     // Set wrong body for GET
@@ -782,27 +779,27 @@ describe("main-request", () => {
       d: {
         age: 1,
         code: "TEST",
-        name: "abc"
-      }
+        name: "abc",
+      },
     });
     response = await util.callRead(request, `/v2/main/unboundDecimalFunction`);
     expect(response.body).toMatchObject({
       d: {
-        value: "12345.6789"
-      }
+        value: "12345.6789",
+      },
     });
     response = await util.callRead(request, `/v2/main/unboundDecimalsFunction`);
     expect(response.body).toMatchObject({
       d: {
         results: [
           {
-            value: "12345.6789"
+            value: "12345.6789",
           },
           {
-            value: "12345.6789"
-          }
-        ]
-      }
+            value: "12345.6789",
+          },
+        ],
+      },
     });
   });
 
@@ -813,7 +810,7 @@ describe("main-request", () => {
         code: "ERR01",
         message: {
           lang: "en",
-          value: "An error occurred"
+          value: "An error occurred",
         },
         target: "Items",
         severity: "error",
@@ -824,11 +821,11 @@ describe("main-request", () => {
               message: "Error details",
               target: "Items",
               severity: "error",
-              transition: true
-            }
-          ]
-        }
-      }
+              transition: true,
+            },
+          ],
+        },
+      },
     });
   });
 
@@ -838,8 +835,8 @@ describe("main-request", () => {
       d: {
         age: 1,
         code: "TEST",
-        name: "Test"
-      }
+        name: "Test",
+      },
     });
     expect(JSON.parse(response.headers["sap-message"])).toEqual({
       code: "WARN01",
@@ -848,12 +845,12 @@ describe("main-request", () => {
           code: "WARN02",
           message: "Another Warning occurred",
           severity: "warning",
-          target: "Root"
-        }
+          target: "Root",
+        },
       ],
       message: "An Warning occurred",
       severity: "warning",
-      target: "Items"
+      target: "Items",
     });
   });
 
@@ -862,9 +859,9 @@ describe("main-request", () => {
       name: "Test",
       Items: [
         {
-          name: "TestItem"
-        }
-      ]
+          name: "TestItem",
+        },
+      ],
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
@@ -873,13 +870,13 @@ describe("main-request", () => {
       d: {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`
+          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
         },
         createdBy: "anonymous",
         modifiedBy: "anonymous",
         name: "Test",
-        description: null
-      }
+        description: null,
+      },
     });
     response = await util.callRead(request, `/v2/main/unboundNavigationsFunction?num=1&text=abc`);
     expect(response.body.d.results.length > 0).toEqual(true);
@@ -889,15 +886,15 @@ describe("main-request", () => {
         code: "null",
         message: {
           lang: "en",
-          value: `Current function 'unboundNavigationFunction' is not composable; trailing segment 'Items' ist not allowed`
-        }
-      }
+          value: `Current function 'unboundNavigationFunction' is not composable; trailing segment 'Items' ist not allowed`,
+        },
+      },
     });
   });
 
   it("GET bound function request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
@@ -908,10 +905,10 @@ describe("main-request", () => {
           {
             age: 1,
             code: "TEST",
-            name: "abc"
-          }
-        ]
-      }
+            name: "abc",
+          },
+        ],
+      },
     });
   });
 
@@ -923,16 +920,45 @@ describe("main-request", () => {
           {
             age: 1,
             code: "TEST",
-            name: "abc"
-          }
-        ]
-      }
+            name: "abc",
+          },
+        ],
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundAction`, {
+      num: 1,
+      text: "abc",
+    });
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 1,
+            code: "TEST",
+            name: "abc",
+          },
+        ],
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundAction?num=1`, {
+      text: "abc",
+    });
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 1,
+            code: "TEST",
+            name: "abc",
+          },
+        ],
+      },
     });
   });
 
   it("POST bound action request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test"
+      name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
@@ -941,8 +967,8 @@ describe("main-request", () => {
       d: {
         age: 1,
         code: "TEST",
-        name: "abc"
-      }
+        name: "abc",
+      },
     });
   });
 });

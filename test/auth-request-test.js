@@ -16,15 +16,15 @@ const options = {
       alice: {
         password: "alice",
         ID: "alice@wonder.land",
-        roles: ["XYZ4711"]
+        roles: ["XYZ4711"],
       },
       bob: {
         password: "bob",
         ID: "bob@builder.com",
-        roles: []
-      }
-    }
-  }
+        roles: [],
+      },
+    },
+  },
 };
 
 describe("auth-request", () => {
@@ -39,7 +39,7 @@ describe("auth-request", () => {
 
   it("GET $metadata auth", async () => {
     let response = await util.callRead(request, "/v2/auth/$metadata", {
-      accept: "application/xml"
+      accept: "application/xml",
     });
     expect(response.status).toEqual(401);
     expect(response.headers["www-authenticate"]).toEqual('Basic realm="Users"');
@@ -49,7 +49,7 @@ describe("auth-request", () => {
     ).toString("base64")}`;
     response = await util.callRead(request, "/v2/auth/$metadata", {
       accept: "application/xml",
-      Authorization: authorization
+      Authorization: authorization,
     });
     expect(response.status).toEqual(403);
 
@@ -58,7 +58,7 @@ describe("auth-request", () => {
     ).toString("base64")}`;
     response = await util.callRead(request, "/v2/auth/$metadata", {
       accept: "application/xml",
-      Authorization: authorization
+      Authorization: authorization,
     });
     expect(response.status).toEqual(200);
   });

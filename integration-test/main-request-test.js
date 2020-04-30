@@ -22,11 +22,11 @@ describe("main-requests", () => {
     const stock = Math.round(new Date().getTime() / 1000);
     let response = await util.callWrite(request, "/v2/main/Header", {
       stock: stock,
-      currency: "USD"
+      currency: "USD",
     });
     response = await util.callWrite(request, "/v2/main/Header", {
       stock: 1,
-      currency: "EUR"
+      currency: "EUR",
     });
     response = await util.callRead(request, `/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='USD')/Set`);
     expect(response.body).toBeDefined();
@@ -34,7 +34,7 @@ describe("main-requests", () => {
     expect(response.body.d.results).toMatchObject([
       {
         __metadata: {
-          type: "test.MainService.HeaderParameters"
+          type: "test.MainService.HeaderParameters",
         },
         country: null,
         createdBy: "anonymous",
@@ -43,8 +43,8 @@ describe("main-requests", () => {
         modifiedBy: "anonymous",
         name: null,
         price: null,
-        stock: stock
-      }
+        stock: stock,
+      },
     ]);
   });
 });

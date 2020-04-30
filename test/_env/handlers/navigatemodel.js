@@ -1,9 +1,9 @@
-module.exports = srv => {
-  srv.on("GetHierarchy", async req => {
+module.exports = (srv) => {
+  srv.on("GetHierarchy", async (req) => {
     return [
       {
-        Id: "TEST"
-      }
+        Id: "TEST",
+      },
     ];
   });
 };

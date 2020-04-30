@@ -22,19 +22,19 @@ describe("service-request", () => {
 
   it("GET service", async () => {
     const response = await util.callRead(request, "/v2/dummy", {
-      accept: "application/json"
+      accept: "application/json",
     });
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Header", "HeaderItem"]
-      }
+        EntitySets: ["Header", "HeaderItem"],
+      },
     });
   });
 
   it("GET service data", async () => {
     const response = await util.callRead(request, "/v2/dummy/Header", {
-      accept: "application/json"
+      accept: "application/json",
     });
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length > 0).toEqual(true);
@@ -42,7 +42,7 @@ describe("service-request", () => {
 
   it("GET service case sensitive", async () => {
     const response = await util.callRead(request, "/v2/Dummy/Header", {
-      accept: "application/json"
+      accept: "application/json",
     });
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length > 0).toEqual(true);

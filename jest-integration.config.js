@@ -13,5 +13,5 @@ module.exports = {
   testMatch: ["**/integration-test/**/*-test.js"],
   testPathIgnorePatterns: ["/node_modules/"],
   testURL: "http://localhost/",
-  verbose: true
+  verbose: true,
 };
