@@ -4,7 +4,7 @@ const express = require("express");
 const http = require("http");
 const cds = require("@sap/cds");
 
-process.env.XS_APP_LOG_LEVEL = "debug";
+process.env.XS_APP_LOG_LEVEL = "info"; // debug
 
 const odatav2proxy = require("../../lib");
 

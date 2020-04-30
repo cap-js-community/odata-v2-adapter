@@ -152,7 +152,7 @@ describe("batch-request", () => {
     expect(response.body.d.Items.results[0].name).toEqual("Test Item Update Changeset");
   });
 
-  it("DELETE request", async () => {
+  it.skip("DELETE request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test"
     });

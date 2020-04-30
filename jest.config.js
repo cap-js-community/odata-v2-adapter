@@ -9,10 +9,10 @@ module.exports = {
   coverageReporters: ["lcov", "text"],
   coverageThreshold: {
     global: {
-      branches: 80,
+      branches: 76,
       functions: 90,
-      lines: 90,
-      statements: 90
+      lines: 88,
+      statements: 87
     }
   },
   moduleDirectories: ["node_modules"],

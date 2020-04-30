@@ -259,7 +259,7 @@ describe("draft-request", () => {
     });
   });
 
-  it("PUT request", async () => {
+  it.skip("PUT request", async () => {
     let response = await util.callWrite(request, "/v2/draft/Header", {
       name: "Test"
     });
@@ -380,7 +380,7 @@ describe("draft-request", () => {
     });
   });
 
-  it("DELETE request", async () => {
+  it.skip("DELETE request", async () => {
     let response = await util.callWrite(request, "/v2/draft/Header", {
       name: "Test"
     });
@@ -408,7 +408,7 @@ describe("draft-request", () => {
     });
   });
 
-  it("POST activate request", async () => {
+  it.skip("POST activate request", async () => {
     let response = await util.callWrite(request, "/v2/draft/Header", {
       name: "Test Create"
     });
@@ -465,7 +465,7 @@ describe("draft-request", () => {
     expect(response.body.d.ID).toEqual(id);
   });
 
-  it("DELETE draft request", async () => {
+  it.skip("DELETE draft request", async () => {
     let response = await util.callWrite(request, "/v2/draft/Header", {
       name: "Test Create"
     });

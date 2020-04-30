@@ -1,5 +1,5 @@
 {
-  "name": "@sap/cds-odata-v2-adapter-proxy-test",
+  "name": "@sap/cds-odata-v2-adapter-proxy-test-db",
   "dependencies": {
     "@sap/hdi-deploy": "3.11.6"
   },
