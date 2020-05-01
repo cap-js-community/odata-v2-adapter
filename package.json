@@ -22,7 +22,6 @@
     "lint": "npm run prettier && npm run eslint",
     "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --loglevel error",
     "eslint": "eslint . --fix",
-    "afterInstall": "npm ci",
     "prepareRelease": "npm prune --production",
     "upgrade-lock": "rm -rf package-lock.json node_modules && npm i --package-lock=true",
     "test:deploy": "cd test/_env && cds deploy index.cds --to sqlite:test.db --no-save"
