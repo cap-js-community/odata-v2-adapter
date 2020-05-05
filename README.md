@@ -162,16 +162,16 @@ the CDS models can be found during runtime on Cloud Foundry.
 Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData v4 Server
 
 - **options:** CDS OData v2 Adapter Proxy options
-  - **[options.base]** Base path, under which the service is reachable. Default is ''.
+  - **[options.base]:** Base path, under which the service is reachable. Default is ''.
   - **[options.path]:** Path, under which the proxy is reachable. Default is 'v2'.
-  - **[options.model]:** CDS service model path. Default is 'all'.
+  - **[options.model]:** CDS service model (path(s) or CSN). Default is 'all'.
   - **[options.port]:** Target port, which points to OData v4 backend port. Default is '4004'.
   - **[options.target]:** Target, which points to OData v4 backend host/port. Default is 'http://localhost:4004'.
   - **[options.services]:** Service mapping, from url path name to service name. If omitted local CDS defaults apply.
-  - **[options.standalone]** Indication, that OData v2 Adapter proxy is a standalone process. Default is 'false'.
-  - **[options.mtxEndpoint]** Endpoint to retrieve MTX metadata for standalone proxy. Default is '/mtx/v1'
-  - **[options.ieee754Compatible]** Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is 'true'.
-  - **[options.pathRewrite]** Custom path rewrite rules. Default uses 'path' option as rule: { "^/odata/v2": "" }
+  - **[options.standalone]:** Indication, that OData v2 Adapter proxy is a standalone process. Default is 'false'.
+  - **[options.mtxEndpoint]:** Endpoint to retrieve MTX metadata for standalone proxy. Default is '/mtx/v1'
+  - **[options.ieee754Compatible]:** Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is 'true'.
+  - **[options.pathRewrite]:** Custom path rewrite rules. Default uses 'path' option as rule: { "^/v2": "" }
 
 Logging is controlled with XSA environment variable `XS_APP_LOG_LEVEL`.
 Details can be found at [xs2/node-logging](https://github.wdf.sap.corp/xs2).

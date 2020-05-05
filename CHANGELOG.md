@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Align model resolving
+
 ## Version 1.4.30 - 2020-05-01
 
 ### Fixed
