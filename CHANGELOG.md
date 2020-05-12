@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Align model resolving
 - Update dependencies
+- Performance optimization for entity key calculation
 
 ## Version 1.4.30 - 2020-05-01
 
