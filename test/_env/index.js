@@ -1,6 +1,7 @@
 "use strict";
 
 const express = require("express");
+const compression = require("compression");
 const http = require("http");
 const cds = require("@sap/cds");
 
@@ -17,6 +18,7 @@ module.exports = async (service, defaultPort, fnInit, options) => {
   let port = defaultPort || 0;
   const servicePath = `./test/_env/${service}`;
   const app = express();
+  app.use(compression());
 
   const srv = await cds.load(servicePath);
   await cds.deploy(srv);
