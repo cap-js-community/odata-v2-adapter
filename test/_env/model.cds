@@ -20,6 +20,8 @@ entity HeaderItem: cuid {
     startAt: Timestamp;
     endAt: Timestamp;
     header: Association to Header;
+    NextItem: Association to HeaderItem;
+    assoc: Association to HeaderAssocKey;
 }
 
 entity HeaderStream: cuid {
@@ -43,6 +45,7 @@ entity HeaderUrlStream: cuid {
 
 entity HeaderAssocKey {
     key header: Association to Header;
+    num: Double;
 }
 
 service MainService {

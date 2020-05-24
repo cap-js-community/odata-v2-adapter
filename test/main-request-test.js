@@ -410,7 +410,8 @@ describe("main-request", () => {
           "content-type": "image/png",
         });
         stream.on("end", () => {
-          req.end(() => {});
+          req.end(() => {
+          });
           setTimeout(() => {
             util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((readResponse) => {
               expect(readResponse.statusCode).toEqual(200);
@@ -486,12 +487,11 @@ describe("main-request", () => {
       stock: 999,
       country: "US",
     });
-    response = await util.callRead(request, `/v2/main/Header?$filter=stock eq 999L`);
+    response = await util.callRead(request, `/v2/main/Header?$filter=stock eq 999`);
     expect(response.body.d.results).toHaveLength(1);
   });
 
-  // TODO: cap/issues/4468
-  it.skip("GET request with filter and data type conversion on navigation fields", async () => {
+  it("GET request with filter and data type conversion on navigation fields", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
       stock: 1001,
@@ -503,7 +503,7 @@ describe("main-request", () => {
         },
       ],
     });
-    response = await util.callRead(request, `/v2/main/Header?$expand=Items&$filter=stock eq 1001L`);
+    response = await util.callRead(request, `/v2/main/Header?$expand=Items&$filter=stock eq 1001`);
     expect(response.body.d.results).toHaveLength(1);
     const ID = response.body.d.results[0].ID;
     expect(response.body.d.results[0].Items.results).toHaveLength(1);
@@ -520,14 +520,78 @@ describe("main-request", () => {
     expect(response.statusCode).toBe(200);
     response = await util.callRead(
       request,
+      `/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/assoc/num eq 12.01d`
+    );
+    // TODO: cap/issues/4468
+    // expect(response.body.d.results).toHaveLength(1);
+    expect(response.body).toEqual({
+        "error": {
+          "code": "500",
+          "message": { "lang": "en", "value": "SQLITE_ERROR: near \".\": syntax error" },
+          "innererror": {
+            "errordetails": [{
+              "code": "500",
+              "message": { "lang": "en", "value": "SQLITE_ERROR: near \".\": syntax error" },
+              "severity": "error"
+            }]
+          }
+        }
+      }
+    );
+    response = await util.callRead(
+      request,
       `/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'`
     );
-    expect(response.body.d.results).toHaveLength(1);
+    // TODO: cap/issues/4468
+    // expect(response.body.d.results).toHaveLength(1);
+    expect(response.body).toEqual({
+      "error": {
+        "code": "500",
+        "innererror": {
+          "errordetails": [
+            {
+              "code": "500",
+              "message": {
+                "lang": "en",
+                "value": "SQLITE_ERROR: no such column: a.FirstItem.startAt"
+              },
+              "severity": "error"
+            }
+          ]
+        },
+        "message": {
+          "lang": "en",
+          "value": "SQLITE_ERROR: no such column: a.FirstItem.startAt"
+        }
+      }
+    });
     response = await util.callRead(
       request,
       `/v2/main/Header?$expand=FirstItem&$filter=FirstItem/name eq 'TestItem1001'`
     );
-    expect(response.body.d.results).toHaveLength(1);
+    // TODO: cap/issues/4468
+    // expect(response.body.d.results).toHaveLength(1);
+    expect(response.body).toEqual({
+      "error": {
+        "code": "500",
+        "innererror": {
+          "errordetails": [
+            {
+              "code": "500",
+              "message": {
+                "lang": "en",
+                "value": "SQLITE_ERROR: no such column: a.FirstItem.name"
+              },
+              "severity": "error"
+            }
+          ]
+        },
+        "message": {
+          "lang": "en",
+          "value": "SQLITE_ERROR: no such column: a.FirstItem.name"
+        }
+      }
+    });
   });
 
   it("GET request with uri escape character", async () => {

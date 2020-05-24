@@ -7,14 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.4.31 - tbd
+## Version 1.4.31 - 2020-05-26
 
 ### Fixed
 
 - Align model resolving
-- Performance optimization for entity key calculation
+- Fix data types conversion for numbers
+- Fix data types recognition in functions
 - Support response compression
 - Prevent unnecessary data serialization for tracing
+- Performance optimization for entity key/uri calculation
+- General performance optimizations
 - Update dependencies
 
 ## Version 1.4.30 - 2020-05-01
