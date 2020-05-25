@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
+## Version 1.4.32 - tbd
+
+### Fixed
+
+- Update dependencies
+
 ## Version 1.4.31 - 2020-05-25
 
 ### Fixed
