@@ -40,6 +40,7 @@ module.exports = async (service, defaultPort, fnInit, options) => {
       path: "v2",
       model: servicePath,
       port: port,
+      disableNetworkLog: true
     })
   );
 

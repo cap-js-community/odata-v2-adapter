@@ -173,6 +173,7 @@ Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData 
   - **[options.mtxEndpoint]:** Endpoint to retrieve MTX metadata for standalone proxy. Default is '/mtx/v1'
   - **[options.ieee754Compatible]:** Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is 'true'.
   - **[options.pathRewrite]:** Custom path rewrite rules. Default uses 'path' option as rule: { "^/v2": "" }
+  - **[options.disableNetworkLog]:** Disable networking logging
 
 Logging is controlled with XSA environment variable `XS_APP_LOG_LEVEL`.
 Details can be found at [xs2/node-logging](https://github.wdf.sap.corp/xs2).
