@@ -1035,4 +1035,19 @@ describe("main-request", () => {
       },
     });
   });
+
+  it("GET HANA SYSUUID as ID", async () => {
+    const ID = "D99B1B70-3B03-BC1E-1700-05023630F1F7";
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      ID
+    });
+    expect(response.statusCode).toEqual(201);
+    response = await util.callRead(request, `/v2/main/Header(guid'${ID}')`);
+    expect(response.body && response.body.d).toBeDefined();
+    expect(response.body.d).toEqual(
+      expect.objectContaining({
+        ID
+      })
+    );
+  });
 });
