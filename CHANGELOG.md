@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update dependencies
 - Update README on localization
 - Toggle switch for network logging
+- Allow HANA SYSUUID as UUID
 
 ## Version 1.4.31 - 2020-05-25
 
