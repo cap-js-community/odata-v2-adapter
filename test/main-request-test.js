@@ -52,14 +52,17 @@ describe("main-request", () => {
       accept: "application/xml",
     });
     expect(response.text).toBeDefined();
+    response.text = response.text.replace(/http:\/\/127.0.0.1:(\d*)\//, "");
     expect(response.text).toMatchSnapshot();
     response = await util.callRead(request, "/v2/main/", {
       accept: "application/xml",
     });
     expect(response.text).toBeDefined();
+    response.text = response.text.replace(/http:\/\/127.0.0.1:(\d*)\//, "");
     expect(response.text).toMatchSnapshot();
     response = await util.callRead(request, "/v2/main");
     expect(response.text).toBeDefined();
+    response.text = response.text.replace(/http:\/\/127.0.0.1:(\d*)\//, "");
     expect(response.text).toMatchSnapshot();
   });
 
