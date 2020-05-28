@@ -22,8 +22,6 @@ OData v2 Adapter Proxy for CDS OData v4 Services
 In your existing `@sap/cds` project:
 
 - Run `npm install @sap/cds-odata-v2-adapter-proxy -s`
-  - External NPM Registry: `https://npm.sap.com`
-  - Internal NPM Registry: `http://nexus.wdf.sap.corp:8081/nexus/content/groups/build.milestones.npm/`
 - Create new file `server.js` in the service folder `srv` of your project: `./srv/server.js`
 
 ```
@@ -48,8 +46,6 @@ Note that `@sap/cds` and `express` are peer dependency and needs to be available
 In your existing `@sap/cds` project:
 
 - Run `npm install @sap/cds-odata-v2-adapter-proxy -s`
-  - External NPM Registry: `https://npm.sap.com`
-  - Internal NPM Registry: `http://nexus.wdf.sap.corp:8081/nexus/content/groups/build.releases.npm/`
 - Create new file `index.js` in the service folder `srv` of your project: `./srv/index.js`
 
 ```
@@ -96,8 +92,6 @@ In a new Node.js express project:
 
 - Run `npm install @sap/cds -s`
 - Run `npm install @sap/cds-odata-v2-adapter-proxy -s`
-  - External NPM Registry: `https://npm.sap.com`
-  - Internal NPM Registry: `http://nexus.wdf.sap.corp:8081/nexus/content/groups/build.releases.npm/`
 - Place CDS models in `db` and `srv` model folders
 - Create new file `index.js` in the service folder `srv` of the project: `./srv/index.js`
 
