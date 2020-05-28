@@ -26,7 +26,7 @@ describe("main-request", () => {
     expect(response.body).toEqual({});
   });
 
-  it("GET service", async () => {
+  it("GET service JSON format", async () => {
     let response = await util.callRead(request, "/v2/main", {
       accept: "application/json",
     });
@@ -45,6 +45,22 @@ describe("main-request", () => {
         EntitySets: ["Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream"],
       },
     });
+  });
+
+  it("GET service XML format", async () => {
+    let response = await util.callRead(request, "/v2/main", {
+      accept: "application/xml",
+    });
+    expect(response.text).toBeDefined();
+    expect(response.text).toMatchSnapshot();
+    response = await util.callRead(request, "/v2/main/", {
+      accept: "application/xml",
+    });
+    expect(response.text).toBeDefined();
+    expect(response.text).toMatchSnapshot();
+    response = await util.callRead(request, "/v2/main");
+    expect(response.text).toBeDefined();
+    expect(response.text).toMatchSnapshot();
   });
 
   it("GET $metadata", async () => {
@@ -395,40 +411,41 @@ describe("main-request", () => {
     });
   });
 
-  it("PUT request with stream", (done) => {
-    util
-      .callWrite(request, "/v2/main/HeaderStream", {
-        mediaType: "image/png",
-        filename: "test.png",
-      })
-      .then((createResponse) => {
-        expect(createResponse.statusCode).toEqual(201);
-        const id = createResponse.body.d.ID;
+  it("PUT request with stream", () => {
+    return new Promise((done) => {
+      util
+        .callWrite(request, "/v2/main/HeaderStream", {
+          mediaType: "image/png",
+          filename: "test.png",
+        })
+        .then((createResponse) => {
+          expect(createResponse.statusCode).toEqual(201);
+          const id = createResponse.body.d.ID;
 
-        const stream = fs.createReadStream("./test/_env/data/init/assets/file.png");
-        const req = util.callStream(request, `/v2/main/HeaderStream(guid'${id}')/data`, {
-          "content-type": "image/png",
-        });
-        stream.on("end", () => {
-          req.end(() => {
+          const stream = fs.createReadStream("./test/_env/data/init/assets/file.png");
+          const req = util.callStream(request, `/v2/main/HeaderStream(guid'${id}')/data`, {
+            "content-type": "image/png",
           });
-          setTimeout(() => {
-            util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((readResponse) => {
-              expect(readResponse.statusCode).toEqual(200);
-              expect(readResponse.headers["content-type"]).toEqual("image/png");
-              expect(readResponse.body.length).toEqual(35372);
-              return util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((deleteResponse) => {
-                expect(deleteResponse.statusCode).toEqual(204);
-                return util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((readResponse) => {
-                  expect(readResponse.statusCode).toEqual(204);
-                  done();
+          stream.on("end", () => {
+            req.end(() => {});
+            setTimeout(() => {
+              util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((readResponse) => {
+                expect(readResponse.statusCode).toEqual(200);
+                expect(readResponse.headers["content-type"]).toEqual("image/png");
+                expect(readResponse.body.length).toEqual(35372);
+                return util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((deleteResponse) => {
+                  expect(deleteResponse.statusCode).toEqual(204);
+                  return util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((readResponse) => {
+                    expect(readResponse.statusCode).toEqual(204);
+                    done();
+                  });
                 });
               });
-            });
-          }, 1000);
+            }, 1000);
+          });
+          stream.pipe(req, { end: false });
         });
-        stream.pipe(req, { end: false });
-      });
+    });
   });
 
   it("GET request with function 'substringof'", async () => {
@@ -525,19 +542,20 @@ describe("main-request", () => {
     // TODO: cap/issues/4468
     // expect(response.body.d.results).toHaveLength(1);
     expect(response.body).toEqual({
-        "error": {
-          "code": "500",
-          "message": { "lang": "en", "value": "SQLITE_ERROR: near \".\": syntax error" },
-          "innererror": {
-            "errordetails": [{
-              "code": "500",
-              "message": { "lang": "en", "value": "SQLITE_ERROR: near \".\": syntax error" },
-              "severity": "error"
-            }]
-          }
-        }
-      }
-    );
+      error: {
+        code: "500",
+        message: { lang: "en", value: 'SQLITE_ERROR: near ".": syntax error' },
+        innererror: {
+          errordetails: [
+            {
+              code: "500",
+              message: { lang: "en", value: 'SQLITE_ERROR: near ".": syntax error' },
+              severity: "error",
+            },
+          ],
+        },
+      },
+    });
     response = await util.callRead(
       request,
       `/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'`
@@ -545,25 +563,25 @@ describe("main-request", () => {
     // TODO: cap/issues/4468
     // expect(response.body.d.results).toHaveLength(1);
     expect(response.body).toEqual({
-      "error": {
-        "code": "500",
-        "innererror": {
-          "errordetails": [
+      error: {
+        code: "500",
+        innererror: {
+          errordetails: [
             {
-              "code": "500",
-              "message": {
-                "lang": "en",
-                "value": "SQLITE_ERROR: no such column: a.FirstItem.startAt"
+              code: "500",
+              message: {
+                lang: "en",
+                value: "SQLITE_ERROR: no such column: a.FirstItem.startAt",
               },
-              "severity": "error"
-            }
-          ]
+              severity: "error",
+            },
+          ],
         },
-        "message": {
-          "lang": "en",
-          "value": "SQLITE_ERROR: no such column: a.FirstItem.startAt"
-        }
-      }
+        message: {
+          lang: "en",
+          value: "SQLITE_ERROR: no such column: a.FirstItem.startAt",
+        },
+      },
     });
     response = await util.callRead(
       request,
@@ -572,25 +590,25 @@ describe("main-request", () => {
     // TODO: cap/issues/4468
     // expect(response.body.d.results).toHaveLength(1);
     expect(response.body).toEqual({
-      "error": {
-        "code": "500",
-        "innererror": {
-          "errordetails": [
+      error: {
+        code: "500",
+        innererror: {
+          errordetails: [
             {
-              "code": "500",
-              "message": {
-                "lang": "en",
-                "value": "SQLITE_ERROR: no such column: a.FirstItem.name"
+              code: "500",
+              message: {
+                lang: "en",
+                value: "SQLITE_ERROR: no such column: a.FirstItem.name",
               },
-              "severity": "error"
-            }
-          ]
+              severity: "error",
+            },
+          ],
         },
-        "message": {
-          "lang": "en",
-          "value": "SQLITE_ERROR: no such column: a.FirstItem.name"
-        }
-      }
+        message: {
+          lang: "en",
+          value: "SQLITE_ERROR: no such column: a.FirstItem.name",
+        },
+      },
     });
   });
 
@@ -1039,14 +1057,14 @@ describe("main-request", () => {
   it("GET HANA SYSUUID as ID", async () => {
     const ID = "D99B1B70-3B03-BC1E-1700-05023630F1F7";
     let response = await util.callWrite(request, "/v2/main/Header", {
-      ID
+      ID,
     });
     expect(response.statusCode).toEqual(201);
     response = await util.callRead(request, `/v2/main/Header(guid'${ID}')`);
     expect(response.body && response.body.d).toBeDefined();
     expect(response.body.d).toEqual(
       expect.objectContaining({
-        ID
+        ID,
       })
     );
   });

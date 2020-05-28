@@ -9,14 +9,13 @@ let app;
 
 cds.on("bootstrap", (_app) => {
   app = _app;
-  app.use(proxy())
+  app.use(proxy());
 });
 
-cds.on("served", (services) => {
-});
+cds.on("served", (services) => {});
 
 cds.on("listening", (server) => {
-  init({ app })
+  init({ app });
 });
 
 module.exports = cds.server;

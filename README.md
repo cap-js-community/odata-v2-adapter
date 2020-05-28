@@ -139,7 +139,7 @@ const port = process.env.PORT || 4004;
   ```
 - If not detected automatically, the model path can be set with option `model`
   (especially if `srv.json` option is used).
-- Make sure, that all i18n property files reside next to the `srv.json` in a `i18n` or `_i18n` folder, to be detected by localization.  
+- Make sure, that all i18n property files reside next to the `srv.json` in a `i18n` or `_i18n` folder, to be detected by localization.
 - Run `node srv/index` from the project root to start the server:
   - OData v2 service will be available at http://localhost:4004/v2/<odata-v4-service-path>
   - OData v4 service shall be available at http://localhost:8080/<odata-v4-service-path>

@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Service Document in XML format (default)
+- Update dependencies
+
 ## Version 1.4.32 - 2020-05-27
 
 ### Fixed

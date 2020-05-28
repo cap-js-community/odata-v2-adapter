@@ -303,13 +303,9 @@ describe("todo-request", () => {
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length).toEqual(1);
-    response = await util.callRead(
-      request,
-      "/v2/todo/Tasks?$filter=round(value1) eq 1d",
-      {
-        accept: "application/json",
-      }
-    );
+    response = await util.callRead(request, "/v2/todo/Tasks?$filter=round(value1) eq 1d", {
+      accept: "application/json",
+    });
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length).toEqual(1);
   });
