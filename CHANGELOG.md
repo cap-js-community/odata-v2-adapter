@@ -7,12 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.4.33 - tbd
+## Version 1.4.33 - 2020-05-29
 
 ### Fixed
 
 - Service Document in XML format (default)
 - Update dependencies
+- Disable network log per default
 
 ## Version 1.4.32 - 2020-05-27
 

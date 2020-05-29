@@ -39,8 +39,7 @@ module.exports = async (service, defaultPort, fnInit, options) => {
     odatav2proxy({
       path: "v2",
       model: servicePath,
-      port: port,
-      disableNetworkLog: true,
+      port: port
     })
   );
 
