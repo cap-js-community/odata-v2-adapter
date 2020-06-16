@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Fix entity key with (encoded) reserved uri characters
+
 ## Version 1.4.33 - 2020-05-29
 
 ### Fixed

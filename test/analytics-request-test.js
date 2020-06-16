@@ -36,6 +36,14 @@ describe("analytics-request", () => {
           },
           {
             __metadata: {
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'U%2FSD'"},"value":["currency","stock"]}')`,
+              type: "test.AnalyticsService.Header",
+            },
+            currency: "U/SD",
+            stock: 99,
+          },
+          {
+            __metadata: {
               uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -60,6 +68,21 @@ describe("analytics-request", () => {
         stock: 17,
       },
     });
+    response = await util.callRead(
+      request,
+      `/v2/analytics/Header(aggregation'{"key":{"currency":"'U%2FSD'"},"value":["currency","stock"]}')`
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body).toEqual({
+      d: {
+        __metadata: {
+          uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'U%2FSD'"},"value":["currency","stock"]}')`,
+          type: "test.AnalyticsService.Header",
+        },
+        currency: "U/SD",
+        stock: 99,
+      },
+    });
   });
 
   it("GET request with grouping and aggregating many", async () => {
@@ -77,6 +100,16 @@ describe("analytics-request", () => {
             currency: "EUR",
             stock: 10,
             price: "12.12",
+          },
+          {
+            __metadata: {
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"country":"'New%20York'","currency":"'U%2FSD'"},"value":["country","currency","stock","price"]}')`,
+              type: "test.AnalyticsService.Header",
+            },
+            country: "New York",
+            currency: "U/SD",
+            stock: 99,
+            price: "9.99",
           },
           {
             __metadata: {
@@ -127,6 +160,14 @@ describe("analytics-request", () => {
             },
             currency: "EUR",
             stock: 25,
+          },
+          {
+            __metadata: {
+              uri: `http://${response.request.host}/v2/analytics/Header(aggregation'{"key":{"currency":"'U%2FSD'"},"value":["currency","stock"]}')`,
+              type: "test.AnalyticsService.Header",
+            },
+            currency: "U/SD",
+            stock: 99,
           },
         ],
       },

@@ -48,6 +48,11 @@ entity HeaderAssocKey {
     num: Double;
 }
 
+entity Favorite {
+    key name: String;
+    value: String;
+}
+
 service MainService {
 
     type Result {
@@ -64,6 +69,8 @@ service MainService {
     entity HeaderStream as projection on test.HeaderStream;
     entity HeaderUrlStream as projection on test.HeaderUrlStream;
     entity HeaderAssocKey as projection on test.HeaderAssocKey;
+
+    entity Favorite as projection on test.Favorite;
 
     action unboundAction(num: Integer, text: String) returns array of Result;
     function unboundFunction(num: Integer, text: String) returns Result;

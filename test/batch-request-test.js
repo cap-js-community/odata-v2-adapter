@@ -35,9 +35,9 @@ describe("batch-request", () => {
     expect(responses.length).toEqual(3);
     expect(responses.filter((response) => response.statusCode === 200).length).toEqual(3);
     const [first, second, third] = responses;
-    expect(first.body.d.results.length).toEqual(4);
+    expect(first.body.d.results.length).toEqual(5);
 
-    expect(second.body.d.results.length).toEqual(4);
+    expect(second.body.d.results.length).toEqual(5);
 
     expect(third.body.d.hasOwnProperty("results")).toEqual(false);
     expect(third.body.d.ID).toEqual(ID);

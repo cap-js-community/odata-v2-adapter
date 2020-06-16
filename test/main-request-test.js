@@ -33,7 +33,7 @@ describe("main-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream"],
+        EntitySets: ["Favorite", "Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream"],
       },
     });
     response = await util.callRead(request, "/v2/main/", {
@@ -42,7 +42,7 @@ describe("main-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream"],
+        EntitySets: ["Favorite", "Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream"],
       },
     });
   });
@@ -90,11 +90,11 @@ describe("main-request", () => {
   it("GET request", async () => {
     let response = await util.callRead(request, "/v2/main/Header");
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(4);
+    expect(response.body.d.results).toHaveLength(5);
     response = await util.callRead(request, "/v2/main/Header?$inlinecount=allpages");
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(4);
-    expect(response.body.d.__count).toEqual("4");
+    expect(response.body.d.results).toHaveLength(5);
+    expect(response.body.d.__count).toEqual("5");
     const id = response.body.d.results[0].ID;
     response = await util.callRead(request, `/v2/main/HeaderAssocKey(guid'${id}')`);
     expect(response.body).toBeDefined();
@@ -1070,5 +1070,46 @@ describe("main-request", () => {
         ID,
       })
     );
+  });
+
+  it("Entity with key including reserved/escaped uri characters", async () => {
+    let response = await util.callRead(request, "/v2/main/Favorite");
+    expect(response.statusCode).toEqual(200);
+    expect(response.body && response.body.d).toEqual({
+      results: [
+        {
+          __metadata: {
+            type: "test.MainService.Favorite",
+            uri: `http://${response.request.host}/v2/main/Favorite('WE%2FDE-SFSNRF')`,
+          },
+          name: "WE/DE-SFSNRF",
+          value: "ABC1234",
+        },
+      ],
+    });
+    response = await util.callRead(request, `/v2/main/Favorite('WE%2FDE-SFSNRF')`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body && response.body.d).toEqual({
+      __metadata: {
+        type: "test.MainService.Favorite",
+        uri: `http://${response.request.host}/v2/main/Favorite('WE%2FDE-SFSNRF')`,
+      },
+      name: "WE/DE-SFSNRF",
+      value: "ABC1234",
+    });
+    response = await util.callRead(request, "/v2/main/Favorite?$filter=name eq 'WE%2FDE-SFSNRF'");
+    expect(response.statusCode).toEqual(200);
+    expect(response.body && response.body.d).toEqual({
+      results: [
+        {
+          __metadata: {
+            type: "test.MainService.Favorite",
+            uri: `http://${response.request.host}/v2/main/Favorite('WE%2FDE-SFSNRF')`,
+          },
+          name: "WE/DE-SFSNRF",
+          value: "ABC1234",
+        },
+      ],
+    });
   });
 });
