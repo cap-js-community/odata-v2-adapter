@@ -33,7 +33,7 @@
     "node-fetch": "2.6.0"
   },
   "devDependencies": {
-    "@sap/cds": "^3.34.1",
+    "@sap/cds": "^3.34.2",
     "@sap/hana-client": "^2.5.83",
     "@sap/xssec": "^3.0.2",
     "compression": "^1.7.4",
