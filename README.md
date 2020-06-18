@@ -2,10 +2,6 @@
 
 OData v2 Adapter Proxy for CDS OData v4 Services
 
-## Build Status
-
-[![Build Status](https://gkecdxodata.jaas-gcp.cloud.sap.corp/buildStatus/icon?job=cds-community%2Fcds-odata-v2-adapter-proxy%2Fmaster)](https://gkecdxodata.jaas-gcp.cloud.sap.corp/job/cds-community/job/cds-odata-v2-adapter-proxy/job/master/)
-
 ## Getting Started
 
 - Install: `npm install @sap/cds-odata-v2-adapter-proxy`
@@ -138,7 +134,7 @@ const port = process.env.PORT || 4004;
   - OData v2 service will be available at http://localhost:4004/v2/<odata-v4-service-path>
   - OData v4 service shall be available at http://localhost:8080/<odata-v4-service-path>
 - A deployed version of OData v2 proxy shall have option `target` set to the deployed OData v4 backend URL.
-  This can be retrieved from the CF environment using [node-xsenv](https://github.wdf.sap.corp/xs2/node-xsenv) module, e.g.
+  This can be retrieved from the CF environment using **node-xsenv** module, e.g.
   from the `destinations` environment variable.
 
 Note that `@sap/cds` and `express` are peer dependency and needs to be available as module as well.
@@ -170,7 +166,7 @@ Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData 
   - **[options.disableNetworkLog]:** Disable networking logging. Default is 'true'.
 
 Logging is controlled with XSA environment variable `XS_APP_LOG_LEVEL`.
-Details can be found at [xs2/node-logging](https://github.wdf.sap.corp/xs2).
+Details can be found at **xs2/node-logging**.
 
 ## Features
 
@@ -207,3 +203,7 @@ http://docs.oasis-open.org/odata/new-in-odata/v4.0/cn01/new-in-odata-v4.0-cn01.h
 - KEY(...) -> \$root
 - years, months, days, minutes, seconds
 - Function Parameters as Query Options
+
+## License
+
+This package is provided under the terms of the [SAP Developer License Agreement](https://tools.hana.ondemand.com/developer-license.txt).
