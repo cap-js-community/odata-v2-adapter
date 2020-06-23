@@ -148,6 +148,14 @@ To come around this situation, trigger a `cds build`, that generates a `csn.json
 If your CF deployment of the Node.js backend (incl. CDS OData v2 Adapter Proxy) is then based on folder `gen/srv`,
 the CDS models can be found during runtime on Cloud Foundry.
 
+## SAP Fiori Elements v2
+
+The OData v2 service provided by the CDS OData v2 Adapter Proxy can be used to serve a SAP Fiori Elements v2 UI.
+An running example can be tested as follows:
+
+- Start server: `npm run cds:run`
+- Open Fiori Launchpad: http://localhost:4004/webapp/test/flpSandbox.html
+
 ## Documentation
 
 Instantiates an CDS OData v2 Adapter Proxy Express Router for a CDS based OData v4 Server

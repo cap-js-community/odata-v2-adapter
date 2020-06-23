@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Fix escaping of quote for function parameters
+- SAP Fiori Elements v2 sample app
 
 ## Version 1.4.35 - 2020-06-23
 
