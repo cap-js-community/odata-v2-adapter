@@ -864,6 +864,23 @@ describe("main-request", () => {
         name: "a b/c",
       },
     });
+    response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=%27a%20b%2Fc%27`);
+    expect(response.body).toMatchObject({
+      d: {
+        age: 1,
+        code: "TEST",
+        name: "a b/c",
+      },
+    });
+    response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text='abc'`);
+    expect(response.body).toMatchObject({
+      d: {
+        age: 1,
+        code: "TEST",
+        name: "abc",
+      },
+    });
+
     const _request = util.callRead(request, `/v2/main/unboundFunction?num=1&text=abc`);
     // Set wrong body for GET
     _request.set("content-type", "application/json").send({ code: "TEST" });
