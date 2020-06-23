@@ -21,8 +21,8 @@ annotate MainService.Header with @(
             Description: { Value: description }
         },
         Facets: [
-            {$Type: 'UI.ReferenceFacet', Label: 'General', Target: '@UI.FieldGroup#General'},
-            {$Type: 'UI.ReferenceFacet', Label: 'Items', Target: 'Items/@UI.LineItem'}
+            { $Type: 'UI.ReferenceFacet', Label: 'General', Target: '@UI.FieldGroup#General' },
+            { $Type: 'UI.ReferenceFacet', Label: 'Items', Target: 'Items/@UI.LineItem' }
         ],
         FieldGroup#General: {
             Data: [
@@ -56,7 +56,7 @@ annotate MainService.HeaderItem with @(
             Description: { Value: description }
         },
         Facets: [
-            {$Type: 'UI.ReferenceFacet', Label: 'General', Target: '@UI.FieldGroup#General'},
+            { $Type: 'UI.ReferenceFacet', Label: 'General', Target: '@UI.FieldGroup#General' },
         ],
         FieldGroup#General: {
             Data: [
