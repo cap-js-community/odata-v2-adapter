@@ -65,5 +65,15 @@
   },
   "jest": {
     "testEnvironment": "node"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "database": ":memory:"
+        }
+      }
+    }
   }
 }
