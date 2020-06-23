@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.4.35 - tbd
+## Version 1.4.35 - 2020-06-23
 
 ### Fixed
+
+- Fix reserved uri characters (follow-up)
 
 ## Version 1.4.34 - 2020-06-17
 

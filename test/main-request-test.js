@@ -856,6 +856,14 @@ describe("main-request", () => {
         name: "abc",
       },
     });
+    response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=a%20b%2Fc`);
+    expect(response.body).toMatchObject({
+      d: {
+        age: 1,
+        code: "TEST",
+        name: "a b/c",
+      },
+    });
     const _request = util.callRead(request, `/v2/main/unboundFunction?num=1&text=abc`);
     // Set wrong body for GET
     _request.set("content-type", "application/json").send({ code: "TEST" });
@@ -995,6 +1003,18 @@ describe("main-request", () => {
         ],
       },
     });
+    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${id}'&num=1&text=a%20b%2Fc`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 1,
+            code: "TEST",
+            name: "a b/c",
+          },
+        ],
+      },
+    });
   });
 
   it("POST unbound action request", async () => {
@@ -1006,6 +1026,18 @@ describe("main-request", () => {
             age: 1,
             code: "TEST",
             name: "abc",
+          },
+        ],
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=a%20b%2Fc`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 1,
+            code: "TEST",
+            name: "a b/c",
           },
         ],
       },
@@ -1055,6 +1087,14 @@ describe("main-request", () => {
         name: "abc",
       },
     });
+    response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${id}'&num=1&text=a%20b%2Fc`);
+    expect(response.body).toMatchObject({
+      d: {
+        age: 1,
+        code: "TEST",
+        name: "a b/c",
+      },
+    });
   });
 
   it("GET HANA SYSUUID as ID", async () => {
@@ -1075,41 +1115,55 @@ describe("main-request", () => {
   it("Entity with key including reserved/escaped uri characters", async () => {
     let response = await util.callRead(request, "/v2/main/Favorite");
     expect(response.statusCode).toEqual(200);
-    expect(response.body && response.body.d).toEqual({
-      results: [
-        {
-          __metadata: {
-            type: "test.MainService.Favorite",
-            uri: `http://${response.request.host}/v2/main/Favorite('WE%2FDE-SFSNRF')`,
-          },
-          name: "WE/DE-SFSNRF",
-          value: "ABC1234",
+    expect(response.body && response.body.d && response.body.d.results).toBeDefined();
+    response.body.d.results.forEach((result) => {
+      result.__metadata.uri = result.__metadata.uri.substr(`http://${response.request.host}`.length);
+    });
+    expect(response.body && response.body.d).toMatchSnapshot();
+
+    const uris = response.body.d.results.map((result) => {
+      return result.__metadata.uri.substr();
+    });
+
+    await uris.reduce(async (promise, uri) => {
+      await promise;
+
+      response = await util.callRead(request, uri);
+      expect(response.statusCode).toEqual(200);
+      expect(response.body && response.body.d).toBeDefined();
+      let data = response.body && response.body.d;
+      data.__metadata.uri = data.__metadata.uri.substr(`http://${response.request.host}`.length);
+      const id = data.__metadata.uri.substring(
+        data.__metadata.uri.indexOf("'") + 1,
+        data.__metadata.uri.lastIndexOf("'")
+      );
+      let name = decodeURIComponent(id);
+      name = name.replace(/''/g, "'");
+      let value = name.substr(2, 1);
+      // Special handling
+      value = value === " " ? null : value;
+      value = value === "\\" ? "\\\\" : value;
+      expect(data).toEqual({
+        __metadata: {
+          type: "test.MainService.Favorite",
+          uri: uri,
         },
-      ],
-    });
-    response = await util.callRead(request, `/v2/main/Favorite('WE%2FDE-SFSNRF')`);
-    expect(response.statusCode).toEqual(200);
-    expect(response.body && response.body.d).toEqual({
-      __metadata: {
-        type: "test.MainService.Favorite",
-        uri: `http://${response.request.host}/v2/main/Favorite('WE%2FDE-SFSNRF')`,
-      },
-      name: "WE/DE-SFSNRF",
-      value: "ABC1234",
-    });
-    response = await util.callRead(request, "/v2/main/Favorite?$filter=name eq 'WE%2FDE-SFSNRF'");
-    expect(response.statusCode).toEqual(200);
-    expect(response.body && response.body.d).toEqual({
-      results: [
-        {
-          __metadata: {
-            type: "test.MainService.Favorite",
-            uri: `http://${response.request.host}/v2/main/Favorite('WE%2FDE-SFSNRF')`,
-          },
-          name: "WE/DE-SFSNRF",
-          value: "ABC1234",
+        name,
+        value,
+      });
+
+      response = await util.callRead(request, `/v2/main/Favorite?$filter=name eq '${id}'`);
+      expect(response.statusCode).toEqual(200);
+      data = response.body && response.body.d && response.body.d.results && response.body.d.results[0];
+      data.__metadata.uri = data.__metadata.uri.substr(`http://${response.request.host}`.length);
+      expect(data).toEqual({
+        __metadata: {
+          type: "test.MainService.Favorite",
+          uri: uri,
         },
-      ],
-    });
+        name,
+        value,
+      });
+    }, Promise.resolve());
   });
 });

@@ -1,5 +1,228 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`main-request Entity with key including reserved/escaped uri characters 1`] = `
+Object {
+  "results": Array [
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%20DE-SFSNRF')",
+      },
+      "name": "WE DE-SFSNRF",
+      "value": null,
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE!DE-SFSNRF')",
+      },
+      "name": "WE!DE-SFSNRF",
+      "value": "!",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%22DE-SFSNRF')",
+      },
+      "name": "WE\\"DE-SFSNRF",
+      "value": "\\"",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%23DE-SFSNRF')",
+      },
+      "name": "WE#DE-SFSNRF",
+      "value": "#",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%24DE-SFSNRF')",
+      },
+      "name": "WE$DE-SFSNRF",
+      "value": "$",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%25DE-SFSNRF')",
+      },
+      "name": "WE%DE-SFSNRF",
+      "value": "%",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%26DE-SFSNRF')",
+      },
+      "name": "WE&DE-SFSNRF",
+      "value": "&",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE''DE-SFSNRF')",
+      },
+      "name": "WE'DE-SFSNRF",
+      "value": "'",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE(DE-SFSNRF')",
+      },
+      "name": "WE(DE-SFSNRF",
+      "value": "(",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE)DE-SFSNRF')",
+      },
+      "name": "WE)DE-SFSNRF",
+      "value": ")",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE*DE-SFSNRF')",
+      },
+      "name": "WE*DE-SFSNRF",
+      "value": "*",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%2BDE-SFSNRF')",
+      },
+      "name": "WE+DE-SFSNRF",
+      "value": "+",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%2CDE-SFSNRF')",
+      },
+      "name": "WE,DE-SFSNRF",
+      "value": ",",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE-DE-SFSNRF')",
+      },
+      "name": "WE-DE-SFSNRF",
+      "value": "-",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE.DE-SFSNRF')",
+      },
+      "name": "WE.DE-SFSNRF",
+      "value": ".",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%2FDE-SFSNRF')",
+      },
+      "name": "WE/DE-SFSNRF",
+      "value": "/",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE:DE-SFSNRF')",
+      },
+      "name": "WE:DE-SFSNRF",
+      "value": ":",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%3BDE-SFSNRF')",
+      },
+      "name": "WE;DE-SFSNRF",
+      "value": ";",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%3CDE-SFSNRF')",
+      },
+      "name": "WE<DE-SFSNRF",
+      "value": "<",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%3DDE-SFSNRF')",
+      },
+      "name": "WE=DE-SFSNRF",
+      "value": "=",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%3EDE-SFSNRF')",
+      },
+      "name": "WE>DE-SFSNRF",
+      "value": ">",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%3FDE-SFSNRF')",
+      },
+      "name": "WE?DE-SFSNRF",
+      "value": "?",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%40DE-SFSNRF')",
+      },
+      "name": "WE@DE-SFSNRF",
+      "value": "@",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%5C%5CDE-SFSNRF')",
+      },
+      "name": "WE\\\\\\\\DE-SFSNRF",
+      "value": "\\\\\\\\",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%5EDE-SFSNRF')",
+      },
+      "name": "WE^DE-SFSNRF",
+      "value": "^",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE_DE-SFSNRF')",
+      },
+      "name": "WE_DE-SFSNRF",
+      "value": "_",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%C2%A7DE-SFSNRF')",
+      },
+      "name": "WE§DE-SFSNRF",
+      "value": "§",
+    },
+  ],
+}
+`;
+
 exports[`main-request GET $metadata 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <edmx:Edmx Version=\\"1.0\\" xmlns:edmx=\\"http://schemas.microsoft.com/ado/2007/06/edmx\\" xmlns:m=\\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\\" xmlns:sap=\\"http://www.sap.com/Protocols/SAPData\\">

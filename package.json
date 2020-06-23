@@ -16,8 +16,8 @@
   ],
   "main": "lib/index.js",
   "scripts": {
-    "start": "node test-server",
-    "cds:run": "cds run --in-memory",
+    "start": "XS_APP_LOG_LEVEL=debug node test-server",
+    "cds:run": "XS_APP_LOG_LEVEL=debug cds run --in-memory",
     "test": "jest --runInBand --updateSnapshot",
     "test:debug": "XS_APP_LOG_LEVEL=debug jest --runInBand --updateSnapshot",
     "test:mem:install": "npm install --no-save weak-napi",
