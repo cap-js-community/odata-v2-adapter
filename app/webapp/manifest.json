@@ -36,9 +36,7 @@
         "uri": "/v2/main",
         "type": "OData",
         "settings": {
-          "annotations": [
-            "localAnnotations"
-          ],
+          "annotations": ["localAnnotations"],
           "localUri": "localService/metadata.xml"
         }
       },
@@ -71,12 +69,7 @@
       "tablet": true,
       "phone": true
     },
-    "supportedThemes": [
-      "sap_hcb",
-      "sap_belize",
-      "sap_belize_deep",
-      "sap_fiori_3"
-    ]
+    "supportedThemes": ["sap_hcb", "sap_belize", "sap_belize_deep", "sap_fiori_3"]
   },
   "sap.ui5": {
     "resources": {

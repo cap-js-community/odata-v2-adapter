@@ -1,8 +1,8 @@
 {
-	"changes": [],
-	"settings": {
-		"isKeyUser": true,
-		"isAtoAvailable": false,
-		"isProductiveSystem": false
-	}
+  "changes": [],
+  "settings": {
+    "isKeyUser": true,
+    "isAtoAvailable": false,
+    "isProductiveSystem": false
+  }
 }
