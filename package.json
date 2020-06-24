@@ -16,20 +16,18 @@
   ],
   "main": "lib/index.js",
   "scripts": {
-    "start": "XS_APP_LOG_LEVEL=debug node test-server",
-    "cds:run": "XS_APP_LOG_LEVEL=debug cds run --in-memory",
+    "start": "XS_APP_LOG_LEVEL=debug cds run --in-memory",
+    "cds:run": "npm run start",
     "test": "jest --runInBand --updateSnapshot",
     "test:debug": "XS_APP_LOG_LEVEL=debug jest --runInBand --updateSnapshot",
-    "test:mem:install": "npm install --no-save weak-napi",
-    "test:mem:heap": "node --expose-gc node_modules/jest/bin/jest --runInBand --logHeapUsage 2>memheap.txt",
-    "test:mem:leaks": "jest --runInBand --detectLeaks 2>memleaks.txt",
     "test:integration": "jest --config=jest-integration.config.js",
+    "test:server": "XS_APP_LOG_LEVEL=debug node test-server",
     "lint": "npm run prettier && npm run eslint",
     "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --loglevel error",
     "eslint": "eslint . --fix",
-    "prepareRelease": "npm prune --production",
     "upgrade-lock": "rm -rf package-lock.json node_modules && npm i --package-lock=true",
-    "test:deploy": "cd test/_env && cds deploy index.cds --to sqlite:test.db --no-save"
+    "test:deploy": "cd test/_env && cds deploy index.cds --to sqlite:test.db --no-save",
+    "prepareRelease": "npm prune --production"
   },
   "dependencies": {
     "@sap/logging": "5.3.0",
