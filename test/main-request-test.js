@@ -33,7 +33,15 @@ describe("main-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Favorite", "Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream", "StringUUID"],
+        EntitySets: [
+          "Favorite",
+          "Header",
+          "HeaderAssocKey",
+          "HeaderItem",
+          "HeaderStream",
+          "HeaderUrlStream",
+          "StringUUID",
+        ],
       },
     });
     response = await util.callRead(request, "/v2/main/", {
@@ -42,7 +50,15 @@ describe("main-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Favorite", "Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream", "StringUUID"],
+        EntitySets: [
+          "Favorite",
+          "Header",
+          "HeaderAssocKey",
+          "HeaderItem",
+          "HeaderStream",
+          "HeaderUrlStream",
+          "StringUUID",
+        ],
       },
     });
   });
@@ -430,8 +446,7 @@ describe("main-request", () => {
             "content-type": "image/png",
           });
           stream.on("end", () => {
-            req.end(() => {
-            });
+            req.end(() => {});
             setTimeout(() => {
               util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((readResponse) => {
                 expect(readResponse.statusCode).toEqual(200);
