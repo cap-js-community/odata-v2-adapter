@@ -29,7 +29,7 @@ entity HeaderStream: cuid {
     data: LargeBinary;
     @Core.IsMediaType
     mediaType: String;
-    @Core.ContentDisposition.Filename
+    @Common.ContentDisposition.Filename
     filename: String;
 }
 
@@ -39,7 +39,7 @@ entity HeaderUrlStream: cuid {
     link: String;
     @Core.IsMediaType
     mediaType: String;
-    @Core.ContentDisposition.Filename
+    @Common.ContentDisposition.Filename
     filename: String;
 }
 
@@ -51,6 +51,11 @@ entity HeaderAssocKey {
 entity Favorite {
     key name: String;
     value: String;
+}
+
+entity StringUUID {
+    key ID: UUID @odata.Type : 'Edm.String';
+    name: String;
 }
 
 service MainService {
@@ -71,6 +76,7 @@ service MainService {
     entity HeaderAssocKey as projection on test.HeaderAssocKey;
 
     entity Favorite as projection on test.Favorite;
+    entity StringUUID as projection on test.StringUUID;
 
     action unboundAction(num: Integer, text: String) returns array of Result;
     function unboundFunction(num: Integer, text: String) returns Result;

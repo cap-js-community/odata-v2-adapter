@@ -33,7 +33,7 @@ describe("main-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Favorite", "Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream"],
+        EntitySets: ["Favorite", "Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream", "StringUUID"],
       },
     });
     response = await util.callRead(request, "/v2/main/", {
@@ -42,7 +42,7 @@ describe("main-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Favorite", "Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream"],
+        EntitySets: ["Favorite", "Header", "HeaderAssocKey", "HeaderItem", "HeaderStream", "HeaderUrlStream", "StringUUID"],
       },
     });
   });
@@ -430,7 +430,8 @@ describe("main-request", () => {
             "content-type": "image/png",
           });
           stream.on("end", () => {
-            req.end(() => {});
+            req.end(() => {
+            });
             setTimeout(() => {
               util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`).then((readResponse) => {
                 expect(readResponse.statusCode).toEqual(200);
@@ -1182,5 +1183,27 @@ describe("main-request", () => {
         value,
       });
     }, Promise.resolve());
+  });
+
+  it("Entity with string uuid key", async () => {
+    let response = await util.callRead(request, "/v2/main/StringUUID");
+    expect(response.statusCode).toEqual(200);
+    expect(response.body && response.body.d && response.body.d.results).toBeDefined();
+    response.body.d.results.forEach((result) => {
+      result.__metadata.uri = result.__metadata.uri.substr(`http://${response.request.host}`.length);
+    });
+    expect(response.body && response.body.d).toMatchSnapshot();
+
+    const uris = response.body.d.results.map((result) => {
+      return result.__metadata.uri.substr();
+    });
+
+    await uris.reduce(async (promise, uri) => {
+      await promise;
+
+      response = await util.callRead(request, uri);
+      expect(response.statusCode).toEqual(200);
+      expect(response.body && response.body.d).toBeDefined();
+    });
   });
 });

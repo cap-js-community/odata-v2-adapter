@@ -223,6 +223,29 @@ Object {
 }
 `;
 
+exports[`main-request Entity with string uuid key 1`] = `
+Object {
+  "results": Array [
+    Object {
+      "ID": "63567c66-ee42-400a-8c35-014d6622e5fe",
+      "__metadata": Object {
+        "type": "test.MainService.StringUUID",
+        "uri": "/v2/main/StringUUID('63567c66-ee42-400a-8c35-014d6622e5fe')",
+      },
+      "name": "Test 1",
+    },
+    Object {
+      "ID": "de32e86c-2f4f-46af-88ff-9f2b6c94c811",
+      "__metadata": Object {
+        "type": "test.MainService.StringUUID",
+        "uri": "/v2/main/StringUUID('de32e86c-2f4f-46af-88ff-9f2b6c94c811')",
+      },
+      "name": "Test 1",
+    },
+  ],
+}
+`;
+
 exports[`main-request GET $metadata 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <edmx:Edmx Version=\\"1.0\\" xmlns:edmx=\\"http://schemas.microsoft.com/ado/2007/06/edmx\\" xmlns:m=\\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\\" xmlns:sap=\\"http://www.sap.com/Protocols/SAPData\\">
@@ -254,6 +277,7 @@ exports[`main-request GET $metadata 1`] = `
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
+        <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -360,6 +384,13 @@ exports[`main-request GET $metadata 1`] = `
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
         <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
+      </EntityType>
+      <EntityType Name=\\"StringUUID\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
       </EntityType>
       <ComplexType Name=\\"Result\\">
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
@@ -456,7 +487,7 @@ exports[`main-request GET $metadata 1`] = `
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/filename\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Core.ContentDisposition\\">
+        <Annotation Term=\\"Common.ContentDisposition\\">
           <Record>
             <PropertyValue Property=\\"Filename\\" Bool=\\"true\\"/>
           </Record>
@@ -466,7 +497,7 @@ exports[`main-request GET $metadata 1`] = `
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderUrlStream/filename\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Core.ContentDisposition\\">
+        <Annotation Term=\\"Common.ContentDisposition\\">
           <Record>
             <PropertyValue Property=\\"Filename\\" Bool=\\"true\\"/>
           </Record>
@@ -508,6 +539,7 @@ exports[`main-request GET $metadata localized 1`] = `
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
+        <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -615,6 +647,13 @@ exports[`main-request GET $metadata localized 1`] = `
         <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
       </EntityType>
+      <EntityType Name=\\"StringUUID\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+      </EntityType>
       <ComplexType Name=\\"Result\\">
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
@@ -710,7 +749,7 @@ exports[`main-request GET $metadata localized 1`] = `
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/filename\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Core.ContentDisposition\\">
+        <Annotation Term=\\"Common.ContentDisposition\\">
           <Record>
             <PropertyValue Property=\\"Filename\\" Bool=\\"true\\"/>
           </Record>
@@ -720,7 +759,7 @@ exports[`main-request GET $metadata localized 1`] = `
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderUrlStream/filename\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Core.ContentDisposition\\">
+        <Annotation Term=\\"Common.ContentDisposition\\">
           <Record>
             <PropertyValue Property=\\"Filename\\" Bool=\\"true\\"/>
           </Record>
@@ -762,6 +801,7 @@ exports[`main-request GET $metadata localized 2`] = `
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
+        <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -869,6 +909,13 @@ exports[`main-request GET $metadata localized 2`] = `
         <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
       </EntityType>
+      <EntityType Name=\\"StringUUID\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+      </EntityType>
       <ComplexType Name=\\"Result\\">
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
@@ -964,7 +1011,7 @@ exports[`main-request GET $metadata localized 2`] = `
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/filename\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Core.ContentDisposition\\">
+        <Annotation Term=\\"Common.ContentDisposition\\">
           <Record>
             <PropertyValue Property=\\"Filename\\" Bool=\\"true\\"/>
           </Record>
@@ -974,7 +1021,7 @@ exports[`main-request GET $metadata localized 2`] = `
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderUrlStream/filename\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Core.ContentDisposition\\">
+        <Annotation Term=\\"Common.ContentDisposition\\">
           <Record>
             <PropertyValue Property=\\"Filename\\" Bool=\\"true\\"/>
           </Record>
@@ -985,8 +1032,8 @@ exports[`main-request GET $metadata localized 2`] = `
 </edmx:Edmx>"
 `;
 
-exports[`main-request GET service XML format 1`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 1`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
 
-exports[`main-request GET service XML format 2`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 2`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
 
-exports[`main-request GET service XML format 3`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 3`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;

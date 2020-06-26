@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Replace 'pathRewrite' option by 'targetPath 'option'
 - Fix 'base' proxy option
+- Respect odata annotation '@odata.Type'
+- Alternative annotation @Common.ContentDisposition.Filename
 
 ## Version 1.4.36 - 2020-06-24
 
