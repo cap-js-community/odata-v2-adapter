@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Fix 'base' proxy option 
+- Fix 'base' proxy option (follow-up)
 
 ## Version 1.4.37 - 2020-06-26
 
