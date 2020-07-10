@@ -7,10 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-
-## Version 1.4.39 - tbd
+## Version 1.4.39 - 2020-07-10
 
 ### Fixed
+
+- Move annotation ContentDisposition.Filename to data element
+- Improve stability of content disposition
 
 ## Version 1.4.38 - 2020-07-06
 

@@ -26,10 +26,10 @@ entity HeaderItem: cuid {
 
 entity HeaderStream: cuid {
     @Core.MediaType: mediaType
+    @Common.ContentDisposition.Filename: filename
     data: LargeBinary;
     @Core.IsMediaType
     mediaType: String;
-    @Common.ContentDisposition.Filename
     filename: String;
 }
 
