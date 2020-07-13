@@ -18,17 +18,25 @@ describe("main-requests", () => {
     env.end(context);
   });
 
+  it("GET $metadata", async () => {
+    const response = await util.callRead(request, "/v2/main/$metadata", {
+      accept: "application/xml",
+    });
+    expect(response.body).toBeDefined();
+    expect(response.text).toMatchSnapshot();
+  });
+
   it("GET with parameters", async () => {
     const stock = Math.round(new Date().getTime() / 1000);
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    await util.callWrite(request, "/v2/main/Header", {
       stock: stock,
       currency: "USD",
     });
-    response = await util.callWrite(request, "/v2/main/Header", {
+    await util.callWrite(request, "/v2/main/Header", {
       stock: 1,
       currency: "EUR",
     });
-    response = await util.callRead(request, `/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='USD')/Set`);
+    const response = await util.callRead(request, `/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='USD')/Set`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
     expect(response.body.d.results).toMatchObject([
