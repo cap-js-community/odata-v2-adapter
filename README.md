@@ -134,7 +134,7 @@ const port = process.env.PORT || 4004;
   - OData v2 service will be available at http://localhost:4004/v2/<odata-v4-service-path>
   - OData v4 service shall be available at http://localhost:8080/<odata-v4-service-path>
 - A deployed version of OData v2 proxy shall have option `target` set to the deployed OData v4 backend URL.
-  This can be retrieved from the CF environment using **node-xsenv** module, e.g.
+  This can be retrieved from the CF environment using `process.env`, e.g.
   from the `destinations` environment variable.
 
 Note that `@sap/cds` and `express` are peer dependency and needs to be available as module as well.
