@@ -1,7 +1,7 @@
 {
   "name": "@sap/cds-odata-v2-adapter-proxy",
   "version": "1.4.40-SNAPSHOT",
-  "description": "OData v2 Adapter Proxy for CDS OData v4 Services",
+  "description": "OData V2 Adapter Proxy for CDS OData V4 Services",
   "homepage": "https://cap.cloud.sap/",
   "engines": {
     "node": ">=8.9.0"
@@ -52,7 +52,7 @@
     "sqlite3": "4.2.0",
     "supertest": "^4.0.2"
   },
-  "license": "SAP DEVELOPER LICENSE 3.1",
+  "license": "See LICENSE file",
   "peerDependencies": {
     "@sap/cds": "*",
     "express": "*"
