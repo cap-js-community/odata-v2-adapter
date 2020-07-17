@@ -48,6 +48,13 @@ entity HeaderAssocKey {
     num: Double;
 }
 
+entity HeaderTemporal: cuid { // temporal
+  key validFrom: Timestamp @cds.valid.from;
+  validTo: Timestamp @cds.valid.to;
+  name: String;
+  value: String;
+}
+
 entity Favorite {
     key name: String;
     value: String;
@@ -74,6 +81,7 @@ service MainService {
     entity HeaderStream as projection on test.HeaderStream;
     entity HeaderUrlStream as projection on test.HeaderUrlStream;
     entity HeaderAssocKey as projection on test.HeaderAssocKey;
+    entity HeaderTemporal as projection on test.HeaderTemporal;
 
     entity Favorite as projection on test.Favorite;
     entity StringUUID as projection on test.StringUUID;
