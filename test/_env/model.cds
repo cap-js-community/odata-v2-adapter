@@ -26,7 +26,7 @@ entity HeaderItem: cuid {
 
 entity HeaderStream: cuid {
     @Core.MediaType: mediaType
-    @Common.ContentDisposition.Filename: filename
+    @Core.ContentDisposition.Filename: filename
     data: LargeBinary;
     @Core.IsMediaType
     mediaType: String;
@@ -39,7 +39,7 @@ entity HeaderUrlStream: cuid {
     link: String;
     @Core.IsMediaType
     mediaType: String;
-    @Common.ContentDisposition.Filename
+    @Core.ContentDisposition.Filename
     filename: String;
 }
 
