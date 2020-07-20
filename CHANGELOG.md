@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.4.40 - tbd
+## Version 1.4.40 - 2020-07-20
 
 ### Fixed
+
+- Fix aggregation grouping on filtered elements
+- Support 'sap:' analytical annotations 
 
 ## Version 1.4.39 - 2020-07-10
 

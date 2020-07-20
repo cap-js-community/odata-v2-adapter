@@ -198,7 +198,7 @@ Details can be found at **xs2/node-logging**.
 - Draft Support
 - Search Support
 - Localization
-- Temporal
+- Temporal Access
 - Tracing
 - Logging Correlation
 - ETag Support (Concurrency Control)

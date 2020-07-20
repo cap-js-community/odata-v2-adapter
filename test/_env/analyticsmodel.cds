@@ -9,6 +9,7 @@ service AnalyticsService {
     entity Header as projection on test.Header {
         ID,
         description,
+        @Analytics.Dimension
         country,
         currency,
         @Analytics.Measure
