@@ -64,7 +64,6 @@ const port = process.env.PORT || 4004;
     .in(app);
 
   // serve odata v2
-  process.env.XS_APP_LOG_LEVEL = "warning";
   app.use(proxy({
     path: "v2",
     port: port
