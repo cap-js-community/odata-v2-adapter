@@ -145,9 +145,9 @@ Note that `@sap/cds` and `express` are peer dependency and needs to be available
 When deploying the CDS OData V2 Adapter Proxy to Cloud Foundry, make sure that it has access to the whole CDS model.
 Especially, it’s the case, that normally the Node.js server is only based on folder `srv` and folder `db` is then missing on Cloud Foundry.
 
-To come around this situation, trigger a `cds build`, that generates a `csn.json` at location `gen/srv/srv/csn.json`.
-If your Cloud Foundry deployment of the Node.js backend (incl. CDS OData V2 Adapter Proxy) is then based on folder `gen/srv`,
-the CDS models can be found during runtime on Cloud Foundry.
+To come around this situation, trigger a `cds build` during development time, that generates a `csn.json` at location `gen/srv/srv/csn.json`.
+Point your Cloud Foundry deployment of the CDS OData V2 Adapter Proxy to the folder `gen/srv` (using manifest.json or MTA), so that
+the CDS models can be found via file `srv/csn.json`, during runtime execution on Cloud Foundry.
 
 ## SAP Fiori Elements V2
 

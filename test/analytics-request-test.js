@@ -270,10 +270,7 @@ describe("analytics-request", () => {
   });
 
   it("GET request with aggregation and filter element not selected", async () => {
-    let response = await util.callRead(
-      request,
-      "/v2/analytics/Header?$select=stock&$top=4&$filter=currency eq 'USD'"
-    );
+    let response = await util.callRead(request, "/v2/analytics/Header?$select=stock&$top=4&$filter=currency eq 'USD'");
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
@@ -317,7 +314,7 @@ describe("analytics-request", () => {
               type: "test.AnalyticsService.Header",
             },
             stock: 42,
-          }
+          },
         ],
       },
     });
