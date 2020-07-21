@@ -59,7 +59,7 @@ const port = process.env.PORT || 4004;
 
   // serve odata v4
   await cds
-    .connect("db") // ensure database is connected!
+    .connect("db")
     .serve("all")
     .in(app);
 
