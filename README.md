@@ -105,7 +105,6 @@ const port = process.env.PORT || 4004;
   const app = express();
 
   // serve odata v2
-  process.env.XS_APP_LOG_LEVEL = "warning";
   app.use(proxy({
     path: "v2",
     target: "http://localhost:8080",
@@ -173,8 +172,9 @@ Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V
   - **[options.ieee754Compatible]:** `Edm.Decimal` and `Edm.Int64` are serialized IEEE754 compatible. Default is 'true'.
   - **[options.disableNetworkLog]:** Disable networking logging. Default is 'true'.
 
-Logging is controlled with XSA environment variable `XS_APP_LOG_LEVEL`.
-Details can be found at **xs2/node-logging**.
+Logging is controlled with environment variable `XS_APP_LOG_LEVEL`. Especially, proxy requests and proxy responses
+including url and body adaptations can be traced using `XS_APP_LOG_LEVEL=debug`. 
+Details can be found at [@sap/logging](https://www.npmjs.com/package/@sap/logging).
 
 ## Features
 
