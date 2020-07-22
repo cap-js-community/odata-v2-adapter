@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Improve logging layers
+
 ## Version 1.4.40 - 2020-07-20
 
 ### Fixed
