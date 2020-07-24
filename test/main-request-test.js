@@ -138,6 +138,25 @@ describe("main-request", () => {
     });
   });
 
+  it("GET request with navigation", async () => {
+    let response = await util.callRead(request, "/v2/main/Header?$filter=country eq 'Germany'");
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toHaveLength(1);
+    const ID = response.body.d.results[0].ID;
+    response = await util.callRead(request, `/v2/main/Header(guid'${ID}')`);
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d.ID).toEqual(ID);
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ID}')`);
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d.ID).toEqual(ID);
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ID}')/Items`);
+    expect(response.body.d.results).toBeDefined();
+    expect(response.body.d.results.length).toEqual(2);
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ID}')/$links/Items`);
+    expect(response.body.d.results).toBeDefined();
+    expect(response.body.d.results.length).toEqual(2);
+  });
+
   it("GET request with $-options", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
