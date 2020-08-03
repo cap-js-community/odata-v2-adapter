@@ -1,9 +1,9 @@
 # @sap/cds-odata-v2-adapter-proxy
 
-[CDS OData V2 Adapter Proxy](https://www.npmjs.com/package/@sap/cds-odata-v2-adapter-proxy) for [CDS OData V4 Services]((https://www.npmjs.com/package/@sap/cds))
+[CDS OData V2 Adapter Proxy](https://www.npmjs.com/package/@sap/cds-odata-v2-adapter-proxy) for [CDS OData V4 Services](<(https://www.npmjs.com/package/@sap/cds)>)
 
-Based on the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/) 
-using Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds). 
+Based on the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
+using Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds).
 
 ## Getting Started
 
@@ -122,8 +122,8 @@ const port = process.env.PORT || 4004;
 })();
 ```
 
-- In proxy option `services`, every OData V4 service URL path needs to mapped to 
-  the corresponding fully qualified CDS service name, e.g. `"/odata/v4/MainService/": "test.MainService"`, 
+- In proxy option `services`, every OData V4 service URL path needs to mapped to
+  the corresponding fully qualified CDS service name, e.g. `"/odata/v4/MainService/": "test.MainService"`,
   to establish the back-link connection between OData URL and its CDS service.
 - Make sure, that your CDS models are also available in the project.
   Those reside either in `db` and `srv` folders, or a compiled (untransformed) `srv.json` is provided.
@@ -182,7 +182,7 @@ Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V
 ## Logging
 
 Logging is controlled with environment variable `XS_APP_LOG_LEVEL`. Especially, proxy requests and proxy responses
-including url and body adaptations can be traced using `XS_APP_LOG_LEVEL=debug`. 
+including url and body adaptations can be traced using `XS_APP_LOG_LEVEL=debug`.
 Details can be found at [@sap/logging](https://www.npmjs.com/package/@sap/logging).
 
 ## Features

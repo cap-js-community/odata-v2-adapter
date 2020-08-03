@@ -991,12 +991,12 @@ describe("main-request", () => {
         {
           code: "WARN02",
           message: "Another Warning occurred",
-          severity: "warning",
+          severity: expect.stringMatching(/info|warning/),
           target: "Root",
         },
       ],
       message: "An Warning occurred",
-      severity: "warning",
+      severity: expect.stringMatching(/info|warning/),
       target: "Items",
     });
   });

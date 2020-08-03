@@ -9,12 +9,17 @@ process.env.XS_APP_LOG_LEVEL = "debug";
 
 const hanaCredentials = require("./db/default-services").hana[0].credentials;
 
-const db = cds.connect({
-  kind: "hana",
-  credentials: hanaCredentials,
-});
-
 module.exports = async (service, defaultPort, fnInit) => {
+  cds.env.requires.db = {
+    multiTenant: false,
+    kind: "hana",
+    credentials: Object.assign(hanaCredentials, {
+      encrypt: true,
+      sslValidateCertificate: false,
+    }),
+  };
+  const db = await cds.connect.to("db");
+
   let port = defaultPort || 0;
   const servicePath = `./integration-test/_env/srv/${service}`;
   const app = express();
@@ -42,7 +47,7 @@ module.exports = async (service, defaultPort, fnInit) => {
     })
   );
 
-  const context = { port, server, app, cds, srv, db, tx: db.transaction() };
+  const context = { port, server, app, cds, srv, db };
   if (fnInit) {
     await fnInit(context);
   }

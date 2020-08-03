@@ -9,6 +9,7 @@ test/
 .npmignore
 .prettierrc.yml
 .xmake.cfg
+CONTRIBUTING.md
 jest.config.js
 jest-integration-test.json
 junit.xml

@@ -1,7 +1,7 @@
 {
   "name": "@sap/cds-odata-v2-adapter-proxy",
   "version": "1.4.41-SNAPSHOT",
-  "description": "OData V2 Adapter Proxy for CDS OData V4 Services",
+  "description": "CDS OData V2 Adapter Proxy for CDS OData V4 Services",
   "homepage": "https://cap.cloud.sap/",
   "engines": {
     "node": ">=8.9.0"
@@ -18,7 +18,10 @@
   "scripts": {
     "start": "XS_APP_LOG_LEVEL=debug cds run --in-memory",
     "cds:run": "npm run start",
-    "test": "jest --runInBand --updateSnapshot",
+    "test": "npm run test:cds3 && npm run test:cds4",
+    "test:jest": "jest --runInBand --updateSnapshot",
+    "test:cds3": "npm rm --no-save @sap/cds && npm i --no-save @sap/cds@^3 && npm run test:jest",
+    "test:cds4": "npm rm --no-save @sap/cds && npm i --no-save @sap/cds@^4 && npm run test:jest",
     "test:debug": "XS_APP_LOG_LEVEL=debug jest --runInBand --updateSnapshot",
     "test:integration": "jest --config=jest-integration.config.js",
     "test:server": "XS_APP_LOG_LEVEL=debug node test-server",
@@ -30,16 +33,15 @@
     "prepareRelease": "npm prune --production"
   },
   "dependencies": {
-    "@sap/logging": "5.3.0",
+    "@sap/logging": "5.3.1",
     "debug": "4.1.1",
     "express": "4.17.1",
     "http-proxy-middleware": "1.0.5",
     "node-fetch": "2.6.0"
   },
   "devDependencies": {
-    "@sap/cds": "^3.34.2",
+    "@sap/cds": "^4.1.5",
     "@sap/hana-client": "^2.5.83",
-    "@sap/xssec": "^3.0.2",
     "compression": "^1.7.4",
     "eslint": "^7.1.0",
     "eslint-config": "^0.3.0",

@@ -7,14 +7,14 @@ const cds = require("@sap/cds");
 
 const odatav2proxy = require("../../lib");
 
-const db = cds.connect({
-  kind: "sqlite",
-  credentials: {
-    database: ":memory:", // "./test/_env/test.db"
-  },
-});
-
 module.exports = async (service, defaultPort, fnInit, options) => {
+  const db = await cds.connect.to("db", {
+    kind: "sqlite",
+    credentials: {
+      database: ":memory:", // "./test/_env/test.db"
+    },
+  });
+
   let port = defaultPort || 0;
   const servicePath = `./test/_env/${service}`;
   const app = express();
@@ -45,7 +45,7 @@ module.exports = async (service, defaultPort, fnInit, options) => {
 
   await cds.serve(servicePath, options).in(app);
 
-  const context = { port, server, app, cds, srv, db, tx: db.transaction() };
+  const context = { port, server, app, cds, srv, db };
   if (fnInit) {
     await fnInit(context);
   }

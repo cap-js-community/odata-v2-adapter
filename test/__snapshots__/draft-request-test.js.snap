@@ -203,7 +203,7 @@ exports[`draft-request GET $metadata 1`] = `
         <End Role=\\"HeaderItem1\\" Type=\\"test.DraftService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
       </Association>
       <Annotations Target=\\"test.DraftService.DraftAdministrativeData\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Common.Label\\" String=\\"Draft_DraftAdministrativeData\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Draft Administrative Data\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.DraftAdministrativeData/DraftUUID\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Draft (Technical ID)\\"/>

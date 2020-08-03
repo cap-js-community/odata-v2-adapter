@@ -7,12 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.4.41 - tbd
+## Version 1.4.41 - 2020-08-03
 
 ### Fixed
 
+- CDS 4 compatibility
 - Improve logging layers
 - Update README documentation
+- Improve JWT tenant processing
 
 ## Version 1.4.40 - 2020-07-20
 
