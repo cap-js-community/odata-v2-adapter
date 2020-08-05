@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Add missing 'Content-ID' header for batch changeset
+
 ## Version 1.4.41 - 2020-08-03
 
 ### Fixed

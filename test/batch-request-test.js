@@ -145,8 +145,11 @@ describe("batch-request", () => {
     expect(response.statusCode).toEqual(200);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
-    const [[first]] = responses;
+    const [[first, second]] = responses;
     expect(first.statusCode).toEqual(200);
+    expect(first.contentID).toEqual("1");
+    expect(second.statusCode).toEqual(200);
+    expect(parseInt(second.contentID)).toEqual(expect.any(Number));
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items`);
     expect(response.body.d.name).toEqual("Test Update Changeset");
     expect(response.body.d.Items.results[0].name).toEqual("Test Item Update Changeset");
