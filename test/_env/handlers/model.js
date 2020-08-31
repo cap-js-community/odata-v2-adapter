@@ -32,7 +32,7 @@ module.exports = (srv) => {
         "@Common.numericSeverity": 4,
       },
     ];
-    req.error(400, error);
+    req.error(error);
   });
 
   srv.on("unboundWarningFunction", async (req) => {
