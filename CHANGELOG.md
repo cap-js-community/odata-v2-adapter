@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Fix $filter function conversion
+- Fix remote CSN fetch for standalone proxy
 - Fix '@sap.aggregation.role' annotation detection
 - Update README documentation
 
