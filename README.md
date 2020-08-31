@@ -1,4 +1,4 @@
-# @sap/cds-odata-v2-adapter-proxy
+# @sap/cds-odata-v2-adapter-proxy (cov2ap)
 
 [CDS OData V2 Adapter Proxy](https://www.npmjs.com/package/@sap/cds-odata-v2-adapter-proxy) for [CDS OData V4 Services](https://cap.cloud.sap/docs/)
 
