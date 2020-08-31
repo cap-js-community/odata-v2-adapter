@@ -20,6 +20,15 @@ describe("analytics-request", () => {
     env.end(context);
   });
 
+  it("GET request on entity with @cov2ap.analytics: false", async () => {
+    let response = await util.callRead(request, "/v2/analytics/HeaderDisabledAnalytics?$select=currency,stock");
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d.results).toBeDefined();
+    // no aggregation should have happened
+    expect(response.body.d.results.length).toEqual(5);
+  });
+
   it("GET request with grouping and aggregation", async () => {
     let response = await util.callRead(request, "/v2/analytics/Header?$select=currency,stock");
     expect(response.body).toBeDefined();

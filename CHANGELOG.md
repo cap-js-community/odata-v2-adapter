@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Version 1.4.43 - tbd
 
+### Added 
+
+- Add annotation @cov2ap.analytics to suppress analytical conversion
+
 ### Fixed
 
 - Fix \$filter function conversion
