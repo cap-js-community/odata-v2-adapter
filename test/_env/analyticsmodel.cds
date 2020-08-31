@@ -5,16 +5,19 @@ using test from './model';
 service AnalyticsService {
 
     @readonly
-    @Aggregation.ApplySupported.PropertyRestrictions : true
-    entity Header                  as projection on test.Header {
-        ID, description,
+    @Aggregation.ApplySupported.PropertyRestrictions: true
+    entity Header as projection on test.Header {
+        ID,
+        description,
         @Analytics.Dimension
-        country, currency,
+        country,
+        currency,
         @Analytics.Measure
         stock,
         @Analytics.Measure
         @Aggregation.default : #AVG
-        price, Items
+        price,
+        Items
     } excluding {
         createdBy,
         createdAt,
@@ -23,17 +26,20 @@ service AnalyticsService {
     };
 
     @readonly
-    @cov2ap.analytics                                : false
-    @Aggregation.ApplySupported.PropertyRestrictions : true
+    @cov2ap.analytics: false
+    @Aggregation.ApplySupported.PropertyRestrictions: true
     entity HeaderDisabledAnalytics as projection on test.Header {
-        ID, description,
+        ID,
+        description,
         @Analytics.Dimension
-        country, currency,
+        country,
+        currency,
         @Analytics.Measure
         stock,
         @Analytics.Measure
         @Aggregation.default : #AVG
-        price, Items
+        price,
+        Items
     } excluding {
         createdBy,
         createdAt,
@@ -41,5 +47,5 @@ service AnalyticsService {
         modifiedAt
     };
 
-    entity HeaderItem              as projection on test.HeaderItem;
+    entity HeaderItem as projection on test.HeaderItem;
 }

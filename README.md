@@ -169,9 +169,11 @@ Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V
   - **[options.ieee754Compatible]:** `Edm.Decimal` and `Edm.Int64` are serialized IEEE754 compatible. Default is 'true'.
   - **[options.disableNetworkLog]:** Disable networking logging. Default is 'true'.
 
-## CDS Annotations
-These *CDS OData V2 Adapter Proxy* specific annotations are supported:
-  - **@cov2ap.analytics**: Suppress analytics conversion for the annotated entity type if set to *false*
+### CDS Annotations
+
+The following CDS OData V2 Adapter Proxy specific annotations are supported:
+
+- `@cov2ap.analytics`: Suppress analytics conversion for the annotated entity type if set to `false`.
 
 ## Logging
 
