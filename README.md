@@ -106,7 +106,7 @@ const port = process.env.PORT || 4004;
 })();
 ```
 
-- A deployed version of OData V2 proxy shall have option `target` set to the deployed OData V4 backend URL.
+- A deployed version of CDS OData V2 Adapter Proxy shall have option `target` set to the deployed OData V4 backend URL.
   This can be retrieved from the Cloud Foundry environment using `process.env`, for example,
   from the `destinations` environment variable. Locally e.g. http://localhost:8080 can be used.
 - In proxy option `services`, every OData V4 service URL path needs to mapped to
@@ -164,7 +164,7 @@ Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V
   - **[options.target]:** Target, which points to OData V4 backend host/port. Default is e.g. 'http://localhost:4004'.
   - **[options.targetPath]:** Target path to which is redirected. Default is ''.
   - **[options.services]:** Service mapping from url path name to service name. If omitted local CDS defaults apply.
-  - **[options.standalone]:** Indication that OData V2 Adapter proxy is a standalone process. Default is 'false'.
+  - **[options.standalone]:** Indication that OData V2 Adapter Adapter Proxy is a standalone process. Default is 'false'.
   - **[options.mtxEndpoint]:** Endpoint to retrieve MTX metadata for standalone proxy. Default is '/mtx/v1'
   - **[options.ieee754Compatible]:** `Edm.Decimal` and `Edm.Int64` are serialized IEEE754 compatible. Default is 'true'.
   - **[options.disableNetworkLog]:** Disable networking logging. Default is 'true'.
