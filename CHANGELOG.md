@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Fix '@sap.aggregation.role' annotation detection
+- Update README documentation
+
 ## Version 1.4.42 - 2020-08-05
 
 ### Fixed
