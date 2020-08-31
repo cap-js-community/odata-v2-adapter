@@ -529,7 +529,10 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' or substringof('er',createdBy) or startswith(createdBy,'By')&$select=ID,name,createdBy`);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}' or substringof('er',createdBy) or startswith(createdBy,'By')&$select=ID,name,createdBy`
+    );
     expect(response.body.d.results).toHaveLength(1);
   });
 

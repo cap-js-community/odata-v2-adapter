@@ -10,7 +10,7 @@ using CDS Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds) or C
 
 > Only available SAP internally!
 
-- Clone repository 
+- Clone repository
 - Unit Tests: `npm test`
 - Test Server: `npm start`
   - Service: `http://localhost:4004/v2/main`
@@ -149,7 +149,7 @@ A running example can be tested as follows:
 
 - Clone repository
 - Start server: `npm run cds:run`
-- Open Fiori Launchpad: 
+- Open Fiori Launchpad:
   http://localhost:4004/webapp/test/flpSandbox.html
 
 ## Documentation
