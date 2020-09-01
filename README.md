@@ -143,6 +143,7 @@ Make sure, that all i18n property files reside next to the `csn.json` in a `i18n
 ## SAP Fiori Elements V2
 
 The OData V2 service provided by the CDS OData V2 Adapter Proxy can be used to serve an SAP Fiori Elements V2 UI.
+
 A running example can be tested as follows:
 
 > Only available SAP internally!
@@ -197,7 +198,7 @@ Details can be found at [@sap/logging](https://www.npmjs.com/package/@sap/loggin
 - $inlinecount / $count / \$value
 - Entity with Parameters
 - Stream Support (Octet and Url), Content Disposition
-- Multitenancy, Extensibility (proxy in same process only)
+- Multitenancy, Extensibility
 - Content-ID
 - Draft Support
 - Search Support
