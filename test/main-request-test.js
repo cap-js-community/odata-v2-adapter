@@ -22,8 +22,12 @@ describe("main-request", () => {
 
   it("HEAD service", async () => {
     const response = await util.callHead(request, "/v2/main");
-    expect(response.body).toBeDefined();
+    expect(response.status).toEqual(200);
     expect(response.body).toEqual({});
+    expect(response.headers).toMatchObject({
+      "content-type": "application/json",
+      dataserviceversion: "2.0",
+    });
   });
 
   it("GET service JSON format", async () => {
@@ -82,6 +86,17 @@ describe("main-request", () => {
     expect(response.text).toBeDefined();
     response.text = response.text.replace(/http:\/\/127.0.0.1:(\d*)\//, "");
     expect(response.text).toMatchSnapshot();
+  });
+
+  it("HEAD $metadata", async () => {
+    const response = await util.callHead(request, "/v2/main/$metadata");
+    expect(response.status).toEqual(200);
+    expect(response.body).toBeDefined();
+    expect(response.headers).toMatchObject({
+      "content-type": "application/xml",
+      dataserviceversion: "2.0",
+      "transfer-encoding": "chunked",
+    });
   });
 
   it("GET $metadata", async () => {
