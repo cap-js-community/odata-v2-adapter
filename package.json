@@ -67,6 +67,9 @@
     "testEnvironment": "node"
   },
   "cds": {
+    "cov2ap": {
+      "path": "v2"
+    },
     "requires": {
       "db": {
         "kind": "sqlite",
