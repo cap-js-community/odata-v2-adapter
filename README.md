@@ -19,7 +19,7 @@ using CDS Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds) or C
 
 ## Usage
 
-### CDS Combined Backend (Node.js) - Integrated
+### CDS Combined Backend (CAP Node.js) - Integrated
 
 In your existing `@sap/cds` project:
 
@@ -39,7 +39,7 @@ module.exports = cds.server;
 
 Note that `@sap/cds` and `express` are peer dependency and needs to be available as module as well.
 
-### CDS Combined Backend (Node.js) - Custom
+### CDS Combined Backend (CAP Node.js) - Custom
 
 In your existing `@sap/cds` project:
 
@@ -74,7 +74,7 @@ const port = process.env.PORT || 4004;
 
 Note that `@sap/cds` and `express` are peer dependency and needs to be available as module as well.
 
-### CDS Standalone Backend (for example, Java)
+### CDS Standalone Backend (CAP Java or CAP Node.js)
 
 In a new Node.js express project:
 
@@ -125,7 +125,7 @@ const port = process.env.PORT || 4004;
 - Make sure, that all i18n property files reside next to the `csn.json` in a `i18n` or `_i18n` folder, to be detected by localization.
 - In a multitenant scenario in combination with a standalone proxy, the CDS model can be retrieved remotely via MTX endpoint (`mtxEndpoint`) by setting proxy option `mtxRemote: true`.
 - Proxy option `mtxEndpoint` can be specified as absolute url (starting with `http://` or `https://`), to be able to address MTX Sidecar
-  possibly available under a target different from Java OData v4 backend URL. If not specified absolutely, proxy `target` is prepended to `mtxEndpoint`.
+  possibly available under a target different from OData v4 backend URL. If not specified absolutely, proxy `target` is prepended to `mtxEndpoint`.
 
 - Run `node srv/index` from the project root to start the server:
   - OData V2 service will be available at http://localhost:4004/v2/<odata-v4-service-path>
