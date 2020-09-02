@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Rename proxy option 'standalone' to 'mtxRemote'
 - Allow proxy option 'mtxEndpoint' to be absolute http url
 - Support for 'cds.env' for proxy options under section 'cds.cov2ap'
+- Update README and JSDoc documentation
 
 ## Version 1.4.43 - 2020-09-01
 

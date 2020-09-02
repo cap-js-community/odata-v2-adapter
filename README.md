@@ -161,18 +161,18 @@ A running example can be tested as follows:
 
 Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V4 Server:
 
-- **[options]:** CDS OData V2 Adapter Proxy options
-  - **[options.base]:** Base path under which the service is reachable. Default is ''.
-  - **[options.path]:** Path under which the proxy is reachable. Default is 'v2'.
-  - **[options.model]:** CDS service model (path(s) or CSN). Default is 'all'.
-  - **[options.port]:** Target port, which points to OData V4 backend port. Default is process.env.PORT or '4004'.
-  - **[options.target]:** Target, which points to OData V4 backend host/port. Default is e.g. 'http://localhost:4004'.
-  - **[options.targetPath]:** Target path to which is redirected. Default is ''.
-  - **[options.services]:** Service mapping from url path name to service name. If omitted local CDS defaults apply.
-  - **[options.mtxRemote]:** CDS model is retrieved remotely via MTX endpoint for multitenant scenario. Default is 'false'.
-  - **[options.mtxEndpoint]:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active. Default is '/mtx/v1'.
-  - **[options.ieee754Compatible]:** `Edm.Decimal` and `Edm.Int64` are serialized IEEE754 compatible. Default is 'true'.
-  - **[options.disableNetworkLog]:** Disable networking logging. Default is 'true'.
+- **options:** CDS OData V2 Adapter Proxy options object
+  - **options.base:** Base path under which the service is reachable. Default is `''`.
+  - **options.path:** Path under which the proxy is reachable. Default is `'v2'`.
+  - **options.model:** CDS service model (path(s) or CSN). Default is `'all'`.
+  - **options.port:** Target port, which points to OData V4 backend port. Default is process.env.PORT or `4004`.
+  - **options.target:** Target, which points to OData V4 backend host/port. Default is e.g. `'http://localhost:4004'`.
+  - **options.targetPath:** Target path to which is redirected. Default is `''`.
+  - **options.services:** Service mapping object from url path name to service name. Default is `{}`.
+  - **options.mtxRemote:** CDS model is retrieved remotely via MTX endpoint for multitenant scenario. Default is `false`.
+  - **options.mtxEndpoint:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active. Default is `'/mtx/v1'`.
+  - **options.ieee754Compatible:** `Edm.Decimal` and `Edm.Int64` are serialized IEEE754 compatible. Default is `true`.
+  - **options.disableNetworkLog:** Disable networking logging. Default is `true`.
 
 All CDS OData V2 Adapter Proxy options can also be specified as part of CDS project-specific configuration using `cds.env`.
 
