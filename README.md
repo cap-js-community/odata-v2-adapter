@@ -197,13 +197,14 @@ Details can be found at [@sap/logging](https://www.npmjs.com/package/@sap/loggin
 - Deep Expands/Selects
 - JSON format
 - Deep Structures
-- Data Type Mapping (incl. Date Time)
+- Data Type Mapping
 - IEEE754Compatible
 - Messages/Error Handling
 - Location Header
 - $inlinecount / $count / \$value
 - Entity with Parameters
-- Stream Support (Octet and Url), Content Disposition
+- Stream Support (Octet and Url)
+- Content Disposition
 - Multitenancy, Extensibility
 - Content-ID
 - Draft Support
