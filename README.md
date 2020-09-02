@@ -123,9 +123,9 @@ const port = process.env.PORT || 4004;
 - Alternatively, a `cds build` can be triggered as described in section "Cloud Foundry Deployment".
 - If not detected automatically, the model path can be set with option `model` (especially if `csn.json`/`srv.json` option is used).
 - Make sure, that all i18n property files reside next to the `csn.json` in a `i18n` or `_i18n` folder, to be detected by localization.
-- In a multitenant scenario in combination with a standalone proxy, the CDS model can be retrieved remotely via MTX endpoint (`mtxEndpoint`) by setting proxy option `mtxRemote: true`. 
-- Proxy option `mtxEndpoint` can be specified as absolute url (starting with `http://` or `https://`), to be able to address MTX Sidecar 
-possibly available under a target different from Java OData v4 backend URL. If not specified absolutely, proxy `target` is prepended to `mtxEndpoint`.   
+- In a multitenant scenario in combination with a standalone proxy, the CDS model can be retrieved remotely via MTX endpoint (`mtxEndpoint`) by setting proxy option `mtxRemote: true`.
+- Proxy option `mtxEndpoint` can be specified as absolute url (starting with `http://` or `https://`), to be able to address MTX Sidecar
+  possibly available under a target different from Java OData v4 backend URL. If not specified absolutely, proxy `target` is prepended to `mtxEndpoint`.
 
 - Run `node srv/index` from the project root to start the server:
   - OData V2 service will be available at http://localhost:4004/v2/<odata-v4-service-path>
