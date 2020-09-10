@@ -992,9 +992,10 @@ describe("main-request", () => {
 
   it("GET unbound function error request", async () => {
     let response = await util.callRead(request, `/v2/main/unboundErrorFunction`);
+    const cds3 = cds.version.startsWith("3.");
     expect(response.body).toMatchObject({
       error: {
-        code: "ERR01",
+        code: cds3 ? "500" : "ERR01",
         message: {
           lang: "en",
           value: "An error occurred",
