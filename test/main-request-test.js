@@ -351,6 +351,18 @@ describe("main-request", () => {
     expect(response.text).toEqual(id);
   });
 
+  it("GET request with delta responses", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.statusCode).toEqual(201);
+    response = await util.callRead(request, '/v2/main/Header?!deltatoken=4711');
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results).toBeDefined();
+    // TODO: Add when CDS supports Delta Responses
+    // expect(response.body.d.__delta).toBeDefined();
+  });
+
   it("GET request with stream", async () => {
     let response = await util.callRead(
       request,

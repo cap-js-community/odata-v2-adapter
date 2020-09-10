@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Prepare 'Delta Responses' support in proxy (not yet supported by CDS)
+
 ## Version 1.4.44 - 2020-09-03
 
 ### Fixed

@@ -215,6 +215,7 @@ Details can be found at [@sap/logging](https://www.npmjs.com/package/@sap/loggin
 - Tracing Support
 - Logging Correlation
 - ETag Support (Concurrency Control)
+- Delta Responses
 
 ## OData V2/V4 Delta
 
