@@ -1,5 +1,6 @@
 "use strict";
 
+const cds = require("@sap/cds");
 const supertest = require("supertest");
 const fs = require("fs");
 
