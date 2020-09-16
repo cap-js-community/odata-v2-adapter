@@ -188,7 +188,7 @@ The following CDS OData V2 Adapter Proxy specific annotations are supported:
 CDS supports modelling features that are not compatible with OData V2 standard:
 
 - **Structured Types:** Usage of `cds.odata.format: 'structured'` is not supported in combination with OData V2
-- **Arrayed Types:** Usage of `array of` leads to a CDS compilation error: `Element must not be an "array of" for OData V2` 
+- **Arrayed Types:** Usages of `array of` or `many` in entity element definitions lead to CDS compilation error: `Element must not be an "array of" for OData V2` 
 
 To provide an OData V2 service based on the CDS OData V2 Adapter Proxy, those CDS modelling features must not be used.
 
