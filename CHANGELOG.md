@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.4.45 - tbd
+## Version 1.4.45 - 2020-09-18
 
 ### Fixed
 
 - Prepare 'Delta Responses' support in proxy (not yet supported by CDS)
+- Remove metadata information in request payload deeply 
 - Update README on CDS modelling restrictions 
 
 ## Version 1.4.44 - 2020-09-03

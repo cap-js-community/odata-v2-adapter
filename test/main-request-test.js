@@ -516,6 +516,71 @@ describe("main-request", () => {
     });
   });
 
+  it("POST request with deep data containing metadata", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+      Items: [
+        {
+          name: "TestItem",
+        },
+      ],
+    });
+    expect(response.statusCode).toEqual(201);
+    const id = response.body.d.ID;
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items`
+    );
+    expect(response.body).toBeDefined();
+    let data = response.body.d.results[0];
+    expect(data).toMatchObject({
+      __metadata: {
+        uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+      ID: id,
+      name: "Test",
+      Items: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.HeaderItem",
+            },
+            name: "TestItem"
+          }
+        ],
+      },
+    });
+    data.name = "Test2";
+    data.Items.results[0].name = "TestItem2";
+    response = await util.callWrite(request, `/v2/main/Header(guid'${id}')`, data, true);
+    expect(response.statusCode).toEqual(200);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items`
+    );
+    expect(response.body).toBeDefined();
+    data = response.body.d.results[0];
+    expect(data).toMatchObject({
+      __metadata: {
+        uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+      ID: id,
+      name: "Test2",
+      Items: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.HeaderItem",
+            },
+            name: "TestItem2"
+          }
+        ],
+      },
+    });
+  });
+
   it("GET request with function 'substringof'", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
