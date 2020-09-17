@@ -174,7 +174,7 @@ Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V
   - **options.ieee754Compatible:** `Edm.Decimal` and `Edm.Int64` are serialized IEEE754 compatible. Default is `true`.
   - **options.disableNetworkLog:** Disable networking logging. Default is `true`.
 
-All CDS OData V2 Adapter Proxy options can also be specified as part of CDS project-specific configuration 
+All CDS OData V2 Adapter Proxy options can also be specified as part of CDS project-specific configuration
 under section `cds.cov2ap` and accessed via `cds.env`.
 
 ### CDS Annotations
@@ -183,12 +183,12 @@ The following CDS OData V2 Adapter Proxy specific annotations are supported:
 
 - `@cov2ap.analytics`: Suppress analytics conversion for the annotated entity, if set to `false`.
 
-### CDS Modelling 
+### CDS Modelling
 
 CDS supports modelling features that are not compatible with OData V2 standard:
 
 - **Structured Types:** Usage of `cds.odata.format: 'structured'` is not supported in combination with OData V2
-- **Arrayed Types:** Usages of `array of` or `many` in entity element definitions lead to CDS compilation error: `Element must not be an "array of" for OData V2` 
+- **Arrayed Types:** Usages of `array of` or `many` in entity element definitions lead to CDS compilation error: `Element must not be an "array of" for OData V2`
 
 To provide an OData V2 service based on the CDS OData V2 Adapter Proxy, those CDS modelling features must not be used.
 

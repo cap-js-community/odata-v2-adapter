@@ -335,7 +335,8 @@ describe("main-request", () => {
     expect(response.text).toEqual("1");
   });
 
-  it("GET request with $value", async () => {
+  // TODO: cap/issues/5933
+  it.skip("GET request with $value", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
     });
@@ -357,10 +358,10 @@ describe("main-request", () => {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, '/v2/main/Header?!deltatoken=4711');
+    response = await util.callRead(request, "/v2/main/Header?!deltatoken=4711");
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
-    // TODO: Add when CDS supports Delta Responses
+    // TODO: Add when CDS supports Delta Responses (no cap/issue)
     // expect(response.body.d.__delta).toBeDefined();
   });
 
@@ -527,10 +528,7 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(
-      request,
-      `/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items`
-    );
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items`);
     expect(response.body).toBeDefined();
     let data = response.body.d.results[0];
     expect(data).toMatchObject({
@@ -546,8 +544,8 @@ describe("main-request", () => {
             __metadata: {
               type: "test.MainService.HeaderItem",
             },
-            name: "TestItem"
-          }
+            name: "TestItem",
+          },
         ],
       },
     });
@@ -555,10 +553,7 @@ describe("main-request", () => {
     data.Items.results[0].name = "TestItem2";
     response = await util.callWrite(request, `/v2/main/Header(guid'${id}')`, data, true);
     expect(response.statusCode).toEqual(200);
-    response = await util.callRead(
-      request,
-      `/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items`
-    );
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items`);
     expect(response.body).toBeDefined();
     data = response.body.d.results[0];
     expect(data).toMatchObject({
@@ -574,8 +569,8 @@ describe("main-request", () => {
             __metadata: {
               type: "test.MainService.HeaderItem",
             },
-            name: "TestItem2"
-          }
+            name: "TestItem2",
+          },
         ],
       },
     });
@@ -1273,7 +1268,8 @@ describe("main-request", () => {
     );
   });
 
-  it("Entity with key including reserved/escaped uri characters", async () => {
+  // TODO: cap/issues/5933
+  it.skip("Entity with key including reserved/escaped uri characters", async () => {
     let response = await util.callRead(request, "/v2/main/Favorite");
     expect(response.statusCode).toEqual(200);
     expect(response.body && response.body.d && response.body.d.results).toBeDefined();
@@ -1347,6 +1343,27 @@ describe("main-request", () => {
       response = await util.callRead(request, uri);
       expect(response.statusCode).toEqual(200);
       expect(response.body && response.body.d).toBeDefined();
+    });
+  });
+
+  it("GET with x-forwarded-path header", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.statusCode).toEqual(201);
+    const ID = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ID}')`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": "/xyz/v2/main/Header",
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d).toMatchObject({
+      name: "Test",
+      __metadata: {
+        type: "test.MainService.Header",
+        uri: `https://test:1234/xyz/v2/main/Header(guid'${ID}')`,
+      },
     });
   });
 });
