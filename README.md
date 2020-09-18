@@ -177,6 +177,9 @@ Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V
 All CDS OData V2 Adapter Proxy options can also be specified as part of CDS project-specific configuration
 under section `cds.cov2ap` and accessed via `cds.env`.
 
+Option `cds.env.odata.v2proxy.urlpath` is available to specify an OData V2 proxy url path 
+different from default `/v2` for CDS core. 
+
 ### CDS Annotations
 
 The following CDS OData V2 Adapter Proxy specific annotations are supported:
