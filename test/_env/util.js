@@ -43,12 +43,12 @@ function callDelete(request, path, headers) {
   return request;
 }
 
-function callMultipart(request, path, payload) {
+function callMultipart(request, path, payload, boundary = "boundary") {
   payload = payload.split(LF).join(CRLF);
   return request
     .post(path)
     .accept("multipart/mixed,application/json")
-    .type("multipart/mixed;boundary=boundary")
+    .type(`multipart/mixed;boundary=${boundary}`)
     .parse(multipartMixedToTextParser)
     .send(payload);
 }
@@ -82,7 +82,7 @@ function splitMultipartResponse(body, boundary = "boundary") {
     .slice(1, -1)
     .map((part) => {
       const [_meta, ..._rest] = part.split("\r\n\r\n");
-      const multipart = _meta.match(/content-type:\s*multipart\/mixed;\s*boundary=(\w+)/i);
+      const multipart = _meta.match(/content-type:\s*multipart\/mixed;\s*boundary=([\w-]*)/i);
       if (multipart !== null) {
         const subBoundary = multipart[1];
         return splitMultipartResponse(_rest.join("\r\n\r\n"), subBoundary);

@@ -101,6 +101,22 @@ describe("batch-request", () => {
     });
   });
 
+  it("POST request misc", async () => {
+    const requestBoundary = "batch_36522ad7-fc75-4b56-8c71-56071383e77b";
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST-Changeset.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    let response = await util.callMultipart(request, "/v2/main/$batch", payload, requestBoundary);
+    expect(response.statusCode).toEqual(200);
+
+    const responseBoundary = response.headers["content-type"].split("boundary=")[1];
+    const responses = util.splitMultipartResponse(response.body, responseBoundary);
+    expect(responses.length).toEqual(1);
+    const [first] = responses;
+    first.forEach(part => {
+      expect(part.statusCode).toEqual(201);
+    });
+  });
+
   it("PUT request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
