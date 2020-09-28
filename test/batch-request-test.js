@@ -112,7 +112,7 @@ describe("batch-request", () => {
     const responses = util.splitMultipartResponse(response.body, responseBoundary);
     expect(responses.length).toEqual(1);
     const [first] = responses;
-    first.forEach(part => {
+    first.forEach((part) => {
       expect(part.statusCode).toEqual(201);
     });
   });

@@ -185,7 +185,7 @@ different from default `/v2` for CDS core.
 The following CDS OData V2 Adapter Proxy specific annotations are supported:
 
 - `@cov2ap.analytics: false`: Suppress analytics conversion for the annotated entity, if set to `false`.
-- `@cov2ap.deltaResponse: 'timestamp'`: Delta response '__delta' is added to response data of annotated entity with timestamp information.
+- `@cov2ap.deltaResponse: 'timestamp'`: Delta response '\_\_delta' is added to response data of annotated entity with timestamp information.
 
 ### CDS Modelling
 
