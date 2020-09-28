@@ -1,31 +1,29 @@
---batch_36522ad7-fc75-4b56-8c71-56071383e77b
-Content-Type: multipart/mixed; boundary=changeset_77162fcd-b8da-41ac-a9f8-9357efbbd621
+--batch_f992-3b90-6e9f
+Content-Type: multipart/mixed; boundary=changeset_ecff-52c6-e19e
 
---changeset_77162fcd-b8da-41ac-a9f8-9357efbbd621
+--changeset_ecff-52c6-e19e
 Content-Type: application/http
 Content-Transfer-Encoding: binary
 Content-ID: 1
 
 POST Header HTTP/1.1
+Accept: application/json
 DataServiceVersion: 1.0
-Accept: application/atomsvc+xml;q=0.8,application/json;odata=verbose;q=0.5, */*;q=0.1
-Content-Type: application/json;odata=verbose
-MaxDataServiceVersion: 2.0
+Content-Type: application/json
+MaxDataServiceVersion: 3.0
 
-{
-    "name": "Test",
-    "stock": 10
-}
---changeset_77162fcd-b8da-41ac-a9f8-9357efbbd621
+{"name":"Test","stock":10}
+--changeset_ecff-52c6-e19e
 Content-Type: application/http
 Content-Transfer-Encoding: binary
 
 POST $1/Items HTTP/1.1
-DataServiceVersion: 1.0
 Accept: application/json
-Content-Type: application/json;odata=verbose
-MaxDataServiceVersion: 2.0
+DataServiceVersion: 1.0
+Content-Type: application/json
+MaxDataServiceVersion: 3.0
 
 {"name": "Test","description":"Test Description"}
---changeset_77162fcd-b8da-41ac-a9f8-9357efbbd621--
---batch_36522ad7-fc75-4b56-8c71-56071383e77b--
+--changeset_ecff-52c6-e19e--
+
+--batch_f992-3b90-6e9f--

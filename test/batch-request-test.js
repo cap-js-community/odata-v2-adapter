@@ -102,7 +102,7 @@ describe("batch-request", () => {
   });
 
   it("POST request misc", async () => {
-    const requestBoundary = "batch_36522ad7-fc75-4b56-8c71-56071383e77b";
+    const requestBoundary = "batch_f992-3b90-6e9f";
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST-Changeset.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     let response = await util.callMultipart(request, "/v2/main/$batch", payload, requestBoundary);
