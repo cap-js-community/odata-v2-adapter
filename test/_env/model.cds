@@ -55,6 +55,12 @@ entity HeaderTemporal: cuid { // temporal
   value: String;
 }
 
+@cov2ap.deltaResponse: 'timestamp'
+entity HeaderDelta: cuid, managed {
+    name: String;
+    description: String;
+}
+
 entity Favorite {
     key name: String;
     value: String;
@@ -82,6 +88,7 @@ service MainService {
     entity HeaderUrlStream as projection on test.HeaderUrlStream;
     entity HeaderAssocKey as projection on test.HeaderAssocKey;
     entity HeaderTemporal as projection on test.HeaderTemporal;
+    entity HeaderDelta as projection on test.HeaderDelta;
 
     entity Favorite as projection on test.Favorite;
     entity StringUUID as projection on test.StringUUID;

@@ -42,6 +42,7 @@ describe("main-request", () => {
           "Favorite",
           "Header",
           "HeaderAssocKey",
+          "HeaderDelta",
           "HeaderItem",
           "HeaderStream",
           "HeaderTemporal",
@@ -60,6 +61,7 @@ describe("main-request", () => {
           "Favorite",
           "Header",
           "HeaderAssocKey",
+          "HeaderDelta",
           "HeaderItem",
           "HeaderStream",
           "HeaderTemporal",
@@ -353,15 +355,18 @@ describe("main-request", () => {
   });
 
   it("GET request with delta responses", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/v2/main/HeaderDelta", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, "/v2/main/Header?!deltatoken=4711");
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/HeaderDelta?!deltatoken='${new Date().getTime()}'`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
-    // TODO: Add when CDS supports Delta Responses (no cap/issue)
-    // expect(response.body.d.__delta).toBeDefined();
+    expect(response.body.d.__delta).toMatch(/http:\/\/127.0.0.1:(\d*)\/v2\/main\/HeaderDelta\?!deltatoken='(\d*)'/);
+    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${id}')`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results).toBeUndefined();
   });
 
   it("GET request with stream", async () => {

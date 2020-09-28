@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Update README on option `cds.env.odata.v2proxy.urlpath`
+- Delta response annotation `@cov2ap.deltaResponse: 'timestamp'`
 
 ## Version 1.4.45 - 2020-09-17
 
