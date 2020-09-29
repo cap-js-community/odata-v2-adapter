@@ -337,7 +337,7 @@ describe("main-request", () => {
     expect(response.text).toEqual("1");
   });
 
-  it.skip("GET request with $value", async () => {
+  it("GET request with $value", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
     });
@@ -1272,7 +1272,7 @@ describe("main-request", () => {
     );
   });
 
-  it.skip("Entity with key including reserved/escaped uri characters", async () => {
+  it("Entity with key including reserved/escaped uri characters", async () => {
     let response = await util.callRead(request, "/v2/main/Favorite");
     expect(response.statusCode).toEqual(200);
     expect(response.body && response.body.d && response.body.d.results).toBeDefined();
