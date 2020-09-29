@@ -18,10 +18,7 @@
   "scripts": {
     "start": "XS_APP_LOG_LEVEL=debug cds run --in-memory",
     "cds:run": "npm run start",
-    "env": "node -v && npm -v && npm c list && node -e 'console.log(JSON.stringify(process.env, null, 2))'",
-    "test": "npm run env && jest --runInBand --updateSnapshot",
-    "test:cds3": "npm i @sap/cds@^3 && npm test",
-    "test:cds4": "npm i @sap/cds@^4 && npm test",
+    "test": "jest --runInBand --updateSnapshot",
     "test:debug": "XS_APP_LOG_LEVEL=debug jest --runInBand --updateSnapshot",
     "test:integration": "jest --config=jest-integration.config.js",
     "test:server": "XS_APP_LOG_LEVEL=debug node test-server",
