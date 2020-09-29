@@ -37,7 +37,7 @@ module.exports = cds.server;
   - OData V2 service will be available at http://localhost:4004/v2/<service-path>
   - OData V4 service will be available at http://localhost:4004/<service-path>
 
-Note that `@sap/cds` and `express` are peer dependency and needs to be available as module as well.
+Note that `@sap/cds` is a peer dependency and needs to be available as module as well.
 
 ### CDS Combined Backend (CAP Node.js) - Custom
 
@@ -72,7 +72,7 @@ const port = process.env.PORT || 4004;
   - OData V2 service will be available at http://localhost:4004/v2/<service-path>
   - OData V4 service will be available at http://localhost:4004/<service-path>
 
-Note that `@sap/cds` and `express` are peer dependency and needs to be available as module as well.
+Note that `@sap/cds` is a peer dependency and needs to be available as module as well.
 
 ### CDS Standalone Backend (CAP Java or CAP Node.js)
 
@@ -131,7 +131,7 @@ const port = process.env.PORT || 4004;
   - OData V2 service will be available at http://localhost:4004/v2/<odata-v4-service-path>
   - OData V4 service shall be available at http://localhost:8080/<odata-v4-service-path>
 
-Note that `@sap/cds` and `express` are peer dependency and needs to be available as module as well.
+Note that `@sap/cds` is a peer dependency and needs to be available as module as well.
 
 ## Cloud Foundry Deployment
 

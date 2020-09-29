@@ -52,8 +52,7 @@
   },
   "license": "See LICENSE file",
   "peerDependencies": {
-    "@sap/cds": "*",
-    "express": "*"
+    "@sap/cds": "*"
   },
   "repository": {
     "type": "git",
