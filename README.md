@@ -8,14 +8,14 @@ using CDS Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds) or C
 
 ## Getting Started
 
-> Only available SAP internally!
-
 - Clone repository
 - Unit Tests: `npm test`
 - Test Server: `npm start`
   - Service: `http://localhost:4004/v2/main`
   - Metadata: `http://localhost:4004/v2/main/$metadata`
   - Data: `http://localhost:4004/v2/main/Header?$expand=Items`
+
+> Code repository is only available SAP internal.
 
 ## Usage
 
@@ -150,12 +150,12 @@ The OData V2 service provided by the CDS OData V2 Adapter Proxy can be used to s
 
 A running example can be tested as follows:
 
-> Only available SAP internally!
-
 - Clone repository
 - Start server: `npm run cds:run`
 - Open Fiori Launchpad:
   http://localhost:4004/webapp/test/flpSandbox.html
+
+> Code repository is only available SAP internal.
 
 ## Documentation
 
