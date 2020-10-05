@@ -1,8 +1,10 @@
 # @sap/cds-odata-v2-adapter-proxy (cov2ap)
 
-[CDS OData V2 Adapter Proxy](https://www.npmjs.com/package/@sap/cds-odata-v2-adapter-proxy) for [CDS OData V4 Services](https://cap.cloud.sap/docs/)
+[CDS OData V2 Adapter Proxy](https://www.npmjs.com/package/@sap/cds-odata-v2-adapter-proxy) for [CDS OData V4 Services](https://cap.cloud.sap/docs/).
 
-Based on the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
+Exposes a full-fledged OData V2 service, converting OData V2 requests to CDS OData V4 service calls and responses back to OData V2.
+
+Runs in context of the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
 using CDS Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds) or CDS Java modules
 [com.sap.cds](https://mvnrepository.com/artifact/com.sap.cds).
 
