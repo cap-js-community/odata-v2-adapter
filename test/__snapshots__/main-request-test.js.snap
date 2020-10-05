@@ -9,7 +9,7 @@ Object {
         "uri": "/v2/main/Favorite('WE%20DE-SFSNRF')",
       },
       "name": "WE DE-SFSNRF",
-      "value": null,
+      "value": "",
     },
     Object {
       "__metadata": Object {
@@ -25,7 +25,7 @@ Object {
         "uri": "/v2/main/Favorite('WE%22DE-SFSNRF')",
       },
       "name": "WE\\"DE-SFSNRF",
-      "value": "",
+      "value": "\\"",
     },
     Object {
       "__metadata": Object {

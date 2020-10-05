@@ -1301,7 +1301,7 @@ describe("main-request", () => {
       name = name.replace(/''/g, "'");
       let value = name.substr(2, 1);
       // Special handling
-      value = value === " " ? null : value;
+      value = value === " " ? "" : value;
       value = value === "\\" ? "\\\\" : value;
       expect(data).toEqual({
         __metadata: {
