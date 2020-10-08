@@ -101,9 +101,25 @@ describe("batch-request", () => {
     });
   });
 
-  it("POST request misc", async () => {
+  it("POST request changeset", async () => {
     const requestBoundary = "batch_f992-3b90-6e9f";
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST-Changeset.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    let response = await util.callMultipart(request, "/v2/main/$batch", payload, requestBoundary);
+    expect(response.statusCode).toEqual(200);
+
+    const responseBoundary = response.headers["content-type"].split("boundary=")[1];
+    const responses = util.splitMultipartResponse(response.body, responseBoundary);
+    expect(responses.length).toEqual(1);
+    const [first] = responses;
+    first.forEach((part) => {
+      expect(part.statusCode).toEqual(201);
+    });
+  });
+
+  it("POST request changeset with misplaced Content-ID", async () => {
+    const requestBoundary = "batch_f992-3b90-6e9f";
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST-ContentID.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     let response = await util.callMultipart(request, "/v2/main/$batch", payload, requestBoundary);
     expect(response.statusCode).toEqual(200);
@@ -154,6 +170,38 @@ describe("batch-request", () => {
     const itemId = response.body.d.Items.results[0].ID;
     expect(itemId).toBeDefined();
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-PATCH.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, id);
+    payload = payload.replace(/{{ItemID}}/g, itemId);
+    response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    expect(response.statusCode).toEqual(200);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    const [[first, second]] = responses;
+    expect(first.statusCode).toEqual(200);
+    expect(first.contentID).toEqual("1");
+    expect(second.statusCode).toEqual(200);
+    expect(parseInt(second.contentID)).toEqual(expect.any(Number));
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items`);
+    expect(response.body.d.name).toEqual("Test Update Changeset");
+    expect(response.body.d.Items.results[0].name).toEqual("Test Item Update Changeset");
+  });
+
+  it("PATCH request with misplaced Content-ID", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+      Items: [
+        {
+          name: "TestItem",
+        },
+      ],
+    });
+    expect(response.statusCode).toEqual(201);
+    const id = response.body.d.ID;
+    expect(id).toBeDefined();
+    const itemId = response.body.d.Items.results[0].ID;
+    expect(itemId).toBeDefined();
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-PATCH-ContentID.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ItemID}}/g, itemId);

@@ -76,7 +76,9 @@ const port = process.env.PORT || 4004;
 
 Note that `@sap/cds` is a peer dependency and needs to be available as module as well.
 
-### CDS Standalone Backend (CAP Java or CAP Node.js)
+### CDS Standalone Backend (CAP Node.js or CAP Java)
+
+> For CAP Java projects prefer the Native OData V2 Adapter (com.sap.cds/cds-adapter-odata-v2).
 
 In a new Node.js express project:
 
