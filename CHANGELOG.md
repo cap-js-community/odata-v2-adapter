@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Respect 'Content-ID' in HTTP request headers
 - Update on peer dependencies
-- Update README on OData V2 Adapter for CAP Java 
+- Update README on OData V2 Adapter for CAP Java
 - Update README on mission statement
 
 ## Version 1.4.46 - 2020-09-29
