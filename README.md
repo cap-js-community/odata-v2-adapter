@@ -179,7 +179,7 @@ Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V
   - **options.disableNetworkLog:** Disable networking logging. Default is `true`.
 
 All CDS OData V2 Adapter Proxy options can also be specified as part of CDS project-specific configuration
-under section `cds.cov2ap` and accessed via `cds.env`.
+under section `cds.cov2ap` and accessed via `cds.env.cov2ap`.
 
 Option `cds.env.odata.v2proxy.urlpath` is available to specify an OData V2 proxy url path
 different from default `/v2` for CDS core.
