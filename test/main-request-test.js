@@ -77,17 +77,17 @@ describe("main-request", () => {
       accept: "application/xml",
     });
     expect(response.text).toBeDefined();
-    response.text = response.text.replace(/http:\/\/127.0.0.1:(\d*)\//, "");
+    response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
     expect(response.text).toMatchSnapshot();
     response = await util.callRead(request, "/v2/main/", {
       accept: "application/xml",
     });
     expect(response.text).toBeDefined();
-    response.text = response.text.replace(/http:\/\/127.0.0.1:(\d*)\//, "");
+    response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
     expect(response.text).toMatchSnapshot();
     response = await util.callRead(request, "/v2/main");
     expect(response.text).toBeDefined();
-    response.text = response.text.replace(/http:\/\/127.0.0.1:(\d*)\//, "");
+    response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
     expect(response.text).toMatchSnapshot();
   });
 
@@ -195,7 +195,7 @@ describe("main-request", () => {
       {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         },
         ID: id,
         FirstItem: null,
@@ -239,7 +239,7 @@ describe("main-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
-        uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -253,7 +253,7 @@ describe("main-request", () => {
             name: "TestItem",
             header: {
               __metadata: {
-                uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+                uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
                 type: "test.MainService.Header",
               },
               ID: id,
@@ -287,7 +287,7 @@ describe("main-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
-        uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -363,7 +363,7 @@ describe("main-request", () => {
     response = await util.callRead(request, `/v2/main/HeaderDelta?!deltatoken='${new Date().getTime()}'`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
-    expect(response.body.d.__delta).toMatch(/http:\/\/127.0.0.1:(\d*)\/v2\/main\/HeaderDelta\?!deltatoken='(\d*)'/);
+    expect(response.body.d.__delta).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/HeaderDelta\?!deltatoken='(\d*)'/);
     response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeUndefined();
@@ -537,7 +537,7 @@ describe("main-request", () => {
     let data = response.body.d.results[0];
     expect(data).toMatchObject({
       __metadata: {
-        uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -562,7 +562,7 @@ describe("main-request", () => {
     data = response.body.d.results[0];
     expect(data).toMatchObject({
       __metadata: {
-        uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -793,7 +793,7 @@ describe("main-request", () => {
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
           type: "test.MainService.Header",
         },
         ID: id,
@@ -827,7 +827,7 @@ describe("main-request", () => {
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
           type: "test.MainService.Header",
         },
         createdBy: "anonymous",
@@ -836,7 +836,7 @@ describe("main-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/main/Header(guid'${id}')/Items`,
+            uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')/Items`,
           },
         },
       },
@@ -854,7 +854,7 @@ describe("main-request", () => {
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${response.request.host}/v2/main/HeaderItem(guid'${itemId}')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/HeaderItem(guid'${itemId}')`,
           type: "test.MainService.HeaderItem",
         },
         name: "Test Update",
@@ -864,7 +864,10 @@ describe("main-request", () => {
         header_ID: id,
         header: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/main/HeaderItem(guid'${itemId}')/header`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/main/HeaderItem(guid'${itemId}')/header`,
           },
         },
       },
@@ -874,7 +877,7 @@ describe("main-request", () => {
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${response.request.host}/v2/main/HeaderItem(guid'${itemId}')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/HeaderItem(guid'${itemId}')`,
           type: "test.MainService.HeaderItem",
         },
         name: "Test Update",
@@ -884,7 +887,10 @@ describe("main-request", () => {
         header_ID: id,
         header: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/main/HeaderItem(guid'${itemId}')/header`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/main/HeaderItem(guid'${itemId}')/header`,
           },
         },
       },
@@ -910,7 +916,7 @@ describe("main-request", () => {
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
           type: "test.MainService.Header",
         },
         createdBy: "anonymous",
@@ -919,7 +925,7 @@ describe("main-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/main/Header(guid'${id}')/Items`,
+            uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')/Items`,
           },
         },
       },
@@ -1123,7 +1129,7 @@ describe("main-request", () => {
       d: {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         },
         createdBy: "anonymous",
         modifiedBy: "anonymous",
@@ -1277,7 +1283,9 @@ describe("main-request", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body && response.body.d && response.body.d.results).toBeDefined();
     response.body.d.results.forEach((result) => {
-      result.__metadata.uri = result.__metadata.uri.substr(`http://${response.request.host}`.length);
+      result.__metadata.uri = result.__metadata.uri.substr(
+        `http://${response.request.host.replace("127.0.0.1", "localhost")}`.length
+      );
     });
     expect(response.body && response.body.d).toMatchSnapshot();
 
@@ -1292,7 +1300,9 @@ describe("main-request", () => {
       expect(response.statusCode).toEqual(200);
       expect(response.body && response.body.d).toBeDefined();
       let data = response.body && response.body.d;
-      data.__metadata.uri = data.__metadata.uri.substr(`http://${response.request.host}`.length);
+      data.__metadata.uri = data.__metadata.uri.substr(
+        `http://${response.request.host.replace("127.0.0.1", "localhost")}`.length
+      );
       const id = data.__metadata.uri.substring(
         data.__metadata.uri.indexOf("'") + 1,
         data.__metadata.uri.lastIndexOf("'")
@@ -1315,7 +1325,9 @@ describe("main-request", () => {
       response = await util.callRead(request, `/v2/main/Favorite?$filter=name eq '${id}'`);
       expect(response.statusCode).toEqual(200);
       data = response.body && response.body.d && response.body.d.results && response.body.d.results[0];
-      data.__metadata.uri = data.__metadata.uri.substr(`http://${response.request.host}`.length);
+      data.__metadata.uri = data.__metadata.uri.substr(
+        `http://${response.request.host.replace("127.0.0.1", "localhost")}`.length
+      );
       expect(data).toEqual({
         __metadata: {
           type: "test.MainService.Favorite",
@@ -1332,7 +1344,9 @@ describe("main-request", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body && response.body.d && response.body.d.results).toBeDefined();
     response.body.d.results.forEach((result) => {
-      result.__metadata.uri = result.__metadata.uri.substr(`http://${response.request.host}`.length);
+      result.__metadata.uri = result.__metadata.uri.substr(
+        `http://${response.request.host.replace("127.0.0.1", "localhost")}`.length
+      );
     });
     expect(response.body && response.body.d).toMatchSnapshot();
 
@@ -1354,19 +1368,195 @@ describe("main-request", () => {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
-    const ID = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ID}')`, {
+    let id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${id}')`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": "/xyz/v2/main/Header",
+      "x-forwarded-path": `/xyz/v2/main/Header(ID=guid'${id}')`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       name: "Test",
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/xyz/v2/main/Header(guid'${ID}')`,
+        uri: `https://test:1234/xyz/v2/main/Header(guid'${id}')`,
       },
     });
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${id}')`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": `/abc/v3/Header(ID=guid'${id}')/toRootHeader`,
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d).toMatchObject({
+      name: "Test",
+      __metadata: {
+        type: "test.MainService.Header",
+        uri: `https://test:1234/abc/v3/Header(guid'${id}')`,
+      },
+    });
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${id}')`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": `/cockpit/Header(ID=guid'${id}')`,
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d).toMatchObject({
+      name: "Test",
+      __metadata: {
+        type: "test.MainService.Header",
+        uri: `https://test:1234/cockpit/Header(guid'${id}')`,
+      },
+    });
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${id}')`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": `/cockpit/v2/Header(ID=guid'${id}')`,
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d).toMatchObject({
+      name: "Test",
+      __metadata: {
+        type: "test.MainService.Header",
+        uri: `https://test:1234/cockpit/v2/Header(guid'${id}')`,
+      },
+    });
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${id}')`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": `https://test:1234/cockpit/v2/Header(ID=guid'${id}')`,
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d).toMatchObject({
+      name: "Test",
+      __metadata: {
+        type: "test.MainService.Header",
+        uri: `https://test:1234/cockpit/v2/Header(guid'${id}')`,
+      },
+    });
+    response = await util.callRead(request, `/v2/main/Header`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": `/cockpit/v2/Header`,
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results.length > 0).toEqual(true);
+    expect(response.body.d.results[0]).toMatchObject({
+      __metadata: {
+        type: "test.MainService.Header",
+        uri: `https://test:1234/cockpit/v2/Header(guid'${response.body.d.results[0].ID}')`,
+      },
+    });
+    response = await util.callRead(request, `/v2/main/Header?a=b`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": `/cockpit/v2/Header?a=b`,
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results.length > 0).toEqual(true);
+    expect(response.body.d.results[0]).toMatchObject({
+      __metadata: {
+        type: "test.MainService.Header",
+        uri: `https://test:1234/cockpit/v2/Header(guid'${response.body.d.results[0].ID}')`,
+      },
+    });
+    response = await util.callRead(request, `/v2/main/unboundNavigationFunction?num=1&text=${id}`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": `/cockpit/unboundNavigationFunction?num=1&text=${id}`,
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d).toMatchObject({
+      __metadata: {
+        type: "test.MainService.Header",
+        uri: `https://test:1234/cockpit/Header(guid'${response.body.d.ID}')`,
+      },
+    });
+    response = await util.callRead(request, `/v2/main/unboundNavigationFunction?num=1&text=${id}`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": `/cockpit/v2/unboundNavigationFunction?num=1&text=${id}`,
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d).toMatchObject({
+      __metadata: {
+        type: "test.MainService.Header",
+        uri: `https://test:1234/cockpit/v2/Header(guid'${response.body.d.ID}')`,
+      },
+    });
+    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${id}'&num=1&text=abc`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": `/cockpit/v2/Header_boundFunction?ID=guid'${id}'&num=1&text=abc`,
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results).toMatchObject([
+      {
+        age: 1,
+        code: "TEST",
+        name: "abc",
+      },
+    ]);
+    response = await util.callWrite(request, "/v2/main/HeaderDelta", {
+      name: "Test",
+    });
+    expect(response.statusCode).toEqual(201);
+    id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/HeaderDelta?!deltatoken='${new Date().getTime()}'`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": `/cockpit/HeaderDelta?!deltatoken='${new Date().getTime()}'`,
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results).toBeDefined();
+    expect(response.body.d.__delta).toMatch(/https:\/\/test:1234\/cockpit\/HeaderDelta\?!deltatoken='(\d*)'/);
+    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${id}')`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results).toBeUndefined();
+    response = await util.callRead(request, `/v2/main/$metadata`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": "/cockpit",
+    });
+    expect(response.statusCode).toEqual(200);
+    response = await util.callRead(request, `/v2/main`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": "/cockpit",
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.text).toMatch(/https:\/\/test:1234\/cockpit/);
+    expect(response.text).not.toMatch(/v2\/main/);
+    response = await util.callRead(request, `/v2/main/`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": "/cockpit/",
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.text).toMatch(/https:\/\/test:1234\/cockpit/);
+    expect(response.text).not.toMatch(/v2\/main/);
+    response = await util.callRead(request, `/v2/main/`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": "/",
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.text).toMatch(/https:\/\/test:1234/);
+    expect(response.text).not.toMatch(/v2\/main/);
+    response = await util.callRead(request, `/v2/main`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": "",
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.text).toMatch(/https:\/\/test:1234/);
+    expect(response.text).not.toMatch(/v2\/main/);
+    response = await util.callRead(request, `/v2/main/`, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+    });
+    expect(response.statusCode).toEqual(200);
+    expect(response.text).toMatch(/https:\/\/test:1234\/v2\/main/);
+    expect(response.text).not.toMatch(/cockpit/);
   });
 });

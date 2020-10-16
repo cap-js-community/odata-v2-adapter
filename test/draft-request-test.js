@@ -61,7 +61,10 @@ describe("draft-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d).toMatchObject({
       __metadata: {
-        uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+        uri: `http://${response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
         type: "test.DraftService.Header",
         etag: etag,
       },
@@ -75,17 +78,26 @@ describe("draft-request", () => {
       description: null,
       Items: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
         },
       },
       SiblingEntity: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
         },
       },
       DraftAdministrativeData: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
         },
       },
     });
@@ -111,7 +123,10 @@ describe("draft-request", () => {
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
           type: "test.DraftService.Header",
           etag: etag,
         },
@@ -125,17 +140,26 @@ describe("draft-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
           },
         },
         SiblingEntity: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
           },
         },
         DraftAdministrativeData: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
           },
         },
       },
@@ -147,7 +171,10 @@ describe("draft-request", () => {
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
           type: "test.DraftService.Header",
           etag: etag,
         },
@@ -161,17 +188,26 @@ describe("draft-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
           },
         },
         SiblingEntity: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
           },
         },
         DraftAdministrativeData: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
           },
         },
       },
@@ -192,7 +228,10 @@ describe("draft-request", () => {
       d: {
         __metadata: {
           type: "test.DraftService.HeaderItem",
-          uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -205,17 +244,26 @@ describe("draft-request", () => {
         startAt: null,
         header: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
           },
         },
         SiblingEntity: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
           },
         },
         DraftAdministrativeData: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
           },
         },
       },
@@ -229,7 +277,10 @@ describe("draft-request", () => {
       d: {
         __metadata: {
           type: "test.DraftService.HeaderItem",
-          uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -242,17 +293,26 @@ describe("draft-request", () => {
         startAt: null,
         header: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
           },
         },
         SiblingEntity: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
           },
         },
         DraftAdministrativeData: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
           },
         },
       },
@@ -345,7 +405,10 @@ describe("draft-request", () => {
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
           type: "test.DraftService.Header",
         },
         createdBy: "anonymous",
@@ -354,7 +417,10 @@ describe("draft-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${response.request.host}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
           },
         },
       },

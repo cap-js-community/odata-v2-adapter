@@ -86,7 +86,7 @@ describe("batch-request", () => {
     expect(response.body.d).toMatchObject({
       __metadata: {
         type: "test.MainService.Header",
-        uri: `http://${response.request.host}/v2/main/Header(guid'${id}')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
       },
       ID: id,
       createdBy: "anonymous",
@@ -95,7 +95,7 @@ describe("batch-request", () => {
       name: "Test",
       Items: {
         __deferred: {
-          uri: `http://${response.request.host}/v2/main/Header(guid'${id}')/Items`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')/Items`,
         },
       },
     });
