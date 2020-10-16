@@ -32,7 +32,7 @@
   "dependencies": {
     "@sap/logging": "^5.3.1",
     "express": "^4.17.1",
-    "http-proxy-middleware": "^1.0.5",
+    "http-proxy-middleware": "1.0.5",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
