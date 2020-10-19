@@ -271,4 +271,27 @@ describe("batch-request", () => {
       })
     );
   });
+
+  it("GET with x-forwarded-path header", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test %22",
+      country: "US",
+    });
+    expect(response.statusCode).toEqual(201);
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-GET-Escaped.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    response = await util.callMultipart(request, "/v2/main/$batch", payload, undefined, {
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "test:1234",
+      "x-forwarded-path": `/cockpit/$batch`,
+    });
+    expect(response.statusCode).toEqual(200);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    expect(responses.filter((response) => response.statusCode === 200).length).toEqual(1);
+    const [first] = responses;
+    expect(first.body.d.results[0].__metadata.uri).toMatch(/https:\/\/test:1234\/cockpit\/Header\(guid'[a-z0-9-]*'\)/);
+    expect(first.body.d.results[0].__metadata.uri).not.toMatch(/\$batch/);
+  });
+
 });

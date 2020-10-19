@@ -788,6 +788,7 @@ describe("main-request", () => {
     expect(response.body.d).toBeDefined();
     const id = response.body.d.ID;
     expect(id).toBeDefined();
+    expect(response.headers.location).toEqual(`http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`);
     let itemId = response.body.d.Items.results[0].ID;
     expect(itemId).toBeDefined();
     expect(response.body).toMatchObject({

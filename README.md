@@ -223,7 +223,8 @@ Details can be found at [@sap/logging](https://www.npmjs.com/package/@sap/loggin
 - Entity with Parameters
 - Stream Support (Octet and Url)
 - Content Disposition
-- Multitenancy, Extensibility
+- Multitenancy
+- Extensibility
 - Content-ID
 - Draft Support
 - Search Support

@@ -26,27 +26,34 @@ function callRead(request, path, headers) {
 
 function callWrite(request, path, payload, update, headers) {
   request = update ? request.merge(path) : request.post(path);
-  headers = headers || {};
-  Object.keys(headers).forEach((vKey) => {
-    request.set(vKey, headers[vKey]);
-  });
-  request = request.set("content-type", headers["content-type"] || "application/json").send(payload);
+  if (headers) {
+    Object.keys(headers).forEach((vKey) => {
+      request.set(vKey, headers[vKey]);
+    });
+  }
+  request = request.set("content-type", (headers && headers["content-type"]) || "application/json").send(payload);
   return request;
 }
 
 function callDelete(request, path, headers) {
   request = request.delete(path);
-  headers = headers || {};
-  Object.keys(headers).forEach((vKey) => {
-    request.set(vKey, headers[vKey]);
-  });
+  if (headers) {
+    Object.keys(headers).forEach((vKey) => {
+      request.set(vKey, headers[vKey]);
+    });
+  }
   return request;
 }
 
-function callMultipart(request, path, payload, boundary = "boundary") {
+function callMultipart(request, path, payload, boundary = "boundary", headers) {
+  request = request.post(path);
   payload = payload.split(LF).join(CRLF);
+  if (headers) {
+    Object.keys(headers).forEach((vKey) => {
+      request.set(vKey, headers[vKey]);
+    });
+  }
   return request
-    .post(path)
     .accept("multipart/mixed,application/json")
     .type(`multipart/mixed;boundary=${boundary}`)
     .parse(multipartMixedToTextParser)
@@ -55,11 +62,12 @@ function callMultipart(request, path, payload, boundary = "boundary") {
 
 function callStream(request, path, headers) {
   request = request.put(path);
-  headers = headers || {};
-  Object.keys(headers).forEach((vKey) => {
-    request.set(vKey, headers[vKey]);
-  });
-  request = request.set("content-type", headers["content-type"] || "application/octet-stream");
+  if (headers) {
+    Object.keys(headers).forEach((vKey) => {
+      request.set(vKey, headers[vKey]);
+    });
+  }
+  request = request.set("content-type", (headers && headers["content-type"]) || "application/octet-stream");
   request = request.expect(204);
   return request;
 }
