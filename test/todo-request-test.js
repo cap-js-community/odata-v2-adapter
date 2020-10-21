@@ -412,7 +412,7 @@ describe("todo-request", () => {
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-PUT-Decimal.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     response = await util.callMultipart(request, "/v2/todo/$batch", payload);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
     response = await util.callRead(request, "/v2/todo/Tasks(1)", {
       accept: "application/json",
     });

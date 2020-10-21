@@ -376,7 +376,7 @@ describe("draft-request", () => {
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ETAG}}/g, etag);
     response = await util.callMultipart(request, "/v2/draft/$batch", payload);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
     let responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
     response = responses[0][0];
@@ -390,7 +390,7 @@ describe("draft-request", () => {
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ETAG}}/g, etag);
     response = await util.callMultipart(request, "/v2/draft/$batch", payload);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
     responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
     response = responses[0][0];

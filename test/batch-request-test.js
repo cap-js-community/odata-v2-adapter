@@ -30,7 +30,7 @@ describe("batch-request", () => {
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, ID);
     response = await util.callMultipart(request, "/v2/main/$batch", payload);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(3);
     expect(responses.filter((response) => response.statusCode === 200).length).toEqual(3);
@@ -52,7 +52,7 @@ describe("batch-request", () => {
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-GET-Escaped.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     response = await util.callMultipart(request, "/v2/main/$batch", payload);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
     expect(responses.filter((response) => response.statusCode === 200).length).toEqual(1);
@@ -64,7 +64,7 @@ describe("batch-request", () => {
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     let response = await util.callMultipart(request, "/v2/main/$batch", payload);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
 
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(4);
@@ -106,7 +106,7 @@ describe("batch-request", () => {
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST-Changeset.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     let response = await util.callMultipart(request, "/v2/main/$batch", payload, requestBoundary);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
 
     const responseBoundary = response.headers["content-type"].split("boundary=")[1];
     const responses = util.splitMultipartResponse(response.body, responseBoundary);
@@ -117,12 +117,12 @@ describe("batch-request", () => {
     });
   });
 
-  it("POST request changeset with misplaced Content-ID", async () => {
+  it("POST request changeset with misplaced content-id", async () => {
     const requestBoundary = "batch_f992-3b90-6e9f";
-    let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST-ContentID.txt", "utf8");
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST-ContentId.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     let response = await util.callMultipart(request, "/v2/main/$batch", payload, requestBoundary);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
 
     const responseBoundary = response.headers["content-type"].split("boundary=")[1];
     const responses = util.splitMultipartResponse(response.body, responseBoundary);
@@ -144,7 +144,7 @@ describe("batch-request", () => {
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
     response = await util.callMultipart(request, "/v2/main/$batch", payload);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
 
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
@@ -174,20 +174,22 @@ describe("batch-request", () => {
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ItemID}}/g, itemId);
     response = await util.callMultipart(request, "/v2/main/$batch", payload);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
     const [[first, second]] = responses;
     expect(first.statusCode).toEqual(200);
-    expect(first.contentID).toEqual("1");
+    expect(first.contentId).toEqual("1");
+    expect(first.headers["content-id"]).toEqual("1");
     expect(second.statusCode).toEqual(200);
-    expect(parseInt(second.contentID)).toEqual(expect.any(Number));
+    expect(second.contentId).toBeUndefined()
+    expect(second.headers["content-id"]).toBeUndefined()
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items`);
     expect(response.body.d.name).toEqual("Test Update Changeset");
     expect(response.body.d.Items.results[0].name).toEqual("Test Item Update Changeset");
   });
 
-  it("PATCH request with misplaced Content-ID", async () => {
+  it("PATCH request with misplaced content-id", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
       Items: [
@@ -201,19 +203,19 @@ describe("batch-request", () => {
     expect(id).toBeDefined();
     const itemId = response.body.d.Items.results[0].ID;
     expect(itemId).toBeDefined();
-    let payload = fs.readFileSync("./test/_env/data/batch/Batch-PATCH-ContentID.txt", "utf8");
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-PATCH-ContentId.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ItemID}}/g, itemId);
     response = await util.callMultipart(request, "/v2/main/$batch", payload);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
     const [[first, second]] = responses;
     expect(first.statusCode).toEqual(200);
-    expect(first.contentID).toEqual("1");
+    expect(first.contentId).toEqual("1");
     expect(second.statusCode).toEqual(200);
-    expect(parseInt(second.contentID)).toEqual(expect.any(Number));
+    expect(parseInt(second.contentId)).toEqual(expect.any(Number));
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items`);
     expect(response.body.d.name).toEqual("Test Update Changeset");
     expect(response.body.d.Items.results[0].name).toEqual("Test Item Update Changeset");
@@ -230,7 +232,7 @@ describe("batch-request", () => {
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
     response = await util.callMultipart(request, "/v2/main/$batch", payload);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
     const [first] = responses;
@@ -243,7 +245,7 @@ describe("batch-request", () => {
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-Action.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     let response = await util.callMultipart(request, "/v2/main/$batch", payload);
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(2);
     expect(responses.filter((response) => response.statusCode === 200).length).toEqual(2);
@@ -285,7 +287,7 @@ describe("batch-request", () => {
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": `/cockpit/$batch`,
     });
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
     expect(responses.filter((response) => response.statusCode === 200).length).toEqual(1);
