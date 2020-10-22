@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Remove OData V4 header 'odata-entityid'
 - Propagate 'Content-ID' in response to HTTP request headers
 - Remove artificially added 'Content-ID' header from batch response
-- Fix 'Content-ID' order check for deviations between request and response 
+- Fix 'Content-ID' order check for deviations between request and response
 
 ## Version 1.4.49 - 2020-10-19
 

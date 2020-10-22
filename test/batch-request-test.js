@@ -182,8 +182,8 @@ describe("batch-request", () => {
     expect(first.contentId).toEqual("1");
     expect(first.headers["content-id"]).toEqual("1");
     expect(second.statusCode).toEqual(200);
-    expect(second.contentId).toBeUndefined()
-    expect(second.headers["content-id"]).toBeUndefined()
+    expect(second.contentId).toBeUndefined();
+    expect(second.headers["content-id"]).toBeUndefined();
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items`);
     expect(response.body.d.name).toEqual("Test Update Changeset");
     expect(response.body.d.Items.results[0].name).toEqual("Test Item Update Changeset");
@@ -295,5 +295,4 @@ describe("batch-request", () => {
     expect(first.body.d.results[0].__metadata.uri).toMatch(/https:\/\/test:1234\/cockpit\/Header\(guid'[a-z0-9-]*'\)/);
     expect(first.body.d.results[0].__metadata.uri).not.toMatch(/\$batch/);
   });
-
 });

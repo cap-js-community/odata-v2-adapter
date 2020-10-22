@@ -24,3 +24,4 @@ rules:
   no-console: [off]
   no-unused-vars: [off]
   require-atomic-updates: [off]
+  jest/no-conditional-expect: [off]
