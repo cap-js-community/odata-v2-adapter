@@ -32,11 +32,12 @@
   "dependencies": {
     "@sap/logging": "^5.3.1",
     "express": "^4.17.1",
-    "http-proxy-middleware": "1.0.5",
+    "express-fileupload": "^1.2.0",
+    "http-proxy-middleware": "^1.0.6",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@sap/cds": "^4.2.4",
+    "@sap/cds": "^4.2.6",
     "@sap/hana-client": "^2.6.58",
     "compression": "^1.7.4",
     "eslint": "^7.1.0",

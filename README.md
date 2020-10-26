@@ -177,6 +177,7 @@ Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V
   - **options.mtxEndpoint:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active. Default is `'/mtx/v1'`.
   - **options.ieee754Compatible:** `Edm.Decimal` and `Edm.Int64` are serialized IEEE754 compatible. Default is `true`.
   - **options.disableNetworkLog:** Disable networking logging. Default is `true`.
+  - **options.fileUploadSizeLimit:** File upload file size limit (in bytes). Default is `10485760` (10 MB).
 
 All CDS OData V2 Adapter Proxy options can also be specified as part of CDS project-specific configuration
 under section `cds.cov2ap` and accessed via `cds.env.cov2ap`.
@@ -206,6 +207,34 @@ Logging is controlled with environment variable `XS_APP_LOG_LEVEL`. Especially, 
 including url and body adaptations can be traced using `XS_APP_LOG_LEVEL=debug`.
 Details can be found at [@sap/logging](https://www.npmjs.com/package/@sap/logging).
 
+### Logging Layers
+
+Logging layers of CDS OData V2 Adapter Proxy start with `cov2ap`.
+
+#### XS_APP_LOG_LEVEL = error
+
+- `cov2ap/Authorization` : Error during authorization header parsing
+- `cov2ap/MetadataRequest` : Error during metadata request processing
+- `cov2ap/Request` : Error during request processing
+- `cov2ap/Response` : Error during response processing
+- `cov2ap/Batch` : Error during batch processing
+- `cov2ap/AggregationKey` : Error during aggregation key determination
+- `cov2ap/MediaStream` : Error during media stream processing
+- `cov2ap/ContentDisposition` : Error during content disposition determination
+- `cov2ap/FileUpload` : Error during file upload processing
+
+#### XS_APP_LOG_LEVEL = warning
+
+- `cov2ap/Service` : Service definition not found for request path
+- `cov2ap/Context` : Definition not found in CDS meta model
+
+#### XS_APP_LOG_LEVEL = debug
+
+- `cov2ap/Request`: Log of OData V2 client request (url, body, headers)
+- `cov2ap/ProxyRequest`: Log of OData V4 proxy request (url, body, headers)
+- `cov2ap/ProxyResponse`: Log of OData V4 proxy response (status code/message, body, headers)
+- `cov2ap/Response`: Log of OData V2 client response (status code/message, body, headers)
+
 ## Features
 
 - GET, POST, PUT/PATCH, DELETE
@@ -221,6 +250,7 @@ Details can be found at [@sap/logging](https://www.npmjs.com/package/@sap/loggin
 - Location Header
 - $inlinecount / $count / \$value
 - Entity with Parameters
+- File Upload (binary, multipart/form-data)
 - Stream Support (Octet and Url)
 - Content Disposition
 - Multitenancy

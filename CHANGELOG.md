@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Support OData V2 binary media upload via POST
+- Support OData V2 multipart/form-data media upload via POST
+- Update README on logging layers
+
 ## Version 1.4.50 - 2020-10-22
 
 ### Fixed

@@ -60,15 +60,49 @@ function callMultipart(request, path, payload, boundary = "boundary", headers) {
     .send(payload);
 }
 
-function callStream(request, path, headers) {
-  request = request.put(path);
+function callStream(request, path, update, headers) {
+  request = update ? request.put(path) : request.post(path);
   if (headers) {
     Object.keys(headers).forEach((vKey) => {
       request.set(vKey, headers[vKey]);
     });
   }
   request = request.set("content-type", (headers && headers["content-type"]) || "application/octet-stream");
-  request = request.expect(204);
+  request = request.expect(update ? 204 : 201);
+  return request;
+}
+
+function callBinary(request, path, file, update, headers) {
+  request = update ? request.put(path) : request.post(path);
+  if (headers) {
+    Object.keys(headers).forEach((vKey) => {
+      request.set(vKey, headers[vKey]);
+    });
+  }
+  request = request.set("content-type", (headers && headers["content-type"]) || "application/octet-stream");
+  request = request.send(file);
+  request = request.expect(update ? 204 : 201);
+  return request;
+}
+
+function callAttach(request, path, file, update, headers) {
+  request = update ? request.put(path) : request.post(path);
+  if (headers) {
+    Object.keys(headers).forEach((vKey) => {
+      request.set(vKey, headers[vKey]);
+    });
+  }
+  const contentType = (headers && headers["content-type"]) || "application/octet-stream";
+  request = request.set("content-type", contentType);
+  request = request.field("content-type", contentType);
+  const slug = headers && headers["slug"];
+  if (slug) {
+    request = request.field("slug", slug);
+  } else if (typeof file === "string") {
+    request = request.field("slug", file.split("/").pop());
+  }
+  request = request.attach("file", file);
+  request = request.expect(update ? 204 : 201);
   return request;
 }
 
@@ -119,4 +153,6 @@ module.exports = {
   callMultipart,
   splitMultipartResponse,
   callStream,
+  callBinary,
+  callAttach,
 };
