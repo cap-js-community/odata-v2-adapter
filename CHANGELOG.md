@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.4.52 - tbd
+## Version 1.4.52 - 2020-10-27
 
 ### Fixed
+
+- Log warning for change set order violation, instead returning an error response 
 
 ## Version 1.4.51 - 2020-10-27
 
