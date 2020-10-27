@@ -237,7 +237,7 @@ Logging layers of CDS OData V2 Adapter Proxy start with `cov2ap`.
 
 ## Features
 
-- GET, POST, PUT/PATCH, DELETE
+- GET, POST, PUT / MERGE / PATCH, DELETE
 - Batch support
 - Actions, Functions
 - Analytical Annotations
@@ -246,16 +246,16 @@ Logging layers of CDS OData V2 Adapter Proxy start with `cov2ap`.
 - Deep Structures
 - Data Type Mapping
 - IEEE754Compatible
-- Messages/Error Handling
+- Messages / Error Handling
 - Location Header
 - $inlinecount / $count / \$value
 - Entity with Parameters
 - File Upload (binary, multipart/form-data)
 - Stream Support (Octet and Url)
 - Content Disposition
-- Multitenancy
-- Extensibility
 - Content-ID
+- Multi-Tenancy
+- Extensibility
 - Draft Support
 - Search Support
 - Localization
