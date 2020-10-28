@@ -31,6 +31,7 @@ entity HeaderStream: cuid {
     @Core.IsMediaType
     mediaType: String;
     filename: String;
+    custom: String;
 }
 
 entity HeaderUrlStream: cuid {

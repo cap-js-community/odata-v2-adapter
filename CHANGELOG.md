@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Support custom body for binary media upload via POST
+
 ## Version 1.4.52 - 2020-10-27
 
 ### Fixed

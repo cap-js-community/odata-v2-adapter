@@ -7,8 +7,8 @@ const CRLF = CR + LF;
 function callHead(request, path, headers) {
   request = request.head(path);
   if (headers) {
-    Object.keys(headers).forEach((vKey) => {
-      request.set(vKey, headers[vKey]);
+    Object.keys(headers).forEach((key) => {
+      request.set(key, headers[key]);
     });
   }
   return request;
@@ -17,8 +17,8 @@ function callHead(request, path, headers) {
 function callRead(request, path, headers) {
   request = request.get(path);
   if (headers) {
-    Object.keys(headers).forEach((vKey) => {
-      request.set(vKey, headers[vKey]);
+    Object.keys(headers).forEach((key) => {
+      request.set(key, headers[key]);
     });
   }
   return request;
@@ -27,8 +27,8 @@ function callRead(request, path, headers) {
 function callWrite(request, path, payload, update, headers) {
   request = update ? request.merge(path) : request.post(path);
   if (headers) {
-    Object.keys(headers).forEach((vKey) => {
-      request.set(vKey, headers[vKey]);
+    Object.keys(headers).forEach((key) => {
+      request.set(key, headers[key]);
     });
   }
   request = request.set("content-type", (headers && headers["content-type"]) || "application/json").send(payload);
@@ -38,8 +38,8 @@ function callWrite(request, path, payload, update, headers) {
 function callDelete(request, path, headers) {
   request = request.delete(path);
   if (headers) {
-    Object.keys(headers).forEach((vKey) => {
-      request.set(vKey, headers[vKey]);
+    Object.keys(headers).forEach((key) => {
+      request.set(key, headers[key]);
     });
   }
   return request;
@@ -49,8 +49,8 @@ function callMultipart(request, path, payload, boundary = "boundary", headers) {
   request = request.post(path);
   payload = payload.split(LF).join(CRLF);
   if (headers) {
-    Object.keys(headers).forEach((vKey) => {
-      request.set(vKey, headers[vKey]);
+    Object.keys(headers).forEach((key) => {
+      request.set(key, headers[key]);
     });
   }
   return request
@@ -63,8 +63,8 @@ function callMultipart(request, path, payload, boundary = "boundary", headers) {
 function callStream(request, path, update, headers) {
   request = update ? request.put(path) : request.post(path);
   if (headers) {
-    Object.keys(headers).forEach((vKey) => {
-      request.set(vKey, headers[vKey]);
+    Object.keys(headers).forEach((key) => {
+      request.set(key, headers[key]);
     });
   }
   request = request.set("content-type", (headers && headers["content-type"]) || "application/octet-stream");
@@ -75,8 +75,8 @@ function callStream(request, path, update, headers) {
 function callBinary(request, path, file, update, headers) {
   request = update ? request.put(path) : request.post(path);
   if (headers) {
-    Object.keys(headers).forEach((vKey) => {
-      request.set(vKey, headers[vKey]);
+    Object.keys(headers).forEach((key) => {
+      request.set(key, headers[key]);
     });
   }
   request = request.set("content-type", (headers && headers["content-type"]) || "application/octet-stream");
@@ -85,21 +85,23 @@ function callBinary(request, path, file, update, headers) {
   return request;
 }
 
-function callAttach(request, path, file, update, headers) {
+function callAttach(request, path, file, update, headers, fields) {
   request = update ? request.put(path) : request.post(path);
   if (headers) {
-    Object.keys(headers).forEach((vKey) => {
-      request.set(vKey, headers[vKey]);
+    Object.keys(headers).forEach((key) => {
+      request.set(key, headers[key]);
     });
   }
   const contentType = (headers && headers["content-type"]) || "application/octet-stream";
   request = request.set("content-type", contentType);
   request = request.field("content-type", contentType);
-  const slug = headers && headers["slug"];
-  if (slug) {
-    request = request.field("slug", slug);
-  } else if (typeof file === "string") {
+  if (typeof file === "string") {
     request = request.field("slug", file.split("/").pop());
+  }
+  if (fields) {
+    Object.keys(fields).forEach((key) => {
+      request.field(key, fields[key]);
+    });
   }
   request = request.attach("file", file);
   request = request.expect(update ? 204 : 201);
