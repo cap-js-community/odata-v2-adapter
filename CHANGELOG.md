@@ -7,13 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.4.53 - tbd
+## Version 1.4.53 - 2020-10-29
 
 ### Fixed
 
 - Support custom body for binary media upload via POST
 - Set 'Accept' header for \$batch proxy request to "multipart/mixed"
-- Set missing response header 'content-transfer-encoding: binary'
+- Set missing response header 'Content-Transfer-Encoding: binary'
 
 ## Version 1.4.52 - 2020-10-27
 

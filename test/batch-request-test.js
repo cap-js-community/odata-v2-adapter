@@ -36,11 +36,12 @@ describe("batch-request", () => {
     expect(responses.filter((response) => response.statusCode === 200).length).toEqual(3);
     const [first, second, third] = responses;
     expect(first.body.d.results.length).toEqual(5);
-
+    expect(first.contentTransferEncoding).toEqual("binary");
     expect(second.body.d.results.length).toEqual(5);
-
+    expect(second.contentTransferEncoding).toEqual("binary");
     expect(third.body.d.hasOwnProperty("results")).toEqual(false);
     expect(third.body.d.ID).toEqual(ID);
+    expect(third.contentTransferEncoding).toEqual("binary");
   });
 
   it("GET request with uri escape character", async () => {
@@ -58,6 +59,7 @@ describe("batch-request", () => {
     expect(responses.filter((response) => response.statusCode === 200).length).toEqual(1);
     const [first] = responses;
     expect(first.body.d.results.length).toEqual(1);
+    expect(first.contentTransferEncoding).toEqual("binary");
   });
 
   it("POST request", async () => {
@@ -114,6 +116,7 @@ describe("batch-request", () => {
     const [first] = responses;
     first.forEach((part) => {
       expect(part.statusCode).toEqual(201);
+      expect(part.contentTransferEncoding).toEqual("binary");
     });
   });
 
@@ -130,6 +133,7 @@ describe("batch-request", () => {
     const [first] = responses;
     first.forEach((part) => {
       expect(part.statusCode).toEqual(201);
+      expect(part.contentTransferEncoding).toEqual("binary");
     });
   });
 
@@ -150,7 +154,7 @@ describe("batch-request", () => {
     expect(responses.length).toEqual(1);
     const [first] = responses;
     expect(first.statusCode).toEqual(200);
-
+    expect(first.contentTransferEncoding).toEqual("binary");
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body.d.name).toEqual("Test Update");
   });
@@ -241,6 +245,7 @@ describe("batch-request", () => {
     expect(responses.length).toEqual(1);
     const [first] = responses;
     expect(first.statusCode).toEqual(204);
+    expect(first.contentTransferEncoding).toEqual("binary");
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(404);
   });
@@ -263,6 +268,7 @@ describe("batch-request", () => {
         },
       })
     );
+    expect(first.contentTransferEncoding).toEqual("binary");
     expect(second.body).toEqual(
       expect.objectContaining({
         d: {
@@ -276,6 +282,7 @@ describe("batch-request", () => {
         },
       })
     );
+    expect(second.contentTransferEncoding).toEqual("binary");
   });
 
   it("GET with x-forwarded-path header", async () => {
@@ -298,5 +305,6 @@ describe("batch-request", () => {
     const [first] = responses;
     expect(first.body.d.results[0].__metadata.uri).toMatch(/https:\/\/test:1234\/cockpit\/Header\(guid'[a-z0-9-]*'\)/);
     expect(first.body.d.results[0].__metadata.uri).not.toMatch(/\$batch/);
+    expect(first.contentTransferEncoding).toEqual("binary");
   });
 });
