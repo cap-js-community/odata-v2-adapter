@@ -180,9 +180,11 @@ describe("batch-request", () => {
     const [[first, second]] = responses;
     expect(first.statusCode).toEqual(200);
     expect(first.contentId).toEqual("1");
+    expect(first.contentTransferEncoding).toEqual("binary");
     expect(first.headers["content-id"]).toEqual("1");
     expect(second.statusCode).toEqual(200);
     expect(second.contentId).toBeUndefined();
+    expect(second.contentTransferEncoding).toEqual("binary");
     expect(second.headers["content-id"]).toBeUndefined();
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items`);
     expect(response.body.d.name).toEqual("Test Update Changeset");
@@ -214,8 +216,10 @@ describe("batch-request", () => {
     const [[first, second]] = responses;
     expect(first.statusCode).toEqual(200);
     expect(first.contentId).toEqual("1");
+    expect(first.contentTransferEncoding).toEqual("binary");
     expect(second.statusCode).toEqual(200);
     expect(parseInt(second.contentId)).toEqual(expect.any(Number));
+    expect(second.contentTransferEncoding).toEqual("binary");
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items`);
     expect(response.body.d.name).toEqual("Test Update Changeset");
     expect(response.body.d.Items.results[0].name).toEqual("Test Item Update Changeset");

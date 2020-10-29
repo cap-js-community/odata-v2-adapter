@@ -132,6 +132,7 @@ function splitMultipartResponse(body, boundary = "boundary") {
         return splitMultipartResponse(_rest.join("\r\n\r\n"), subBoundary);
       } else {
         const contentId = _meta.match(/content-id:\s*(\w+)/i) || undefined;
+        const contentTransferEncoding = _meta.match(/content-transfer-encoding:\s*(\w+)/i) || undefined;
         const [_info, _body] = _rest;
         const body = _body && _body.startsWith("{") ? JSON.parse(_body) : _body;
         const [_status, ..._headers] = _info.split("\r\n");
@@ -142,7 +143,14 @@ function splitMultipartResponse(body, boundary = "boundary") {
           const [key, value] = _header.split(": ");
           headers[key] = value;
         });
-        return { statusCode, statusText, headers, body, contentId: contentId && contentId[1] };
+        return {
+          statusCode,
+          statusText,
+          headers,
+          body,
+          contentId: contentId && contentId[1],
+          contentTransferEncoding: contentTransferEncoding && contentTransferEncoding[1],
+        };
       }
     });
 }
