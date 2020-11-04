@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = {
   reporters: ["default"],
   automock: false,

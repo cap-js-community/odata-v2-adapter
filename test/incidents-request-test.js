@@ -6,17 +6,16 @@ const fs = require("fs");
 const env = require("./_env");
 const util = require("./_env/util");
 
-let context;
 let request;
 
 describe("incidents-request", () => {
   beforeAll(async () => {
-    context = await env("incidentsmodel", 0);
+    const context = await env("incidentsmodel", 0);
     request = supertest(context.app);
   });
 
-  afterAll(() => {
-    env.end(context);
+  afterAll(async () => {
+    await env.end();
   });
 
   it("GET incidents service", async () => {

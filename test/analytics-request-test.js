@@ -7,17 +7,16 @@ const env = require("./_env");
 const util = require("./_env/util");
 const init = require("./_env/data/init");
 
-let context;
 let request;
 
 describe("analytics-request", () => {
   beforeAll(async () => {
-    context = await env("analyticsmodel", 0, init);
+    const context = await env("analyticsmodel", 0, init);
     request = supertest(context.app);
   });
 
-  afterAll(() => {
-    env.end(context);
+  afterAll(async () => {
+    await env.end();
   });
 
   it("GET request on entity with @cov2ap.analytics: false", async () => {

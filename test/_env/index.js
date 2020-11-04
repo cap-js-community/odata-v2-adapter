@@ -7,6 +7,8 @@ const cds = require("@sap/cds");
 
 const odatav2proxy = require("../../lib");
 
+let context = null;
+
 module.exports = async (service, defaultPort, fnInit, options) => {
   const db = await cds.connect.to("db", {
     kind: "sqlite",
@@ -45,14 +47,15 @@ module.exports = async (service, defaultPort, fnInit, options) => {
 
   await cds.serve(servicePath, options).in(app);
 
-  const context = { port, server, app, cds, srv, db };
+  context = { port, server, app, cds, srv, db };
   if (fnInit) {
     await fnInit(context);
   }
   return context;
 };
 
-module.exports.end = (context) => {
-  context.cds.disconnect();
+module.exports.end = async () => {
+  await context.cds.disconnect();
   context.server.close();
+  context = null;
 };

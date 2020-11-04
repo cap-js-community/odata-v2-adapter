@@ -7,17 +7,16 @@ const env = require("./_env");
 const util = require("./_env/util");
 const init = require("./_env/data/init");
 
-let context;
 let request;
 
 describe("batch-request", () => {
   beforeAll(async () => {
-    context = await env("model", 0, init);
+    const context = await env("model", 0, init);
     request = supertest(context.app);
   });
 
-  afterAll(() => {
-    env.end(context);
+  afterAll(async () => {
+    await env.end();
   });
 
   it("GET request", async () => {

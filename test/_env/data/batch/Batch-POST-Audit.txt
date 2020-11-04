@@ -1,0 +1,17 @@
+--batch_709b8b9352ac4342a0efb1e012d_1
+Content-Type: multipart/mixed; boundary=changeset_709b8b9352ac4342a0efb1e012d_2
+
+--changeset_709b8b9352ac4342a0efb1e012d_2
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+POST Audits HTTP/1.1
+Content-Type: application/json
+Accept: application/json;q=1, application/atom+xml;q=0.5
+accept-language: en-GB
+sap-contextid-accept: header
+
+{"audit_type_ID":1,"work_activity_ID":1}
+--changeset_709b8b9352ac4342a0efb1e012d_2--
+
+--batch_709b8b9352ac4342a0efb1e012d_1--

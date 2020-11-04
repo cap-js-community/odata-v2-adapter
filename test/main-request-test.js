@@ -8,17 +8,16 @@ const env = require("./_env");
 const util = require("./_env/util");
 const init = require("./_env/data/init");
 
-let context;
 let request;
 
 describe("main-request", () => {
   beforeAll(async () => {
-    context = await env("model", 0, init);
+    const context = await env("model", 0, init);
     request = supertest(context.app);
   });
 
-  afterAll(() => {
-    env.end(context);
+  afterAll(async () => {
+    await env.end();
   });
 
   it("HEAD service", async () => {
@@ -367,6 +366,19 @@ describe("main-request", () => {
     response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeUndefined();
+  });
+
+  it("GET request with next link responses", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.statusCode).toEqual(201);
+    const id = response.body.d.ID;
+    response = await util.callRead(request, "/v2/main/Header?$skiptoken=1");
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results).toBeDefined();
+    expect(response.body.d.__next).toBeUndefined();
+    //expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/Header\?\$skiptoken=2/);
   });
 
   it("GET request with stream", async () => {

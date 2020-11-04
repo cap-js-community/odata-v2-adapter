@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Support mapping of \_\_next annotation
 - Forward file upload headers to media entity POST call
 - Explain annotation '@Core.ContentDisposition.Filename' in README
 - Update README on OData API flavors

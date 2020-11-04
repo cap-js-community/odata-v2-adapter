@@ -7,7 +7,6 @@ const fs = require("fs");
 const env = require("./_env");
 const util = require("./_env/util");
 
-let context;
 let request;
 
 const options = {
@@ -30,12 +29,12 @@ const options = {
 
 describe("auth-request", () => {
   beforeAll(async () => {
-    context = await env("authmodel", 0, undefined, options);
+    const context = await env("authmodel", 0, undefined, options);
     request = supertest(context.app);
   });
 
-  afterAll(() => {
-    env.end(context);
+  afterAll(async () => {
+    await env.end();
   });
 
   it("GET $metadata auth", async () => {

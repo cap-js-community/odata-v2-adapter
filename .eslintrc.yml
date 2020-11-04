@@ -5,7 +5,7 @@ env:
   node: true
   es2017: true
 parserOptions:
-  ecmaVersion: 8
+  ecmaVersion: 10
 globals:
   sap: false
   SELECT: false
@@ -21,7 +21,13 @@ extends:
   - "plugin:jest/recommended"
   - prettier
 rules:
-  no-console: [off]
   no-unused-vars: [off]
   require-atomic-updates: [off]
   jest/no-conditional-expect: [off]
+  no-restricted-modules: [error, child_process, fs] # security
+  no-eval: [error] # security
+  no-implied-eval: [error] # security
+  no-console: [error] # ops
+  strict: [error]
+  curly: [error]
+  no-constant-condition: [error, { checkLoops: false }]

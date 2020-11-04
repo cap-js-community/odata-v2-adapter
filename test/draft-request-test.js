@@ -6,17 +6,16 @@ const supertest = require("supertest");
 const env = require("./_env");
 const util = require("./_env/util");
 
-let context;
 let request;
 
 describe("draft-request", () => {
   beforeAll(async () => {
-    context = await env("draftmodel");
+    const context = await env("draftmodel");
     request = supertest(context.app);
   });
 
-  afterAll(() => {
-    env.end(context);
+  afterAll(async () => {
+    await env.end();
   });
 
   it("GET service", async () => {

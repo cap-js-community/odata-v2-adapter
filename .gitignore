@@ -1,3 +1,4 @@
+gen/
 db/gen/
 srv/gen/
 .gen/

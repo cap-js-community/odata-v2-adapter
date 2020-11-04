@@ -7,17 +7,16 @@ const env = require("./_env");
 const util = require("./_env/util");
 const init = require("./_env/data/init");
 
-let context;
 let request;
 
 describe("todo-request", () => {
   beforeAll(async () => {
-    context = await env("todomodel");
+    const context = await env("todomodel");
     request = supertest(context.app);
   });
 
-  afterAll(() => {
-    env.end(context);
+  afterAll(async () => {
+    await env.end();
   });
 
   it("CRUD test", async () => {

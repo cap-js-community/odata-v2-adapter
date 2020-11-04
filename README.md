@@ -191,7 +191,7 @@ The following CDS OData V2 Adapter Proxy specific annotations are supported:
 
 - `@cov2ap.analytics: false`: Suppress analytics conversion for the annotated entity, if set to `false`.
 - `@cov2ap.deltaResponse: 'timestamp'`: Delta response '\_\_delta' is added to response data of annotated entity with timestamp information.
-- `@Core.ContentDisposition.Filename: <element>`: Specifies entity element, representing the filename during file upload/download.   
+- `@Core.ContentDisposition.Filename: <element>`: Specifies entity element, representing the filename during file upload/download.
 
 ### CDS Modelling
 
@@ -202,7 +202,7 @@ CDS supports modelling features that are not compatible with OData V2 standard:
 - **Arrayed Types:** Usages of `array of` or `many` in entity element definitions lead to CDS compilation error: `Element must not be an "array of" for OData V2`
 
 To provide an OData V2 service based on the CDS OData V2 Adapter Proxy, those CDS modelling features must not be used.
-In general any CDS OData API flavor must not be used in combination with CDS OData V2 Adapter Proxy.    
+In general any CDS OData API flavor must not be used in combination with CDS OData V2 Adapter Proxy.
 
 ## Logging
 

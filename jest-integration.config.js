@@ -1,3 +1,5 @@
+"use strict";
+
 require("@sap/hana-client/lib/index.js");
 
 module.exports = {
