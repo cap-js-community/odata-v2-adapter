@@ -43,6 +43,7 @@ describe("main-request", () => {
           "HeaderAssocKey",
           "HeaderDelta",
           "HeaderItem",
+          "HeaderItemDelta",
           "HeaderStream",
           "HeaderTemporal",
           "HeaderUrlStream",
@@ -62,6 +63,7 @@ describe("main-request", () => {
           "HeaderAssocKey",
           "HeaderDelta",
           "HeaderItem",
+          "HeaderItemDelta",
           "HeaderStream",
           "HeaderTemporal",
           "HeaderUrlStream",
@@ -366,6 +368,13 @@ describe("main-request", () => {
     response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeUndefined();
+
+    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${id}')/Items?$filter=name eq 'a /'`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results).toBeDefined();
+    expect(response.body.d.__delta).toMatch(
+      /http:\/\/localhost:(\d*)\/v2\/main\/HeaderDelta\(guid'.*?'\)\/Items\?\$filter=name eq 'a \/'&!deltatoken='(\d*)'/
+    );
   });
 
   it("GET request with next link responses", async () => {
@@ -378,7 +387,7 @@ describe("main-request", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.__next).toBeUndefined();
-    //expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/Header\?\$skiptoken=2/);
+    // expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/Header\?\$skiptoken=2/);
   });
 
   it("GET request with stream", async () => {

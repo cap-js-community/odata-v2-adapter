@@ -266,7 +266,8 @@ Logging layers of CDS OData V2 Adapter Proxy start with `cov2ap`.
 - Tracing Support
 - Logging Correlation
 - ETag Support (Concurrency Control)
-- Delta Responses
+- Next Links (skiptoken)
+- Delta Responses (deltatoken)
 
 ## OData V2/V4 Delta
 

@@ -60,6 +60,14 @@ entity HeaderTemporal: cuid { // temporal
 entity HeaderDelta: cuid, managed {
     name: String;
     description: String;
+    Items: Composition of many HeaderItemDelta on Items.header = $self;
+}
+
+@cov2ap.deltaResponse: 'timestamp'
+entity HeaderItemDelta: cuid {
+    name: String;
+    description: String;
+    header: Association to HeaderDelta;
 }
 
 entity Favorite {
@@ -90,6 +98,7 @@ service MainService {
     entity HeaderAssocKey as projection on test.HeaderAssocKey;
     entity HeaderTemporal as projection on test.HeaderTemporal;
     entity HeaderDelta as projection on test.HeaderDelta;
+    entity HeaderItemDelta as projection on test.HeaderItemDelta;
 
     entity Favorite as projection on test.Favorite;
     entity StringUUID as projection on test.StringUUID;
