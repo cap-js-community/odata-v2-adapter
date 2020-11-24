@@ -407,6 +407,7 @@ exports[`main-request GET $metadata 1`] = `
         <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"custom\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"totalAmount\\" Type=\\"Edm.Int32\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderTemporal\\">
         <Key>
@@ -754,6 +755,7 @@ exports[`main-request GET $metadata localized 1`] = `
         <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"custom\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"totalAmount\\" Type=\\"Edm.Int32\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderTemporal\\">
         <Key>
@@ -1101,6 +1103,7 @@ exports[`main-request GET $metadata localized 2`] = `
         <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"custom\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"totalAmount\\" Type=\\"Edm.Int32\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderTemporal\\">
         <Key>

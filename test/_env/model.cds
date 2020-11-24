@@ -32,6 +32,7 @@ entity HeaderStream: cuid {
     mediaType: String;
     filename: String;
     custom: String;
+    totalAmount: Integer;
 }
 
 entity HeaderUrlStream: cuid {
