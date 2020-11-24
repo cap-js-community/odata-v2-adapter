@@ -545,7 +545,7 @@ describe("main-request", () => {
     const file = fs.readFileSync("./test/_env/data/init/assets/file.png", "utf8");
     const createResponse = await util.callWrite(request, "/v2/main/HeaderStream", {
       mediaType: "image/png",
-      filename: "test.png"
+      filename: "test.png",
     });
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
@@ -573,7 +573,7 @@ describe("main-request", () => {
         "content-type": "image/png",
         slug: "file.png",
         custom: "test123",
-        totalAmount: "11"
+        totalAmount: "11",
       });
       stream.on("end", async () => {
         req.end(async (err, createResponse) => {
@@ -585,7 +585,7 @@ describe("main-request", () => {
             filename: "file.png",
             mediaType: "image/png",
             custom: "test123",
-            totalAmount: 11
+            totalAmount: 11,
           });
           readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
           expect(readResponse.statusCode).toEqual(200);
@@ -612,7 +612,7 @@ describe("main-request", () => {
       "content-type": "image/png",
       slug: "file.png",
       custom: "test123",
-      totalAmount: "11"
+      totalAmount: "11",
     });
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
@@ -623,7 +623,7 @@ describe("main-request", () => {
       filename: "file.png",
       mediaType: "image/png",
       custom: "test123",
-      totalAmount: 11
+      totalAmount: 11,
     });
     readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
@@ -652,7 +652,7 @@ describe("main-request", () => {
       {
         slug: "file.png",
         custom: "test123",
-        totalAmount: "11"
+        totalAmount: "11",
       }
     );
     expect(createResponse.statusCode).toEqual(201);
@@ -664,7 +664,7 @@ describe("main-request", () => {
       filename: "file.png",
       mediaType: "image/png",
       custom: "test123",
-      totalAmount: 11
+      totalAmount: 11,
     });
     readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
@@ -691,7 +691,7 @@ describe("main-request", () => {
       },
       {
         custom: "test123",
-        totalAmount: "11"
+        totalAmount: "11",
       }
     );
     expect(createResponse.statusCode).toEqual(201);
@@ -703,7 +703,7 @@ describe("main-request", () => {
       filename: "file.png",
       mediaType: "image/png",
       custom: "test123",
-      totalAmount: 11
+      totalAmount: 11,
     });
     readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
