@@ -44,6 +44,7 @@ describe("main-request", () => {
           "HeaderDelta",
           "HeaderItem",
           "HeaderItemDelta",
+          "HeaderLine",
           "HeaderStream",
           "HeaderTemporal",
           "HeaderUrlStream",
@@ -64,6 +65,7 @@ describe("main-request", () => {
           "HeaderDelta",
           "HeaderItem",
           "HeaderItemDelta",
+          "HeaderLine",
           "HeaderStream",
           "HeaderTemporal",
           "HeaderUrlStream",
@@ -133,6 +135,13 @@ describe("main-request", () => {
     expect(response.body.d.results).toHaveLength(5);
     expect(response.body.d.__count).toEqual("5");
     const id = response.body.d.results[0].ID;
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+    expect(response.body.d.__metadata).toEqual({
+      type: "test.MainService.Header",
+      uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
+      media_src: undefined,
+      content_type: undefined,
+    });
     response = await util.callRead(request, `/v2/main/HeaderAssocKey(guid'${id}')`);
     expect(response.body).toBeDefined();
     expect(response.status).toEqual(404);
@@ -391,10 +400,26 @@ describe("main-request", () => {
   });
 
   it("GET request with stream", async () => {
-    let response = await util.callRead(
-      request,
-      `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data`
-    );
+    const id = "f8a7a4f7-1901-4032-a237-3fba1d1b2343";
+    let response = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
+    expect(response.body.d).toEqual({
+      ID: id,
+      __metadata: {
+        content_type: "image/png",
+        media_src: `http://${response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        )}/v2/main/HeaderStream(guid'${id}')/$value`,
+        type: "test.MainService.HeaderStream",
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/HeaderStream(guid'${id}')`,
+      },
+      custom: null,
+      filename: "file.png",
+      isBlocked: null,
+      mediaType: "image/png",
+      totalAmount: null,
+    });
+    response = await util.callRead(request, `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
@@ -574,6 +599,7 @@ describe("main-request", () => {
         slug: "file.png",
         custom: "test123",
         totalAmount: "11",
+        isBlocked: "true",
       });
       stream.on("end", async () => {
         req.end(async (err, createResponse) => {
@@ -586,6 +612,7 @@ describe("main-request", () => {
             mediaType: "image/png",
             custom: "test123",
             totalAmount: 11,
+            isBlocked: true,
           });
           readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
           expect(readResponse.statusCode).toEqual(200);
@@ -613,6 +640,7 @@ describe("main-request", () => {
       slug: "file.png",
       custom: "test123",
       totalAmount: "11",
+      isBlocked: "false",
     });
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
@@ -624,6 +652,7 @@ describe("main-request", () => {
       mediaType: "image/png",
       custom: "test123",
       totalAmount: 11,
+      isBlocked: false,
     });
     readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
@@ -653,6 +682,7 @@ describe("main-request", () => {
         slug: "file.png",
         custom: "test123",
         totalAmount: "11",
+        isBlocked: "true",
       }
     );
     expect(createResponse.statusCode).toEqual(201);
@@ -665,6 +695,7 @@ describe("main-request", () => {
       mediaType: "image/png",
       custom: "test123",
       totalAmount: 11,
+      isBlocked: true,
     });
     readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
@@ -692,6 +723,7 @@ describe("main-request", () => {
       {
         custom: "test123",
         totalAmount: "11",
+        isBlocked: "false",
       }
     );
     expect(createResponse.statusCode).toEqual(201);
@@ -704,6 +736,7 @@ describe("main-request", () => {
       mediaType: "image/png",
       custom: "test123",
       totalAmount: 11,
+      isBlocked: false,
     });
     readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
@@ -1759,5 +1792,16 @@ describe("main-request", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.text).toMatch(/https:\/\/test:1234\/v2\/main/);
     expect(response.text).not.toMatch(/cockpit/);
+  });
+
+  it("Entity with umlauts", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Schöne Träume",
+    });
+    expect(response.body).toBeDefined();
+    expect(response.body.d.name).toEqual("Schöne Träume");
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+    expect(response.body.d.name).toEqual("Schöne Träume");
   });
 });

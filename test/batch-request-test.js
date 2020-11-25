@@ -136,6 +136,50 @@ describe("batch-request", () => {
     });
   });
 
+  it("POST request changeset with content-id on navigation property", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.statusCode).toEqual(201);
+    const id = response.body.d.ID;
+    expect(id).toBeDefined();
+    const requestBoundary = "batch_f992-3b90-6e9f";
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST-Navigation.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, id);
+    response = await util.callMultipart(request, "/v2/main/$batch", payload, requestBoundary);
+    expect(response.statusCode).toEqual(202);
+
+    const responseBoundary = response.headers["content-type"].split("boundary=")[1];
+    const responses = util.splitMultipartResponse(response.body, responseBoundary);
+    expect(responses.length).toEqual(1);
+    const [first] = responses;
+    first.forEach((part) => {
+      expect(part.statusCode).toEqual(201);
+      expect(part.contentTransferEncoding).toEqual("binary");
+    });
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items,Items/Lines`);
+    expect(response.body.d).toMatchObject({
+      FirstItem_ID: null,
+      ID: id,
+      Items: {
+        results: [
+          {
+            Lines: {
+              results: [
+                {
+                  name: "Test Line",
+                },
+              ],
+            },
+            name: "Test Item",
+          },
+        ],
+      },
+      name: "Test",
+    });
+  });
+
   it("PUT request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",

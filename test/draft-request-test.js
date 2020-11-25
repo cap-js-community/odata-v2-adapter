@@ -25,7 +25,7 @@ describe("draft-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Header", "HeaderItem"],
+        EntitySets: ["Header", "HeaderItem", "HeaderLine"],
       },
     });
   });

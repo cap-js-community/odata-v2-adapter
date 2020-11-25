@@ -37,6 +37,12 @@ exports[`draft-request GET $metadata 1`] = `
           <Parameter Name=\\"IsActiveEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"SideEffectsQualifier\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <EntitySet Name=\\"HeaderLine\\" EntityType=\\"test.DraftService.HeaderLine\\"/>
+        <FunctionImport Name=\\"HeaderLine_draftPrepare\\" EntitySet=\\"HeaderLine\\" ReturnType=\\"test.DraftService.HeaderLine\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.DraftService.HeaderLine\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"IsActiveEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"SideEffectsQualifier\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <AssociationSet Name=\\"Header_FirstItem\\" Association=\\"test.DraftService.Header_FirstItem\\">
           <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
@@ -64,6 +70,18 @@ exports[`draft-request GET $metadata 1`] = `
         <AssociationSet Name=\\"HeaderItem_SiblingEntity\\" Association=\\"test.DraftService.HeaderItem_SiblingEntity\\">
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
           <End Role=\\"HeaderItem1\\" EntitySet=\\"HeaderItem\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"HeaderLine_item\\" Association=\\"test.DraftService.HeaderLine_item\\">
+          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
+          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"HeaderLine_DraftAdministrativeData\\" Association=\\"test.DraftService.HeaderLine_DraftAdministrativeData\\">
+          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
+          <End Role=\\"DraftAdministrativeData\\" EntitySet=\\"DraftAdministrativeData\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"HeaderLine_SiblingEntity\\" Association=\\"test.DraftService.HeaderLine_SiblingEntity\\">
+          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
+          <End Role=\\"HeaderLine1\\" EntitySet=\\"HeaderLine\\"/>
         </AssociationSet>
       </EntityContainer>
       <EntityType Name=\\"DraftAdministrativeData\\">
@@ -117,6 +135,7 @@ exports[`draft-request GET $metadata 1`] = `
         <Property Name=\\"endAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.DraftService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
         <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.DraftService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
+        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.DraftService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"NextItem_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
@@ -126,6 +145,23 @@ exports[`draft-request GET $metadata 1`] = `
         <NavigationProperty Name=\\"DraftAdministrativeData\\" Relationship=\\"test.DraftService.HeaderItem_DraftAdministrativeData\\" FromRole=\\"HeaderItem\\" ToRole=\\"DraftAdministrativeData\\"/>
         <Property Name=\\"DraftAdministrativeData_DraftUUID\\" Type=\\"Edm.Guid\\"/>
         <NavigationProperty Name=\\"SiblingEntity\\" Relationship=\\"test.DraftService.HeaderItem_SiblingEntity\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderLine\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+          <PropertyRef Name=\\"IsActiveEntity\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"value\\" Type=\\"Edm.Double\\"/>
+        <NavigationProperty Name=\\"item\\" Relationship=\\"test.DraftService.HeaderLine_item\\" FromRole=\\"HeaderLine\\" ToRole=\\"HeaderItem\\"/>
+        <Property Name=\\"item_ID\\" Type=\\"Edm.Guid\\"/>
+        <Property Name=\\"IsActiveEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
+        <Property Name=\\"HasActiveEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
+        <Property Name=\\"HasDraftEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
+        <NavigationProperty Name=\\"DraftAdministrativeData\\" Relationship=\\"test.DraftService.HeaderLine_DraftAdministrativeData\\" FromRole=\\"HeaderLine\\" ToRole=\\"DraftAdministrativeData\\"/>
+        <Property Name=\\"DraftAdministrativeData_DraftUUID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"SiblingEntity\\" Relationship=\\"test.DraftService.HeaderLine_SiblingEntity\\" FromRole=\\"HeaderLine\\" ToRole=\\"HeaderLine1\\"/>
       </EntityType>
       <ComplexType Name=\\"Result\\">
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
@@ -201,6 +237,36 @@ exports[`draft-request GET $metadata 1`] = `
       <Association Name=\\"HeaderItem_SiblingEntity\\">
         <End Role=\\"HeaderItem\\" Type=\\"test.DraftService.HeaderItem\\" Multiplicity=\\"*\\"/>
         <End Role=\\"HeaderItem1\\" Type=\\"test.DraftService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
+      </Association>
+      <Association Name=\\"HeaderLine_item\\">
+        <End Role=\\"HeaderLine\\" Type=\\"test.DraftService.HeaderLine\\" Multiplicity=\\"*\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"HeaderItem\\" Type=\\"test.DraftService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"HeaderItem\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderLine\\">
+            <PropertyRef Name=\\"item_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"HeaderLine_DraftAdministrativeData\\">
+        <End Role=\\"HeaderLine\\" Type=\\"test.DraftService.HeaderLine\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"DraftAdministrativeData\\" Type=\\"test.DraftService.DraftAdministrativeData\\" Multiplicity=\\"0..1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"DraftAdministrativeData\\">
+            <PropertyRef Name=\\"DraftUUID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderLine\\">
+            <PropertyRef Name=\\"DraftAdministrativeData_DraftUUID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"HeaderLine_SiblingEntity\\">
+        <End Role=\\"HeaderLine\\" Type=\\"test.DraftService.HeaderLine\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"HeaderLine1\\" Type=\\"test.DraftService.HeaderLine\\" Multiplicity=\\"0..1\\"/>
       </Association>
       <Annotations Target=\\"test.DraftService.DraftAdministrativeData\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Draft Administrative Data\\"/>
@@ -300,6 +366,28 @@ exports[`draft-request GET $metadata 1`] = `
         <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.DraftService.HeaderItem/DraftAdministrativeData_DraftUUID\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.EntityContainer/HeaderLine\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.DraftNode\\">
+          <Record Type=\\"Common.DraftNodeType\\">
+            <PropertyValue Property=\\"PreparationAction\\" String=\\"test.DraftService.EntityContainer/HeaderLine_draftPrepare\\"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.HeaderLine/IsActiveEntity\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.HeaderLine/HasActiveEntity\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.HeaderLine/HasDraftEntity\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.HeaderLine/DraftAdministrativeData\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.DraftService.HeaderLine/DraftAdministrativeData_DraftUUID\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
       </Annotations>
     </Schema>

@@ -277,6 +277,7 @@ exports[`main-request GET $metadata 1`] = `
         <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
         <EntitySet Name=\\"HeaderItemDelta\\" EntityType=\\"test.MainService.HeaderItemDelta\\"/>
+        <EntitySet Name=\\"HeaderLine\\" EntityType=\\"test.MainService.HeaderLine\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
         <EntitySet Name=\\"HeaderTemporal\\" EntityType=\\"test.MainService.HeaderTemporal\\"/>
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
@@ -324,6 +325,10 @@ exports[`main-request GET $metadata 1`] = `
         <AssociationSet Name=\\"HeaderItemDelta_header\\" Association=\\"test.MainService.HeaderItemDelta_header\\">
           <End Role=\\"HeaderItemDelta\\" EntitySet=\\"HeaderItemDelta\\"/>
           <End Role=\\"HeaderDelta\\" EntitySet=\\"HeaderDelta\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"HeaderLine_item\\" Association=\\"test.MainService.HeaderLine_item\\">
+          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
+          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
         </AssociationSet>
       </EntityContainer>
       <EntityType Name=\\"Favorite\\">
@@ -385,6 +390,7 @@ exports[`main-request GET $metadata 1`] = `
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
         <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.MainService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
         <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
+        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"NextItem_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
@@ -399,6 +405,16 @@ exports[`main-request GET $metadata 1`] = `
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderItemDelta\\" ToRole=\\"HeaderDelta\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
       </EntityType>
+      <EntityType Name=\\"HeaderLine\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"value\\" Type=\\"Edm.Double\\"/>
+        <NavigationProperty Name=\\"item\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderLine\\" ToRole=\\"HeaderItem\\"/>
+        <Property Name=\\"item_ID\\" Type=\\"Edm.Guid\\"/>
+      </EntityType>
       <EntityType Name=\\"HeaderStream\\" m:HasStream=\\"true\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -408,6 +424,7 @@ exports[`main-request GET $metadata 1`] = `
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"custom\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"totalAmount\\" Type=\\"Edm.Int32\\"/>
+        <Property Name=\\"isBlocked\\" Type=\\"Edm.Boolean\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderTemporal\\">
         <Key>
@@ -516,6 +533,20 @@ exports[`main-request GET $metadata 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Association Name=\\"HeaderLine_item\\">
+        <End Role=\\"HeaderLine\\" Type=\\"test.MainService.HeaderLine\\" Multiplicity=\\"*\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"HeaderItem\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderLine\\">
+            <PropertyRef Name=\\"item_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
       <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Created On\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
@@ -570,7 +601,7 @@ exports[`main-request GET $metadata 1`] = `
             <PropertyValue Property=\\"Filename\\" Path=\\"filename\\"/>
           </Record>
         </Annotation>
-        <Annotation Term=\\"Core.MediaType\\" Path=\\"mediaType\\"/>
+        <Annotation Term=\\"Core.MediaType\\" String=\\"image/png\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
@@ -625,6 +656,7 @@ exports[`main-request GET $metadata localized 1`] = `
         <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
         <EntitySet Name=\\"HeaderItemDelta\\" EntityType=\\"test.MainService.HeaderItemDelta\\"/>
+        <EntitySet Name=\\"HeaderLine\\" EntityType=\\"test.MainService.HeaderLine\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
         <EntitySet Name=\\"HeaderTemporal\\" EntityType=\\"test.MainService.HeaderTemporal\\"/>
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
@@ -672,6 +704,10 @@ exports[`main-request GET $metadata localized 1`] = `
         <AssociationSet Name=\\"HeaderItemDelta_header\\" Association=\\"test.MainService.HeaderItemDelta_header\\">
           <End Role=\\"HeaderItemDelta\\" EntitySet=\\"HeaderItemDelta\\"/>
           <End Role=\\"HeaderDelta\\" EntitySet=\\"HeaderDelta\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"HeaderLine_item\\" Association=\\"test.MainService.HeaderLine_item\\">
+          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
+          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
         </AssociationSet>
       </EntityContainer>
       <EntityType Name=\\"Favorite\\">
@@ -733,6 +769,7 @@ exports[`main-request GET $metadata localized 1`] = `
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
         <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.MainService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
         <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
+        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"NextItem_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
@@ -747,6 +784,16 @@ exports[`main-request GET $metadata localized 1`] = `
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderItemDelta\\" ToRole=\\"HeaderDelta\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
       </EntityType>
+      <EntityType Name=\\"HeaderLine\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"value\\" Type=\\"Edm.Double\\"/>
+        <NavigationProperty Name=\\"item\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderLine\\" ToRole=\\"HeaderItem\\"/>
+        <Property Name=\\"item_ID\\" Type=\\"Edm.Guid\\"/>
+      </EntityType>
       <EntityType Name=\\"HeaderStream\\" m:HasStream=\\"true\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -756,6 +803,7 @@ exports[`main-request GET $metadata localized 1`] = `
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"custom\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"totalAmount\\" Type=\\"Edm.Int32\\"/>
+        <Property Name=\\"isBlocked\\" Type=\\"Edm.Boolean\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderTemporal\\">
         <Key>
@@ -864,6 +912,20 @@ exports[`main-request GET $metadata localized 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Association Name=\\"HeaderLine_item\\">
+        <End Role=\\"HeaderLine\\" Type=\\"test.MainService.HeaderLine\\" Multiplicity=\\"*\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"HeaderItem\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderLine\\">
+            <PropertyRef Name=\\"item_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
       <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Angelegt am\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
@@ -918,7 +980,7 @@ exports[`main-request GET $metadata localized 1`] = `
             <PropertyValue Property=\\"Filename\\" Path=\\"filename\\"/>
           </Record>
         </Annotation>
-        <Annotation Term=\\"Core.MediaType\\" Path=\\"mediaType\\"/>
+        <Annotation Term=\\"Core.MediaType\\" String=\\"image/png\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
@@ -973,6 +1035,7 @@ exports[`main-request GET $metadata localized 2`] = `
         <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
         <EntitySet Name=\\"HeaderItemDelta\\" EntityType=\\"test.MainService.HeaderItemDelta\\"/>
+        <EntitySet Name=\\"HeaderLine\\" EntityType=\\"test.MainService.HeaderLine\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
         <EntitySet Name=\\"HeaderTemporal\\" EntityType=\\"test.MainService.HeaderTemporal\\"/>
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
@@ -1020,6 +1083,10 @@ exports[`main-request GET $metadata localized 2`] = `
         <AssociationSet Name=\\"HeaderItemDelta_header\\" Association=\\"test.MainService.HeaderItemDelta_header\\">
           <End Role=\\"HeaderItemDelta\\" EntitySet=\\"HeaderItemDelta\\"/>
           <End Role=\\"HeaderDelta\\" EntitySet=\\"HeaderDelta\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"HeaderLine_item\\" Association=\\"test.MainService.HeaderLine_item\\">
+          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
+          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
         </AssociationSet>
       </EntityContainer>
       <EntityType Name=\\"Favorite\\">
@@ -1081,6 +1148,7 @@ exports[`main-request GET $metadata localized 2`] = `
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
         <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.MainService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
         <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
+        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"NextItem_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
@@ -1095,6 +1163,16 @@ exports[`main-request GET $metadata localized 2`] = `
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderItemDelta\\" ToRole=\\"HeaderDelta\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
       </EntityType>
+      <EntityType Name=\\"HeaderLine\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"value\\" Type=\\"Edm.Double\\"/>
+        <NavigationProperty Name=\\"item\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderLine\\" ToRole=\\"HeaderItem\\"/>
+        <Property Name=\\"item_ID\\" Type=\\"Edm.Guid\\"/>
+      </EntityType>
       <EntityType Name=\\"HeaderStream\\" m:HasStream=\\"true\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -1104,6 +1182,7 @@ exports[`main-request GET $metadata localized 2`] = `
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"custom\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"totalAmount\\" Type=\\"Edm.Int32\\"/>
+        <Property Name=\\"isBlocked\\" Type=\\"Edm.Boolean\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderTemporal\\">
         <Key>
@@ -1212,6 +1291,20 @@ exports[`main-request GET $metadata localized 2`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Association Name=\\"HeaderLine_item\\">
+        <End Role=\\"HeaderLine\\" Type=\\"test.MainService.HeaderLine\\" Multiplicity=\\"*\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"HeaderItem\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderLine\\">
+            <PropertyRef Name=\\"item_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
       <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Common.Label\\" String=\\"Angelegt am\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
@@ -1266,7 +1359,7 @@ exports[`main-request GET $metadata localized 2`] = `
             <PropertyValue Property=\\"Filename\\" Path=\\"filename\\"/>
           </Record>
         </Annotation>
-        <Annotation Term=\\"Core.MediaType\\" Path=\\"mediaType\\"/>
+        <Annotation Term=\\"Core.MediaType\\" String=\\"image/png\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
@@ -1290,8 +1383,8 @@ exports[`main-request GET $metadata localized 2`] = `
 </edmx:Edmx>"
 `;
 
-exports[`main-request GET service XML format 1`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 1`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
 
-exports[`main-request GET service XML format 2`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 2`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
 
-exports[`main-request GET service XML format 3`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 3`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;

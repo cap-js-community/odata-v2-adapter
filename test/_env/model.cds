@@ -22,6 +22,13 @@ entity HeaderItem: cuid {
     header: Association to Header;
     NextItem: Association to HeaderItem;
     assoc: Association to HeaderAssocKey;
+    Lines: Composition of many HeaderLine on Lines.item = $self;
+}
+
+entity HeaderLine: cuid {
+    name: String;
+    value: Double;
+    item: Association to HeaderItem;
 }
 
 entity HeaderStream: cuid {
@@ -33,6 +40,7 @@ entity HeaderStream: cuid {
     filename: String;
     custom: String;
     totalAmount: Integer;
+    isBlocked: Boolean;
 }
 
 entity HeaderUrlStream: cuid {
@@ -94,6 +102,7 @@ service MainService {
         function boundFunction(num: Integer, text: String) returns array of Result;
     };
     entity HeaderItem as projection on test.HeaderItem;
+    entity HeaderLine as projection on test.HeaderLine;
     entity HeaderStream as projection on test.HeaderStream;
     entity HeaderUrlStream as projection on test.HeaderUrlStream;
     entity HeaderAssocKey as projection on test.HeaderAssocKey;

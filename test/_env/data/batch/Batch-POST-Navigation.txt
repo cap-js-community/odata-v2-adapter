@@ -1,0 +1,29 @@
+--batch_f992-3b90-6e9f
+Content-Type: multipart/mixed; boundary=changeset_ecff-52c6-e19e
+
+--changeset_ecff-52c6-e19e
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+Content-ID: 1
+
+POST Header(guid'{{ID}}')/Items HTTP/1.1
+Accept: application/json
+DataServiceVersion: 1.0
+Content-Type: application/json
+MaxDataServiceVersion: 3.0
+
+{"name":"Test Item"}
+--changeset_ecff-52c6-e19e
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+POST $1/Lines HTTP/1.1
+Accept: application/json
+DataServiceVersion: 1.0
+Content-Type: application/json
+MaxDataServiceVersion: 3.0
+
+{"name": "Test Line"}
+--changeset_ecff-52c6-e19e--
+
+--batch_f992-3b90-6e9f--
