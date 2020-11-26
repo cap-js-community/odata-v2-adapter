@@ -601,7 +601,7 @@ exports[`main-request GET $metadata 1`] = `
             <PropertyValue Property=\\"Filename\\" Path=\\"filename\\"/>
           </Record>
         </Annotation>
-        <Annotation Term=\\"Core.MediaType\\" String=\\"image/png\\"/>
+        <Annotation Term=\\"Core.MediaType\\" Path=\\"mediaType\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
@@ -980,7 +980,7 @@ exports[`main-request GET $metadata localized 1`] = `
             <PropertyValue Property=\\"Filename\\" Path=\\"filename\\"/>
           </Record>
         </Annotation>
-        <Annotation Term=\\"Core.MediaType\\" String=\\"image/png\\"/>
+        <Annotation Term=\\"Core.MediaType\\" Path=\\"mediaType\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
@@ -1359,7 +1359,7 @@ exports[`main-request GET $metadata localized 2`] = `
             <PropertyValue Property=\\"Filename\\" Path=\\"filename\\"/>
           </Record>
         </Annotation>
-        <Annotation Term=\\"Core.MediaType\\" String=\\"image/png\\"/>
+        <Annotation Term=\\"Core.MediaType\\" Path=\\"mediaType\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderStream/mediaType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Core.IsMediaType\\" Bool=\\"true\\"/>
