@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Change accept header to 'application/json', if accept 'xml' is requested 
+
 ## Version 1.4.58 - 2020-11-26
 
 ### Fixed
