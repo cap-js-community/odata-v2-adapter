@@ -19,6 +19,7 @@ entity People {
     plannedTasks: Association to many PlannedTasks on plannedTasks.person = $self;
 }
 
+@cov2ap.isoDateTime
 entity PlannedTasks {
     key task: Association to Tasks;
     key person: Association to People;
