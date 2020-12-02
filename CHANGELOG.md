@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Change accept header to 'application/json', if accept 'xml' is requested
 - Fix single service support bound to root url
-- Make data representation of type Edm.DateTimeOffset switchable with proxy option 'isoDateTime' or annotation '@cov2ap.isoDateTime'
+- Data format of type Edm.DateTimeOffset is switchable with proxy option 'isoDateTimeOffset' or annotation '@cov2ap.isoDateTimeOffset'
 
 ## Version 1.4.58 - 2020-11-26
 

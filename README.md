@@ -179,7 +179,7 @@ Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V
   - **disableNetworkLog:** Disable networking logging. Default is `true`.
   - **fileUploadSizeLimit:** File upload file size limit (in bytes). Default is `10485760` (10 MB).
   - **continueOnError:** Indicates to OData V4 backend to continue on error. Default is `true`.
-  - **isoDateTime:** Use ISO format for type DateTime. Default is `false`.
+  - **isoDateTimeOffset:** Use ISO format for type Edm.DateTimeOffset. Default is `false`.
 
 All CDS OData V2 Adapter Proxy options can also be specified as part of CDS project-specific configuration
 under section `cds.cov2ap` and accessed via `cds.env.cov2ap`.
@@ -195,7 +195,7 @@ The following CDS OData V2 Adapter Proxy specific annotations are supported:
 
 - `@cov2ap.analytics: false`: Suppress analytics conversion for the annotated entity, if set to `false`.
 - `@cov2ap.deltaResponse: 'timestamp'`: Delta response '\_\_delta' is added to response data of annotated entity with current timestamp information.
-- `@cov2ap.isoDateTime`: Values of type DateTime are represented in ISO 8601 format for annotated entity.
+- `@cov2ap.isoDateTimeOffset`: Values of type Edm.DateTimeOffset are represented in ISO 8601 format for annotated entity.
 
 **Entity Element Level**:
 
