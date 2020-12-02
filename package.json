@@ -18,6 +18,7 @@
   "scripts": {
     "start": "XS_APP_LOG_LEVEL=debug cds run --in-memory",
     "cds:run": "npm run start",
+    "cds:run:single": "XS_APP_LOG_LEVEL=debug cds serve --in-memory --service MainService --from ./test/_env/model --at /",
     "test": "jest --runInBand --updateSnapshot",
     "test:debug": "XS_APP_LOG_LEVEL=debug jest --runInBand --updateSnapshot",
     "test:integration": "jest --config=jest-integration.config.js",
