@@ -46,6 +46,11 @@ module.exports = async (service, defaultPort, fnInit, options) => {
   );
 
   await cds.serve(servicePath, options).in(app);
+  // Single root service
+  /*await cds.serve("MainService")
+    .from("./test/_env/model")
+    .at("/")
+    .in(app);*/
 
   context = { port, server, app, cds, srv, db };
   if (fnInit) {

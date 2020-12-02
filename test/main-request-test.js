@@ -1058,7 +1058,9 @@ describe("main-request", () => {
         },
       },
     });
-    expect(/\/Date\(.+?\)\//.test(response.body.d.createdAt)).toEqual(true);
+    expect(
+      /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/.test(response.body.d.createdAt)
+    ).toEqual(true);
     const createdAt = new Date(parseInt(response.body.d.createdAt.substring(6, response.body.d.createdAt.length - 2)));
     expect(createdAt.toString()).not.toEqual("Invalid Date");
     response = await util.callRead(request, "/v2/main/Header?$filter=name eq 'Test Create'");

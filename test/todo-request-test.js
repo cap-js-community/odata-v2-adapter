@@ -42,7 +42,7 @@ describe("todo-request", () => {
                   "localhost"
                 )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)`,
               },
-              endDate: "/Date(1566518400000)/",
+              endDate: "2019-08-23T00:00:00Z",
               person: {
                 __deferred: {
                   uri: `http://${response.request.host.replace(
@@ -52,7 +52,7 @@ describe("todo-request", () => {
                 },
               },
               person_ID: 1,
-              startDate: "/Date(1566518400000)/",
+              startDate: "2019-08-23T00:00:00Z",
               task: {
                 __deferred: {
                   uri: `http://${response.request.host.replace(
@@ -95,7 +95,7 @@ describe("todo-request", () => {
                   "localhost"
                 )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S',task_ID=2,person_ID=3)`,
               },
-              endDate: "/Date(1566604800000)/",
+              endDate: "2019-08-24T00:00:00Z",
               person: {
                 __deferred: {
                   uri: `http://${response.request.host.replace(
@@ -105,7 +105,7 @@ describe("todo-request", () => {
                 },
               },
               person_ID: 3,
-              startDate: "/Date(1566604800000)/",
+              startDate: "2019-08-24T00:00:00Z",
               task: {
                 __deferred: {
                   uri: `http://${response.request.host.replace(
@@ -141,7 +141,7 @@ describe("todo-request", () => {
           "localhost"
         )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)`,
       },
-      endDate: "/Date(1566518400000)/",
+      endDate: "2019-08-23T00:00:00Z",
       person: {
         __deferred: {
           uri: `http://${response.request.host.replace(
@@ -151,7 +151,7 @@ describe("todo-request", () => {
         },
       },
       person_ID: 1,
-      startDate: "/Date(1566518400000)/",
+      startDate: "2019-08-23T00:00:00Z",
       task: {
         __deferred: {
           uri: `http://${response.request.host.replace(
@@ -193,7 +193,7 @@ describe("todo-request", () => {
           "localhost"
         )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)`,
       },
-      endDate: "/Date(1566518400000)/",
+      endDate: "2019-08-23T00:00:00Z",
       person: {
         __deferred: {
           uri: `http://${response.request.host.replace(
@@ -203,7 +203,7 @@ describe("todo-request", () => {
         },
       },
       person_ID: 1,
-      startDate: "/Date(1566518400000)/",
+      startDate: "2019-08-23T00:00:00Z",
       task: {
         __deferred: {
           uri: `http://${response.request.host.replace(

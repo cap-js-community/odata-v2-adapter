@@ -11,7 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Change accept header to 'application/json', if accept 'xml' is requested 
+- Change accept header to 'application/json', if accept 'xml' is requested
+- Fix single service support, bound to root url
+- Fix data representation of type of Edm.DateTimeOffset
 
 ## Version 1.4.58 - 2020-11-26
 
