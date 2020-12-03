@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Respect offset for Edm.DateTimeOffset, and default to UTC offset (+0000)
 - Update README for custom bootstrap to give proxy() priority over cds.serve (as with cds run)
+- Make authorization header parsing more robust
 
 ## Version 1.4.59 - 2020-12-02
 
@@ -34,7 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Match headers case insensitive for custom body in media entity
+- Match headers case-insensitive for custom body in media entity
 - Parse header string values for non-string types in media entity
 
 ## Version 1.4.56 - 2020-11-12
