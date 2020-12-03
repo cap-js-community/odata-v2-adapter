@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Respect offset for Edm.DateTimeOffset, and default to UTC offset (+0000)
+- Update README for custom bootstrap to give proxy() priority over cds.serve (as with cds run)
+
 ## Version 1.4.59 - 2020-12-02
 
 ### Fixed
