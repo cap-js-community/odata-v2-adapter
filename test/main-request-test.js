@@ -1243,6 +1243,9 @@ describe("main-request", () => {
         age: 1,
         code: "TEST",
         name: "abc",
+        __metadata: {
+          type: "test.MainService.Result",
+        },
       },
     });
     response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=a%20b%2Fc`);
@@ -1251,6 +1254,9 @@ describe("main-request", () => {
         age: 1,
         code: "TEST",
         name: "a b/c",
+        __metadata: {
+          type: "test.MainService.Result",
+        },
       },
     });
     response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=%27a%20b%2Fc%27`);
@@ -1259,6 +1265,9 @@ describe("main-request", () => {
         age: 1,
         code: "TEST",
         name: "a b/c",
+        __metadata: {
+          type: "test.MainService.Result",
+        },
       },
     });
     response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text='abc'`);
@@ -1267,6 +1276,9 @@ describe("main-request", () => {
         age: 1,
         code: "TEST",
         name: "abc",
+        __metadata: {
+          type: "test.MainService.Result",
+        },
       },
     });
 
@@ -1279,12 +1291,18 @@ describe("main-request", () => {
         age: 1,
         code: "TEST",
         name: "abc",
+        __metadata: {
+          type: "test.MainService.Result",
+        },
       },
     });
     response = await util.callRead(request, `/v2/main/unboundDecimalFunction`);
     expect(response.body).toMatchObject({
       d: {
         value: "12345.6789",
+        __metadata: {
+          type: "Decimal",
+        },
       },
     });
     response = await util.callRead(request, `/v2/main/unboundDecimalsFunction`);
@@ -1293,9 +1311,15 @@ describe("main-request", () => {
         results: [
           {
             value: "12345.6789",
+            __metadata: {
+              type: "Decimal",
+            },
           },
           {
             value: "12345.6789",
+            __metadata: {
+              type: "Decimal",
+            },
           },
         ],
       },
@@ -1336,6 +1360,9 @@ describe("main-request", () => {
         age: 1,
         code: "TEST",
         name: "Test",
+        __metadata: {
+          type: "test.MainService.Result",
+        },
       },
     });
     expect(JSON.parse(response.headers["sap-message"])).toEqual({
@@ -1406,6 +1433,9 @@ describe("main-request", () => {
             age: 1,
             code: "TEST",
             name: "abc",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
           },
         ],
       },
@@ -1418,6 +1448,9 @@ describe("main-request", () => {
             age: 1,
             code: "TEST",
             name: "a b/c",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
           },
         ],
       },
@@ -1433,6 +1466,9 @@ describe("main-request", () => {
             age: 1,
             code: "TEST",
             name: "abc",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
           },
         ],
       },
@@ -1445,6 +1481,9 @@ describe("main-request", () => {
             age: 1,
             code: "TEST",
             name: "a b/c",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
           },
         ],
       },
@@ -1460,6 +1499,9 @@ describe("main-request", () => {
             age: 1,
             code: "TEST",
             name: "abc",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
           },
         ],
       },
@@ -1474,6 +1516,9 @@ describe("main-request", () => {
             age: 1,
             code: "TEST",
             name: "abc",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
           },
         ],
       },
@@ -1492,6 +1537,9 @@ describe("main-request", () => {
         age: 1,
         code: "TEST",
         name: "abc",
+        __metadata: {
+          type: "test.MainService.Result",
+        },
       },
     });
     response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${id}'&num=1&text=a%20b%2Fc`);
@@ -1500,6 +1548,9 @@ describe("main-request", () => {
         age: 1,
         code: "TEST",
         name: "a b/c",
+        __metadata: {
+          type: "test.MainService.Result",
+        },
       },
     });
   });
@@ -1736,6 +1787,9 @@ describe("main-request", () => {
         age: 1,
         code: "TEST",
         name: "abc",
+        __metadata: {
+          type: "test.MainService.Result",
+        },
       },
     ]);
     response = await util.callWrite(request, "/v2/main/HeaderDelta", {

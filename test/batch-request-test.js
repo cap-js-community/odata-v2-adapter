@@ -308,6 +308,9 @@ describe("batch-request", () => {
           name: "abc1",
           code: "TEST",
           age: 1,
+          __metadata: {
+            type: "test.MainService.Result",
+          },
         },
       })
     );
@@ -320,6 +323,9 @@ describe("batch-request", () => {
               name: "abc2",
               code: "TEST",
               age: 2,
+              __metadata: {
+                type: "test.MainService.Result",
+              },
             },
           ],
         },

@@ -32,6 +32,8 @@ describe("todo-request", () => {
           uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/todo/People(1)`,
         },
         name: "Joe",
+        birthDate: "1990-07-01",
+        birthTime: "12:13:14",
         plannedTasks: {
           results: [
             {
@@ -74,6 +76,8 @@ describe("todo-request", () => {
           uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/todo/People(2)`,
         },
         name: "Jane",
+        birthDate: "1981-08-14",
+        birthTime: "08:15:18",
         plannedTasks: {
           results: [],
         },
@@ -85,6 +89,8 @@ describe("todo-request", () => {
           uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/todo/People(3)`,
         },
         name: "Bob",
+        birthDate: "1978-01-05",
+        birthTime: "11:14:56",
         plannedTasks: {
           results: [
             {

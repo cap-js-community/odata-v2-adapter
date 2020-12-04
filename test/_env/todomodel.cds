@@ -13,12 +13,18 @@ entity Tasks {
     plannedTasks: Association to many PlannedTasks on plannedTasks.task = $self;
 }
 
+@cov2ap.isoTime
+@cov2ap.isoDate
 entity People {
     key ID: Integer;
     name: String;
+    birthDate: Date;
+    birthTime: Time;
     plannedTasks: Association to many PlannedTasks on plannedTasks.person = $self;
 }
 
+@cov2ap.isoDateTime
+@cov2ap.isoTimestamp
 @cov2ap.isoDateTimeOffset
 entity PlannedTasks {
     key task: Association to Tasks;
