@@ -166,6 +166,14 @@ describe("main-request", () => {
     });
   });
 
+  it("GET request with non-json accept", async () => {
+    let response = await util.callRead(request, "/v2/main/Header", {
+      accept: "application/xml",
+    });
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toHaveLength(5);
+  });
+
   it("GET request with navigation", async () => {
     let response = await util.callRead(request, "/v2/main/Header?$filter=country eq 'Germany'");
     expect(response.body).toBeDefined();
