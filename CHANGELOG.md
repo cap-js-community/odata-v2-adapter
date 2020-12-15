@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Bump minor version 
+- Update minor version 
 
 ## Version 1.4.63 - 2020-12-15
 
