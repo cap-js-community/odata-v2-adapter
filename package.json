@@ -1,6 +1,6 @@
 {
   "name": "@sap/cds-odata-v2-adapter-proxy",
-  "version": "1.4.62-SNAPSHOT",
+  "version": "1.4.63-SNAPSHOT",
   "description": "CDS OData V2 Adapter Proxy for CDS OData V4 Services",
   "homepage": "https://cap.cloud.sap/",
   "engines": {
@@ -9,7 +9,10 @@
   "author": "Oliver Klemenz, Richard Lindner (SAP SE - https://www.sap.com)",
   "keywords": [
     "CAP",
-    "CDS"
+    "CDS",
+    "ODATA",
+    "V2",
+    "COV2AP"
   ],
   "files": [
     "lib/"
