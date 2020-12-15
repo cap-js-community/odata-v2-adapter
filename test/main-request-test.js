@@ -559,6 +559,7 @@ describe("main-request", () => {
           const req = util.callStream(request, `/v2/main/HeaderStream(guid'${id}')/data`, true, {
             "content-type": "image/png",
           });
+          req.expect(204);
           stream.on("end", async () => {
             req.end(async () => {
               let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
@@ -589,9 +590,10 @@ describe("main-request", () => {
     });
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
-    await util.callBinary(request, `/v2/main/HeaderStream(guid'${id}')/data`, file, true, {
+    const dataResponse = await util.callBinary(request, `/v2/main/HeaderStream(guid'${id}')/data`, file, true, {
       "content-type": "image/png",
     });
+    expect(dataResponse.statusCode).toEqual(204);
     let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
@@ -616,6 +618,7 @@ describe("main-request", () => {
         totalAmount: "11",
         isBlocked: "true",
       });
+      req.expect(201);
       stream.on("end", async () => {
         req.end(async (err, createResponse) => {
           const id = createResponse.body.d.ID;
@@ -765,6 +768,40 @@ describe("main-request", () => {
     expect(deleteResponse.statusCode).toEqual(204);
     readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(readResponse.statusCode).toEqual(404);
+  });
+
+  it("POST request with binary returning error", async () => {
+    const file = fs.readFileSync("./test/_env/data/init/assets/file.png", "utf8");
+    const response = await util.callBinary(request, `/v2/main/HeaderStream`, file, false, {
+      "content-type": "image/png",
+      slug: "file_error.png",
+      custom: "test123",
+      totalAmount: "11",
+      isBlocked: "true",
+    });
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "400",
+        message: {
+          lang: "en",
+          value: "Filename contains error",
+        },
+        severity: "error",
+        innererror: {
+          errordetails: [
+            {
+              code: "400",
+              message: {
+                lang: "en",
+                value: "Filename contains error",
+              },
+              severity: "error",
+            },
+          ],
+        },
+      },
+    });
   });
 
   it("POST request with deep data containing metadata", async () => {

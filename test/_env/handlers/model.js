@@ -1,5 +1,5 @@
 module.exports = (srv) => {
-  const { Header } = srv.entities("test.MainService");
+  const { Header, HeaderStream } = srv.entities("test.MainService");
 
   srv.on("unboundFunction", async (req) => {
     return {
@@ -91,5 +91,13 @@ module.exports = (srv) => {
       name: req.data.text,
       age: req.data.num,
     };
+  });
+
+  srv.on("CREATE", HeaderStream, async (req, next) => {
+    if (req.data.filename && req.data.filename.includes("error")) {
+      req.error(400, "Filename contains error");
+      return;
+    }
+    await next();
   });
 };

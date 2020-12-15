@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Fix that file upload error message does not return with 500 status code
+
 ## Version 1.4.61 - 2020-12-11
 
 ### Fixed

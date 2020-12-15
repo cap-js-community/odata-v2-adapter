@@ -68,7 +68,6 @@ function callStream(request, path, update, headers) {
     });
   }
   request = request.set("content-type", (headers && headers["content-type"]) || "application/octet-stream");
-  request = request.expect(update ? 204 : 201);
   return request;
 }
 
@@ -81,7 +80,6 @@ function callBinary(request, path, file, update, headers) {
   }
   request = request.set("content-type", (headers && headers["content-type"]) || "application/octet-stream");
   request = request.send(file);
-  request = request.expect(update ? 204 : 201);
   return request;
 }
 
@@ -104,7 +102,6 @@ function callAttach(request, path, file, update, headers, fields) {
     });
   }
   request = request.attach("file", file);
-  request = request.expect(update ? 204 : 201);
   return request;
 }
 
