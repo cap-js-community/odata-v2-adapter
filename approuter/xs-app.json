@@ -1,0 +1,11 @@
+{
+  "authenticationMethod": "none",
+  "routes": [
+    {
+      "source": "^/",
+      "target": "/",
+      "destination": "cds-backend",
+      "authenticationType": "none"
+    }
+  ]
+}
