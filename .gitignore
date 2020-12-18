@@ -28,9 +28,6 @@ reports
 #JUnit
 junit.xml
 
-# xsenv
-default-env.json
-
 # temp
 temp/
 memheap.txt
