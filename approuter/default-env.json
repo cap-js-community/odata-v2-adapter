@@ -1,0 +1,11 @@
+{
+  "destinations": [
+    {
+      "name": "cds-backend",
+      "url": "http://localhost:4004",
+      "forwardAuthToken": true
+    }
+  ],
+  "VCAP_SERVICES": {
+  }
+}
