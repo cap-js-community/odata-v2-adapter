@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Version 1.5.2 - tbd
 
+- Add TypeScript typings for proxy constructor
+
 ### Fixed
 
 ## Version 1.5.1 - 2020-12-21

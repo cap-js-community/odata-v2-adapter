@@ -15,3 +15,6 @@ jest.config.js
 jest-integration-test.json
 junit.xml
 test-server.js
+test-server-ts.ts
+test-server-ts.js
+tsconfig.json

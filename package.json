@@ -18,6 +18,7 @@
     "lib/"
   ],
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "start": "XS_APP_LOG_LEVEL=debug cds run --in-memory",
     "cds:run": "npm start",
@@ -42,7 +43,7 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@sap/cds": "^4.4.7",
+    "@sap/cds": "^4.4.8",
     "@sap/hana-client": "^2.7.16",
     "compression": "^1.7.4",
     "eslint": "^7.1.0",

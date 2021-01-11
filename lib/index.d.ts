@@ -1,0 +1,107 @@
+// stub to avoid hard dependencies for typescript projects
+declare namespace express {
+    interface Router {}
+}
+
+/**
+ * CDS OData V2 Adapter Proxy
+ * @param {Options} options CDS OData V2 Adapter Proxy options
+ * @return {Router} CDS OData V2 Adapter Proxy Express Router
+ */
+export default function cov2ap(options?: Options): express.Router;
+
+/**
+ * CDS OData V2 Adapter Proxy options
+ */
+type Options = {
+
+    /**
+     * Base path under which the service is reachable. Default is ''.
+     */
+    base?: string | '',
+
+    /**
+     * Path under which the proxy is reachable. Default is 'v2'.
+     */
+    path?: string | 'v2',
+
+    /**
+     * CDS service model (path(s) or CSN). Default is 'all'.
+     */
+    model?: string | string[] | object | 'all',
+
+    /**
+     * Target port, which points to OData V4 backend port. Default is process.env.PORT or 4004
+     */
+    port?: number | 4004,
+
+    /**
+     * Target, which points to OData V4 backend host/port. Default is e.g. 'http://localhost:4004'
+     */
+    target?: string | 'http://localhost:4004',
+
+    /**
+     * Target path to which is redirected. Default is ''.
+     */
+    targetPath?: string | '',
+
+    /**
+     * Service mapping object from url path name to service name. Default is {}.
+     */
+    services?: [string, string] | object | {},
+
+    /**
+     * CDS model is retrieved remotely via MTX endpoint for multitenant scenario. Default is false.
+     */
+    mtxRemote?: boolean | false,
+
+    /**
+     * Endpoint to retrieve MTX metadata when option 'mtxRemote' is active. Default is '/mtx/v1'.
+     */
+    mtxEndpoint?: string | '/mtx/v1'
+
+    /**
+     * `Edm.Decimal` and `Edm.Int64` are serialized IEEE754 compatible. Default is true.
+     */
+    ieee754Compatible?: boolean | true,
+
+    /**
+     *  Disable networking logging. Default is true.
+     */
+    disableNetworkLog?: boolean | true,
+
+    /**
+     * File upload file size limit (in bytes). Default is 10485760 (10 MB).
+     */
+    fileUploadSizeLimit?: number | 10485760,
+
+    /**
+     * Indicates to OData V4 backend to continue on error. Default is true.
+     */
+    continueOnError?: boolean | true,
+
+    /**
+     * Use ISO 8601 format for type cds.Time (Edm.Time). Default is false.
+     */
+    isoTime?: boolean | false,
+
+    /**
+     * Use ISO 8601 format for type cds.Date (Edm.DateTime). Default is false.
+     */
+    isoDate?: boolean | false,
+
+    /**
+     * Use ISO 8601 format for type cds.DateTime (Edm.DateTimeOffset). Default is false.
+     */
+    isoDateTime?: boolean | false,
+
+    /**
+     * Use ISO 8601 format for type cds.Timestamp (Edm.DateTimeOffset). Default is false.
+     */
+    isoTimestamp?: boolean | false,
+
+    /**
+     * Use ISO 8601 format for type Edm.DateTimeOffset (cds.DateTime, cds.Timestamp). Default is false.
+     */
+    isoDateTimeOffset?: boolean | false
+};
