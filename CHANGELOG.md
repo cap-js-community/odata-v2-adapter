@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Version 1.5.2 - 2021-01-11
 
-- Add TypeScript typings for proxy constructor
-
 ### Fixed
+
+- Add TypeScript typings for proxy constructor
 
 ## Version 1.5.1 - 2020-12-21
 
