@@ -1,14 +1,11 @@
-// stub to avoid hard dependencies for typescript projects
-declare namespace express {
-    interface Router {}
-}
+import {RequestHandler} from "express";
 
 /**
  * CDS OData V2 Adapter Proxy
  * @param {Options} options CDS OData V2 Adapter Proxy options
- * @return {Router} CDS OData V2 Adapter Proxy Express Router
+ * @return {RequestHandler} CDS OData V2 Adapter Proxy Express RequestHandler
  */
-export default function cov2ap(options?: Options): express.Router;
+export default function cov2ap(options?: Options): RequestHandler;
 
 /**
  * CDS OData V2 Adapter Proxy options
@@ -18,17 +15,17 @@ type Options = {
     /**
      * Base path under which the service is reachable. Default is ''.
      */
-    base?: string | '',
+    base?: string | "",
 
     /**
      * Path under which the proxy is reachable. Default is 'v2'.
      */
-    path?: string | 'v2',
+    path?: string | "v2",
 
     /**
      * CDS service model (path(s) or CSN). Default is 'all'.
      */
-    model?: string | string[] | object | 'all',
+    model?: string | string[] | object | "all",
 
     /**
      * Target port, which points to OData V4 backend port. Default is process.env.PORT or 4004
@@ -38,12 +35,12 @@ type Options = {
     /**
      * Target, which points to OData V4 backend host/port. Default is e.g. 'http://localhost:4004'
      */
-    target?: string | 'http://localhost:4004',
+    target?: string | "http://localhost:4004",
 
     /**
      * Target path to which is redirected. Default is ''.
      */
-    targetPath?: string | '',
+    targetPath?: string | "",
 
     /**
      * Service mapping object from url path name to service name. Default is {}.
@@ -58,7 +55,7 @@ type Options = {
     /**
      * Endpoint to retrieve MTX metadata when option 'mtxRemote' is active. Default is '/mtx/v1'.
      */
-    mtxEndpoint?: string | '/mtx/v1'
+    mtxEndpoint?: string | "/mtx/v1",
 
     /**
      * `Edm.Decimal` and `Edm.Int64` are serialized IEEE754 compatible. Default is true.

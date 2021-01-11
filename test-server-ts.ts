@@ -1,8 +1,9 @@
 "use strict";
 
-import app from "express";
+import express = require("express");
 import proxy from "./lib";
 
+const app = express();
 app.use(
     proxy({
         path: "v2",

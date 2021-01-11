@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.5.3 - tbd
+## Version 1.5.3 - 2021-01-12
 
 ### Fixed
+
+- Improve TypeScript typings
 
 ## Version 1.5.2 - 2021-01-11
 
@@ -27,7 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Update minor version 
+- Update minor version
 
 ## Version 1.4.63 - 2020-12-15
 

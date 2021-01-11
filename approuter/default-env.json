@@ -6,6 +6,5 @@
       "forwardAuthToken": true
     }
   ],
-  "VCAP_SERVICES": {
-  }
+  "VCAP_SERVICES": {}
 }
