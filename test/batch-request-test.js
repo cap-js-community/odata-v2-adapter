@@ -75,11 +75,11 @@ describe("batch-request", () => {
 
     expect(
       third.body.d.results.filter(
-        (result) => result.name === "Test" && result.Items.results.length === 1 && result.FirstItem === null
+        (result) => result.name === "Test – ABC" && result.Items.results.length === 1 && result.FirstItem === null
       ).length
     ).toEqual(1);
 
-    expect(fourth.body.d.results.filter((result) => result.name === "Test").length).toEqual(1);
+    expect(fourth.body.d.results.filter((result) => result.name === "Test – ABC").length).toEqual(1);
 
     const id = first.body.d.ID;
     expect(id).toBeDefined();
@@ -93,7 +93,7 @@ describe("batch-request", () => {
       createdBy: "anonymous",
       description: null,
       modifiedBy: "anonymous",
-      name: "Test",
+      name: "Test – ABC",
       Items: {
         __deferred: {
           uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')/Items`,
