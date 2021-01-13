@@ -38,13 +38,13 @@
   "dependencies": {
     "@sap/logging": "^5.3.1",
     "express": "^4.17.1",
-    "express-fileupload": "^1.2.0",
+    "express-fileupload": "^1.2.1",
     "http-proxy-middleware": "^1.0.6",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@sap/cds": "^4.4.8",
-    "@sap/hana-client": "^2.7.16",
+    "@sap/cds": "^4.4.9",
+    "@sap/hana-client": "^2.7.17",
     "compression": "^1.7.4",
     "eslint": "^7.1.0",
     "eslint-config": "^0.3.0",
@@ -54,7 +54,7 @@
     "jest-junit": "^11.0.1",
     "passport": "^0.4.1",
     "prettier": "^2.0.5",
-    "sqlite3": "5.0.0",
+    "sqlite3": "5.0.1",
     "supertest": "^5.0.0"
   },
   "license": "See LICENSE file",
