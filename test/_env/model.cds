@@ -114,7 +114,9 @@ service MainService {
     entity StringUUID as projection on test.StringUUID;
 
     action unboundAction(num: Integer, text: String) returns array of Result;
+    action unboundMassAction(ids: array of String) returns array of Result;
     function unboundFunction(num: Integer, text: String) returns Result;
+    function unboundMassFunction(ids: array of String) returns array of Result;
     function unboundDecimalFunction() returns Decimal(19,4);
     function unboundDecimalsFunction() returns array of Decimal(19,4);
     function unboundErrorFunction() returns Result;

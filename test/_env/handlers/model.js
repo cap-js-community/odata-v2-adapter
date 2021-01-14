@@ -9,6 +9,16 @@ module.exports = (srv) => {
     };
   });
 
+  srv.on("unboundMassFunction", async (req) => {
+    return req.data.ids.map((id, index) => {
+      return {
+        code: id,
+        name: id,
+        age: index,
+      };
+    });
+  });
+
   srv.on("unboundDecimalFunction", async (req) => {
     return 12345.6789;
   });
@@ -73,6 +83,16 @@ module.exports = (srv) => {
         age: req.data.num,
       },
     ];
+  });
+
+  srv.on("unboundMassAction", async (req) => {
+    return req.data.ids.map((id, index) => {
+      return {
+        code: id,
+        name: id,
+        age: index,
+      };
+    });
   });
 
   srv.on("boundFunction", Header, async (req) => {

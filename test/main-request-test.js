@@ -1371,6 +1371,47 @@ describe("main-request", () => {
     });
   });
 
+  it.skip("GET unbound mass function request", async () => {
+    let response = await util.callRead(request, `/v2/main/unboundMassFunction?ids=TEST1`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+        ],
+      },
+    });
+    response = await util.callRead(request, `/v2/main/unboundMassFunction?ids=TEST1&ids='TEST2'`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+          {
+            age: 1,
+            code: "TEST2",
+            name: "TEST2",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+        ],
+      },
+    });
+  });
+
   it("GET unbound function error request", async () => {
     let response = await util.callRead(request, `/v2/main/unboundErrorFunction`);
     const cds3 = cds.version.startsWith("3.");
@@ -1561,6 +1602,70 @@ describe("main-request", () => {
             age: 1,
             code: "TEST",
             name: "abc",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+        ],
+      },
+    });
+  });
+
+  it("POST unbound mass action request", async () => {
+    let response = await util.callWrite(request, `/v2/main/unboundMassAction?ids=TEST1`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+        ],
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundMassAction?ids=TEST1&ids='TEST2'`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+          {
+            age: 1,
+            code: "TEST2",
+            name: "TEST2",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+        ],
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundMassAction`, { ids: ["TEST1", "TEST2"] });
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+          {
+            age: 1,
+            code: "TEST2",
+            name: "TEST2",
             __metadata: {
               type: "test.MainService.Result",
             },

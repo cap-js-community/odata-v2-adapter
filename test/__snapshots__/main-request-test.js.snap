@@ -293,6 +293,12 @@ exports[`main-request GET $metadata 1`] = `
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundMassAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundNavigationFunction\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -672,6 +678,12 @@ exports[`main-request GET $metadata localized 1`] = `
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundMassAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundNavigationFunction\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -1050,6 +1062,12 @@ exports[`main-request GET $metadata localized 2`] = `
         <FunctionImport Name=\\"unboundFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"unboundNavigationFunction\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Support action/function array parameter types
+
 ## Version 1.5.3 - 2021-01-12
 
 ### Fixed
