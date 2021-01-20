@@ -1371,7 +1371,7 @@ describe("main-request", () => {
     });
   });
 
-  it.skip("GET unbound mass function request", async () => {
+  it("GET unbound mass function request", async () => {
     let response = await util.callRead(request, `/v2/main/unboundMassFunction?ids=TEST1`);
     expect(response.body).toMatchObject({
       d: {

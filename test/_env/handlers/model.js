@@ -10,7 +10,9 @@ module.exports = (srv) => {
   });
 
   srv.on("unboundMassFunction", async (req) => {
-    return req.data.ids.map((id, index) => {
+    // Unwrap collection
+    const ids = req.data.ids || JSON.parse(req._.req.query["@idsCol"]).map(id => id.replace(/^["](.*)["]$/, "$1"));
+    return ids.map((id, index) => {
       return {
         code: id,
         name: id,
