@@ -100,5 +100,10 @@ type Options = {
     /**
      * Use ISO 8601 format for type Edm.DateTimeOffset (cds.DateTime, cds.Timestamp). Default is false.
      */
-    isoDateTimeOffset?: boolean | false
+    isoDateTimeOffset?: boolean | false,
+
+    /**
+     * Request and response body parser size limit. Default is '100mb'.
+     */
+    bodyParserLimit: string | "100mb"
 };

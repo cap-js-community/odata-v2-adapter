@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.5.4 - tbd
+## Version 1.5.4 - 2021-01-26
 
 ### Fixed
 
 - Support action/function array parameter types
+- Introduce proxy option for body parser size limit
 
 ## Version 1.5.3 - 2021-01-12
 
