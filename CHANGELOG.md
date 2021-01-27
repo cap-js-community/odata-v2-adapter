@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.5.5 - tbd
+## Version 1.5.5 - 2021-01-27
 
 ### Fixed
+
+- Align determination of locale including sub tags (e.g. zh-TW)
 
 ## Version 1.5.4 - 2021-01-26
 
