@@ -10,7 +10,7 @@ const util = require("./_env/util");
 let request;
 
 const options = {
-  passport: {
+  auth: {
     strategy: "mock",
     users: {
       alice: {
@@ -38,28 +38,23 @@ describe("auth-request", () => {
   });
 
   it("GET $metadata auth", async () => {
-    const cds3 = cds.version.startsWith("3.");
     let response = await util.callRead(request, "/v2/auth/$metadata", {
       accept: "application/xml",
     });
-    if (cds3) {
-      expect(response.status).toEqual(401);
-      expect(response.headers["www-authenticate"]).toEqual('Basic realm="Users"');
-    } else {
-      expect(response.status).toEqual(200);
-    }
+    expect(response.status).toEqual(401);
+    expect(response.headers["www-authenticate"]).toEqual('Basic realm="Users"');
 
     let authorization = `Basic ${Buffer.from(
-      `${options.passport.users.bob.ID}:${options.passport.users.bob.password}`
+      `${options.auth.users.bob.ID}:${options.auth.users.bob.password}`
     ).toString("base64")}`;
     response = await util.callRead(request, "/v2/auth/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
-    expect(response.status).toEqual(cds3 ? 403 : 200);
+    expect(response.status).toEqual(403);
 
     authorization = `Basic ${Buffer.from(
-      `${options.passport.users.alice.ID}:${options.passport.users.alice.password}`
+      `${options.auth.users.alice.ID}:${options.auth.users.alice.password}`
     ).toString("base64")}`;
     response = await util.callRead(request, "/v2/auth/$metadata", {
       accept: "application/xml",

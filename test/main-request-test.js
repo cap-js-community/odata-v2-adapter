@@ -1,6 +1,5 @@
 "use strict";
 
-const cds = require("@sap/cds");
 const supertest = require("supertest");
 const fs = require("fs");
 
@@ -524,7 +523,7 @@ describe("main-request", () => {
     expect(response.statusCode).toEqual(400);
     expect(response.body).toEqual({
       error: {
-        code: "null",
+        code: "400",
         message: {
           lang: "en",
           value: "Expected uri token 'EOF' could not be found in '$value2' at position 7",
@@ -532,7 +531,7 @@ describe("main-request", () => {
         innererror: {
           errordetails: [
             {
-              code: "null",
+              code: "400",
               message: {
                 lang: "en",
                 value: "Expected uri token 'EOF' could not be found in '$value2' at position 7",
@@ -1226,7 +1225,7 @@ describe("main-request", () => {
     );
     expect(response.body).toMatchObject({
       error: {
-        code: "null",
+        code: "405",
         message: {
           lang: "en",
           value: "Method PATCH not allowed for ENTITY.COLLECTION",
@@ -1414,10 +1413,9 @@ describe("main-request", () => {
 
   it("GET unbound function error request", async () => {
     let response = await util.callRead(request, `/v2/main/unboundErrorFunction`);
-    const cds3 = cds.version.startsWith("3.");
     expect(response.body).toMatchObject({
       error: {
-        code: cds3 ? "500" : "ERR01",
+        code: "ERR01",
         message: {
           lang: "en",
           value: "An error occurred",
@@ -1496,7 +1494,7 @@ describe("main-request", () => {
     response = await util.callRead(request, `/v2/main/unboundNavigationFunction/Items?num=1&text=abc`);
     expect(response.body).toMatchObject({
       error: {
-        code: "null",
+        code: "400",
         message: {
           lang: "en",
           value: `Current function 'unboundNavigationFunction' is not composable; trailing segment 'Items' ist not allowed`,

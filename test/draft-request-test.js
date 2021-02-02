@@ -436,7 +436,7 @@ describe("draft-request", () => {
     );
     expect(response.body).toMatchObject({
       error: {
-        code: "null",
+        code: "405",
         message: {
           lang: "en",
           value: "Method PATCH not allowed for ENTITY.COLLECTION",
