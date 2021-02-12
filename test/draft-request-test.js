@@ -441,6 +441,18 @@ describe("draft-request", () => {
           lang: "en",
           value: "Method PATCH not allowed for ENTITY.COLLECTION",
         },
+        innererror: {
+          errordetails: [
+            {
+              code: "405",
+              message: {
+                lang: "en",
+                value: "Method PATCH not allowed for ENTITY.COLLECTION",
+              },
+              severity: "error",
+            },
+          ],
+        },
       },
     });
   });
@@ -468,6 +480,18 @@ describe("draft-request", () => {
         message: {
           lang: "en",
           value: "Not Found",
+        },
+        innererror: {
+          errordetails: [
+            {
+              code: "404",
+              message: {
+                lang: "en",
+                value: "Not Found",
+              },
+              severity: "error",
+            },
+          ],
         },
       },
     });

@@ -100,6 +100,8 @@ service MainService {
     entity Header as projection on test.Header actions {
         action boundAction(num: Integer, text: String) returns Result;
         function boundFunction(num: Integer, text: String) returns array of Result;
+        function boundErrorFunction() returns Result;
+        function boundWarningFunction() returns Result;
     };
     entity HeaderItem as projection on test.HeaderItem;
     entity HeaderLine as projection on test.HeaderLine;

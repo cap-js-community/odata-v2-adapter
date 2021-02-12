@@ -5,7 +5,13 @@ const cds = require("@sap/cds");
 const util = require("../../util");
 const Headers = require("./Header");
 
+let initialized = false;
+
 module.exports = async (context) => {
+  if (initialized) {
+    return;
+  }
+  initialized = true;
   await initData(context);
   await initBinary(context);
 };

@@ -32,14 +32,14 @@ module.exports = (srv) => {
   srv.on("unboundErrorFunction", async (req) => {
     const error = new Error("An error occurred");
     error.code = "ERR01";
-    error.target = "Items";
+    error.target = `Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name`;
     error.message = "An error occurred";
     error.severity = 4;
     error["@Common.numericSeverity"] = 4;
     error.details = [
       {
         code: "ERR02-transition",
-        target: "Items",
+        target: `Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/Items(ID=2b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/description`,
         message: "Error details",
         "@Common.numericSeverity": 4,
       },
@@ -50,14 +50,14 @@ module.exports = (srv) => {
   srv.on("unboundWarningFunction", async (req) => {
     const info1 = new Error("This is a warning");
     info1.code = "WARN01";
-    info1.target = "Items";
+    info1.target = `Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name`;
     info1.message = "An Warning occurred";
     info1.numericSeverity = 3;
     req.info(info1);
 
     const info2 = new Error("This is another warning");
     info2.code = "WARN02";
-    info2.target = "Root";
+    info2.target = `Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/Items(ID=2b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/description`;
     info2.message = "Another Warning occurred";
     info2.numericSeverity = 3;
     req.info(info2);
@@ -105,6 +105,46 @@ module.exports = (srv) => {
         age: req.data.num,
       },
     ];
+  });
+
+  srv.on("boundErrorFunction", async (req) => {
+    const error = new Error("An error occurred");
+    error.code = "ERR01";
+    error.target = `Header(ID=${req.params[0]},IsActiveEntity=false)/name`;
+    error.message = "An error occurred";
+    error.severity = 4;
+    error["@Common.numericSeverity"] = 4;
+    error.details = [
+      {
+        code: "ERR02-transition",
+        target: `Items(ID=2b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/description`,
+        message: "Error details",
+        "@Common.numericSeverity": 4,
+      },
+    ];
+    req.error(error);
+  });
+
+  srv.on("boundWarningFunction", async (req) => {
+    const info1 = new Error("This is a warning");
+    info1.code = "WARN01";
+    info1.target = `Header(ID=${req.params[0]},IsActiveEntity=false)/name`;
+    info1.message = "An Warning occurred";
+    info1.numericSeverity = 3;
+    req.info(info1);
+
+    const info2 = new Error("This is another warning");
+    info2.code = "WARN02";
+    info2.target = `Items(ID=2b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/description`;
+    info2.message = "Another Warning occurred";
+    info2.numericSeverity = 3;
+    req.info(info2);
+
+    return {
+      name: "Test",
+      code: "TEST",
+      age: 1,
+    };
   });
 
   srv.on("boundAction", Header, async (req) => {

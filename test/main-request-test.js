@@ -162,6 +162,7 @@ describe("main-request", () => {
           },
         ],
       },
+      severity: "error",
     });
   });
 
@@ -513,6 +514,7 @@ describe("main-request", () => {
           value:
             "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888",
         },
+        severity: "error",
         type: "system",
       },
     });
@@ -540,6 +542,7 @@ describe("main-request", () => {
             },
           ],
         },
+        severity: "error",
       },
     });
   });
@@ -981,6 +984,7 @@ describe("main-request", () => {
             },
           ],
         },
+        severity: "error",
       },
     });
     response = await util.callRead(
@@ -1008,6 +1012,7 @@ describe("main-request", () => {
           lang: "en",
           value: "SQLITE_ERROR: no such column: a.FirstItem.startAt",
         },
+        severity: "error",
       },
     });
     response = await util.callRead(
@@ -1035,6 +1040,7 @@ describe("main-request", () => {
           lang: "en",
           value: "SQLITE_ERROR: no such column: a.FirstItem.name",
         },
+        severity: "error",
       },
     });
   });
@@ -1230,6 +1236,19 @@ describe("main-request", () => {
           lang: "en",
           value: "Method PATCH not allowed for ENTITY.COLLECTION",
         },
+        severity: "error",
+        innererror: {
+          errordetails: [
+            {
+              code: "405",
+              message: {
+                lang: "en",
+                value: "Method PATCH not allowed for ENTITY.COLLECTION",
+              },
+              severity: "error",
+            },
+          ],
+        },
       },
     });
   });
@@ -1275,6 +1294,19 @@ describe("main-request", () => {
         message: {
           lang: "en",
           value: "Not Found",
+        },
+        severity: "error",
+        innererror: {
+          errordetails: [
+            {
+              code: "404",
+              message: {
+                lang: "en",
+                value: "Not Found",
+              },
+              severity: "error",
+            },
+          ],
         },
       },
     });
@@ -1420,14 +1452,15 @@ describe("main-request", () => {
           lang: "en",
           value: "An error occurred",
         },
-        target: "Items",
+        target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
         severity: "error",
         innererror: {
           errordetails: [
             {
               code: "ERR02-transition",
               message: "Error details",
-              target: "Items",
+              target:
+                "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description",
               severity: "error",
               transition: true,
             },
@@ -1456,12 +1489,13 @@ describe("main-request", () => {
           code: "WARN02",
           message: "Another Warning occurred",
           severity: expect.stringMatching(/info|warning/),
-          target: "Root",
+          target:
+            "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description",
         },
       ],
       message: "An Warning occurred",
       severity: expect.stringMatching(/info|warning/),
-      target: "Items",
+      target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
     });
   });
 
@@ -1498,6 +1532,19 @@ describe("main-request", () => {
         message: {
           lang: "en",
           value: `Current function 'unboundNavigationFunction' is not composable; trailing segment 'Items' ist not allowed`,
+        },
+        severity: "error",
+        innererror: {
+          errordetails: [
+            {
+              code: "400",
+              message: {
+                lang: "en",
+                value: `Current function 'unboundNavigationFunction' is not composable; trailing segment 'Items' ist not allowed`,
+              },
+              severity: "error",
+            },
+          ],
         },
       },
     });
@@ -1538,6 +1585,70 @@ describe("main-request", () => {
           },
         ],
       },
+    });
+  });
+
+  it("GET bound function error request", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header_boundErrorFunction?ID=guid'${id}'`);
+    expect(response.body).toMatchObject({
+      error: {
+        code: "ERR01",
+        message: {
+          lang: "en",
+          value: "An error occurred",
+        },
+        target: `Header(ID=guid'${id}',IsActiveEntity=false)/name`,
+        severity: "error",
+        innererror: {
+          errordetails: [
+            {
+              code: "ERR02-transition",
+              message: "Error details",
+              target: "Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description",
+              severity: "error",
+              transition: true,
+            },
+          ],
+        },
+      },
+    });
+  });
+
+  it("GET bound function warning request", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header_boundWarningFunction?ID=guid'${id}'`);
+    expect(response.body).toMatchObject({
+      d: {
+        age: 1,
+        code: "TEST",
+        name: "Test",
+        __metadata: {
+          type: "test.MainService.Result",
+        },
+      },
+    });
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "WARN01",
+      details: [
+        {
+          code: "WARN02",
+          message: "Another Warning occurred",
+          severity: expect.stringMatching(/info|warning/),
+          target: "Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description",
+        },
+      ],
+      message: "An Warning occurred",
+      severity: expect.stringMatching(/info|warning/),
+      target: `Header(ID=guid'${id}',IsActiveEntity=false)/name`,
     });
   });
 
