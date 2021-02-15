@@ -137,8 +137,10 @@ function splitMultipartResponse(body, boundary = "boundary") {
         const statusCode = parseInt(_statusCode);
         let headers = {};
         _headers.forEach((_header) => {
-          const [key, value] = _header.split(": ");
-          headers[key] = value;
+          const splitPos = _header.indexOf(": ");
+          if (splitPos > 0) {
+            headers[_header.slice(0, splitPos)] = _header.slice(splitPos + 2);
+          }
         });
         return {
           statusCode,
