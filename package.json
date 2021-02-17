@@ -57,7 +57,7 @@
     "sqlite3": "5.0.0",
     "supertest": "^5.0.0"
   },
-  "license": "See LICENSE file",
+  "license": "SEE LICENSE IN LICENSE",
   "peerDependencies": {
     "@sap/cds": "*"
   },
