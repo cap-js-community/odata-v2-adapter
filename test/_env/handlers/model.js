@@ -107,7 +107,7 @@ module.exports = (srv) => {
     ];
   });
 
-  srv.on("boundErrorFunction", async (req) => {
+  srv.on("boundErrorFunction", Header, async (req) => {
     const error = new Error("An error occurred");
     error.code = "ERR01";
     error.target = `Header(ID=${req.params[0]},IsActiveEntity=false)/name`;
@@ -125,7 +125,7 @@ module.exports = (srv) => {
     req.error(error);
   });
 
-  srv.on("boundWarningFunction", async (req) => {
+  srv.on("boundWarningFunction", Header, async (req) => {
     const info1 = new Error("This is a warning");
     info1.code = "WARN01";
     info1.target = `Header(ID=${req.params[0]},IsActiveEntity=false)/name`;
