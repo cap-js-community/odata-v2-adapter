@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Improve TypeScript typings
 
 ## Version 1.5.8 - 2021-02-25
 

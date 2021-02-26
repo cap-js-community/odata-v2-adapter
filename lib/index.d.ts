@@ -105,5 +105,5 @@ type Options = {
     /**
      * Request and response body parser size limit. Default is '100mb'.
      */
-    bodyParserLimit: string | "100mb"
+    bodyParserLimit?: string | "100mb"
 };
