@@ -9,6 +9,23 @@ const init = require("./_env/data/init");
 
 let request;
 
+const sqlite_error = {
+  error: {
+    code: "501",
+    message: { lang: "en", value: 'Path expressions in query options are not supported on SQLite' },
+    innererror: {
+      errordetails: [
+        {
+          code: "501",
+          message: { lang: "en", value: 'Path expressions in query options are not supported on SQLite' },
+          severity: "error",
+        },
+      ],
+    },
+    severity: "error",
+  },
+};
+
 describe("main-request", () => {
   beforeAll(async () => {
     const context = await env("model", 0, init);
@@ -990,22 +1007,7 @@ describe("main-request", () => {
         },
       });
     } else if (response.statusCode === 501) {
-      expect(response.body).toEqual({
-        error: {
-          code: "501",
-          message: { lang: "en", value: 'Path expressions in query options are not supported on SQLite' },
-          innererror: {
-            errordetails: [
-              {
-                code: "501",
-                message: { lang: "en", value: 'Path expressions in query options are not supported on SQLite' },
-                severity: "error",
-              },
-            ],
-          },
-          severity: "error",
-        },
-      });
+      expect(response.body).toEqual(sqlite_error);
     } else {
       // fail the test if we arrive here
       expect(response.statusCode).toBe('500 || 501');
@@ -1016,56 +1018,72 @@ describe("main-request", () => {
     );
     // TODO: cap/issues/4468
     // expect(response.body.d.results).toHaveLength(1);
-    expect(response.body).toEqual({
-      error: {
-        code: "500",
-        innererror: {
-          errordetails: [
-            {
-              code: "500",
-              message: {
-                lang: "en",
-                value: "SQLITE_ERROR: no such column: a.FirstItem.startAt",
+    // TODO: branches can be removed with @sap/cds^5
+    if (response.statusCode === 500) {
+      expect(response.body).toEqual({
+        error: {
+          code: "500",
+          innererror: {
+            errordetails: [
+              {
+                code: "500",
+                message: {
+                  lang: "en",
+                  value: "SQLITE_ERROR: no such column: a.FirstItem.startAt",
+                },
+                severity: "error",
               },
-              severity: "error",
-            },
-          ],
+            ],
+          },
+          message: {
+            lang: "en",
+            value: "SQLITE_ERROR: no such column: a.FirstItem.startAt",
+          },
+          severity: "error",
         },
-        message: {
-          lang: "en",
-          value: "SQLITE_ERROR: no such column: a.FirstItem.startAt",
-        },
-        severity: "error",
-      },
-    });
+      });
+    } else if (response.statusCode === 501) {
+      expect(response.body).toEqual(sqlite_error);
+    } else {
+      // fail the test if we arrive here
+      expect(response.statusCode).toBe('500 || 501');
+    }
     response = await util.callRead(
       request,
       `/v2/main/Header?$expand=FirstItem&$filter=FirstItem/name eq 'TestItem1001'`
     );
     // TODO: cap/issues/4468
     // expect(response.body.d.results).toHaveLength(1);
-    expect(response.body).toEqual({
-      error: {
-        code: "500",
-        innererror: {
-          errordetails: [
-            {
-              code: "500",
-              message: {
-                lang: "en",
-                value: "SQLITE_ERROR: no such column: a.FirstItem.name",
+    // TODO: branches can be removed with @sap/cds^5
+    if (response.statusCode === 500) {
+      expect(response.body).toEqual({
+        error: {
+          code: "500",
+          innererror: {
+            errordetails: [
+              {
+                code: "500",
+                message: {
+                  lang: "en",
+                  value: "SQLITE_ERROR: no such column: a.FirstItem.name",
+                },
+                severity: "error",
               },
-              severity: "error",
-            },
-          ],
+            ],
+          },
+          message: {
+            lang: "en",
+            value: "SQLITE_ERROR: no such column: a.FirstItem.name",
+          },
+          severity: "error",
         },
-        message: {
-          lang: "en",
-          value: "SQLITE_ERROR: no such column: a.FirstItem.name",
-        },
-        severity: "error",
-      },
-    });
+      });
+    } else if (response.statusCode === 501) {
+      expect(response.body).toEqual(sqlite_error);
+    } else {
+      // fail the test if we arrive here
+      expect(response.statusCode).toBe('500 || 501');
+    }
   });
 
   it("GET request with uri escape character", async () => {
