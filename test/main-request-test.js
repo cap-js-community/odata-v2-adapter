@@ -971,22 +971,45 @@ describe("main-request", () => {
     );
     // TODO: cap/issues/4468
     // expect(response.body.d.results).toHaveLength(1);
-    expect(response.body).toEqual({
-      error: {
-        code: "500",
-        message: { lang: "en", value: 'SQLITE_ERROR: near ".": syntax error' },
-        innererror: {
-          errordetails: [
-            {
-              code: "500",
-              message: { lang: "en", value: 'SQLITE_ERROR: near ".": syntax error' },
-              severity: "error",
-            },
-          ],
+    // TODO: branches can be removed with @sap/cds^5
+    if (response.statusCode === 500) {
+      expect(response.body).toEqual({
+        error: {
+          code: "500",
+          message: { lang: "en", value: 'SQLITE_ERROR: near ".": syntax error' },
+          innererror: {
+            errordetails: [
+              {
+                code: "500",
+                message: { lang: "en", value: 'SQLITE_ERROR: near ".": syntax error' },
+                severity: "error",
+              },
+            ],
+          },
+          severity: "error",
         },
-        severity: "error",
-      },
-    });
+      });
+    } else if (response.statusCode === 501) {
+      expect(response.body).toEqual({
+        error: {
+          code: "501",
+          message: { lang: "en", value: 'Path expressions in query options are not supported on SQLite' },
+          innererror: {
+            errordetails: [
+              {
+                code: "501",
+                message: { lang: "en", value: 'Path expressions in query options are not supported on SQLite' },
+                severity: "error",
+              },
+            ],
+          },
+          severity: "error",
+        },
+      });
+    } else {
+      // fail the test if we arrive here
+      expect(response.statusCode).toBe('500 || 501');
+    }
     response = await util.callRead(
       request,
       `/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'`
