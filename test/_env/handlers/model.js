@@ -97,8 +97,7 @@ module.exports = (srv) => {
     });
   });
 
-  srv.on("unboundActionNoReturn", async (req) => {
-  });
+  srv.on("unboundActionNoReturn", async (req) => {});
 
   srv.on("boundFunction", Header, async (req) => {
     return [
@@ -158,8 +157,7 @@ module.exports = (srv) => {
     };
   });
 
-  srv.on("boundActionNoReturn", Header, async (req) => {
-  });
+  srv.on("boundActionNoReturn", Header, async (req) => {});
 
   srv.on("CREATE", HeaderStream, async (req, next) => {
     if (req.data.filename && req.data.filename.includes("error")) {

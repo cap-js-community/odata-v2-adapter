@@ -1,6 +1,7 @@
 "use strict";
 
 const supertest = require("supertest");
+// eslint-disable-next-line no-restricted-modules
 const fs = require("fs");
 
 const env = require("./_env");
@@ -12,12 +13,12 @@ let request;
 const sqlite_error = {
   error: {
     code: "501",
-    message: { lang: "en", value: 'Path expressions in query options are not supported on SQLite' },
+    message: { lang: "en", value: "Path expressions in query options are not supported on SQLite" },
     innererror: {
       errordetails: [
         {
           code: "501",
-          message: { lang: "en", value: 'Path expressions in query options are not supported on SQLite' },
+          message: { lang: "en", value: "Path expressions in query options are not supported on SQLite" },
           severity: "error",
         },
       ],
@@ -1010,7 +1011,7 @@ describe("main-request", () => {
       expect(response.body).toEqual(sqlite_error);
     } else {
       // fail the test if we arrive here
-      expect(response.statusCode).toBe('500 || 501');
+      expect(response.statusCode).toBe("500 || 501");
     }
     response = await util.callRead(
       request,
@@ -1046,7 +1047,7 @@ describe("main-request", () => {
       expect(response.body).toEqual(sqlite_error);
     } else {
       // fail the test if we arrive here
-      expect(response.statusCode).toBe('500 || 501');
+      expect(response.statusCode).toBe("500 || 501");
     }
     response = await util.callRead(
       request,
@@ -1082,7 +1083,7 @@ describe("main-request", () => {
       expect(response.body).toEqual(sqlite_error);
     } else {
       // fail the test if we arrive here
-      expect(response.statusCode).toBe('500 || 501');
+      expect(response.statusCode).toBe("500 || 501");
     }
   });
 
