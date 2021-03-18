@@ -99,10 +99,10 @@ service MainService {
 
     entity Header as projection on test.Header actions {
         action boundAction(num: Integer, text: String) returns Result;
+        action boundActionNoReturn(num: Integer, text: String);
         function boundFunction(num: Integer, text: String) returns array of Result;
         function boundErrorFunction() returns Result;
         function boundWarningFunction() returns Result;
-        action boundActionNoReturn(num: Integer, text: String);
     };
     entity HeaderItem as projection on test.HeaderItem;
     entity HeaderLine as projection on test.HeaderLine;
@@ -118,6 +118,7 @@ service MainService {
 
     action unboundAction(num: Integer, text: String) returns array of Result;
     action unboundMassAction(ids: array of String) returns array of Result;
+    action unboundActionNoReturn(num: Integer, text: String);
     function unboundFunction(num: Integer, text: String) returns Result;
     function unboundMassFunction(ids: array of String) returns array of Result;
     function unboundDecimalFunction() returns Decimal(19,4);

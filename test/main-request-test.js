@@ -1825,6 +1825,11 @@ describe("main-request", () => {
     });
   });
 
+  it("POST unbound action request with no return", async () => {
+    let response = await util.callWrite(request, `/v2/main/unboundActionNoReturn?num=1&text=abc`);
+    expect(response.body).toEqual({});
+  });
+
   it("POST bound action request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",

@@ -97,6 +97,9 @@ module.exports = (srv) => {
     });
   });
 
+  srv.on("unboundActionNoReturn", async (req) => {
+  });
+
   srv.on("boundFunction", Header, async (req) => {
     return [
       {

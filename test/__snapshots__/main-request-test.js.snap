@@ -268,6 +268,11 @@ exports[`main-request GET $metadata 1`] = `
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"Header_boundActionNoReturn\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"Header_boundFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -279,11 +284,6 @@ exports[`main-request GET $metadata 1`] = `
         <FunctionImport Name=\\"Header_boundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"Header_boundActionNoReturn\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
-          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
-          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
         <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
@@ -294,6 +294,10 @@ exports[`main-request GET $metadata 1`] = `
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
         <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundActionNoReturn\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
@@ -664,6 +668,11 @@ exports[`main-request GET $metadata localized 1`] = `
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"Header_boundActionNoReturn\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"Header_boundFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -675,11 +684,6 @@ exports[`main-request GET $metadata localized 1`] = `
         <FunctionImport Name=\\"Header_boundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"Header_boundActionNoReturn\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
-          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
-          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
         <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
@@ -690,6 +694,10 @@ exports[`main-request GET $metadata localized 1`] = `
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
         <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundActionNoReturn\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
@@ -1060,6 +1068,11 @@ exports[`main-request GET $metadata localized 2`] = `
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"Header_boundActionNoReturn\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"Header_boundFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -1071,11 +1084,6 @@ exports[`main-request GET $metadata localized 2`] = `
         <FunctionImport Name=\\"Header_boundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"Header_boundActionNoReturn\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
-          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
-          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
         <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
@@ -1086,6 +1094,10 @@ exports[`main-request GET $metadata localized 2`] = `
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
         <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundActionNoReturn\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
