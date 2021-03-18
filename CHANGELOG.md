@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Fix crash for bound action without return type
+- Consider bound action binding parameter for messages targets
+
 ## Version 1.5.9 - 2021-03-02
 
 ### Fixed

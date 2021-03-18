@@ -155,6 +155,9 @@ module.exports = (srv) => {
     };
   });
 
+  srv.on("boundActionNoReturn", Header, async (req) => {
+  });
+
   srv.on("CREATE", HeaderStream, async (req, next) => {
     if (req.data.filename && req.data.filename.includes("error")) {
       req.error(400, "Filename contains error");

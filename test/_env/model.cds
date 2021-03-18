@@ -102,6 +102,7 @@ service MainService {
         function boundFunction(num: Integer, text: String) returns array of Result;
         function boundErrorFunction() returns Result;
         function boundWarningFunction() returns Result;
+        action boundActionNoReturn(num: Integer, text: String);
     };
     entity HeaderItem as projection on test.HeaderItem;
     entity HeaderLine as projection on test.HeaderLine;

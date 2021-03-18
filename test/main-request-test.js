@@ -1855,6 +1855,16 @@ describe("main-request", () => {
     });
   });
 
+  it("POST bound action request with no return", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callWrite(request, `/v2/main/Header_boundActionNoReturn?ID=guid'${id}'&num=1&text=abc`);
+    expect(response.body).toEqual({});
+  });
+
   it("GET HANA SYSUUID as ID", async () => {
     const ID = "D99B1B70-3B03-BC1E-1700-05023630F1F7";
     let response = await util.callWrite(request, "/v2/main/Header", {
