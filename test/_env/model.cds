@@ -43,6 +43,19 @@ entity HeaderStream: cuid {
     isBlocked: Boolean;
 }
 
+entity HeaderStreamDecode: cuid {
+    @Core.MediaType: mediaType
+    @Core.ContentDisposition.Filename: filename
+    data: LargeBinary;
+    @Core.IsMediaType
+    mediaType: String;
+    @cov2ap.headerDecode: ['base64', 'uriComponent']
+    filename: String;
+    custom: String;
+    totalAmount: Integer;
+    isBlocked: Boolean;
+}
+
 entity HeaderUrlStream: cuid {
     @Core.MediaType: mediaType
     @Core.IsURL: true
@@ -107,6 +120,7 @@ service MainService {
     entity HeaderItem as projection on test.HeaderItem;
     entity HeaderLine as projection on test.HeaderLine;
     entity HeaderStream as projection on test.HeaderStream;
+    entity HeaderStreamDecode as projection on test.HeaderStreamDecode;
     entity HeaderUrlStream as projection on test.HeaderUrlStream;
     entity HeaderAssocKey as projection on test.HeaderAssocKey;
     entity HeaderTemporal as projection on test.HeaderTemporal;

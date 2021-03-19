@@ -63,6 +63,7 @@ describe("main-request", () => {
           "HeaderItemDelta",
           "HeaderLine",
           "HeaderStream",
+          "HeaderStreamDecode",
           "HeaderTemporal",
           "HeaderUrlStream",
           "StringUUID",
@@ -84,6 +85,7 @@ describe("main-request", () => {
           "HeaderItemDelta",
           "HeaderLine",
           "HeaderStream",
+          "HeaderStreamDecode",
           "HeaderTemporal",
           "HeaderUrlStream",
           "StringUUID",
@@ -706,6 +708,41 @@ describe("main-request", () => {
     expect(readResponse.statusCode).toEqual(404);
   });
 
+  it("POST request with binary with header decode", async () => {
+    const file = fs.readFileSync("./test/_env/data/init/assets/file.png", "utf8");
+    const createResponse = await util.callBinary(request, `/v2/main/HeaderStreamDecode`, file, false, {
+      "content-type": "image/png",
+      slug: new Buffer(encodeURIComponent("test/file?&.png")).toString("base64"),
+      custom: "test123",
+      totalAmount: "11",
+      isBlocked: "false",
+    });
+    expect(createResponse.statusCode).toEqual(201);
+    const id = createResponse.body.d.ID;
+    let readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${id}')`);
+    expect(readResponse.statusCode).toEqual(200);
+    expect(readResponse.body.d).toMatchObject({
+      ID: id,
+      filename: "test/file?&.png",
+      mediaType: "image/png",
+      custom: "test123",
+      totalAmount: 11,
+      isBlocked: false,
+    });
+    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${id}')/data`);
+    expect(readResponse.statusCode).toEqual(200);
+    expect(readResponse.headers["content-type"]).toEqual("image/png");
+    expect(readResponse.body.length).toEqual(31794);
+    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStreamDecode(guid'${id}')/data`);
+    expect(deleteResponse.statusCode).toEqual(204);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${id}')/data`);
+    expect(readResponse.statusCode).toEqual(204);
+    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStreamDecode(guid'${id}')`);
+    expect(deleteResponse.statusCode).toEqual(204);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${id}')`);
+    expect(readResponse.statusCode).toEqual(404);
+  });
+
   it("POST request with multipart form-data stream", async () => {
     const stream = fs.createReadStream("./test/_env/data/init/assets/file.png");
     const createResponse = await util.callAttach(
@@ -715,9 +752,10 @@ describe("main-request", () => {
       false,
       {
         "content-type": "image/png",
+        "Content-Disposition": `inline; name="field"; filename="file.png"`,
       },
       {
-        slug: "file.png",
+        "Content-Disposition": `inline; name="field"; filename="file.png"`,
         custom: "test123",
         totalAmount: "11",
         isBlocked: "true",

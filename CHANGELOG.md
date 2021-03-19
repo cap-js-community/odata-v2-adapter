@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Support 'content-disposition' header in media entity upload
+- Introduction of element annotation '@cov2ap.headerDecode' to decode header values
 
 ## Version 1.5.10 - 2021-03-18
 
