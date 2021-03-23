@@ -42,7 +42,7 @@ describe("todo-request", () => {
                 uri: `http://${response.request.host.replace(
                   "127.0.0.1",
                   "localhost"
-                )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)`,
+                )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')`,
               },
               endDate: "2019-08-23T00:00:00Z",
               person: {
@@ -50,7 +50,7 @@ describe("todo-request", () => {
                   uri: `http://${response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)/person`,
+                  )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/person`,
                 },
               },
               person_ID: 1,
@@ -60,7 +60,7 @@ describe("todo-request", () => {
                   uri: `http://${response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)/task`,
+                  )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/task`,
                 },
               },
               task_ID: 1,
@@ -99,7 +99,7 @@ describe("todo-request", () => {
                 uri: `http://${response.request.host.replace(
                   "127.0.0.1",
                   "localhost"
-                )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S',task_ID=2,person_ID=3)`,
+                )}/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S')`,
               },
               endDate: "2019-08-24T00:00:00Z",
               person: {
@@ -107,7 +107,7 @@ describe("todo-request", () => {
                   uri: `http://${response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S',task_ID=2,person_ID=3)/person`,
+                  )}/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S')/person`,
                 },
               },
               person_ID: 3,
@@ -117,7 +117,7 @@ describe("todo-request", () => {
                   uri: `http://${response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S',task_ID=2,person_ID=3)/task`,
+                  )}/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S')/task`,
                 },
               },
               task_ID: 2,
@@ -145,7 +145,7 @@ describe("todo-request", () => {
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)`,
+        )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')`,
       },
       endDate: "2019-08-23T00:00:00Z",
       person: {
@@ -153,7 +153,7 @@ describe("todo-request", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)/person`,
+          )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/person`,
         },
       },
       person_ID: 1,
@@ -163,7 +163,7 @@ describe("todo-request", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)/task`,
+          )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/task`,
         },
       },
       keyDate: "/Date(1577750400000)/",
@@ -197,7 +197,7 @@ describe("todo-request", () => {
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)`,
+        )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')`,
       },
       endDate: "2019-08-23T00:00:00Z",
       person: {
@@ -205,7 +205,7 @@ describe("todo-request", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)/person`,
+          )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/person`,
         },
       },
       person_ID: 1,
@@ -215,7 +215,7 @@ describe("todo-request", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/todo/PlannedTasks(startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S',task_ID=1,person_ID=1)/task`,
+          )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/task`,
         },
       },
       keyDate: "/Date(1577750400000)/",

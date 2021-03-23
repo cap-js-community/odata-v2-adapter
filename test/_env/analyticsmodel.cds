@@ -6,6 +6,7 @@ service AnalyticsService {
 
     @readonly
     @Aggregation.ApplySupported.PropertyRestrictions: true
+    @cds.redirection.target: true
     entity Header as projection on test.Header {
         ID,
         description,
