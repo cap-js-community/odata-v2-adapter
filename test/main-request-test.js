@@ -463,6 +463,13 @@ describe("main-request", () => {
   it("GET request with url stream", async () => {
     let response = await util.callRead(
       request,
+      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link`, {
+        accept: "image/png"
+      }
+    );
+    expect(response.statusCode).toEqual(200);
+    response = await util.callRead(
+      request,
       `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link`
     );
     expect(response.statusCode).toEqual(200);
@@ -470,6 +477,7 @@ describe("main-request", () => {
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
+    expect(response.statusCode).toEqual(200);
     response = await util.callRead(
       request,
       `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link/$value`

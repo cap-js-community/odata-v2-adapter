@@ -7,10 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.5.11 - tbd
+## Version 1.6.0 - 2021-03-26
 
 ### Fixed
 
+- CDS 5 compatibility (>= 1.6.0 needed for CDS 5)
 - Support 'content-disposition' header in media entity upload
 - Introduction of element annotation '@cov2ap.headerDecode' to decode header values
 
