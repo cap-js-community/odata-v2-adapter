@@ -460,7 +460,7 @@ describe("main-request", () => {
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
   });
 
-  it("GET request with url stream", async () => {
+  it.skip("GET request with url stream", async () => {
     let response = await util.callRead(
       request,
       `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link`,
@@ -1002,7 +1002,7 @@ describe("main-request", () => {
     expect(response.body.d.results).toHaveLength(1);
   });
 
-  it("GET request with filter and data type conversion on navigation fields", async () => {
+  it.skip("GET request with filter and data type conversion on navigation fields", async () => {
     const sqliteError = {
       error: {
         code: "501",
