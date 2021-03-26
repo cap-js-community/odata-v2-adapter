@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
+## Version 1.6.0 - 2021-04-06
+
+### Fixed
+
+- Final CDS 5 compatibility version
+
 ## Version 1.5.11 - 2021-03-26
 
 ### Fixed

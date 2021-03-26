@@ -14,7 +14,7 @@ module.exports = {
       branches: 75,
       functions: 90,
       lines: 90,
-      statements: 89,
+      statements: 90,
     },
   },
   moduleDirectories: ["node_modules"],
