@@ -134,11 +134,11 @@ exports[`draft-request GET $metadata 1`] = `
         <Property Name=\\"startAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"endAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.DraftService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
-        <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.DraftService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
-        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.DraftService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.DraftService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
         <Property Name=\\"NextItem_ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.DraftService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
         <Property Name=\\"IsActiveEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
         <Property Name=\\"HasActiveEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>
         <Property Name=\\"HasDraftEntity\\" Type=\\"Edm.Boolean\\" Nullable=\\"false\\"/>

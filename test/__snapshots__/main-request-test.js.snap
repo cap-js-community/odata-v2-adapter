@@ -384,8 +384,8 @@ exports[`main-request GET $metadata 1`] = `
           <PropertyRef Name=\\"header_ID\\"/>
         </Key>
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderAssocKey_header\\" FromRole=\\"HeaderAssocKey\\" ToRole=\\"Header\\"/>
-        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderDelta\\">
         <Key>
@@ -410,12 +410,12 @@ exports[`main-request GET $metadata 1`] = `
         <Property Name=\\"startAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"endAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
-        <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.MainService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
-        <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
-        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.MainService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
         <Property Name=\\"NextItem_ID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderItemDelta\\">
         <Key>
@@ -807,8 +807,8 @@ exports[`main-request GET $metadata localized 1`] = `
           <PropertyRef Name=\\"header_ID\\"/>
         </Key>
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderAssocKey_header\\" FromRole=\\"HeaderAssocKey\\" ToRole=\\"Header\\"/>
-        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderDelta\\">
         <Key>
@@ -833,12 +833,12 @@ exports[`main-request GET $metadata localized 1`] = `
         <Property Name=\\"startAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"endAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
-        <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.MainService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
-        <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
-        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.MainService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
         <Property Name=\\"NextItem_ID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderItemDelta\\">
         <Key>
@@ -1230,8 +1230,8 @@ exports[`main-request GET $metadata localized 2`] = `
           <PropertyRef Name=\\"header_ID\\"/>
         </Key>
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderAssocKey_header\\" FromRole=\\"HeaderAssocKey\\" ToRole=\\"Header\\"/>
-        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderDelta\\">
         <Key>
@@ -1256,12 +1256,12 @@ exports[`main-request GET $metadata localized 2`] = `
         <Property Name=\\"startAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"endAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItem_header\\" FromRole=\\"HeaderItem\\" ToRole=\\"Header\\"/>
-        <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.MainService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
-        <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
-        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
         <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"NextItem\\" Relationship=\\"test.MainService.HeaderItem_NextItem\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderItem1\\"/>
         <Property Name=\\"NextItem_ID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
+        <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderItemDelta\\">
         <Key>
