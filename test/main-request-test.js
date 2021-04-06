@@ -469,13 +469,9 @@ describe("main-request", () => {
       }
     );
     expect(response.statusCode).toEqual(200);
-    // TODO: Remove all accept with CDS 5 release
     response = await util.callRead(
       request,
-      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link`,
-      {
-        accept: "image/png",
-      }
+      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link`
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -485,10 +481,7 @@ describe("main-request", () => {
     expect(response.statusCode).toEqual(200);
     response = await util.callRead(
       request,
-      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link/$value`,
-      {
-        accept: "image/png",
-      }
+      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link/$value`
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -497,10 +490,7 @@ describe("main-request", () => {
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
     response = await util.callRead(
       request,
-      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
-      {
-        accept: "image/png",
-      }
+      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -509,10 +499,7 @@ describe("main-request", () => {
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
     response = await util.callRead(
       request,
-      `/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
-      {
-        accept: "image/png",
-      }
+      `/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`
     );
     expect(response.statusCode).toEqual(500);
     expect(response.body).toEqual({
