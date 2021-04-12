@@ -826,6 +826,7 @@ describe("main-request", () => {
   it("POST request with binary returning error", async () => {
     const file = fs.readFileSync("./test/_env/data/init/assets/file.png", "utf8");
     const response = await util.callBinary(request, `/v2/main/HeaderStream`, file, false, {
+      Authorization: "Basic ABC123",
       "content-type": "image/png",
       slug: "file_error.png",
       custom: "test123",
