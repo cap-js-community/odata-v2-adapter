@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.6.2 - tbd
+## Version 1.6.2 - 2021-04-29
 
 ### Fixed
+
+- Merge headers and body of POST and PUT media entity upload calls
+- Handle error case in PUT media entity upload call
 
 ## Version 1.6.1 - 2021-04-12
 
