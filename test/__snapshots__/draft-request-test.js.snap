@@ -171,14 +171,6 @@ exports[`draft-request GET $metadata 1`] = `
       <Association Name=\\"Header_FirstItem\\">
         <End Role=\\"Header\\" Type=\\"test.DraftService.Header\\" Multiplicity=\\"*\\"/>
         <End Role=\\"HeaderItem\\" Type=\\"test.DraftService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
-        <ReferentialConstraint>
-          <Principal Role=\\"HeaderItem\\">
-            <PropertyRef Name=\\"ID\\"/>
-          </Principal>
-          <Dependent Role=\\"Header\\">
-            <PropertyRef Name=\\"FirstItem_ID\\"/>
-          </Dependent>
-        </ReferentialConstraint>
       </Association>
       <Association Name=\\"Header_DraftAdministrativeData\\">
         <End Role=\\"Header\\" Type=\\"test.DraftService.Header\\" Multiplicity=\\"*\\"/>
@@ -201,26 +193,10 @@ exports[`draft-request GET $metadata 1`] = `
         <End Role=\\"Header\\" Type=\\"test.DraftService.Header\\" Multiplicity=\\"0..1\\">
           <OnDelete Action=\\"Cascade\\"/>
         </End>
-        <ReferentialConstraint>
-          <Principal Role=\\"Header\\">
-            <PropertyRef Name=\\"ID\\"/>
-          </Principal>
-          <Dependent Role=\\"HeaderItem\\">
-            <PropertyRef Name=\\"header_ID\\"/>
-          </Dependent>
-        </ReferentialConstraint>
       </Association>
       <Association Name=\\"HeaderItem_NextItem\\">
         <End Role=\\"HeaderItem\\" Type=\\"test.DraftService.HeaderItem\\" Multiplicity=\\"*\\"/>
         <End Role=\\"HeaderItem1\\" Type=\\"test.DraftService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
-        <ReferentialConstraint>
-          <Principal Role=\\"HeaderItem1\\">
-            <PropertyRef Name=\\"ID\\"/>
-          </Principal>
-          <Dependent Role=\\"HeaderItem\\">
-            <PropertyRef Name=\\"NextItem_ID\\"/>
-          </Dependent>
-        </ReferentialConstraint>
       </Association>
       <Association Name=\\"HeaderItem_DraftAdministrativeData\\">
         <End Role=\\"HeaderItem\\" Type=\\"test.DraftService.HeaderItem\\" Multiplicity=\\"*\\"/>
@@ -243,14 +219,6 @@ exports[`draft-request GET $metadata 1`] = `
         <End Role=\\"HeaderItem\\" Type=\\"test.DraftService.HeaderItem\\" Multiplicity=\\"0..1\\">
           <OnDelete Action=\\"Cascade\\"/>
         </End>
-        <ReferentialConstraint>
-          <Principal Role=\\"HeaderItem\\">
-            <PropertyRef Name=\\"ID\\"/>
-          </Principal>
-          <Dependent Role=\\"HeaderLine\\">
-            <PropertyRef Name=\\"item_ID\\"/>
-          </Dependent>
-        </ReferentialConstraint>
       </Association>
       <Association Name=\\"HeaderLine_DraftAdministrativeData\\">
         <End Role=\\"HeaderLine\\" Type=\\"test.DraftService.HeaderLine\\" Multiplicity=\\"*\\"/>
