@@ -55,7 +55,7 @@
     "jest-junit": "^11.1.0",
     "passport": "^0.4.1",
     "prettier": "^2.0.5",
-    "sqlite3": "5.0.0",
+    "sqlite3": "^5.0.2",
     "supertest": "^5.0.0"
   },
   "license": "SEE LICENSE IN LICENSE",
