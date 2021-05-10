@@ -44,7 +44,7 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@sap/cds": "^5.1.0",
+    "@sap/cds": "^5.1.1",
     "@sap/hana-client": "^2.7.26",
     "compression": "^1.7.4",
     "eslint": "^7.25.0",
