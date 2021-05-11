@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Transform leading part of locale to lower-case
+
 ## Version 1.6.2 - 2021-04-29
 
 ### Fixed
