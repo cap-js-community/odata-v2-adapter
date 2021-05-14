@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Transform leading part of locale to lower-case
-- Normalize "_texts" entities to ".texts"
+- Fix local entity name determination for scoped entities, e.g. '.texts'
 
 ## Version 1.6.2 - 2021-04-29
 
