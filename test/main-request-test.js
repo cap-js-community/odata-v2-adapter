@@ -1473,6 +1473,7 @@ describe("main-request", () => {
           value: "An error occurred",
         },
         target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+        additionalTargets: ["Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description"],
         severity: "error",
         innererror: {
           errordetails: [
@@ -1481,6 +1482,9 @@ describe("main-request", () => {
               message: "Error details",
               target:
                 "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description",
+              additionalTargets: [
+                "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+              ],
               severity: "error",
               transition: true,
             },
@@ -1511,11 +1515,15 @@ describe("main-request", () => {
           severity: expect.stringMatching(/info|warning/),
           target:
             "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description",
+          additionalTargets: [
+            "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+          ],
         },
       ],
       message: "An Warning occurred",
       severity: expect.stringMatching(/info|warning/),
       target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+      additionalTargets: ["Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description"],
     });
   });
 
@@ -1623,6 +1631,7 @@ describe("main-request", () => {
           value: "An error occurred",
         },
         target: `Header(ID=guid'${id}',IsActiveEntity=false)/name`,
+        additionalTargets: [`Header(ID=guid'${id}',IsActiveEntity=false)/description`],
         severity: "error",
         innererror: {
           errordetails: [
@@ -1630,6 +1639,7 @@ describe("main-request", () => {
               code: "ERR02-transition",
               message: "Error details",
               target: "Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description",
+              additionalTargets: ["Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name"],
               severity: "error",
               transition: true,
             },
@@ -1664,11 +1674,13 @@ describe("main-request", () => {
           message: "Another Warning occurred",
           severity: expect.stringMatching(/info|warning/),
           target: "Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description",
+          additionalTargets: ["Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name"],
         },
       ],
       message: "An Warning occurred",
       severity: expect.stringMatching(/info|warning/),
       target: `Header(ID=guid'${id}',IsActiveEntity=false)/name`,
+      additionalTargets: [`Header(ID=guid'${id}',IsActiveEntity=false)/description`],
     });
   });
 
