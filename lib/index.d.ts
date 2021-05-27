@@ -105,5 +105,15 @@ type Options = {
     /**
      * Request and response body parser size limit. Default is '100mb'.
      */
-    bodyParserLimit?: string | "100mb"
+    bodyParserLimit?: string | "100mb",
+
+    /**
+     * Function import return structure of complex type (non collection) is nested using function import name. Default is `true`.
+     */
+    returnComplexNested?: boolean | true,
+
+    /**
+     * Function import return value of primitive type is rendered as plain JSON value. Default is `true`.
+     */
+    returnPrimitivePlain?: boolean | true
 };
