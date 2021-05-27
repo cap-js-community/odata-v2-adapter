@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.6.4 - tbd
+## Version 1.6.4 - 2021-05-27
 
 ### Fixed
+
+- Fix action/function return type structure for complex and primitive types
 
 ## Version 1.6.3 - 2021-05-26
 

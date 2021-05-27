@@ -305,11 +305,13 @@ describe("batch-request", () => {
     expect(first.body).toEqual(
       expect.objectContaining({
         d: {
-          name: "abc1",
-          code: "TEST",
-          age: 1,
-          __metadata: {
-            type: "test.MainService.Result",
+          unboundFunction: {
+            name: "abc1",
+            code: "TEST",
+            age: 1,
+            __metadata: {
+              type: "test.MainService.Result",
+            },
           },
         },
       })
@@ -318,16 +320,14 @@ describe("batch-request", () => {
     expect(second.body).toEqual(
       expect.objectContaining({
         d: {
-          results: [
-            {
-              name: "abc2",
-              code: "TEST",
-              age: 2,
-              __metadata: {
-                type: "test.MainService.Result",
-              },
+          unboundAction: {
+            name: "abc2",
+            code: "TEST",
+            age: 2,
+            __metadata: {
+              type: "test.MainService.Result",
             },
-          ],
+          },
         },
       })
     );

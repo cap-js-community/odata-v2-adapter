@@ -112,8 +112,20 @@ service MainService {
 
     entity Header as projection on test.Header actions {
         action boundAction(num: Integer, text: String) returns Result;
+        action boundMassAction(ids: array of String) returns array of Result;
         action boundActionNoReturn(num: Integer, text: String);
-        function boundFunction(num: Integer, text: String) returns array of Result;
+        action boundActionPrimitive(num: Integer) returns Integer;
+        action boundMassActionPrimitive(text1: String, text2: String) returns array of String;
+        action boundActionEntity(num: Integer, text: String) returns Header;
+        action boundMassActionEntity(ids: array of String) returns array of Header;
+
+        function boundFunction(num: Integer, text: String) returns Result;
+        function boundMassFunction(ids: array of String) returns array of Result;
+        function boundFunctionPrimitive(num: Integer) returns Integer;
+        function boundMassFunctionPrimitive(text1: String, text2: String) returns array of String;
+        function boundFunctionEntity(num: Integer, text: String) returns Header;
+        function boundMassFunctionEntity(ids: array of String) returns array of Header;
+
         function boundErrorFunction() returns Result;
         function boundWarningFunction() returns Result;
     };
@@ -130,11 +142,21 @@ service MainService {
     entity Favorite as projection on test.Favorite;
     entity StringUUID as projection on test.StringUUID;
 
-    action unboundAction(num: Integer, text: String) returns array of Result;
+    action unboundAction(num: Integer, text: String) returns Result;
     action unboundMassAction(ids: array of String) returns array of Result;
     action unboundActionNoReturn(num: Integer, text: String);
+    action unboundActionPrimitive(num: Integer) returns Integer;
+    action unboundMassActionPrimitive(text1: String, text2: String) returns array of String;
+    action unboundActionEntity(num: Integer, text: String) returns Header;
+    action unboundMassActionEntity(ids: array of String) returns array of Header;
+
     function unboundFunction(num: Integer, text: String) returns Result;
     function unboundMassFunction(ids: array of String) returns array of Result;
+    function unboundFunctionPrimitive(num: Integer) returns Integer;
+    function unboundMassFunctionPrimitive(text1: String, text2: String) returns array of String;
+    function unboundFunctionEntity(num: Integer, text: String) returns Header;
+    function unboundMassFunctionEntity(ids: array of String) returns array of Header;
+
     function unboundDecimalFunction() returns Decimal(19,4);
     function unboundDecimalsFunction() returns array of Decimal(19,4);
     function unboundErrorFunction() returns Result;

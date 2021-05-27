@@ -1336,44 +1336,52 @@ describe("main-request", () => {
     let response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
-        age: 1,
-        code: "TEST",
-        name: "abc",
-        __metadata: {
-          type: "test.MainService.Result",
+        unboundFunction: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
         },
       },
     });
     response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
-        age: 1,
-        code: "TEST",
-        name: "a b/c",
-        __metadata: {
-          type: "test.MainService.Result",
+        unboundFunction: {
+          age: 1,
+          code: "TEST",
+          name: "a b/c",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
         },
       },
     });
     response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=%27a%20b%2Fc%27`);
     expect(response.body).toMatchObject({
       d: {
-        age: 1,
-        code: "TEST",
-        name: "a b/c",
-        __metadata: {
-          type: "test.MainService.Result",
+        unboundFunction: {
+          age: 1,
+          code: "TEST",
+          name: "a b/c",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
         },
       },
     });
     response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text='abc'`);
     expect(response.body).toMatchObject({
       d: {
-        age: 1,
-        code: "TEST",
-        name: "abc",
-        __metadata: {
-          type: "test.MainService.Result",
+        unboundFunction: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
         },
       },
     });
@@ -1384,40 +1392,14 @@ describe("main-request", () => {
     response = await _request;
     expect(response.body).toMatchObject({
       d: {
-        age: 1,
-        code: "TEST",
-        name: "abc",
-        __metadata: {
-          type: "test.MainService.Result",
-        },
-      },
-    });
-    response = await util.callRead(request, `/v2/main/unboundDecimalFunction`);
-    expect(response.body).toMatchObject({
-      d: {
-        value: "12345.6789",
-        __metadata: {
-          type: "Decimal",
-        },
-      },
-    });
-    response = await util.callRead(request, `/v2/main/unboundDecimalsFunction`);
-    expect(response.body).toMatchObject({
-      d: {
-        results: [
-          {
-            value: "12345.6789",
-            __metadata: {
-              type: "Decimal",
-            },
+        unboundFunction: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
           },
-          {
-            value: "12345.6789",
-            __metadata: {
-              type: "Decimal",
-            },
-          },
-        ],
+        },
       },
     });
   });
@@ -1463,6 +1445,74 @@ describe("main-request", () => {
     });
   });
 
+  it("GET unbound primitive function", async () => {
+    let response = await util.callRead(request, `/v2/main/unboundFunctionPrimitive?num=1`);
+    expect(response.body).toMatchObject({
+      d: 1,
+    });
+    response = await util.callRead(request, `/v2/main/unboundMassFunctionPrimitive?text1=abc&text2=def`);
+    expect(response.body).toMatchObject({
+      d: ["abc", "def"],
+    });
+  });
+
+  it("GET unbound entity function", async () => {
+    let response = await util.callRead(request, `/v2/main/unboundFunctionEntity?num=1&text=test`);
+    expect(response.body).toMatchObject({
+      d: {
+        __metadata: {
+          type: "test.MainService.Header",
+        },
+        name: "TEST",
+        description: "test",
+        stock: 1,
+        Items: {
+          __deferred: {},
+        },
+      },
+    });
+    response = await util.callRead(request, `/v2/main/unboundMassFunctionEntity?ids=TEST1&ids='TEST2'`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.Header",
+            },
+            name: "TEST1",
+            description: "TEST1",
+            stock: 0,
+            Items: {
+              __deferred: {},
+            },
+          },
+          {
+            __metadata: {
+              type: "test.MainService.Header",
+            },
+            name: "TEST2",
+            description: "TEST2",
+            stock: 1,
+            Items: {
+              __deferred: {},
+            },
+          },
+        ],
+      },
+    });
+  });
+
+  it("GET unbound decimal function", async () => {
+    let response = await util.callRead(request, `/v2/main/unboundDecimalFunction`);
+    expect(response.body).toMatchObject({
+      d: "12345.6789",
+    });
+    response = await util.callRead(request, `/v2/main/unboundDecimalsFunction`);
+    expect(response.body).toMatchObject({
+      d: ["12345.6789", "12345.6789"],
+    });
+  });
+
   it("GET unbound function error request", async () => {
     let response = await util.callRead(request, `/v2/main/unboundErrorFunction`);
     expect(response.body).toMatchObject({
@@ -1498,11 +1548,13 @@ describe("main-request", () => {
     let response = await util.callRead(request, `/v2/main/unboundWarningFunction`);
     expect(response.body).toMatchObject({
       d: {
-        age: 1,
-        code: "TEST",
-        name: "Test",
-        __metadata: {
-          type: "test.MainService.Result",
+        unboundWarningFunction: {
+          age: 1,
+          code: "TEST",
+          name: "Test",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
         },
       },
     });
@@ -1587,11 +1639,53 @@ describe("main-request", () => {
     response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${id}'&num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
+        boundFunction: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
+        },
+      },
+    });
+    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${id}'&num=1&text=a%20b%2Fc`);
+    expect(response.body).toMatchObject({
+      d: {
+        boundFunction: {
+          age: 1,
+          code: "TEST",
+          name: "a b/c",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
+        },
+      },
+    });
+  });
+
+  it("GET bound mass function request", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header_boundMassFunction?ID=guid'${id}'&ids=TEST1&ids='TEST2'`);
+    expect(response.body).toMatchObject({
+      d: {
         results: [
           {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+          {
             age: 1,
-            code: "TEST",
-            name: "abc",
+            code: "TEST2",
+            name: "TEST2",
             __metadata: {
               type: "test.MainService.Result",
             },
@@ -1599,16 +1693,74 @@ describe("main-request", () => {
         ],
       },
     });
-    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${id}'&num=1&text=a%20b%2Fc`);
+  });
+
+  it("GET bound primitive function", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitive?ID=guid'${id}'&num=1`);
+    expect(response.body).toMatchObject({
+      d: 1,
+    });
+    response = await util.callRead(
+      request,
+      `/v2/main/Header_boundMassFunctionPrimitive?ID=guid'${id}'&text1=abc&text2=def`
+    );
+    expect(response.body).toMatchObject({
+      d: ["abc", "def"],
+    });
+  });
+
+  it("GET bound entity function", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header_boundFunctionEntity?ID=guid'${id}'&num=1&text=test`);
+    expect(response.body).toMatchObject({
+      d: {
+        __metadata: {
+          type: "test.MainService.Header",
+        },
+        name: "TEST",
+        description: "test",
+        stock: 1,
+        Items: {
+          __deferred: {},
+        },
+      },
+    });
+    response = await util.callRead(
+      request,
+      `/v2/main/Header_boundMassFunctionEntity?ID=guid'${id}'&ids=TEST1&ids='TEST2'`
+    );
     expect(response.body).toMatchObject({
       d: {
         results: [
           {
-            age: 1,
-            code: "TEST",
-            name: "a b/c",
             __metadata: {
-              type: "test.MainService.Result",
+              type: "test.MainService.Header",
+            },
+            name: "TEST1",
+            description: "TEST1",
+            stock: 0,
+            Items: {
+              __deferred: {},
+            },
+          },
+          {
+            __metadata: {
+              type: "test.MainService.Header",
+            },
+            name: "TEST2",
+            description: "TEST2",
+            stock: 1,
+            Items: {
+              __deferred: {},
             },
           },
         ],
@@ -1658,11 +1810,13 @@ describe("main-request", () => {
     response = await util.callRead(request, `/v2/main/Header_boundWarningFunction?ID=guid'${id}'`);
     expect(response.body).toMatchObject({
       d: {
-        age: 1,
-        code: "TEST",
-        name: "Test",
-        __metadata: {
-          type: "test.MainService.Result",
+        boundWarningFunction: {
+          age: 1,
+          code: "TEST",
+          name: "Test",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
         },
       },
     });
@@ -1688,31 +1842,27 @@ describe("main-request", () => {
     let response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
-        results: [
-          {
-            age: 1,
-            code: "TEST",
-            name: "abc",
-            __metadata: {
-              type: "test.MainService.Result",
-            },
+        unboundAction: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
           },
-        ],
+        },
       },
     });
     response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
-        results: [
-          {
-            age: 1,
-            code: "TEST",
-            name: "a b/c",
-            __metadata: {
-              type: "test.MainService.Result",
-            },
+        unboundAction: {
+          age: 1,
+          code: "TEST",
+          name: "a b/c",
+          __metadata: {
+            type: "test.MainService.Result",
           },
-        ],
+        },
       },
     });
     response = await util.callWrite(request, `/v2/main/unboundAction`, {
@@ -1721,16 +1871,14 @@ describe("main-request", () => {
     });
     expect(response.body).toMatchObject({
       d: {
-        results: [
-          {
-            age: 1,
-            code: "TEST",
-            name: "abc",
-            __metadata: {
-              type: "test.MainService.Result",
-            },
+        unboundAction: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
           },
-        ],
+        },
       },
     });
     response = await util.callWrite(request, `/v2/main/unboundAction?num=1`, {
@@ -1738,16 +1886,14 @@ describe("main-request", () => {
     });
     expect(response.body).toMatchObject({
       d: {
-        results: [
-          {
-            age: 1,
-            code: "TEST",
-            name: "abc",
-            __metadata: {
-              type: "test.MainService.Result",
-            },
+        unboundAction: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
           },
-        ],
+        },
       },
     });
   });
@@ -1821,6 +1967,63 @@ describe("main-request", () => {
     expect(response.body).toEqual({});
   });
 
+  it("POST unbound primitive action", async () => {
+    let response = await util.callWrite(request, `/v2/main/unboundActionPrimitive?num=1`);
+    expect(response.body).toMatchObject({
+      d: 1,
+    });
+    response = await util.callWrite(request, `/v2/main/unboundMassActionPrimitive?text1=abc&text2=def`);
+    expect(response.body).toMatchObject({
+      d: ["abc", "def"],
+    });
+  });
+
+  it("POST unbound entity action", async () => {
+    let response = await util.callWrite(request, `/v2/main/unboundActionEntity?num=1&text=test`);
+    expect(response.body).toMatchObject({
+      d: {
+        __metadata: {
+          type: "test.MainService.Header",
+        },
+        name: "TEST",
+        description: "test",
+        stock: 1,
+        Items: {
+          __deferred: {},
+        },
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundMassActionEntity?ids=TEST1&ids='TEST2'`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.Header",
+            },
+            name: "TEST1",
+            description: "TEST1",
+            stock: 0,
+            Items: {
+              __deferred: {},
+            },
+          },
+          {
+            __metadata: {
+              type: "test.MainService.Header",
+            },
+            name: "TEST2",
+            description: "TEST2",
+            stock: 1,
+            Items: {
+              __deferred: {},
+            },
+          },
+        ],
+      },
+    });
+  });
+
   it("POST bound action request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
@@ -1830,23 +2033,69 @@ describe("main-request", () => {
     response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${id}'&num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
-        age: 1,
-        code: "TEST",
-        name: "abc",
-        __metadata: {
-          type: "test.MainService.Result",
+        boundAction: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
         },
       },
     });
     response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${id}'&num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
-        age: 1,
-        code: "TEST",
-        name: "a b/c",
-        __metadata: {
-          type: "test.MainService.Result",
+        boundAction: {
+          age: 1,
+          code: "TEST",
+          name: "a b/c",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
         },
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitive?ID=guid'${id}'&num=1`);
+    expect(response.body).toMatchObject({
+      d: 1,
+    });
+    response = await util.callWrite(
+      request,
+      `/v2/main/Header_boundMassActionPrimitive?ID=guid'${id}'&text1=abc&text2=def`
+    );
+    expect(response.body).toMatchObject({
+      d: ["abc", "def"],
+    });
+  });
+
+  it("POST bound mass action request", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callWrite(request, `/v2/main/Header_boundMassAction?ID=guid'${id}'&ids=TEST1&ids='TEST2'`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+          {
+            age: 1,
+            code: "TEST2",
+            name: "TEST2",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+        ],
       },
     });
   });
@@ -1859,6 +2108,79 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callWrite(request, `/v2/main/Header_boundActionNoReturn?ID=guid'${id}'&num=1&text=abc`);
     expect(response.body).toEqual({});
+  });
+
+  it("POST bound primitive action", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitive?ID=guid'${id}'&num=1`);
+    expect(response.body).toMatchObject({
+      d: 1,
+    });
+    response = await util.callWrite(
+      request,
+      `/v2/main/Header_boundMassActionPrimitive?ID=guid'${id}'&text1=abc&text2=def`
+    );
+    expect(response.body).toMatchObject({
+      d: ["abc", "def"],
+    });
+  });
+
+  it("POST bound entity action", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callWrite(request, `/v2/main/Header_boundActionEntity?ID=guid'${id}'&num=1&text=test`);
+    expect(response.body).toMatchObject({
+      d: {
+        __metadata: {
+          type: "test.MainService.Header",
+        },
+        name: "TEST",
+        description: "test",
+        stock: 1,
+        Items: {
+          __deferred: {},
+        },
+      },
+    });
+    response = await util.callWrite(
+      request,
+      `/v2/main/Header_boundMassActionEntity?ID=guid'${id}'&ids=TEST1&ids='TEST2'`
+    );
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.Header",
+            },
+            name: "TEST1",
+            description: "TEST1",
+            stock: 0,
+            Items: {
+              __deferred: {},
+            },
+          },
+          {
+            __metadata: {
+              type: "test.MainService.Header",
+            },
+            name: "TEST2",
+            description: "TEST2",
+            stock: 1,
+            Items: {
+              __deferred: {},
+            },
+          },
+        ],
+      },
+    });
   });
 
   it("GET HANA SYSUUID as ID", async () => {
@@ -2088,16 +2410,18 @@ describe("main-request", () => {
       "x-forwarded-path": `/cockpit/v2/Header_boundFunction?ID=guid'${id}'&num=1&text=abc`,
     });
     expect(response.statusCode).toEqual(200);
-    expect(response.body.d.results).toMatchObject([
-      {
-        age: 1,
-        code: "TEST",
-        name: "abc",
-        __metadata: {
-          type: "test.MainService.Result",
+    expect(response.body).toMatchObject({
+      d: {
+        boundFunction: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
         },
       },
-    ]);
+    });
     response = await util.callWrite(request, "/v2/main/HeaderDelta", {
       name: "Test",
     });
