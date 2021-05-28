@@ -1,3 +1,6 @@
+"use strict";
+
+// eslint-disable-next-line no-restricted-modules
 const fs = require("fs");
 const supertest = require("supertest");
 const cds = require("@sap/cds");
@@ -25,6 +28,7 @@ async function initData({ app }) {
       });
     })
   );
+  // eslint-disable-next-line no-console
   console.log(
     "Test Instances: " +
       responses.filter((entry) => {
