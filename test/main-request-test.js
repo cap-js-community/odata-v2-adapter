@@ -35,46 +35,38 @@ describe("main-request", () => {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
-    expect(response.body).toEqual({
-      d: {
-        EntitySets: [
-          "Favorite",
-          "Header",
-          "HeaderAssocKey",
-          "HeaderDelta",
-          "HeaderItem",
-          "HeaderItemDelta",
-          "HeaderLine",
-          "HeaderStream",
-          "HeaderStreamDecode",
-          "HeaderTemporal",
-          "HeaderUrlStream",
-          "StringUUID",
-        ],
-      },
-    });
+    expect(response.body.d.EntitySets.sort()).toEqual([
+      "Favorite",
+      "Header",
+      "HeaderAssocKey",
+      "HeaderDelta",
+      "HeaderItem",
+      "HeaderItemDelta",
+      "HeaderLine",
+      "HeaderStream",
+      "HeaderStreamDecode",
+      "HeaderTemporal",
+      "HeaderUrlStream",
+      "StringUUID",
+    ]);
     response = await util.callRead(request, "/v2/main/", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
-    expect(response.body).toEqual({
-      d: {
-        EntitySets: [
-          "Favorite",
-          "Header",
-          "HeaderAssocKey",
-          "HeaderDelta",
-          "HeaderItem",
-          "HeaderItemDelta",
-          "HeaderLine",
-          "HeaderStream",
-          "HeaderStreamDecode",
-          "HeaderTemporal",
-          "HeaderUrlStream",
-          "StringUUID",
-        ],
-      },
-    });
+    expect(response.body.d.EntitySets.sort()).toEqual([
+      "Favorite",
+      "Header",
+      "HeaderAssocKey",
+      "HeaderDelta",
+      "HeaderItem",
+      "HeaderItemDelta",
+      "HeaderLine",
+      "HeaderStream",
+      "HeaderStreamDecode",
+      "HeaderTemporal",
+      "HeaderUrlStream",
+      "StringUUID",
+    ]);
   });
 
   it("GET service XML format", async () => {
