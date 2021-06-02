@@ -261,6 +261,7 @@ exports[`main-request GET $metadata 1`] = `
   <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
     <Schema Namespace=\\"test.MainService\\" xmlns=\\"http://schemas.microsoft.com/ado/2008/09/edm\\">
       <EntityContainer Name=\\"EntityContainer\\" m:IsDefaultEntityContainer=\\"true\\">
+        <EntitySet Name=\\"Favorite\\" EntityType=\\"test.MainService.Favorite\\"/>
         <EntitySet Name=\\"Header\\" EntityType=\\"test.MainService.Header\\"/>
         <FunctionImport Name=\\"Header_boundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
@@ -327,23 +328,23 @@ exports[`main-request GET $metadata 1`] = `
         <FunctionImport Name=\\"Header_boundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
         </FunctionImport>
+        <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
+        <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
+        <EntitySet Name=\\"HeaderItemDelta\\" EntityType=\\"test.MainService.HeaderItemDelta\\"/>
         <EntitySet Name=\\"HeaderLine\\" EntityType=\\"test.MainService.HeaderLine\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
         <EntitySet Name=\\"HeaderStreamDecode\\" EntityType=\\"test.MainService.HeaderStreamDecode\\"/>
-        <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
-        <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderTemporal\\" EntityType=\\"test.MainService.HeaderTemporal\\"/>
-        <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
-        <EntitySet Name=\\"HeaderItemDelta\\" EntityType=\\"test.MainService.HeaderItemDelta\\"/>
-        <EntitySet Name=\\"Favorite\\" EntityType=\\"test.MainService.Favorite\\"/>
+        <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
         <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"unboundMassAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        <FunctionImport Name=\\"unboundActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"unboundActionNoReturn\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -352,42 +353,40 @@ exports[`main-request GET $metadata 1`] = `
         <FunctionImport Name=\\"unboundActionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"unboundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundMassActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"Collection(test.MainService.Header)\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
-        </FunctionImport>
+        <FunctionImport Name=\\"unboundDecimalFunction\\" ReturnType=\\"Edm.Decimal\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundDecimalsFunction\\" ReturnType=\\"Collection(Edm.Decimal)\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundErrorFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
         <FunctionImport Name=\\"unboundFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundMassFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\">
-          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\">
-          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\">
-          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"unboundFunctionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"Collection(test.MainService.Header)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundMassFunctionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"Collection(test.MainService.Header)\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"unboundDecimalFunction\\" ReturnType=\\"Edm.Decimal\\" m:HttpMethod=\\"GET\\"/>
-        <FunctionImport Name=\\"unboundDecimalsFunction\\" ReturnType=\\"Collection(Edm.Decimal)\\" m:HttpMethod=\\"GET\\"/>
-        <FunctionImport Name=\\"unboundErrorFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
-        <FunctionImport Name=\\"unboundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundNavigationFunction\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -396,9 +395,14 @@ exports[`main-request GET $metadata 1`] = `
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
         <AssociationSet Name=\\"Header_FirstItem\\" Association=\\"test.MainService.Header_FirstItem\\">
           <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"HeaderAssocKey_header\\" Association=\\"test.MainService.HeaderAssocKey_header\\">
+          <End Role=\\"HeaderAssocKey\\" EntitySet=\\"HeaderAssocKey\\"/>
+          <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
         </AssociationSet>
         <AssociationSet Name=\\"HeaderItem_header\\" Association=\\"test.MainService.HeaderItem_header\\">
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
@@ -412,19 +416,22 @@ exports[`main-request GET $metadata 1`] = `
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
           <End Role=\\"HeaderAssocKey\\" EntitySet=\\"HeaderAssocKey\\"/>
         </AssociationSet>
-        <AssociationSet Name=\\"HeaderLine_item\\" Association=\\"test.MainService.HeaderLine_item\\">
-          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
-          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
-        </AssociationSet>
-        <AssociationSet Name=\\"HeaderAssocKey_header\\" Association=\\"test.MainService.HeaderAssocKey_header\\">
-          <End Role=\\"HeaderAssocKey\\" EntitySet=\\"HeaderAssocKey\\"/>
-          <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
-        </AssociationSet>
         <AssociationSet Name=\\"HeaderItemDelta_header\\" Association=\\"test.MainService.HeaderItemDelta_header\\">
           <End Role=\\"HeaderItemDelta\\" EntitySet=\\"HeaderItemDelta\\"/>
           <End Role=\\"HeaderDelta\\" EntitySet=\\"HeaderDelta\\"/>
         </AssociationSet>
+        <AssociationSet Name=\\"HeaderLine_item\\" Association=\\"test.MainService.HeaderLine_item\\">
+          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
+          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
+        </AssociationSet>
       </EntityContainer>
+      <EntityType Name=\\"Favorite\\">
+        <Key>
+          <PropertyRef Name=\\"name\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
+        <Property Name=\\"value\\" Type=\\"Edm.String\\"/>
+      </EntityType>
       <EntityType Name=\\"Header\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -444,6 +451,27 @@ exports[`main-request GET $metadata 1`] = `
         <NavigationProperty Name=\\"FirstItem\\" Relationship=\\"test.MainService.Header_FirstItem\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <Property Name=\\"FirstItem_ID\\" Type=\\"Edm.Guid\\"/>
       </EntityType>
+      <EntityType Name=\\"HeaderAssocKey\\">
+        <Key>
+          <PropertyRef Name=\\"header_ID\\"/>
+        </Key>
+        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderAssocKey_header\\" FromRole=\\"HeaderAssocKey\\" ToRole=\\"Header\\"/>
+        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderDelta\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
+        <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
+        <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
+        <NavigationProperty Name=\\"Items\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderDelta\\" ToRole=\\"HeaderItemDelta\\"/>
+      </EntityType>
       <EntityType Name=\\"HeaderItem\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -460,6 +488,16 @@ exports[`main-request GET $metadata 1`] = `
         <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
         <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderItemDelta\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
+        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderItemDelta\\" ToRole=\\"HeaderDelta\\"/>
+        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderLine\\">
         <Key>
@@ -493,22 +531,6 @@ exports[`main-request GET $metadata 1`] = `
         <Property Name=\\"totalAmount\\" Type=\\"Edm.Int32\\"/>
         <Property Name=\\"isBlocked\\" Type=\\"Edm.Boolean\\"/>
       </EntityType>
-      <EntityType Name=\\"HeaderUrlStream\\" m:HasStream=\\"true\\">
-        <Key>
-          <PropertyRef Name=\\"ID\\"/>
-        </Key>
-        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
-      </EntityType>
-      <EntityType Name=\\"HeaderAssocKey\\">
-        <Key>
-          <PropertyRef Name=\\"header_ID\\"/>
-        </Key>
-        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderAssocKey_header\\" FromRole=\\"HeaderAssocKey\\" ToRole=\\"Header\\"/>
-        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
-      </EntityType>
       <EntityType Name=\\"HeaderTemporal\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -520,35 +542,13 @@ exports[`main-request GET $metadata 1`] = `
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"value\\" Type=\\"Edm.String\\"/>
       </EntityType>
-      <EntityType Name=\\"HeaderDelta\\">
+      <EntityType Name=\\"HeaderUrlStream\\" m:HasStream=\\"true\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
         </Key>
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
-        <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
-        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
-        <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
-        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
-        <NavigationProperty Name=\\"Items\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderDelta\\" ToRole=\\"HeaderItemDelta\\"/>
-      </EntityType>
-      <EntityType Name=\\"HeaderItemDelta\\">
-        <Key>
-          <PropertyRef Name=\\"ID\\"/>
-        </Key>
-        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
-        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderItemDelta\\" ToRole=\\"HeaderDelta\\"/>
-        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
-      </EntityType>
-      <EntityType Name=\\"Favorite\\">
-        <Key>
-          <PropertyRef Name=\\"name\\"/>
-        </Key>
-        <Property Name=\\"name\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
-        <Property Name=\\"value\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
       </EntityType>
       <EntityType Name=\\"StringUUID\\">
         <Key>
@@ -571,6 +571,18 @@ exports[`main-request GET $metadata 1`] = `
           </Principal>
           <Dependent Role=\\"Header\\">
             <PropertyRef Name=\\"FirstItem_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"HeaderAssocKey_header\\">
+        <End Role=\\"HeaderAssocKey\\" Type=\\"test.MainService.HeaderAssocKey\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"0..1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"Header\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderAssocKey\\">
+            <PropertyRef Name=\\"header_ID\\"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -612,32 +624,6 @@ exports[`main-request GET $metadata 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
-      <Association Name=\\"HeaderLine_item\\">
-        <End Role=\\"HeaderLine\\" Type=\\"test.MainService.HeaderLine\\" Multiplicity=\\"*\\"/>
-        <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\">
-          <OnDelete Action=\\"Cascade\\"/>
-        </End>
-        <ReferentialConstraint>
-          <Principal Role=\\"HeaderItem\\">
-            <PropertyRef Name=\\"ID\\"/>
-          </Principal>
-          <Dependent Role=\\"HeaderLine\\">
-            <PropertyRef Name=\\"item_ID\\"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
-      <Association Name=\\"HeaderAssocKey_header\\">
-        <End Role=\\"HeaderAssocKey\\" Type=\\"test.MainService.HeaderAssocKey\\" Multiplicity=\\"*\\"/>
-        <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"0..1\\"/>
-        <ReferentialConstraint>
-          <Principal Role=\\"Header\\">
-            <PropertyRef Name=\\"ID\\"/>
-          </Principal>
-          <Dependent Role=\\"HeaderAssocKey\\">
-            <PropertyRef Name=\\"header_ID\\"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
       <Association Name=\\"HeaderItemDelta_header\\">
         <End Role=\\"HeaderItemDelta\\" Type=\\"test.MainService.HeaderItemDelta\\" Multiplicity=\\"*\\"/>
         <End Role=\\"HeaderDelta\\" Type=\\"test.MainService.HeaderDelta\\" Multiplicity=\\"0..1\\">
@@ -649,6 +635,20 @@ exports[`main-request GET $metadata 1`] = `
           </Principal>
           <Dependent Role=\\"HeaderItemDelta\\">
             <PropertyRef Name=\\"header_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"HeaderLine_item\\">
+        <End Role=\\"HeaderLine\\" Type=\\"test.MainService.HeaderLine\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role=\\"HeaderItem\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderLine\\">
+            <PropertyRef Name=\\"item_ID\\"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -671,6 +671,30 @@ exports[`main-request GET $metadata 1`] = `
         <Annotation Term=\\"Common.Label\\" String=\\"Changed On\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Created On\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Created By\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Changed On\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
@@ -711,30 +735,6 @@ exports[`main-request GET $metadata 1`] = `
             <PropertyValue Property=\\"Filename\\" String=\\"true\\"/>
           </Record>
         </Annotation>
-      </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Created On\\"/>
-      </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Created By\\"/>
-      </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Changed On\\"/>
-      </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
       </Annotations>
     </Schema>
   </edmx:DataServices>
@@ -756,6 +756,7 @@ exports[`main-request GET $metadata localized 1`] = `
   <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
     <Schema Namespace=\\"test.MainService\\" xmlns=\\"http://schemas.microsoft.com/ado/2008/09/edm\\">
       <EntityContainer Name=\\"EntityContainer\\" m:IsDefaultEntityContainer=\\"true\\">
+        <EntitySet Name=\\"Favorite\\" EntityType=\\"test.MainService.Favorite\\"/>
         <EntitySet Name=\\"Header\\" EntityType=\\"test.MainService.Header\\"/>
         <FunctionImport Name=\\"Header_boundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
@@ -822,23 +823,23 @@ exports[`main-request GET $metadata localized 1`] = `
         <FunctionImport Name=\\"Header_boundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
         </FunctionImport>
+        <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
+        <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
+        <EntitySet Name=\\"HeaderItemDelta\\" EntityType=\\"test.MainService.HeaderItemDelta\\"/>
         <EntitySet Name=\\"HeaderLine\\" EntityType=\\"test.MainService.HeaderLine\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
         <EntitySet Name=\\"HeaderStreamDecode\\" EntityType=\\"test.MainService.HeaderStreamDecode\\"/>
-        <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
-        <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderTemporal\\" EntityType=\\"test.MainService.HeaderTemporal\\"/>
-        <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
-        <EntitySet Name=\\"HeaderItemDelta\\" EntityType=\\"test.MainService.HeaderItemDelta\\"/>
-        <EntitySet Name=\\"Favorite\\" EntityType=\\"test.MainService.Favorite\\"/>
+        <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
         <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"unboundMassAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        <FunctionImport Name=\\"unboundActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"unboundActionNoReturn\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -847,42 +848,40 @@ exports[`main-request GET $metadata localized 1`] = `
         <FunctionImport Name=\\"unboundActionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"unboundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundMassActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"Collection(test.MainService.Header)\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
-        </FunctionImport>
+        <FunctionImport Name=\\"unboundDecimalFunction\\" ReturnType=\\"Edm.Decimal\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundDecimalsFunction\\" ReturnType=\\"Collection(Edm.Decimal)\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundErrorFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
         <FunctionImport Name=\\"unboundFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundMassFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\">
-          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\">
-          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\">
-          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"unboundFunctionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"Collection(test.MainService.Header)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundMassFunctionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"Collection(test.MainService.Header)\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"unboundDecimalFunction\\" ReturnType=\\"Edm.Decimal\\" m:HttpMethod=\\"GET\\"/>
-        <FunctionImport Name=\\"unboundDecimalsFunction\\" ReturnType=\\"Collection(Edm.Decimal)\\" m:HttpMethod=\\"GET\\"/>
-        <FunctionImport Name=\\"unboundErrorFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
-        <FunctionImport Name=\\"unboundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundNavigationFunction\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -891,9 +890,14 @@ exports[`main-request GET $metadata localized 1`] = `
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
         <AssociationSet Name=\\"Header_FirstItem\\" Association=\\"test.MainService.Header_FirstItem\\">
           <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"HeaderAssocKey_header\\" Association=\\"test.MainService.HeaderAssocKey_header\\">
+          <End Role=\\"HeaderAssocKey\\" EntitySet=\\"HeaderAssocKey\\"/>
+          <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
         </AssociationSet>
         <AssociationSet Name=\\"HeaderItem_header\\" Association=\\"test.MainService.HeaderItem_header\\">
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
@@ -907,19 +911,22 @@ exports[`main-request GET $metadata localized 1`] = `
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
           <End Role=\\"HeaderAssocKey\\" EntitySet=\\"HeaderAssocKey\\"/>
         </AssociationSet>
-        <AssociationSet Name=\\"HeaderLine_item\\" Association=\\"test.MainService.HeaderLine_item\\">
-          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
-          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
-        </AssociationSet>
-        <AssociationSet Name=\\"HeaderAssocKey_header\\" Association=\\"test.MainService.HeaderAssocKey_header\\">
-          <End Role=\\"HeaderAssocKey\\" EntitySet=\\"HeaderAssocKey\\"/>
-          <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
-        </AssociationSet>
         <AssociationSet Name=\\"HeaderItemDelta_header\\" Association=\\"test.MainService.HeaderItemDelta_header\\">
           <End Role=\\"HeaderItemDelta\\" EntitySet=\\"HeaderItemDelta\\"/>
           <End Role=\\"HeaderDelta\\" EntitySet=\\"HeaderDelta\\"/>
         </AssociationSet>
+        <AssociationSet Name=\\"HeaderLine_item\\" Association=\\"test.MainService.HeaderLine_item\\">
+          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
+          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
+        </AssociationSet>
       </EntityContainer>
+      <EntityType Name=\\"Favorite\\">
+        <Key>
+          <PropertyRef Name=\\"name\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
+        <Property Name=\\"value\\" Type=\\"Edm.String\\"/>
+      </EntityType>
       <EntityType Name=\\"Header\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -939,6 +946,27 @@ exports[`main-request GET $metadata localized 1`] = `
         <NavigationProperty Name=\\"FirstItem\\" Relationship=\\"test.MainService.Header_FirstItem\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <Property Name=\\"FirstItem_ID\\" Type=\\"Edm.Guid\\"/>
       </EntityType>
+      <EntityType Name=\\"HeaderAssocKey\\">
+        <Key>
+          <PropertyRef Name=\\"header_ID\\"/>
+        </Key>
+        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderAssocKey_header\\" FromRole=\\"HeaderAssocKey\\" ToRole=\\"Header\\"/>
+        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderDelta\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
+        <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
+        <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
+        <NavigationProperty Name=\\"Items\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderDelta\\" ToRole=\\"HeaderItemDelta\\"/>
+      </EntityType>
       <EntityType Name=\\"HeaderItem\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -955,6 +983,16 @@ exports[`main-request GET $metadata localized 1`] = `
         <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
         <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderItemDelta\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
+        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderItemDelta\\" ToRole=\\"HeaderDelta\\"/>
+        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderLine\\">
         <Key>
@@ -988,22 +1026,6 @@ exports[`main-request GET $metadata localized 1`] = `
         <Property Name=\\"totalAmount\\" Type=\\"Edm.Int32\\"/>
         <Property Name=\\"isBlocked\\" Type=\\"Edm.Boolean\\"/>
       </EntityType>
-      <EntityType Name=\\"HeaderUrlStream\\" m:HasStream=\\"true\\">
-        <Key>
-          <PropertyRef Name=\\"ID\\"/>
-        </Key>
-        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
-      </EntityType>
-      <EntityType Name=\\"HeaderAssocKey\\">
-        <Key>
-          <PropertyRef Name=\\"header_ID\\"/>
-        </Key>
-        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderAssocKey_header\\" FromRole=\\"HeaderAssocKey\\" ToRole=\\"Header\\"/>
-        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
-      </EntityType>
       <EntityType Name=\\"HeaderTemporal\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -1015,35 +1037,13 @@ exports[`main-request GET $metadata localized 1`] = `
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"value\\" Type=\\"Edm.String\\"/>
       </EntityType>
-      <EntityType Name=\\"HeaderDelta\\">
+      <EntityType Name=\\"HeaderUrlStream\\" m:HasStream=\\"true\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
         </Key>
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
-        <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
-        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
-        <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
-        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
-        <NavigationProperty Name=\\"Items\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderDelta\\" ToRole=\\"HeaderItemDelta\\"/>
-      </EntityType>
-      <EntityType Name=\\"HeaderItemDelta\\">
-        <Key>
-          <PropertyRef Name=\\"ID\\"/>
-        </Key>
-        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
-        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderItemDelta\\" ToRole=\\"HeaderDelta\\"/>
-        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
-      </EntityType>
-      <EntityType Name=\\"Favorite\\">
-        <Key>
-          <PropertyRef Name=\\"name\\"/>
-        </Key>
-        <Property Name=\\"name\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
-        <Property Name=\\"value\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
       </EntityType>
       <EntityType Name=\\"StringUUID\\">
         <Key>
@@ -1066,6 +1066,18 @@ exports[`main-request GET $metadata localized 1`] = `
           </Principal>
           <Dependent Role=\\"Header\\">
             <PropertyRef Name=\\"FirstItem_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"HeaderAssocKey_header\\">
+        <End Role=\\"HeaderAssocKey\\" Type=\\"test.MainService.HeaderAssocKey\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"0..1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"Header\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderAssocKey\\">
+            <PropertyRef Name=\\"header_ID\\"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -1107,32 +1119,6 @@ exports[`main-request GET $metadata localized 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
-      <Association Name=\\"HeaderLine_item\\">
-        <End Role=\\"HeaderLine\\" Type=\\"test.MainService.HeaderLine\\" Multiplicity=\\"*\\"/>
-        <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\">
-          <OnDelete Action=\\"Cascade\\"/>
-        </End>
-        <ReferentialConstraint>
-          <Principal Role=\\"HeaderItem\\">
-            <PropertyRef Name=\\"ID\\"/>
-          </Principal>
-          <Dependent Role=\\"HeaderLine\\">
-            <PropertyRef Name=\\"item_ID\\"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
-      <Association Name=\\"HeaderAssocKey_header\\">
-        <End Role=\\"HeaderAssocKey\\" Type=\\"test.MainService.HeaderAssocKey\\" Multiplicity=\\"*\\"/>
-        <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"0..1\\"/>
-        <ReferentialConstraint>
-          <Principal Role=\\"Header\\">
-            <PropertyRef Name=\\"ID\\"/>
-          </Principal>
-          <Dependent Role=\\"HeaderAssocKey\\">
-            <PropertyRef Name=\\"header_ID\\"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
       <Association Name=\\"HeaderItemDelta_header\\">
         <End Role=\\"HeaderItemDelta\\" Type=\\"test.MainService.HeaderItemDelta\\" Multiplicity=\\"*\\"/>
         <End Role=\\"HeaderDelta\\" Type=\\"test.MainService.HeaderDelta\\" Multiplicity=\\"0..1\\">
@@ -1144,6 +1130,20 @@ exports[`main-request GET $metadata localized 1`] = `
           </Principal>
           <Dependent Role=\\"HeaderItemDelta\\">
             <PropertyRef Name=\\"header_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"HeaderLine_item\\">
+        <End Role=\\"HeaderLine\\" Type=\\"test.MainService.HeaderLine\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role=\\"HeaderItem\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderLine\\">
+            <PropertyRef Name=\\"item_ID\\"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -1166,6 +1166,30 @@ exports[`main-request GET $metadata localized 1`] = `
         <Annotation Term=\\"Common.Label\\" String=\\"Geändert am\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Geändert von\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Angelegt am\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Angelegt von\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Geändert am\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
@@ -1206,30 +1230,6 @@ exports[`main-request GET $metadata localized 1`] = `
             <PropertyValue Property=\\"Filename\\" String=\\"true\\"/>
           </Record>
         </Annotation>
-      </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Angelegt am\\"/>
-      </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Angelegt von\\"/>
-      </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Geändert am\\"/>
-      </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Geändert von\\"/>
       </Annotations>
     </Schema>
   </edmx:DataServices>
@@ -1251,6 +1251,7 @@ exports[`main-request GET $metadata localized 2`] = `
   <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
     <Schema Namespace=\\"test.MainService\\" xmlns=\\"http://schemas.microsoft.com/ado/2008/09/edm\\">
       <EntityContainer Name=\\"EntityContainer\\" m:IsDefaultEntityContainer=\\"true\\">
+        <EntitySet Name=\\"Favorite\\" EntityType=\\"test.MainService.Favorite\\"/>
         <EntitySet Name=\\"Header\\" EntityType=\\"test.MainService.Header\\"/>
         <FunctionImport Name=\\"Header_boundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
@@ -1317,23 +1318,23 @@ exports[`main-request GET $metadata localized 2`] = `
         <FunctionImport Name=\\"Header_boundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
         </FunctionImport>
+        <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
+        <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.MainService.HeaderItem\\"/>
+        <EntitySet Name=\\"HeaderItemDelta\\" EntityType=\\"test.MainService.HeaderItemDelta\\"/>
         <EntitySet Name=\\"HeaderLine\\" EntityType=\\"test.MainService.HeaderLine\\"/>
         <EntitySet Name=\\"HeaderStream\\" EntityType=\\"test.MainService.HeaderStream\\"/>
         <EntitySet Name=\\"HeaderStreamDecode\\" EntityType=\\"test.MainService.HeaderStreamDecode\\"/>
-        <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
-        <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderTemporal\\" EntityType=\\"test.MainService.HeaderTemporal\\"/>
-        <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
-        <EntitySet Name=\\"HeaderItemDelta\\" EntityType=\\"test.MainService.HeaderItemDelta\\"/>
-        <EntitySet Name=\\"Favorite\\" EntityType=\\"test.MainService.Favorite\\"/>
+        <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
         <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"unboundMassAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        <FunctionImport Name=\\"unboundActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"unboundActionNoReturn\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -1342,42 +1343,40 @@ exports[`main-request GET $metadata localized 2`] = `
         <FunctionImport Name=\\"unboundActionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"unboundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundMassActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"Collection(test.MainService.Header)\\" m:HttpMethod=\\"POST\\">
-          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
-        </FunctionImport>
+        <FunctionImport Name=\\"unboundDecimalFunction\\" ReturnType=\\"Edm.Decimal\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundDecimalsFunction\\" ReturnType=\\"Collection(Edm.Decimal)\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundErrorFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
         <FunctionImport Name=\\"unboundFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundMassFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\">
-          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\">
-          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-        </FunctionImport>
-        <FunctionImport Name=\\"unboundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\">
-          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
-          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"unboundFunctionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassAction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassActionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"Collection(test.MainService.Header)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundMassFunction\\" ReturnType=\\"Collection(test.MainService.Result)\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundMassFunctionEntity\\" EntitySet=\\"Header\\" ReturnType=\\"Collection(test.MainService.Header)\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"ids\\" Type=\\"Collection(Edm.String)\\" Nullable=\\"false\\" Mode=\\"In\\"/>
         </FunctionImport>
-        <FunctionImport Name=\\"unboundDecimalFunction\\" ReturnType=\\"Edm.Decimal\\" m:HttpMethod=\\"GET\\"/>
-        <FunctionImport Name=\\"unboundDecimalsFunction\\" ReturnType=\\"Collection(Edm.Decimal)\\" m:HttpMethod=\\"GET\\"/>
-        <FunctionImport Name=\\"unboundErrorFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
-        <FunctionImport Name=\\"unboundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
+        <FunctionImport Name=\\"unboundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+          <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundNavigationFunction\\" EntitySet=\\"Header\\" ReturnType=\\"test.MainService.Header\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -1386,9 +1385,14 @@ exports[`main-request GET $metadata localized 2`] = `
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundWarningFunction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"GET\\"/>
         <AssociationSet Name=\\"Header_FirstItem\\" Association=\\"test.MainService.Header_FirstItem\\">
           <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"HeaderAssocKey_header\\" Association=\\"test.MainService.HeaderAssocKey_header\\">
+          <End Role=\\"HeaderAssocKey\\" EntitySet=\\"HeaderAssocKey\\"/>
+          <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
         </AssociationSet>
         <AssociationSet Name=\\"HeaderItem_header\\" Association=\\"test.MainService.HeaderItem_header\\">
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
@@ -1402,19 +1406,22 @@ exports[`main-request GET $metadata localized 2`] = `
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
           <End Role=\\"HeaderAssocKey\\" EntitySet=\\"HeaderAssocKey\\"/>
         </AssociationSet>
-        <AssociationSet Name=\\"HeaderLine_item\\" Association=\\"test.MainService.HeaderLine_item\\">
-          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
-          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
-        </AssociationSet>
-        <AssociationSet Name=\\"HeaderAssocKey_header\\" Association=\\"test.MainService.HeaderAssocKey_header\\">
-          <End Role=\\"HeaderAssocKey\\" EntitySet=\\"HeaderAssocKey\\"/>
-          <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
-        </AssociationSet>
         <AssociationSet Name=\\"HeaderItemDelta_header\\" Association=\\"test.MainService.HeaderItemDelta_header\\">
           <End Role=\\"HeaderItemDelta\\" EntitySet=\\"HeaderItemDelta\\"/>
           <End Role=\\"HeaderDelta\\" EntitySet=\\"HeaderDelta\\"/>
         </AssociationSet>
+        <AssociationSet Name=\\"HeaderLine_item\\" Association=\\"test.MainService.HeaderLine_item\\">
+          <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
+          <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
+        </AssociationSet>
       </EntityContainer>
+      <EntityType Name=\\"Favorite\\">
+        <Key>
+          <PropertyRef Name=\\"name\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
+        <Property Name=\\"value\\" Type=\\"Edm.String\\"/>
+      </EntityType>
       <EntityType Name=\\"Header\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -1434,6 +1441,27 @@ exports[`main-request GET $metadata localized 2`] = `
         <NavigationProperty Name=\\"FirstItem\\" Relationship=\\"test.MainService.Header_FirstItem\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
         <Property Name=\\"FirstItem_ID\\" Type=\\"Edm.Guid\\"/>
       </EntityType>
+      <EntityType Name=\\"HeaderAssocKey\\">
+        <Key>
+          <PropertyRef Name=\\"header_ID\\"/>
+        </Key>
+        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderAssocKey_header\\" FromRole=\\"HeaderAssocKey\\" ToRole=\\"Header\\"/>
+        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderDelta\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
+        <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
+        <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
+        <NavigationProperty Name=\\"Items\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderDelta\\" ToRole=\\"HeaderItemDelta\\"/>
+      </EntityType>
       <EntityType Name=\\"HeaderItem\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -1450,6 +1478,16 @@ exports[`main-request GET $metadata localized 2`] = `
         <NavigationProperty Name=\\"assoc\\" Relationship=\\"test.MainService.HeaderItem_assoc\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderAssocKey\\"/>
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
         <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.MainService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderItemDelta\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
+        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderItemDelta\\" ToRole=\\"HeaderDelta\\"/>
+        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderLine\\">
         <Key>
@@ -1483,22 +1521,6 @@ exports[`main-request GET $metadata localized 2`] = `
         <Property Name=\\"totalAmount\\" Type=\\"Edm.Int32\\"/>
         <Property Name=\\"isBlocked\\" Type=\\"Edm.Boolean\\"/>
       </EntityType>
-      <EntityType Name=\\"HeaderUrlStream\\" m:HasStream=\\"true\\">
-        <Key>
-          <PropertyRef Name=\\"ID\\"/>
-        </Key>
-        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
-      </EntityType>
-      <EntityType Name=\\"HeaderAssocKey\\">
-        <Key>
-          <PropertyRef Name=\\"header_ID\\"/>
-        </Key>
-        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderAssocKey_header\\" FromRole=\\"HeaderAssocKey\\" ToRole=\\"Header\\"/>
-        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"num\\" Type=\\"Edm.Double\\"/>
-      </EntityType>
       <EntityType Name=\\"HeaderTemporal\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -1510,35 +1532,13 @@ exports[`main-request GET $metadata localized 2`] = `
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"value\\" Type=\\"Edm.String\\"/>
       </EntityType>
-      <EntityType Name=\\"HeaderDelta\\">
+      <EntityType Name=\\"HeaderUrlStream\\" m:HasStream=\\"true\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
         </Key>
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
-        <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
-        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
-        <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
-        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
-        <NavigationProperty Name=\\"Items\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderDelta\\" ToRole=\\"HeaderItemDelta\\"/>
-      </EntityType>
-      <EntityType Name=\\"HeaderItemDelta\\">
-        <Key>
-          <PropertyRef Name=\\"ID\\"/>
-        </Key>
-        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
-        <NavigationProperty Name=\\"header\\" Relationship=\\"test.MainService.HeaderItemDelta_header\\" FromRole=\\"HeaderItemDelta\\" ToRole=\\"HeaderDelta\\"/>
-        <Property Name=\\"header_ID\\" Type=\\"Edm.Guid\\"/>
-      </EntityType>
-      <EntityType Name=\\"Favorite\\">
-        <Key>
-          <PropertyRef Name=\\"name\\"/>
-        </Key>
-        <Property Name=\\"name\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
-        <Property Name=\\"value\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
+        <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
       </EntityType>
       <EntityType Name=\\"StringUUID\\">
         <Key>
@@ -1561,6 +1561,18 @@ exports[`main-request GET $metadata localized 2`] = `
           </Principal>
           <Dependent Role=\\"Header\\">
             <PropertyRef Name=\\"FirstItem_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"HeaderAssocKey_header\\">
+        <End Role=\\"HeaderAssocKey\\" Type=\\"test.MainService.HeaderAssocKey\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"0..1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"Header\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderAssocKey\\">
+            <PropertyRef Name=\\"header_ID\\"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -1602,32 +1614,6 @@ exports[`main-request GET $metadata localized 2`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
-      <Association Name=\\"HeaderLine_item\\">
-        <End Role=\\"HeaderLine\\" Type=\\"test.MainService.HeaderLine\\" Multiplicity=\\"*\\"/>
-        <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\">
-          <OnDelete Action=\\"Cascade\\"/>
-        </End>
-        <ReferentialConstraint>
-          <Principal Role=\\"HeaderItem\\">
-            <PropertyRef Name=\\"ID\\"/>
-          </Principal>
-          <Dependent Role=\\"HeaderLine\\">
-            <PropertyRef Name=\\"item_ID\\"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
-      <Association Name=\\"HeaderAssocKey_header\\">
-        <End Role=\\"HeaderAssocKey\\" Type=\\"test.MainService.HeaderAssocKey\\" Multiplicity=\\"*\\"/>
-        <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"0..1\\"/>
-        <ReferentialConstraint>
-          <Principal Role=\\"Header\\">
-            <PropertyRef Name=\\"ID\\"/>
-          </Principal>
-          <Dependent Role=\\"HeaderAssocKey\\">
-            <PropertyRef Name=\\"header_ID\\"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
       <Association Name=\\"HeaderItemDelta_header\\">
         <End Role=\\"HeaderItemDelta\\" Type=\\"test.MainService.HeaderItemDelta\\" Multiplicity=\\"*\\"/>
         <End Role=\\"HeaderDelta\\" Type=\\"test.MainService.HeaderDelta\\" Multiplicity=\\"0..1\\">
@@ -1639,6 +1625,20 @@ exports[`main-request GET $metadata localized 2`] = `
           </Principal>
           <Dependent Role=\\"HeaderItemDelta\\">
             <PropertyRef Name=\\"header_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"HeaderLine_item\\">
+        <End Role=\\"HeaderLine\\" Type=\\"test.MainService.HeaderLine\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role=\\"HeaderItem\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"HeaderLine\\">
+            <PropertyRef Name=\\"item_ID\\"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -1661,6 +1661,30 @@ exports[`main-request GET $metadata localized 2`] = `
         <Annotation Term=\\"Common.Label\\" String=\\"Geändert am\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Geändert von\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Angelegt am\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Angelegt von\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Geändert am\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
@@ -1702,37 +1726,13 @@ exports[`main-request GET $metadata localized 2`] = `
           </Record>
         </Annotation>
       </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Angelegt am\\"/>
-      </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Angelegt von\\"/>
-      </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Geändert am\\"/>
-      </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderDelta/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Geändert von\\"/>
-      </Annotations>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>"
 `;
 
-exports[`main-request GET service XML format 1`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 1`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
 
-exports[`main-request GET service XML format 2`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 2`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
 
-exports[`main-request GET service XML format 3`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 3`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
