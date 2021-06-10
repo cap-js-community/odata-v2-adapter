@@ -1265,6 +1265,44 @@ describe("main-request", () => {
     });
   });
 
+  it("POST request with encoding", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test: èèòàù",
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    let id = response.body.d.ID;
+    expect(id).toBeDefined();
+    expect(response.body.d.name).toEqual("Test: èèòàù");
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.name).toEqual("Test: èèòàù");
+    expect(response.headers["content-type"]).toEqual("application/json");
+
+    response = await util.callWrite(
+      request,
+      "/v2/main/Header",
+      {
+        name: "Test: èèòàù",
+      },
+      false,
+      {
+        "content-type": "application/json; charset=utf-8",
+      }
+    );
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    id = response.body.d.ID;
+    expect(id).toBeDefined();
+    expect(response.body.d.name).toEqual("Test: èèòàù");
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.name).toEqual("Test: èèòàù");
+    expect(response.headers["content-type"]).toEqual("application/json");
+  });
+
   it("PUT request after GET", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",

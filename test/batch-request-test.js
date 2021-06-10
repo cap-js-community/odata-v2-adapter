@@ -119,6 +119,26 @@ describe("batch-request", () => {
     });
   });
 
+  it("POST request with encoding", async () => {
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST-Charset.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    let response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    const [first] = responses;
+    expect(responses.filter((response) => response.statusCode === 201)).toEqual([first]);
+
+    expect(first.body.d.name).toEqual("Test: èèòàù");
+    const id = first.body.d.ID;
+    expect(id).toBeDefined();
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.name).toEqual("Test: èèòàù");
+    expect(response.headers["content-type"]).toEqual("application/json");
+  });
+
   it("POST request changeset with misplaced content-id", async () => {
     const requestBoundary = "batch_f992-3b90-6e9f";
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST-ContentId.txt", "utf8");
