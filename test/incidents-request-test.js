@@ -1,7 +1,6 @@
 "use strict";
 
 const supertest = require("supertest");
-const fs = require("fs");
 
 const env = require("./_env");
 const util = require("./_env/util");

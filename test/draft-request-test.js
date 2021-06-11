@@ -1,7 +1,8 @@
 "use strict";
 
-const fs = require("fs");
 const supertest = require("supertest");
+// eslint-disable-next-line no-restricted-modules
+const fs = require("fs");
 
 const env = require("./_env");
 const util = require("./_env/util");

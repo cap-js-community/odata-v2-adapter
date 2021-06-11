@@ -1,7 +1,7 @@
 "use strict";
 
-const cds = require("@sap/cds");
 const supertest = require("supertest");
+// eslint-disable-next-line no-restricted-modules
 const fs = require("fs");
 
 const env = require("./_env");
@@ -19,7 +19,7 @@ describe("auth-request", () => {
     await env.end();
   });
 
-  it("POST audit ", async () => {
+  it("POST audit", async () => {
     let response = await util.callWrite(request, "/v2/audit/Audits", {
       audit_type_ID: 1,
       work_activity_ID: 1,
