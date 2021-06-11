@@ -73,9 +73,9 @@ type Options = {
     fileUploadSizeLimit?: number | 10485760,
 
     /**
-     * Indicates to OData V4 backend to continue on error. Default is true.
+     * Indicates to OData V4 backend to continue on error. Default is false.
      */
-    continueOnError?: boolean | true,
+    continueOnError?: boolean | false,
 
     /**
      * Use ISO 8601 format for type cds.Time (Edm.Time). Default is false.

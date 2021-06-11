@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.7.3 - tbd
+## Version 1.7.3 - 2021-06-11
 
 ### Fixed
 
-- Add OData V4 'prefer: odata.continue-on-error' header for batch requests
+- Change OData V4 'continue-on-error' default to 'false'
+- Proxy option 'continueOnError: true' available to activate 'continue-on-error'
 
 ## Version 1.7.2 - 2021-06-10
 
