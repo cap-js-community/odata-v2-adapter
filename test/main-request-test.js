@@ -346,6 +346,13 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callRead(request, `/v2/main/Header?search=Search%20Instance`);
     expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(request, `/v2/main/Header?$search=Search%20Instance`);
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(request, `/v2/main/Header/$count?search=Search%20Instance`);
+    // TODO: cap/issues/8546
+    //expect(response.text).toEqual("1");
+    response = await util.callRead(request, `/v2/main/Header/$count?$search=Search%20Instance`);
+    //expect(response.text).toEqual("1");
   });
 
   it("GET request with $count", async () => {
