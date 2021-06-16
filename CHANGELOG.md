@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Explain usage of response compression in README.
+
 ## Version 1.7.3 - 2021-06-11
 
 ### Fixed
