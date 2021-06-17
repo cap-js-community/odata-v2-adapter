@@ -163,7 +163,7 @@ A running example can be tested as follows:
 
 ## Compression
 
-Response compressions can be enabled, by registering the `compression` Node.js 
+Response compressions can be enabled, by registering the `compression` Node.js
 module in Express app at bootstrap time, e.g. in `srv/server.js`:
 
 ```
@@ -186,8 +186,8 @@ function shouldCompress(req, res) {
 }
 ```
 
-The shown compression filter function enables compression including 
-OData Batch (`$batch`) calls with content type `multipart/mixed`. 
+The shown compression filter function enables compression including
+OData Batch (`$batch`) calls with content type `multipart/mixed`.
 
 ## Documentation
 

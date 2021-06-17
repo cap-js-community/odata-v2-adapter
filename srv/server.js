@@ -7,15 +7,14 @@ const compression = require("compression");
 const init = require("../test/_env/data/init");
 
 cds.on("bootstrap", (app) => {
-  app.use(compression({filter: shouldCompress }));
+  app.use(compression({ filter: shouldCompress }));
   app.use(proxy());
 });
 
-cds.on("served", (services) => {
-});
+cds.on("served", (services) => {});
 
 cds.on("listening", (server) => {
-  init({app: cds.app});
+  init({ app: cds.app });
 });
 
 function shouldCompress(req, res) {
