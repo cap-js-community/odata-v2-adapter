@@ -20,7 +20,7 @@ describe("passenegers-request", () => {
   it("GET passenger transportation", async () => {
     const response = await util.callRead(
       request,
-      "/v2/passenger-transportation/CalculationFactors(TRANSPORT_MODE_KEY='Company_Car',DIMENSION='DEFAULT',CLASS='DEFAULT',COUNTRY_OF_TRIP='DEFAULT',CURRENCY='DEFAULT',ALLOCATION_METHOD='KM',VALID_FROM=datetime'2000-01-02T00:00',VALID_TO=datetime'4000-01-02T00:00')",
+      "/v2/passenger-transportation/CalculationFactors(TRANSPORT_MODE_KEY='Company_Car',DIMENSION='DEFAULT',CLASS='DEFAULT',COUNTRY_OF_TRIP='DEFAULT',CURRENCY='DEFAULT',ALLOCATION_METHOD='KM',VALID_FROM='2000-01-02',VALID_TO='4000-01-02')",
       {
         accept: "application/json",
       }
@@ -34,14 +34,14 @@ describe("passenegers-request", () => {
         CURRENCY: "DEFAULT",
         DIMENSION: "DEFAULT",
         TRANSPORT_MODE_KEY: "Company_Car",
-        VALID_FROM: "/Date(946771200000)/",
-        VALID_TO: "/Date(64060675200000)/",
+        VALID_FROM: "2000-01-02",
+        VALID_TO: "4000-01-02",
         __metadata: {
           type: "passenger.PassengerTransportationService.CalculationFactors",
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/passenger-transportation/CalculationFactors(TRANSPORT_MODE_KEY='Company_Car',DIMENSION='DEFAULT',CLASS='DEFAULT',COUNTRY_OF_TRIP='DEFAULT',CURRENCY='DEFAULT',ALLOCATION_METHOD='KM',VALID_FROM=datetime'2000-01-02T00:00',VALID_TO=datetime'4000-01-02T00:00')`,
+          )}/v2/passenger-transportation/CalculationFactors(TRANSPORT_MODE_KEY='Company_Car',DIMENSION='DEFAULT',CLASS='DEFAULT',COUNTRY_OF_TRIP='DEFAULT',CURRENCY='DEFAULT',ALLOCATION_METHOD='KM',VALID_FROM='2000-01-02',VALID_TO='4000-01-02')`,
         },
       },
     });

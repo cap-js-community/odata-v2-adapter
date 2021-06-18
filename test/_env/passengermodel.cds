@@ -7,7 +7,9 @@ entity CalculationFactors {
     key COUNTRY_OF_TRIP: String;
     key CURRENCY: String;
     key ALLOCATION_METHOD: String;
+    @odata.Type: 'Edm.String'
     key VALID_FROM: Date;
+    @odata.Type: 'Edm.String'
     key VALID_TO: Date;
 }
 
