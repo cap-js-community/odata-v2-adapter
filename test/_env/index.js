@@ -31,6 +31,7 @@ module.exports = async (service, defaultPort, fnInit, options) => {
     server = new http.Server(app);
     server.listen(port, () => {
       port = server.address().port;
+      // eslint-disable-next-line no-console
       console.info(`Server listening on port ${port}`);
       resolve();
     });

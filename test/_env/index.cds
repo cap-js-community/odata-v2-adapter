@@ -7,4 +7,5 @@ using { acme.cloud as acmeCloud } from './incidentsmodel';
 using { auth } from './authmodel';
 using from './navigatemodel';
 using from './passengermodel';
+using from './emissionsmodel';
 using { audit } from './auditmodel';
