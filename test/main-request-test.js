@@ -162,10 +162,12 @@ describe("main-request", () => {
               value: "Not Found",
             },
             severity: "error",
+            target: "/#TRANSIENT#",
           },
         ],
       },
       severity: "error",
+      target: "/#TRANSIENT#",
     });
   });
 
@@ -524,6 +526,7 @@ describe("main-request", () => {
                   "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888",
               },
               severity: "error",
+              target: "/#TRANSIENT#",
               type: "system",
             },
           ],
@@ -534,6 +537,7 @@ describe("main-request", () => {
             "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888",
         },
         severity: "error",
+        target: "/#TRANSIENT#",
         type: "system",
       },
     });
@@ -561,10 +565,12 @@ describe("main-request", () => {
                 value: "Expected uri token 'EOF' could not be found in '$value2' at position 7",
               },
               severity: "error",
+              target: "/#TRANSIENT#",
             },
           ],
         },
         severity: "error",
+        target: "/#TRANSIENT#",
       },
     });
   });
@@ -849,6 +855,7 @@ describe("main-request", () => {
           value: "Filename contains error",
         },
         severity: "error",
+        target: "/#TRANSIENT#",
         innererror: {
           errordetails: [
             {
@@ -858,6 +865,7 @@ describe("main-request", () => {
                 value: "Filename contains error",
               },
               severity: "error",
+              target: "/#TRANSIENT#",
             },
           ],
         },
@@ -1008,10 +1016,12 @@ describe("main-request", () => {
               code: "501",
               message: { lang: "en", value: "Path expressions in query options are not supported on SQLite" },
               severity: "error",
+              target: "/#TRANSIENT#",
             },
           ],
         },
         severity: "error",
+        target: "/#TRANSIENT#",
       },
     };
 
