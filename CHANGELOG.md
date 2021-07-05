@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Default missing message target to '/#TRANSIENT#'
+- Return 404 for unknown service name during model compilation
 
 ## Version 1.7.6 - 2021-07-01
 
