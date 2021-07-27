@@ -1,6 +1,6 @@
 {
   "name": "@sap/cds-odata-v2-adapter-proxy",
-  "version": "1.7.7",
+  "version": "1.7.8",
   "description": "CDS OData V2 Adapter Proxy for CDS OData V4 Services",
   "homepage": "https://cap.cloud.sap/",
   "engines": {
