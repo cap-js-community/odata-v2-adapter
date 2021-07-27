@@ -23,6 +23,24 @@ module.exports = (srv) => {
     });
   });
 
+  srv.on("boundActionInline", Header, async (req) => {
+    return {
+      code: "TEST",
+      name: req.data.text,
+      age: req.data.num,
+    };
+  });
+
+  srv.on("boundMassActionInline", Header, async (req) => {
+    return req.data.ids.map((id, index) => {
+      return {
+        code: id,
+        name: id,
+        age: index,
+      };
+    });
+  });
+
   srv.on("boundActionNoReturn", Header, async (req) => {});
 
   srv.on("boundActionPrimitive", Header, async (req) => {
@@ -62,6 +80,24 @@ module.exports = (srv) => {
   });
 
   srv.on("boundMassFunction", Header, async (req) => {
+    return req.data.ids.map((id, index) => {
+      return {
+        code: id,
+        name: id,
+        age: index,
+      };
+    });
+  });
+
+  srv.on("boundFunctionInline", Header, async (req) => {
+    return {
+      code: "TEST",
+      name: req.data.text,
+      age: req.data.num,
+    };
+  });
+
+  srv.on("boundMassFunctionInline", Header, async (req) => {
     return req.data.ids.map((id, index) => {
       return {
         code: id,
@@ -163,6 +199,26 @@ module.exports = (srv) => {
     });
   });
 
+  srv.on("unboundActionInline", async (req) => {
+    return [
+      {
+        code: "TEST",
+        name: req.data.text,
+        age: req.data.num,
+      },
+    ];
+  });
+
+  srv.on("unboundMassActionInline", async (req) => {
+    return req.data.ids.map((id, index) => {
+      return {
+        code: id,
+        name: id,
+        age: index,
+      };
+    });
+  });
+
   srv.on("unboundActionNoReturn", async (req) => {});
 
   srv.on("unboundActionPrimitive", async (req) => {
@@ -202,6 +258,26 @@ module.exports = (srv) => {
   });
 
   srv.on("unboundMassFunction", async (req) => {
+    // Unwrap collection
+    const ids = req.data.ids || JSON.parse(req._.req.query["@idsCol"]).map((id) => id.replace(/^["](.*)["]$/, "$1"));
+    return ids.map((id, index) => {
+      return {
+        code: id,
+        name: id,
+        age: index,
+      };
+    });
+  });
+
+  srv.on("unboundFunctionInline", async (req) => {
+    return {
+      code: "TEST",
+      name: req.data.text,
+      age: req.data.num,
+    };
+  });
+
+  srv.on("unboundMassFunctionInline", async (req) => {
     // Unwrap collection
     const ids = req.data.ids || JSON.parse(req._.req.query["@idsCol"]).map((id) => id.replace(/^["](.*)["]$/, "$1"));
     return ids.map((id, index) => {

@@ -1393,6 +1393,17 @@ describe("main-request", () => {
         },
       },
     });
+    response = await util.callRead(request, `/v2/main/unboundFunctionInline?num=1&text=abc`);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundFunctionInline: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {},
+        },
+      },
+    });
     response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
@@ -1486,6 +1497,25 @@ describe("main-request", () => {
             __metadata: {
               type: "test.MainService.Result",
             },
+          },
+        ],
+      },
+    });
+    response = await util.callRead(request, `/v2/main/unboundMassFunctionInline?ids=TEST1&ids='TEST2'`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {},
+          },
+          {
+            age: 1,
+            code: "TEST2",
+            name: "TEST2",
+            __metadata: {},
           },
         ],
       },
@@ -1899,6 +1929,17 @@ describe("main-request", () => {
         },
       },
     });
+    response = await util.callWrite(request, `/v2/main/unboundActionInline?num=1&text=abc`);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundActionInline: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {},
+        },
+      },
+    });
     response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
@@ -2007,6 +2048,25 @@ describe("main-request", () => {
         ],
       },
     });
+    response = await util.callWrite(request, `/v2/main/unboundMassActionInline?ids=TEST1&ids='TEST2'`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {},
+          },
+          {
+            age: 1,
+            code: "TEST2",
+            name: "TEST2",
+            __metadata: {},
+          },
+        ],
+      },
+    });
   });
 
   it("POST unbound action request with no return", async () => {
@@ -2090,6 +2150,17 @@ describe("main-request", () => {
         },
       },
     });
+    response = await util.callWrite(request, `/v2/main/Header_boundActionInline?ID=guid'${id}'&num=1&text=abc`);
+    expect(response.body).toMatchObject({
+      d: {
+        boundActionInline: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {},
+        },
+      },
+    });
     response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${id}'&num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
@@ -2122,6 +2193,21 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
+    response = await util.callWrite(request, `/v2/main/Header_boundMassAction?ID=guid'${id}'&ids=TEST1`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+        ],
+      },
+    });
     response = await util.callWrite(request, `/v2/main/Header_boundMassAction?ID=guid'${id}'&ids=TEST1&ids='TEST2'`);
     expect(response.body).toMatchObject({
       d: {
@@ -2141,6 +2227,28 @@ describe("main-request", () => {
             __metadata: {
               type: "test.MainService.Result",
             },
+          },
+        ],
+      },
+    });
+    response = await util.callWrite(
+      request,
+      `/v2/main/Header_boundMassActionInline?ID=guid'${id}'&ids=TEST1&ids='TEST2'`
+    );
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {},
+          },
+          {
+            age: 1,
+            code: "TEST2",
+            name: "TEST2",
+            __metadata: {},
           },
         ],
       },

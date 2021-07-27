@@ -11,8 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Default missing message target to '/#TRANSIENT#'
+- Support inline return type for actions and functions
+- Default undefined message target to '/#TRANSIENT#'
 - Return 404 for unknown service name during model compilation
+- Enhance logging to contain service name for service lookup from request
 
 ## Version 1.7.6 - 2021-07-01
 

@@ -113,6 +113,16 @@ service MainService {
     entity Header as projection on test.Header actions {
         action boundAction(num: Integer, text: String) returns Result;
         action boundMassAction(ids: array of String) returns array of Result;
+        action boundActionInline(num: Integer, text: String) returns {
+            name: String;
+            code: String;
+            age: Integer;
+        };
+        action boundMassActionInline(ids: array of String) returns array of {
+            name: String;
+            code: String;
+            age: Integer;
+        };
         action boundActionNoReturn(num: Integer, text: String);
         action boundActionPrimitive(num: Integer) returns Integer;
         action boundMassActionPrimitive(text1: String, text2: String) returns array of String;
@@ -121,11 +131,20 @@ service MainService {
 
         function boundFunction(num: Integer, text: String) returns Result;
         function boundMassFunction(ids: array of String) returns array of Result;
+        function boundFunctionInline(num: Integer, text: String) returns {
+             name: String;
+             code: String;
+             age: Integer;
+        };
+        function boundMassFunctionInline(num: Integer, text: String) returns array of {
+             name: String;
+             code: String;
+             age: Integer;
+        };
         function boundFunctionPrimitive(num: Integer) returns Integer;
         function boundMassFunctionPrimitive(text1: String, text2: String) returns array of String;
         function boundFunctionEntity(num: Integer, text: String) returns Header;
         function boundMassFunctionEntity(ids: array of String) returns array of Header;
-
         function boundErrorFunction() returns Result;
         function boundWarningFunction() returns Result;
     };
@@ -144,6 +163,16 @@ service MainService {
 
     action unboundAction(num: Integer, text: String) returns Result;
     action unboundMassAction(ids: array of String) returns array of Result;
+    action unboundActionInline(num: Integer, text: String) returns {
+        name: String;
+        code: String;
+        age: Integer;
+    };
+    action unboundMassActionInline(ids: array of String) returns array of {
+        name: String;
+        code: String;
+        age: Integer;
+    };
     action unboundActionNoReturn(num: Integer, text: String);
     action unboundActionPrimitive(num: Integer) returns Integer;
     action unboundMassActionPrimitive(text1: String, text2: String) returns array of String;
@@ -152,6 +181,16 @@ service MainService {
 
     function unboundFunction(num: Integer, text: String) returns Result;
     function unboundMassFunction(ids: array of String) returns array of Result;
+    function unboundFunctionInline(num: Integer, text: String) returns {
+         name: String;
+         code: String;
+         age: Integer;
+    };
+    function unboundMassFunctionInline(ids: array of String) returns array of {
+        name: String;
+        code: String;
+        age: Integer;
+    };
     function unboundFunctionPrimitive(num: Integer) returns Integer;
     function unboundMassFunctionPrimitive(text1: String, text2: String) returns array of String;
     function unboundFunctionEntity(num: Integer, text: String) returns Header;
