@@ -317,6 +317,7 @@ Logging layers of CDS OData V2 Adapter Proxy start with `cov2ap`.
 - Next Links (skiptoken)
 - Delta Responses (deltatoken)
 - Continue-On-Error
+- X-HTTP-Method
 
 ## OData V2/V4 Delta
 
