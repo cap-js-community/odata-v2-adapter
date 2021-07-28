@@ -140,7 +140,7 @@
               "name": "sap.suite.ui.generic.template.ObjectPage",
               "settings": {
                 "sections": {
-                  "demandItems::com.sap.vocabularies.UI.v1.LineItem": {
+                  "com.sap.vocabularies.UI.v1.LineItem": {
                     "navigationProperty": "Items",
                     "entitySet": "HeaderItem",
                     "createMode": "inline"
