@@ -1319,6 +1319,27 @@ describe("main-request", () => {
     expect(response.headers["content-type"]).toEqual("application/json");
   });
 
+  it("POST request with x-http-method", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callWrite(
+      request,
+      `/v2/main/Header(guid'${id}')`,
+      {
+        name: "Test2",
+      },
+      false,
+      {
+        "x-http-method": "MERGE",
+      }
+    );
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.name).toEqual("Test2");
+  });
+
   it("PUT request after GET", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
