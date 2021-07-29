@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Add metadata type of inline return type for actions and functions
+
 ## Version 1.7.8 - 2021-07-28
 
 ### Fixed

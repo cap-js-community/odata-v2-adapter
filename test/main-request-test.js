@@ -1420,7 +1420,9 @@ describe("main-request", () => {
           age: 1,
           code: "TEST",
           name: "abc",
-          __metadata: {},
+          __metadata: {
+            type: "test.MainService.return_test_MainService_unboundFunctionInline",
+          },
         },
       },
     });
@@ -1529,13 +1531,17 @@ describe("main-request", () => {
             age: 0,
             code: "TEST1",
             name: "TEST1",
-            __metadata: {},
+            __metadata: {
+              type: "test.MainService.return_test_MainService_unboundMassFunctionInline",
+            },
           },
           {
             age: 1,
             code: "TEST2",
             name: "TEST2",
-            __metadata: {},
+            __metadata: {
+              type: "test.MainService.return_test_MainService_unboundMassFunctionInline",
+            },
           },
         ],
       },
@@ -1956,7 +1962,9 @@ describe("main-request", () => {
           age: 1,
           code: "TEST",
           name: "abc",
-          __metadata: {},
+          __metadata: {
+            type: "test.MainService.return_test_MainService_unboundActionInline",
+          },
         },
       },
     });
@@ -2076,13 +2084,17 @@ describe("main-request", () => {
             age: 0,
             code: "TEST1",
             name: "TEST1",
-            __metadata: {},
+            __metadata: {
+              type: "test.MainService.return_test_MainService_unboundMassActionInline",
+            },
           },
           {
             age: 1,
             code: "TEST2",
             name: "TEST2",
-            __metadata: {},
+            __metadata: {
+              type: "test.MainService.return_test_MainService_unboundMassActionInline",
+            },
           },
         ],
       },
@@ -2177,7 +2189,9 @@ describe("main-request", () => {
           age: 1,
           code: "TEST",
           name: "abc",
-          __metadata: {},
+          __metadata: {
+            type: "test.MainService.return_test_MainService_Header_boundActionInline",
+          },
         },
       },
     });
@@ -2262,13 +2276,17 @@ describe("main-request", () => {
             age: 0,
             code: "TEST1",
             name: "TEST1",
-            __metadata: {},
+            __metadata: {
+              type: "test.MainService.return_test_MainService_Header_boundMassActionInline",
+            },
           },
           {
             age: 1,
             code: "TEST2",
             name: "TEST2",
-            __metadata: {},
+            __metadata: {
+              type: "test.MainService.return_test_MainService_Header_boundMassActionInline",
+            },
           },
         ],
       },
