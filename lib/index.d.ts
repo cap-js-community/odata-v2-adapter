@@ -116,4 +116,9 @@ type Options = {
      * Function import return value of primitive type is rendered as plain JSON value. Default is `true`.
      */
     returnPrimitivePlain?: boolean | true,
+
+    /**
+     * Specifies the message target default, if target is undefined. Default is `/#TRANSIENT#`.
+     */
+    messageTargetDefault?: string | "/#TRANSIENT#",
 };
