@@ -179,6 +179,12 @@ describe("main-request", () => {
     expect(response.body.d.results).toHaveLength(5);
   });
 
+  it("GET request with sap-language", async () => {
+    let response = await util.callRead(request, "/v2/main/Header?sap-language=de");
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toHaveLength(5);
+  });
+
   it("GET request with navigation", async () => {
     let response = await util.callRead(request, "/v2/main/Header?$filter=country eq 'Germany'");
     expect(response.body).toBeDefined();
@@ -937,7 +943,7 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',name)`);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('ES',name)`);
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
@@ -962,6 +968,11 @@ describe("main-request", () => {
     response = await util.callRead(
       request,
       `/v2/main/Header?$filter=(ID eq guid'${id}' and (substringof('es',tolower(name)) or (substringof(')es , ''''and (t) substringof(''es'',tolower(name))',tolower(name)))))`
+    );
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}' and substringof(tolower('ES'),tolower(name))`
     );
     expect(response.body.d.results).toHaveLength(1);
   });
@@ -2000,6 +2011,22 @@ describe("main-request", () => {
     response = await util.callWrite(request, `/v2/main/unboundAction?num=1`, {
       text: "abc",
     });
+    expect(response.body).toMatchObject({
+      d: {
+        unboundAction: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
+        },
+      },
+    });
+  });
+
+  it("POST unbound action request with sap-language", async () => {
+    let response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=abc&sap-language=de`);
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {

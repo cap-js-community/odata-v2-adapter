@@ -121,4 +121,9 @@ type Options = {
      * Specifies the message target default, if target is undefined. Default is `/#TRANSIENT#`.
      */
     messageTargetDefault?: string | "/#TRANSIENT#",
+
+    /**
+     * Transforms search functions e.g. substringof to case insensitive variant. Default is `false`.
+     */
+    caseInsensitive?: boolean | false,
 };

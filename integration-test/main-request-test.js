@@ -55,4 +55,16 @@ describe("main-requests", () => {
       },
     ]);
   });
+
+  it("GET request with function 'substringof'", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.statusCode).toEqual(201);
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',name)`);
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('ES',name)`);
+    expect(response.body.d.results).toHaveLength(1);
+  });
 });
