@@ -7,7 +7,7 @@ const util = require("./_env/util");
 
 let request;
 
-describe("passenegers-request", () => {
+describe("passengers-request", () => {
   beforeAll(async () => {
     const context = await env("passengermodel", 0);
     request = supertest(context.app);
