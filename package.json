@@ -40,11 +40,11 @@
     "@sap/logging": "^6.0.3",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
-    "http-proxy-middleware": "^2.0.0",
+    "http-proxy-middleware": "^2.0.1",
     "node-fetch": "^2.6.2"
   },
   "devDependencies": {
-    "@sap/cds": "^5.4.3",
+    "@sap/cds": "^5.4.4",
     "@sap/hana-client": "^2.10.9",
     "compression": "^1.7.4",
     "eslint": "^7.32.0",
@@ -54,7 +54,7 @@
     "jest": "^27.1.1",
     "jest-junit": "^12.1.0",
     "passport": "^0.4.1",
-    "prettier": "^2.0.5",
+    "prettier": "^2.4.0",
     "sqlite3": "^5.0.2",
     "supertest": "^6.1.6"
   },

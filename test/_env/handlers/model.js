@@ -149,7 +149,7 @@ module.exports = (srv) => {
         ["@Common.additionalTargets"]: [`Items(ID=2b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name`],
         message: "Error details",
         "@Common.numericSeverity": 4,
-        "@Core.ContentID": "1"
+        "@Core.ContentID": "1",
       },
     ];
     req.error(error);
