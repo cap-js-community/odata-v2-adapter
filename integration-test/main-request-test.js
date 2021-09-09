@@ -66,5 +66,35 @@ describe("main-request", () => {
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('ES',name)`);
     expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('XX',name)`);
+    expect(response.body.d.results).toHaveLength(0);
+  });
+
+  it("GET request with function 'startswith'", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.statusCode).toEqual(201);
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and startswith(name,'Te')`);
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and startswith(name,'TE')`);
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and startswith(name,'XX')`);
+    expect(response.body.d.results).toHaveLength(0);
+  });
+
+  it("GET request with function 'endswith'", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.statusCode).toEqual(201);
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and endswith(name,'st')`);
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and endswith(name,'ST')`);
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and endswith(name,'XX')`);
+    expect(response.body.d.results).toHaveLength(0);
   });
 });

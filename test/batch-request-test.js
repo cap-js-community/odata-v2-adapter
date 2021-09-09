@@ -62,6 +62,28 @@ describe("batch-request", () => {
     expect(first.contentTransferEncoding).toEqual("binary");
   });
 
+  it("GET request with charset after boundary in content-type", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test %22",
+      country: "US",
+    });
+    expect(response.statusCode).toEqual(201);
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-GET.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    response = await util.callMultipart(request, "/v2/main/$batch", payload, "boundary;charset=utf-8");
+    expect(response.statusCode).toEqual(202);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(3);
+    const [first] = responses;
+    expect(first.body.d.results).toBeDefined();
+    expect(first.body.d.results.length).toEqual(7);
+    expect(first.body.d.results[0]).toBeDefined();
+    expect(first.body.d.results[0].name).toBeDefined();
+    expect(first.body.d.results[0].__metadata).toBeDefined();
+    expect(first.body.d.results[0].Items).toBeDefined();
+    expect(first.body.d.results[0].Items.__deferred).toBeDefined();
+  });
+
   it("POST request", async () => {
     let payload = fs.readFileSync("./test/_env/data/batch/Batch-POST.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");

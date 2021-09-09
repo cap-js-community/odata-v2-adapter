@@ -988,6 +988,16 @@ describe("main-request", () => {
       `/v2/main/Header?$filter=ID eq guid'${id}' or substringof('er',createdBy) or startswith(createdBy,'By')&$select=ID,name,createdBy`
     );
     expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}' and startswith(createdBy,'ANO')&$select=ID,name,createdBy`
+    );
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}' and endswith(createdBy,'MOUS')&$select=ID,name,createdBy`
+    );
+    expect(response.body.d.results).toHaveLength(1);
   });
 
   it('GET request with many "or" filters on same field', async () => {
@@ -1639,6 +1649,7 @@ describe("main-request", () => {
         target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
         additionalTargets: ["Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description"],
         severity: "error",
+        ContentID: "1",
         innererror: {
           errordetails: [
             {
@@ -1651,6 +1662,7 @@ describe("main-request", () => {
               ],
               severity: "error",
               transition: true,
+              ContentID: "1",
             },
           ],
         },
@@ -1684,12 +1696,14 @@ describe("main-request", () => {
           additionalTargets: [
             "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
           ],
+          ContentID: "2",
         },
       ],
       message: "An Warning occurred",
       severity: expect.stringMatching(/info|warning/),
       target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
       additionalTargets: ["Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description"],
+      ContentID: "1",
     });
   });
 
@@ -1899,6 +1913,7 @@ describe("main-request", () => {
         target: `Header(ID=guid'${id}',IsActiveEntity=false)/name`,
         additionalTargets: [`Header(ID=guid'${id}',IsActiveEntity=false)/description`],
         severity: "error",
+        ContentID: "1",
         innererror: {
           errordetails: [
             {
@@ -1908,6 +1923,7 @@ describe("main-request", () => {
               additionalTargets: ["Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name"],
               severity: "error",
               transition: true,
+              ContentID: "1",
             },
           ],
         },
@@ -1943,12 +1959,14 @@ describe("main-request", () => {
           severity: expect.stringMatching(/info|warning/),
           target: "Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description",
           additionalTargets: ["Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name"],
+          ContentID: "2",
         },
       ],
       message: "An Warning occurred",
       severity: expect.stringMatching(/info|warning/),
       target: `Header(ID=guid'${id}',IsActiveEntity=false)/name`,
       additionalTargets: [`Header(ID=guid'${id}',IsActiveEntity=false)/description`],
+      ContentID: "1",
     });
   });
 

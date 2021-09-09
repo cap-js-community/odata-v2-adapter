@@ -41,7 +41,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "http-proxy-middleware": "^2.0.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.2"
   },
   "devDependencies": {
     "@sap/cds": "^5.4.3",
@@ -51,7 +51,7 @@
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^24.4.0",
-    "jest": "^27.1.0",
+    "jest": "^27.1.1",
     "jest-junit": "^12.1.0",
     "passport": "^0.4.1",
     "prettier": "^2.0.5",
