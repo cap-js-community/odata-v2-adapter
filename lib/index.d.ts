@@ -123,7 +123,12 @@ type Options = {
     messageTargetDefault?: string | "/#TRANSIENT#",
 
     /**
-     * Transforms search functions e.g. substringof to case insensitive variant. Default is `false`.
+     * Transforms search functions i.e. substringof, startswith, endswith to case insensitive variant. Default is `false`
      */
     caseInsensitive?: boolean | false,
+
+    /**
+     * Propagates root error or message always to details section. Default is `false`.
+     */
+    propagateMessageToDetails?: boolean | false,
 };
