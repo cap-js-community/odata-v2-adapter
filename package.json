@@ -44,7 +44,7 @@
     "node-fetch": "^2.6.5"
   },
   "devDependencies": {
-    "@sap/cds": "^5.5.0",
+    "@sap/cds": "^5.5.1",
     "@sap/hana-client": "^2.10.13",
     "compression": "^1.7.4",
     "eslint": "^7.32.0",
@@ -53,7 +53,7 @@
     "eslint-plugin-jest": "^24.4.2",
     "jest": "^27.2.1",
     "jest-junit": "^12.3.0",
-    "passport": "^0.4.1",
+    "passport": "^0.5.0",
     "prettier": "^2.4.1",
     "sqlite3": "^5.0.2",
     "supertest": "^6.1.6"
