@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Proxy option 'propagateMessageToDetails' to always propagate root error or message to details section
+- Support for 'cds.mtx.getEdmx' for extended tenants
 
 ## Version 1.7.11 - 2021-09-09
 
