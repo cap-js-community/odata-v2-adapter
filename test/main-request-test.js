@@ -351,6 +351,10 @@ describe("main-request", () => {
       name: "Search Instance_Test",
     });
     expect(response.statusCode).toEqual(201);
+    response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Search\"Quote\"",
+    });
+    expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
     response = await util.callRead(request, `/v2/main/Header?search=Search%20Instance`);
     expect(response.body.d.results.length).toEqual(1);
@@ -360,6 +364,20 @@ describe("main-request", () => {
     expect(response.text).toEqual("1");
     response = await util.callRead(request, `/v2/main/Header/$count?$search=Search%20Instance`);
     expect(response.text).toEqual("1");
+    response = await util.callRead(request, `/v2/main/Header/$count?$search="Search%20Instance"`);
+    expect(response.text).toEqual("1");
+    response = await util.callRead(request, `/v2/main/Header/$count?search="`);
+    expect(response.text).toEqual("1");
+    response = await util.callRead(request, `/v2/main/Header/$count?search=""`);
+    expect(response.text).toEqual("0");
+    response = await util.callRead(request, `/v2/main/Header/$count?search="""`);
+    expect(response.text).toEqual("0");
+    response = await util.callRead(request, `/v2/main/Header/$count?search=Search"Quote"`);
+    expect(response.text).toEqual("1");
+    response = await util.callRead(request, `/v2/main/Header/$count?$search="Search\\"Quote\\""`);
+    expect(response.text).toEqual("1");
+    response = await util.callRead(request, `/v2/main/Header/$count?$search="\\"\\""`);
+    expect(response.text).toEqual("0");
   });
 
   it("GET request with $count", async () => {
