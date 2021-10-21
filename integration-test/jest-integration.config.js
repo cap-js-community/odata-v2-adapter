@@ -16,5 +16,5 @@ module.exports = {
   testPathIgnorePatterns: ["/node_modules/"],
   testURL: "http://localhost/",
   verbose: true,
-  setupFilesAfterEnv: ["./jest.setup.js"],
+  setupFilesAfterEnv: ["../jest.setup.js"],
 };
