@@ -6,6 +6,7 @@ const http = require("http");
 const cds = require("@sap/cds");
 
 const odatav2proxy = require("../../lib");
+const serviceRootPath = "./test/_env/";
 
 let context = null;
 
@@ -18,7 +19,7 @@ module.exports = async (service, defaultPort, fnInit, options) => {
   });
 
   let port = defaultPort || 0;
-  const servicePath = `./test/_env/${service}`;
+  const servicePath = Array.isArray(service) ? service.map((s) => serviceRootPath + s) : serviceRootPath + service;
   const app = express();
   app.use(compression());
 

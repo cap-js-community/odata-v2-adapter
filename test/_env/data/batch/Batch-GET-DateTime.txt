@@ -1,0 +1,37 @@
+--boundary
+Content-Type: application/http
+
+GET People?$expand=plannedTasks HTTP/1.1
+sap-cancel-on-close: true
+sap-contextid-accept: header
+Accept: application/json
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
+--boundary
+Content-Type: application/http
+
+GET PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S') HTTP/1.1
+sap-cancel-on-close: true
+sap-contextid-accept: header
+Accept: application/json
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
+--boundary
+Content-Type: application/http
+
+GET PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00%3A00%3A00Z',endDate=datetimeoffset'2019-08-23T00%3A00%3A00Z',keyDate=datetime'2019-12-31T00%3A00%3A00',keyTime=time'PT12H34M56.789S') HTTP/1.1
+sap-cancel-on-close: true
+sap-contextid-accept: header
+Accept: application/json
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
+--boundary--

@@ -46,6 +46,14 @@ Object {
     Object {
       "__metadata": Object {
         "type": "test.MainService.Favorite",
+        "uri": "/v2/main/Favorite('WE%2525DE-SFSNRF')",
+      },
+      "name": "WE%25DE-SFSNRF",
+      "value": "%",
+    },
+    Object {
+      "__metadata": Object {
+        "type": "test.MainService.Favorite",
         "uri": "/v2/main/Favorite('WE%25DE-SFSNRF')",
       },
       "name": "WE%DE-SFSNRF",

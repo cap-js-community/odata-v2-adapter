@@ -20,6 +20,116 @@ describe("todo-request", () => {
     await env.end();
   });
 
+  it("GET request with datetime key", async () => {
+    let response = await util.callRead(
+      request,
+      "/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')",
+      {
+        accept: "application/json",
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toMatchObject({
+      task_ID: 1,
+      person_ID: 1,
+      startDate: "2019-08-23T00:00:00Z",
+      endDate: "2019-08-23T00:00:00Z",
+      keyDate: "/Date(1577750400000)/",
+      keyTime: "PT12H34M56.789S",
+      keyDateEdit: "/Date(1577750400000)/",
+      keyTimeEdit: "PT12H34M56.789S",
+      tentative: true,
+      task: {
+        __deferred: {},
+      },
+      person: {
+        __deferred: {},
+      },
+      __metadata: {
+        type: "todo.TodoService.PlannedTasks",
+      },
+    });
+    response = await util.callRead(
+      request,
+      "/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00%3A00%3A00Z',endDate=datetimeoffset'2019-08-23T00%3A00%3A00Z',keyDate=datetime'2019-12-31T00%3A00%3A00',keyTime=time'PT12H34M56.789S')",
+      {
+        accept: "application/json",
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toMatchObject({
+      task_ID: 1,
+      person_ID: 1,
+      startDate: "2019-08-23T00:00:00Z",
+      endDate: "2019-08-23T00:00:00Z",
+      keyDate: "/Date(1577750400000)/",
+      keyTime: "PT12H34M56.789S",
+      keyDateEdit: "/Date(1577750400000)/",
+      keyTimeEdit: "PT12H34M56.789S",
+      tentative: true,
+      task: {
+        __deferred: {},
+      },
+      person: {
+        __deferred: {},
+      },
+      __metadata: {
+        type: "todo.TodoService.PlannedTasks",
+      },
+    });
+  });
+
+  it("GET request with datetime key (batch)", async () => {
+    let payload = fs.readFileSync("./test/_env/data/batch/Batch-GET-DateTime.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    let response = await util.callMultipart(request, "/v2/todo/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses).toHaveLength(3);
+    const [first, second, third] = responses;
+    expect(first.body.d.results).toHaveLength(3);
+    expect(second.body.d).toMatchObject({
+      task_ID: 1,
+      person_ID: 1,
+      startDate: "2019-08-23T00:00:00Z",
+      endDate: "2019-08-23T00:00:00Z",
+      keyDate: "/Date(1577750400000)/",
+      keyTime: "PT12H34M56.789S",
+      keyDateEdit: "/Date(1577750400000)/",
+      keyTimeEdit: "PT12H34M56.789S",
+      tentative: true,
+      task: {
+        __deferred: {},
+      },
+      person: {
+        __deferred: {},
+      },
+      __metadata: {
+        type: "todo.TodoService.PlannedTasks",
+      },
+    });
+    expect(third.body.d).toMatchObject({
+      task_ID: 1,
+      person_ID: 1,
+      startDate: "2019-08-23T00:00:00Z",
+      endDate: "2019-08-23T00:00:00Z",
+      keyDate: "/Date(1577750400000)/",
+      keyTime: "PT12H34M56.789S",
+      keyDateEdit: "/Date(1577750400000)/",
+      keyTimeEdit: "PT12H34M56.789S",
+      tentative: true,
+      task: {
+        __deferred: {},
+      },
+      person: {
+        __deferred: {},
+      },
+      __metadata: {
+        type: "todo.TodoService.PlannedTasks",
+      },
+    });
+  });
+
   it("CRUD test", async () => {
     let response = await util.callRead(request, "/v2/todo/People?$expand=plannedTasks", {
       accept: "application/json",

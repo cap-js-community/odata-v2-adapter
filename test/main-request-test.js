@@ -2473,7 +2473,7 @@ describe("main-request", () => {
       await promise;
 
       response = await util.callRead(request, uri);
-      expect(response.statusCode).toEqual(200);
+      expect(uri + ":" + response.statusCode).toEqual(uri + ":" + 200);
       expect(response.body && response.body.d).toBeDefined();
       let data = response.body && response.body.d;
       data.__metadata.uri = data.__metadata.uri.substr(
