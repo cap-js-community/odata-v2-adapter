@@ -41,13 +41,13 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "http-proxy-middleware": "^2.0.1",
-    "node-fetch": "^2.6.5"
+    "node-fetch": "^2.6.6"
   },
   "devDependencies": {
-    "@sap/cds": "^5.5.5",
+    "@sap/cds": "^5.6.1",
     "@sap/hana-client": "^2.10.15",
     "compression": "^1.7.4",
-    "eslint": "^8.0.1",
+    "eslint": "^8.1.0",
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^25.2.1",
