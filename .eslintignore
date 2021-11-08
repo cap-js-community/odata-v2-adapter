@@ -4,3 +4,4 @@ test/
 integration-test/
 reports/
 node_modules/
+*.ts
