@@ -92,6 +92,21 @@ entity HeaderItemDelta: cuid {
     header: Association to HeaderDelta;
 }
 
+entity HeaderLargeString {
+    key name: LargeString;
+    key country: LargeString;
+    currency: LargeString;
+    stock: Integer;
+    Items: Composition of many HeaderItemLargeString on Items.header = $self;
+}
+
+entity HeaderItemLargeString {
+    key name: LargeString;
+    key position: LargeString;
+    value: Integer;
+    header: Association to HeaderLargeString;
+}
+
 entity Favorite {
     key name: String;
     value: String;
@@ -157,6 +172,8 @@ service MainService {
     entity HeaderTemporal as projection on test.HeaderTemporal;
     entity HeaderDelta as projection on test.HeaderDelta;
     entity HeaderItemDelta as projection on test.HeaderItemDelta;
+    entity HeaderLargeString as projection on test.HeaderLargeString;
+    entity HeaderItemLargeString as projection on test.HeaderItemLargeString;
 
     entity Favorite as projection on test.Favorite;
     entity StringUUID as projection on test.StringUUID;

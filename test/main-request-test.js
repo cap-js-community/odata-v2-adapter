@@ -42,6 +42,8 @@ describe("main-request", () => {
       "HeaderDelta",
       "HeaderItem",
       "HeaderItemDelta",
+      "HeaderItemLargeString",
+      "HeaderLargeString",
       "HeaderLine",
       "HeaderStream",
       "HeaderStreamDecode",
@@ -60,6 +62,8 @@ describe("main-request", () => {
       "HeaderDelta",
       "HeaderItem",
       "HeaderItemDelta",
+      "HeaderItemLargeString",
+      "HeaderLargeString",
       "HeaderLine",
       "HeaderStream",
       "HeaderStreamDecode",
@@ -2750,5 +2754,124 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body.d.name).toEqual("Schöne Träume");
+  });
+
+  it("GET request with key of type large string", async () => {
+    let response = await util.callRead(request, "/v2/main/HeaderLargeString");
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toHaveLength(2);
+    expect(response.body.d.results).toEqual([
+      {
+        Items: {
+          __deferred: {
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/main/HeaderLargeString(name='A',country='DE')/Items`,
+          },
+        },
+        __metadata: {
+          type: "test.MainService.HeaderLargeString",
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/main/HeaderLargeString(name='A',country='DE')`,
+        },
+        country: "DE",
+        currency: "EUR",
+        name: "A",
+        stock: 10,
+      },
+      {
+        Items: {
+          __deferred: {
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/main/HeaderLargeString(name='B',country='US')/Items`,
+          },
+        },
+        __metadata: {
+          type: "test.MainService.HeaderLargeString",
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/main/HeaderLargeString(name='B',country='US')`,
+        },
+        country: "US",
+        currency: "USD",
+        name: "B",
+        stock: 11,
+      },
+    ]);
+    response = await util.callRead(request, "/v2/main/HeaderLargeString(name='A',country='DE')");
+    expect(response.body.d).toEqual({
+      Items: {
+        __deferred: {
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/main/HeaderLargeString(name='A',country='DE')/Items`,
+        },
+      },
+      __metadata: {
+        type: "test.MainService.HeaderLargeString",
+        uri: `http://${response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        )}/v2/main/HeaderLargeString(name='A',country='DE')`,
+      },
+      country: "DE",
+      currency: "EUR",
+      name: "A",
+      stock: 10,
+    });
+    response = await util.callRead(request, "/v2/main/HeaderLargeString(name='A',country='DE')/Items");
+    expect(response.body.d.results).toEqual([
+      {
+        __metadata: {
+          type: "test.MainService.HeaderItemLargeString",
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/main/HeaderItemLargeString(name='a',position='1')`,
+        },
+        header: {
+          __deferred: {
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/main/HeaderItemLargeString(name='a',position='1')/header`,
+          },
+        },
+        header_country: "DE",
+        header_name: "A",
+        name: "a",
+        position: "1",
+        value: 8,
+      },
+      {
+        __metadata: {
+          type: "test.MainService.HeaderItemLargeString",
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/main/HeaderItemLargeString(name='a',position='2')`,
+        },
+        header: {
+          __deferred: {
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/main/HeaderItemLargeString(name='a',position='2')/header`,
+          },
+        },
+        header_country: "DE",
+        header_name: "A",
+        name: "a",
+        position: "2",
+        value: 9,
+      },
+    ]);
   });
 });

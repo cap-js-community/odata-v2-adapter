@@ -59,5 +59,12 @@ describe("auth-request", () => {
       Authorization: authorization,
     });
     expect(response.status).toEqual(200);
+
+    authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`;
+    response = await util.callRead(request, "/v2/auth/$metadata", {
+      accept: "application/xml",
+      Authorization: authorization,
+    });
+    expect(response.status).toEqual(401);
   });
 });

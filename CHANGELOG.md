@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.7.15 - tbd
+## Version 1.7.15 - 2021-11-08
 
 ### Fixed
+
+- Quote key parts of type 'cds.LargeString' for uri generation
 
 ## Version 1.7.14 - 2021-11-03
 
@@ -297,7 +299,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Support custom body for binary media upload via POST
-- Set 'Accept' header for \$batch proxy request to "multipart/mixed"
+- Set 'Accept' header for \$batch proxy request to 'multipart/mixed'
 - Set missing response header 'Content-Transfer-Encoding: binary'
 
 ## Version 1.4.52 - 2020-10-27
@@ -328,14 +330,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Fix entity uris with "x-forwarded-path" headers for OData batch calls
+- Fix entity uris with 'x-forwarded-path' headers for OData batch calls
 - Support of 'odata-entityid' header rewrite
 
 ## Version 1.4.48 - 2020-10-16
 
 ### Fixed
 
-- Fix entity uris with "x-forwarded-path" headers
+- Fix entity uris with 'x-forwarded-path' headers
 - Forward x-request-id, x-correlationid for metadata request
 
 ## Version 1.4.47 - 2020-10-08
@@ -497,7 +499,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix \$filter in analytics query
 - Fix count for empty analytics result
 - Fix result projection for analytics query
-- Fix analytics "null" result values
+- Fix analytics 'null' result values
 - Only add root error, if no details messages
 
 ## Version 1.4.27 - 2020-04-21
@@ -505,7 +507,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Add root error as first detail message
-- Error code including "transition", marks transition message
+- Error code including 'transition', marks transition message
 
 ## Version 1.4.26 - 2020-04-20
 
@@ -532,7 +534,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Fix type conversion for "le" operator
+- Fix type conversion for 'le' operator
 
 ## Version 1.4.22 - 2020-03-27
 
@@ -577,7 +579,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Optimize edmx localization
 - Improve logging and tracing handling
 - Fix for external services (e.g. Java backend) support
-- Re-add "services" configuration for external service mapping
+- Re-add 'services' configuration for external service mapping
 - Fix for search phrase
 
 ## Version 1.4.17 - 2020-01-20
@@ -609,14 +611,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Protect \$metadata call
 - Fix \$filter parentheses nesting
-- Fix "all" model loading from app, srv
+- Fix 'all' model loading from app, srv
 - Improve \$filter handling, incl. data type and negative tests
 
 ## Version 1.4.13 - 2019-12-12
 
 ### Fixed
 
-- Remove "services" configuration, as it is obsolete
+- Remove 'services' configuration, as it is obsolete
 - Fix nested functions in \$filter
 
 ## Version 1.4.12 - 2019-12-06
