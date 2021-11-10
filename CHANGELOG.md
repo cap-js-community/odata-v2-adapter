@@ -180,7 +180,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Update @sap/logging dependency
+- Update `@sap/logging` dependency
 
 ## Version 1.5.7 - 2021-02-19
 
@@ -198,7 +198,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Align determination of locale including sub tags (e.g. `zh-TW`)
+- Align determination of locale including sub tags (e.g. `zh-TW)
 
 ## Version 1.5.4 - 2021-01-26
 
@@ -235,7 +235,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Fix that file upload error message does not return with 500 status code
+- Fix that file upload error message does not return with `500 status code
 
 ## Version 1.4.61 - 2020-12-11
 
@@ -247,8 +247,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Respect offset for Edm.DateTimeOffset, and default to UTC offset (+0000)
-- Fix ticks and offset calculation for type DateTimeOffset to handle offset as minutes
+- Respect offset for `Edm.DateTimeOffset`, and default to UTC offset (+0000)
+- Fix ticks and offset calculation for type `DateTimeOffset` to handle offset as minutes
 - Update README for custom bootstrap to give `proxy()` priority over `cds.serve` (as with `cds run`)
 - Make authorization header parsing more robust
 - Provide `__metadata` type information for function/action result
@@ -264,7 +264,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Change accept header to `application/json`, if accept `xml` is requested
 - Fix single service support bound to root url
-- Data format of type Edm.DateTimeOffset (`cds.DateTime`, `cds.Timestamp`) is switchable to ISO 8601 with proxy option `isoDateTimeOffset` or entity annotation `@cov2ap.isoDateTimeOffset`
+- Data format of type `Edm.DateTimeOffset` (`cds.DateTime`, `cds.Timestamp`) is switchable to ISO 8601 with proxy option `isoDateTimeOffset` or entity annotation `@cov2ap.isoDateTimeOffset`
 
 ## Version 1.4.58 - 2020-11-26
 
@@ -323,15 +323,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Support OData V2 binary media upload via POST
-- Support OData V2 multipart/form-data media upload via POST
+- Support OData V2 `binary media upload via POST
+- Support OData V2 `multipart/form-data media` upload via POST
 - Update README on logging layers
 
 ## Version 1.4.50 - 2020-10-22
 
 ### Fixed
 
-- Rewrite batch success status code from 200 to 202
+- Rewrite batch success status code from `200` to `202
 - Remove OData V4 header `odata-entityid`
 - Propagate `Content-ID` in response to HTTP request headers
 - Remove artificially added `Content-ID` header from batch response
@@ -518,7 +518,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Add root error as first detail message
-- Error code including `transition`, marks transition message
+- Error code including `transition` marks transition message
 
 ## Version 1.4.26 - 2020-04-20
 
@@ -579,7 +579,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix time duration parsing
 - Misc fixes and improvements
 - General housekeeping
-- Moving from axios to node-fetch
+- Moving from `axios` to `node-fetch`
 
 ## Version 1.4.18 - 2020-02-03
 
@@ -607,7 +607,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Enforce IEEE754 compatibility
-- Pin Axios library
+- Pin `axios` library
 
 ## Version 1.4.15 - 2019-12-20
 
