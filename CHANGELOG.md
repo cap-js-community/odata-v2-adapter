@@ -7,16 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.7.17 - tbd
+## Version 1.8.0 - 2021-11-11
 
 ### Fixed
+
+- Add README documentation for annotation `@Core.ContentDisposition.Type`
+- Change `content-disposition` header default from `inline` to `attachment`
+- Proxy option `contentDisposition` to specify default content disposition for media streams (inline, attachment)
+- Improve formatting of README and CHANGELOG
+- Adjust repository url
 
 ## Version 1.7.16 - 2021-11-10
 
 ### Fixed
 
 - `Content-Disposition` header filename is now url encoded
-- Annotation `@Core.ContentDisposition.Type` to specify content disposition type (e.g. inline (default), attachment, etc.)
+- Annotation `@Core.ContentDisposition.Type` to specify content disposition type (e.g. inline, attachment (default), etc.)
 
 ## Version 1.7.15 - 2021-11-08
 

@@ -131,4 +131,9 @@ type Options = {
      * Propagates root error or message always to details section. Default is `false`.
      */
     propagateMessageToDetails?: boolean | false,
+
+    /**
+     * Default content disposition for media streams (inline, attachment). Default is `attachment`.
+     */
+    contentDisposition?: String | "attachment",
 };
