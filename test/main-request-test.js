@@ -496,7 +496,10 @@ describe("main-request", () => {
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
     expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
-    response = await util.callRead(request, `/v2/main/HeaderStreamAttachment(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`);
+    response = await util.callRead(
+      request,
+      `/v2/main/HeaderStreamAttachment(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`
+    );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
