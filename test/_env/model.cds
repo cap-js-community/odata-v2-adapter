@@ -43,6 +43,16 @@ entity HeaderStream: cuid {
     isBlocked: Boolean;
 }
 
+entity HeaderStreamAttachment: cuid {
+    @Core.MediaType: mediaType
+    @Core.ContentDisposition.Filename: filename
+    @Core.ContentDisposition.Type: 'attachment'
+    data: LargeBinary;
+    @Core.IsMediaType
+    mediaType: String;
+    filename: String;
+}
+
 entity HeaderStreamDecode: cuid {
     @Core.MediaType: mediaType
     @Core.ContentDisposition.Filename: filename
@@ -166,6 +176,7 @@ service MainService {
     entity HeaderItem as projection on test.HeaderItem;
     entity HeaderLine as projection on test.HeaderLine;
     entity HeaderStream as projection on test.HeaderStream;
+    entity HeaderStreamAttachment as projection on test.HeaderStreamAttachment;
     entity HeaderStreamDecode as projection on test.HeaderStreamDecode;
     entity HeaderUrlStream as projection on test.HeaderUrlStream;
     entity HeaderAssocKey as projection on test.HeaderAssocKey;

@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.7.16 - tbd
+## Version 1.7.16 - 2021-11-10
 
 ### Fixed
+
+- 'Content-Disposition' header filename is now url encoded
+- Annotation '@Core.ContentDisposition.Type' to specify content disposition type (e.g. inline (default), attachment, etc.)
 
 ## Version 1.7.15 - 2021-11-08
 

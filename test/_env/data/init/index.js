@@ -48,6 +48,14 @@ async function initBinary({ port }) {
     })
   );
   await cds.run(
+    INSERT.into("test.HeaderStreamAttachment").entries({
+      ID: "f8a7a4f7-1901-4032-a237-3fba1d1b2343",
+      data: fs.readFileSync("./test/_env/data/init/assets/file.png"),
+      mediaType: "image/png",
+      filename: "file.png",
+    })
+  );
+  await cds.run(
     INSERT.into("test.HeaderUrlStream").entries([
       {
         ID: "f8a7a4f7-1901-4032-a237-3fba1d1b2343",
