@@ -2885,4 +2885,62 @@ describe("main-request", () => {
       },
     ]);
   });
+
+  it("Double quotes in entity data", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "'",
+    });
+    expect(response.statusCode).toEqual(201);
+    let ID = response.body.d.ID;
+    response = await util.callRead(request, "/v2/main/Header?$filter=name eq ''''");
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({ ID });
+    response = await util.callWrite(request, "/v2/main/Header", {
+      name: "test'test",
+    });
+    expect(response.statusCode).toEqual(201);
+    ID = response.body.d.ID;
+    response = await util.callRead(request, "/v2/main/Header?$filter=name eq 'test''test'");
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({ ID });
+    response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=abc'def`);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundAction: {
+          age: 1,
+          code: "TEST",
+          name: "abc'def",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
+        },
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text='test''test'`);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundAction: {
+          age: 1,
+          code: "TEST",
+          name: "test'test",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
+        },
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=''''`);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundAction: {
+          age: 1,
+          code: "TEST",
+          name: "'",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
+        },
+      },
+    });
+  });
 });
