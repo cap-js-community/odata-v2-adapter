@@ -47,6 +47,14 @@ module.exports = (srv) => {
     return req.data.num;
   });
 
+  srv.on("boundActionPrimitiveString", Header, async (req) => {
+    return req.data.text;
+  });
+
+  srv.on("boundActionPrimitiveLargeString", Header, async (req) => {
+    return req.data.text;
+  });
+
   srv.on("boundMassActionPrimitive", Header, async (req) => {
     return [req.data.text1, req.data.text2];
   });
@@ -109,6 +117,14 @@ module.exports = (srv) => {
 
   srv.on("boundFunctionPrimitive", Header, async (req) => {
     return req.data.num;
+  });
+
+  srv.on("boundFunctionPrimitiveString", Header, async (req) => {
+    return req.data.text;
+  });
+
+  srv.on("boundFunctionPrimitiveLargeString", Header, async (req) => {
+    return req.data.text;
   });
 
   srv.on("boundMassFunctionPrimitive", Header, async (req) => {
@@ -229,6 +245,14 @@ module.exports = (srv) => {
     return req.data.num;
   });
 
+  srv.on("unboundActionPrimitiveString", async (req) => {
+    return req.data.text;
+  });
+
+  srv.on("unboundActionPrimitiveLargeString", async (req) => {
+    return req.data.text;
+  });
+
   srv.on("unboundMassActionPrimitive", async (req) => {
     return [req.data.text1, req.data.text2];
   });
@@ -295,6 +319,14 @@ module.exports = (srv) => {
 
   srv.on("unboundFunctionPrimitive", async (req) => {
     return req.data.num;
+  });
+
+  srv.on("unboundFunctionPrimitiveString", async (req) => {
+    return req.data.text;
+  });
+
+  srv.on("unboundFunctionPrimitiveLargeString", async (req) => {
+    return req.data.text;
   });
 
   srv.on("unboundMassFunctionPrimitive", async (req) => {

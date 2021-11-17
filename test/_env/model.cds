@@ -150,6 +150,8 @@ service MainService {
         };
         action boundActionNoReturn(num: Integer, text: String);
         action boundActionPrimitive(num: Integer) returns Integer;
+        action boundActionPrimitiveString(text: String) returns String;
+        action boundActionPrimitiveLargeString(text: LargeString) returns LargeString;
         action boundMassActionPrimitive(text1: String, text2: String) returns array of String;
         action boundActionEntity(num: Integer, text: String) returns Header;
         action boundMassActionEntity(ids: array of String) returns array of Header;
@@ -167,6 +169,8 @@ service MainService {
              age: Integer;
         };
         function boundFunctionPrimitive(num: Integer) returns Integer;
+        function boundFunctionPrimitiveString(text: String) returns String;
+        function boundFunctionPrimitiveLargeString(text: LargeString) returns LargeString;
         function boundMassFunctionPrimitive(text1: String, text2: String) returns array of String;
         function boundFunctionEntity(num: Integer, text: String) returns Header;
         function boundMassFunctionEntity(ids: array of String) returns array of Header;
@@ -203,6 +207,8 @@ service MainService {
     };
     action unboundActionNoReturn(num: Integer, text: String);
     action unboundActionPrimitive(num: Integer) returns Integer;
+    action unboundActionPrimitiveString(text: String) returns String;
+    action unboundActionPrimitiveLargeString(text: LargeString) returns LargeString;
     action unboundMassActionPrimitive(text1: String, text2: String) returns array of String;
     action unboundActionEntity(num: Integer, text: String) returns Header;
     action unboundMassActionEntity(ids: array of String) returns array of Header;
@@ -220,6 +226,8 @@ service MainService {
         age: Integer;
     };
     function unboundFunctionPrimitive(num: Integer) returns Integer;
+    function unboundFunctionPrimitiveString(text: String) returns String;
+    function unboundFunctionPrimitiveLargeString(text: LargeString) returns LargeString;
     function unboundMassFunctionPrimitive(text1: String, text2: String) returns array of String;
     function unboundFunctionEntity(num: Integer, text: String) returns Header;
     function unboundMassFunctionEntity(ids: array of String) returns array of Header;

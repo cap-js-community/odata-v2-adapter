@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.8.0 - tbd
+## Version 1.8.0 - 2021-11-17
 
 ### Fixed
 
@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Change `content-disposition` header default from `inline` to `attachment`
 - Proxy option `contentDisposition` to specify default content disposition for media streams (inline, attachment)
 - Unescape single quotes of action URL parameters for request body conversion
+- Fix action/function return type representation for `cds.LargeString`
 - Improve formatting of README and CHANGELOG
 - Adjust repository url
 

@@ -1453,7 +1453,7 @@ describe("main-request", () => {
     });
   });
 
-  it("GET unbound function request", async () => {
+  it("GET unbound function", async () => {
     let response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
@@ -1538,7 +1538,7 @@ describe("main-request", () => {
     });
   });
 
-  it("GET unbound mass function request", async () => {
+  it("GET unbound mass function", async () => {
     let response = await util.callRead(request, `/v2/main/unboundMassFunction?ids=TEST1`);
     expect(response.body).toMatchObject({
       d: {
@@ -1613,6 +1613,17 @@ describe("main-request", () => {
     });
   });
 
+  it("GET unbound primitive string function", async () => {
+    let response = await util.callRead(request, `/v2/main/unboundFunctionPrimitiveString?text=abc`);
+    expect(response.body).toMatchObject({
+      d: "abc",
+    });
+    response = await util.callRead(request, `/v2/main/unboundFunctionPrimitiveLargeString?text=abc`);
+    expect(response.body).toMatchObject({
+      d: "abc",
+    });
+  });
+
   it("GET unbound entity function", async () => {
     let response = await util.callRead(request, `/v2/main/unboundFunctionEntity?num=1&text=test`);
     expect(response.body).toMatchObject({
@@ -1670,7 +1681,7 @@ describe("main-request", () => {
     });
   });
 
-  it("GET unbound function error request", async () => {
+  it("GET unbound function error", async () => {
     let response = await util.callRead(request, `/v2/main/unboundErrorFunction`);
     expect(response.body).toMatchObject({
       error: {
@@ -1703,7 +1714,7 @@ describe("main-request", () => {
     });
   });
 
-  it("GET unbound function warning request", async () => {
+  it("GET unbound function warning", async () => {
     let response = await util.callRead(request, `/v2/main/unboundWarningFunction`);
     expect(response.body).toMatchObject({
       d: {
@@ -1791,7 +1802,7 @@ describe("main-request", () => {
     });
   });
 
-  it("GET bound function request", async () => {
+  it("GET bound function", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
     });
@@ -1825,7 +1836,7 @@ describe("main-request", () => {
     });
   });
 
-  it("GET bound mass function request", async () => {
+  it("GET bound mass function", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
     });
@@ -1872,6 +1883,25 @@ describe("main-request", () => {
     );
     expect(response.body).toMatchObject({
       d: ["abc", "def"],
+    });
+  });
+
+  it("GET bound primitive string function", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitiveString?ID=guid'${id}'&text=abc`);
+    expect(response.body).toMatchObject({
+      d: "abc",
+    });
+    response = response = await util.callRead(
+      request,
+      `/v2/main/Header_boundFunctionPrimitiveLargeString?ID=guid'${id}'&text=abc`
+    );
+    expect(response.body).toMatchObject({
+      d: "abc",
     });
   });
 
@@ -1929,7 +1959,7 @@ describe("main-request", () => {
     });
   });
 
-  it("GET bound function error request", async () => {
+  it("GET bound function error", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
     });
@@ -1964,7 +1994,7 @@ describe("main-request", () => {
     });
   });
 
-  it("GET bound function warning request", async () => {
+  it("GET bound function warning", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
     });
@@ -2003,7 +2033,7 @@ describe("main-request", () => {
     });
   });
 
-  it("POST unbound action request", async () => {
+  it("POST unbound action", async () => {
     let response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
@@ -2092,7 +2122,7 @@ describe("main-request", () => {
     });
   });
 
-  it("POST unbound mass action request", async () => {
+  it("POST unbound mass action", async () => {
     let response = await util.callWrite(request, `/v2/main/unboundMassAction?ids=TEST1`);
     expect(response.body).toMatchObject({
       d: {
@@ -2195,6 +2225,17 @@ describe("main-request", () => {
     });
   });
 
+  it("POST unbound primitive string action", async () => {
+    let response = await util.callWrite(request, `/v2/main/unboundActionPrimitiveString?text=abc`);
+    expect(response.body).toMatchObject({
+      d: "abc",
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionPrimitiveLargeString?text=abc`);
+    expect(response.body).toMatchObject({
+      d: "abc",
+    });
+  });
+
   it("POST unbound entity action", async () => {
     let response = await util.callWrite(request, `/v2/main/unboundActionEntity?num=1&text=test`);
     expect(response.body).toMatchObject({
@@ -2241,7 +2282,7 @@ describe("main-request", () => {
     });
   });
 
-  it("POST bound action request", async () => {
+  it("POST bound action", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
     });
@@ -2286,6 +2327,14 @@ describe("main-request", () => {
         },
       },
     });
+  });
+
+  it("POST bound primitive action", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
     response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitive?ID=guid'${id}'&num=1`);
     expect(response.body).toMatchObject({
       d: 1,
@@ -2299,7 +2348,23 @@ describe("main-request", () => {
     });
   });
 
-  it("POST bound mass action request", async () => {
+  it("POST bound primitive string action", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveString?ID=guid'${id}'&text=abc`);
+    expect(response.body).toMatchObject({
+      d: "abc",
+    });
+    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveLargeString?ID=guid'${id}'&text=abc`);
+    expect(response.body).toMatchObject({
+      d: "abc",
+    });
+  });
+
+  it("POST bound mass action", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
     });
@@ -2379,25 +2444,6 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callWrite(request, `/v2/main/Header_boundActionNoReturn?ID=guid'${id}'&num=1&text=abc`);
     expect(response.body).toEqual({});
-  });
-
-  it("POST bound primitive action", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
-      name: "Test",
-    });
-    expect(response.body).toBeDefined();
-    const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitive?ID=guid'${id}'&num=1`);
-    expect(response.body).toMatchObject({
-      d: 1,
-    });
-    response = await util.callWrite(
-      request,
-      `/v2/main/Header_boundMassActionPrimitive?ID=guid'${id}'&text1=abc&text2=def`
-    );
-    expect(response.body).toMatchObject({
-      d: ["abc", "def"],
-    });
   });
 
   it("POST bound entity action", async () => {

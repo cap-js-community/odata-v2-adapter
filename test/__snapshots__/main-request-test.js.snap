@@ -297,6 +297,14 @@ exports[`main-request GET $metadata 1`] = `
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"Header_boundActionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"Header_boundActionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"Header_boundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -333,6 +341,14 @@ exports[`main-request GET $metadata 1`] = `
         <FunctionImport Name=\\"Header_boundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"Header_boundFunctionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"Header_boundFunctionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"Header_boundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
@@ -389,6 +405,12 @@ exports[`main-request GET $metadata 1`] = `
         <FunctionImport Name=\\"unboundActionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundActionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundActionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -416,6 +438,12 @@ exports[`main-request GET $metadata 1`] = `
         </FunctionImport>
         <FunctionImport Name=\\"unboundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundFunctionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundFunctionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"unboundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -902,6 +930,14 @@ exports[`main-request GET $metadata localized 1`] = `
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"Header_boundActionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"Header_boundActionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"Header_boundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -938,6 +974,14 @@ exports[`main-request GET $metadata localized 1`] = `
         <FunctionImport Name=\\"Header_boundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"Header_boundFunctionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"Header_boundFunctionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"Header_boundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
@@ -994,6 +1038,12 @@ exports[`main-request GET $metadata localized 1`] = `
         <FunctionImport Name=\\"unboundActionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundActionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundActionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -1021,6 +1071,12 @@ exports[`main-request GET $metadata localized 1`] = `
         </FunctionImport>
         <FunctionImport Name=\\"unboundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundFunctionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundFunctionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"unboundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -1507,6 +1563,14 @@ exports[`main-request GET $metadata localized 2`] = `
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"Header_boundActionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"Header_boundActionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"Header_boundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -1543,6 +1607,14 @@ exports[`main-request GET $metadata localized 2`] = `
         <FunctionImport Name=\\"Header_boundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"Header_boundFunctionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"Header_boundFunctionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
+          <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"Header_boundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
@@ -1599,6 +1671,12 @@ exports[`main-request GET $metadata localized 2`] = `
         <FunctionImport Name=\\"unboundActionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <FunctionImport Name=\\"unboundActionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundActionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"POST\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
         <FunctionImport Name=\\"unboundMassActionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text2\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -1626,6 +1704,12 @@ exports[`main-request GET $metadata localized 2`] = `
         </FunctionImport>
         <FunctionImport Name=\\"unboundFunctionPrimitive\\" ReturnType=\\"Edm.Int32\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundFunctionPrimitiveString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
+        </FunctionImport>
+        <FunctionImport Name=\\"unboundFunctionPrimitiveLargeString\\" ReturnType=\\"Edm.String\\" m:HttpMethod=\\"GET\\">
+          <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
         </FunctionImport>
         <FunctionImport Name=\\"unboundMassFunctionPrimitive\\" ReturnType=\\"Collection(Edm.String)\\" m:HttpMethod=\\"GET\\">
           <Parameter Name=\\"text1\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
