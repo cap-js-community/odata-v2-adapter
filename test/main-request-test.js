@@ -474,13 +474,13 @@ describe("main-request", () => {
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
-    expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
+    expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(request, `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
-    expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
+    expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
       `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data/$value`
@@ -489,13 +489,13 @@ describe("main-request", () => {
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
-    expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
+    expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(request, `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
-    expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
+    expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
       `/v2/main/HeaderStreamAttachment(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`
@@ -524,7 +524,7 @@ describe("main-request", () => {
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
-    expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
+    expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     expect(response.statusCode).toEqual(200);
     response = await util.callRead(
       request,
@@ -534,7 +534,7 @@ describe("main-request", () => {
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
-    expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
+    expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
       `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`
@@ -543,7 +543,7 @@ describe("main-request", () => {
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
-    expect(response.headers["content-disposition"]).toEqual('inline; filename="file.png"');
+    expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
       `/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`
@@ -1605,22 +1605,30 @@ describe("main-request", () => {
   it("GET unbound primitive function", async () => {
     let response = await util.callRead(request, `/v2/main/unboundFunctionPrimitive?num=1`);
     expect(response.body).toMatchObject({
-      d: 1,
+      d: {
+        unboundFunctionPrimitive: 1,
+      },
     });
     response = await util.callRead(request, `/v2/main/unboundMassFunctionPrimitive?text1=abc&text2=def`);
     expect(response.body).toMatchObject({
-      d: ["abc", "def"],
+      d: {
+        results: ["abc", "def"],
+      },
     });
   });
 
   it("GET unbound primitive string function", async () => {
     let response = await util.callRead(request, `/v2/main/unboundFunctionPrimitiveString?text=abc`);
     expect(response.body).toMatchObject({
-      d: "abc",
+      d: {
+        unboundFunctionPrimitiveString: "abc",
+      },
     });
     response = await util.callRead(request, `/v2/main/unboundFunctionPrimitiveLargeString?text=abc`);
     expect(response.body).toMatchObject({
-      d: "abc",
+      d: {
+        unboundFunctionPrimitiveLargeString: "abc",
+      },
     });
   });
 
@@ -1673,11 +1681,15 @@ describe("main-request", () => {
   it("GET unbound decimal function", async () => {
     let response = await util.callRead(request, `/v2/main/unboundDecimalFunction`);
     expect(response.body).toMatchObject({
-      d: "12345.6789",
+      d: {
+        unboundDecimalFunction: "12345.6789",
+      },
     });
     response = await util.callRead(request, `/v2/main/unboundDecimalsFunction`);
     expect(response.body).toMatchObject({
-      d: ["12345.6789", "12345.6789"],
+      d: {
+        results: ["12345.6789", "12345.6789"],
+      },
     });
   });
 
@@ -1875,14 +1887,18 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitive?ID=guid'${id}'&num=1`);
     expect(response.body).toMatchObject({
-      d: 1,
+      d: {
+        boundFunctionPrimitive: 1,
+      },
     });
     response = await util.callRead(
       request,
       `/v2/main/Header_boundMassFunctionPrimitive?ID=guid'${id}'&text1=abc&text2=def`
     );
     expect(response.body).toMatchObject({
-      d: ["abc", "def"],
+      d: {
+        results: ["abc", "def"],
+      },
     });
   });
 
@@ -1894,14 +1910,18 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitiveString?ID=guid'${id}'&text=abc`);
     expect(response.body).toMatchObject({
-      d: "abc",
+      d: {
+        boundFunctionPrimitiveString: "abc",
+      },
     });
     response = response = await util.callRead(
       request,
       `/v2/main/Header_boundFunctionPrimitiveLargeString?ID=guid'${id}'&text=abc`
     );
     expect(response.body).toMatchObject({
-      d: "abc",
+      d: {
+        boundFunctionPrimitiveLargeString: "abc",
+      },
     });
   });
 
@@ -2217,22 +2237,30 @@ describe("main-request", () => {
   it("POST unbound primitive action", async () => {
     let response = await util.callWrite(request, `/v2/main/unboundActionPrimitive?num=1`);
     expect(response.body).toMatchObject({
-      d: 1,
+      d: {
+        unboundActionPrimitive: 1,
+      },
     });
     response = await util.callWrite(request, `/v2/main/unboundMassActionPrimitive?text1=abc&text2=def`);
     expect(response.body).toMatchObject({
-      d: ["abc", "def"],
+      d: {
+        results: ["abc", "def"],
+      },
     });
   });
 
   it("POST unbound primitive string action", async () => {
     let response = await util.callWrite(request, `/v2/main/unboundActionPrimitiveString?text=abc`);
     expect(response.body).toMatchObject({
-      d: "abc",
+      d: {
+        unboundActionPrimitiveString: "abc",
+      },
     });
     response = await util.callWrite(request, `/v2/main/unboundActionPrimitiveLargeString?text=abc`);
     expect(response.body).toMatchObject({
-      d: "abc",
+      d: {
+        unboundActionPrimitiveLargeString: "abc",
+      },
     });
   });
 
@@ -2337,14 +2365,18 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitive?ID=guid'${id}'&num=1`);
     expect(response.body).toMatchObject({
-      d: 1,
+      d: {
+        boundActionPrimitive: 1,
+      },
     });
     response = await util.callWrite(
       request,
       `/v2/main/Header_boundMassActionPrimitive?ID=guid'${id}'&text1=abc&text2=def`
     );
     expect(response.body).toMatchObject({
-      d: ["abc", "def"],
+      d: {
+        results: ["abc", "def"],
+      },
     });
   });
 
@@ -2356,11 +2388,15 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveString?ID=guid'${id}'&text=abc`);
     expect(response.body).toMatchObject({
-      d: "abc",
+      d: {
+        boundActionPrimitiveString: "abc",
+      },
     });
     response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveLargeString?ID=guid'${id}'&text=abc`);
     expect(response.body).toMatchObject({
-      d: "abc",
+      d: {
+        boundActionPrimitiveLargeString: "abc",
+      },
     });
   });
 

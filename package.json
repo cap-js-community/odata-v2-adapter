@@ -69,8 +69,7 @@
   "cds": {
     "cov2ap": {
       "path": "v2",
-      "caseInsensitive": true,
-      "contentDisposition": "inline"
+      "caseInsensitive": true
     },
     "requires": {
       "db": {

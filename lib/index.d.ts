@@ -108,9 +108,19 @@ type Options = {
     bodyParserLimit?: string | "100mb",
 
     /**
+     * Collection of entity type is returned nested into a `results` section. Default is `true`.
+     */
+    returnCollectionNested?: boolean | true,
+
+    /**
      * Function import return structure of complex type (non collection) is nested using function import name. Default is `true`.
      */
     returnComplexNested?: boolean | true,
+
+    /**
+     * Function import return structure of primitive type (non collection) is nested using function import name. Default is `true`.
+     */
+    returnPrimitiveNested?: boolean | true,
 
     /**
      * Function import return value of primitive type is rendered as plain JSON value. Default is `true`.
