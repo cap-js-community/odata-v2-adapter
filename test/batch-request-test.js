@@ -399,4 +399,10 @@ describe("batch-request", () => {
     expect(first.body.d.results[0].__metadata.uri).not.toMatch(/\$batch/);
     expect(first.contentTransferEncoding).toEqual("binary");
   });
+
+  it("Send malformed batch request", async () => {
+    const response = await util.callMultipart(request, "/v2/main/$batch", null);
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toEqual("Invalid multipart body");
+  });
 });

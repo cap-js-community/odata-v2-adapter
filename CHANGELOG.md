@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Catch and handle unexpected errors during proxy request processing
+- Validate request body and content-type in request
+- Switch of internal NPM repository (Nexus -> Artifactory)
+
 ## Version 1.8.1 - 2021-11-19
 
 ### Fixed

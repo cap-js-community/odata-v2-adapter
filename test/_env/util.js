@@ -47,7 +47,7 @@ function callDelete(request, path, headers) {
 
 function callMultipart(request, path, payload, boundary = "boundary", headers) {
   request = request.post(path);
-  payload = payload.split(LF).join(CRLF);
+  payload = payload && payload.split(LF).join(CRLF);
   if (headers) {
     Object.keys(headers).forEach((key) => {
       request.set(key, headers[key]);
