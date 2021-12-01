@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Prevent parsing body for HEAD requests against $batch 
+
 ## Version 1.8.2 - 2021-12-01
 
 ### Fixed

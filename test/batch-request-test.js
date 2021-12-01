@@ -20,6 +20,23 @@ describe("batch-request", () => {
     await env.end();
   });
 
+  it("HEAD service", async () => {
+    let response = await util.callHead(request, "/v2/main/");
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({});
+    expect(response.headers).toMatchObject({
+      "content-type": "application/json",
+      dataserviceversion: "2.0",
+    });
+    response = await util.callMultipartHead(request, "/v2/main/$batch", undefined, {
+      "x-csrf-token": "Fetch",
+    });
+    expect(response.statusCode).toEqual(405);
+    expect(response.headers).toMatchObject({
+      dataserviceversion: "2.0",
+    });
+  });
+
   it("GET request", async () => {
     let response = await util.callRead(request, "/v2/main/Header?$top=1");
     expect(response.body).toBeDefined();

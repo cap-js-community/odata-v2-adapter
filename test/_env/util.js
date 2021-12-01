@@ -45,6 +45,19 @@ function callDelete(request, path, headers) {
   return request;
 }
 
+function callMultipartHead(request, path, boundary = "boundary", headers) {
+  request = request.head(path);
+  if (headers) {
+    Object.keys(headers).forEach((key) => {
+      request.set(key, headers[key]);
+    });
+  }
+  return request
+    .accept("multipart/mixed,application/json")
+    .type(`multipart/mixed;boundary=${boundary}`)
+    .send("");
+}
+
 function callMultipart(request, path, payload, boundary = "boundary", headers) {
   request = request.post(path);
   payload = payload && payload.split(LF).join(CRLF);
@@ -159,6 +172,7 @@ module.exports = {
   callRead,
   callWrite,
   callDelete,
+  callMultipartHead,
   callMultipart,
   splitMultipartResponse,
   callStream,
