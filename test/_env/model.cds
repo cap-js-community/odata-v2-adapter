@@ -212,6 +212,7 @@ service MainService {
     action unboundMassActionPrimitive(text1: String, text2: String) returns array of String;
     action unboundActionEntity(num: Integer, text: String) returns Header;
     action unboundMassActionEntity(ids: array of String) returns array of Header;
+    action unboundActionMaxLength(text: String(10)) returns String(10);
 
     function unboundFunction(num: Integer, text: String) returns Result;
     function unboundMassFunction(ids: array of String) returns array of Result;

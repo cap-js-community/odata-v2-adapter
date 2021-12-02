@@ -31,7 +31,7 @@ describe("main-request", () => {
     response = await util.callHead(request, "/v2/main/Header");
     expect(response.status).toEqual(405);
     response = await util.callHead(request, "/v2/main/Header", {
-      "content-type": "application/json"
+      "content-type": "application/json",
     });
     expect(response.status).toEqual(405);
   });
@@ -149,14 +149,14 @@ describe("main-request", () => {
     expect(response.body.d.results).toHaveLength(5);
     expect(response.body.d.__count).toEqual("5");
     const id = response.body.d.results[0].ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body.d.__metadata).toEqual({
       type: "test.MainService.Header",
-      uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+      uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
       media_src: undefined,
       content_type: undefined,
     });
-    response = await util.callRead(request, `/v2/main/HeaderAssocKey(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/HeaderAssocKey(guid'${id}')`);
     expect(response.body).toBeDefined();
     expect(response.status).toEqual(404);
     expect(response.body.error).toEqual({
@@ -202,16 +202,16 @@ describe("main-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
     const ID = response.body.d.results[0].ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ ID }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${ID}')`);
     expect(response.body.d).toBeDefined();
     expect(response.body.d.ID).toEqual(ID);
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ ID }')`);
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ID}')`);
     expect(response.body.d).toBeDefined();
     expect(response.body.d.ID).toEqual(ID);
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ ID }')/Items`);
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ID}')/Items`);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results.length).toEqual(2);
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ ID }')/$links/Items`);
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ID}')/$links/Items`);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results.length).toEqual(2);
   });
@@ -229,14 +229,14 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }'&$select=ID,name&$expand=FirstItem,Items&$skip=0&$top=1&$orderby=name asc&createdAt=datetime'123456'`
+      `/v2/main/Header?$filter=ID eq guid'${id}'&$select=ID,name&$expand=FirstItem,Items&$skip=0&$top=1&$orderby=name asc&createdAt=datetime'123456'`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toMatchObject([
       {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         },
         ID: id,
         FirstItem: null,
@@ -275,12 +275,12 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items,Items/header,Items/header/Items&$select=ID,name,Items/ID,Items/name,Items/header/ID,Items/header/name`
+      `/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items,Items/header,Items/header/Items&$select=ID,name,Items/ID,Items/name,Items/header/ID,Items/header/name`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
-        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -294,7 +294,7 @@ describe("main-request", () => {
             name: "TestItem",
             header: {
               __metadata: {
-                uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+                uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
                 type: "test.MainService.Header",
               },
               ID: id,
@@ -323,12 +323,12 @@ describe("main-request", () => {
     });
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items&$select=Items/name`
+      `/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items&$select=Items/name`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
-        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -398,7 +398,7 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header/$count?$filter=ID eq guid'${ id }'`);
+    response = await util.callRead(request, `/v2/main/Header/$count?$filter=ID eq guid'${id}'`);
     expect(response.text).toEqual("1");
   });
 
@@ -408,13 +408,13 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')/ID`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')/ID`);
     expect(response.body).toEqual({
       d: {
         ID: id,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')/ID/$value`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')/ID/$value`);
     expect(response.headers["content-type"]).toEqual("text/plain");
     expect(response.text).toEqual(id);
   });
@@ -425,15 +425,15 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/HeaderDelta?!deltatoken='${ new Date().getTime() }'`);
+    response = await util.callRead(request, `/v2/main/HeaderDelta?!deltatoken='${new Date().getTime()}'`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.__delta).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/HeaderDelta\?!deltatoken='(\d*)'/);
-    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeUndefined();
 
-    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${ id }')/Items?$filter=name eq 'a /'`);
+    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${id}')/Items?$filter=name eq 'a /'`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.__delta).toMatch(
@@ -456,17 +456,17 @@ describe("main-request", () => {
 
   it("GET request with stream", async () => {
     const id = "f8a7a4f7-1901-4032-a237-3fba1d1b2343";
-    let response = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    let response = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(response.body.d).toEqual({
       ID: id,
       __metadata: {
         content_type: "image/png",
-        media_src: `http://${ response.request.host.replace(
+        media_src: `http://${response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        ) }/v2/main/HeaderStream(guid'${ id }')/$value`,
+        )}/v2/main/HeaderStream(guid'${id}')/$value`,
         type: "test.MainService.HeaderStream",
-        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/HeaderStream(guid'${ id }')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/HeaderStream(guid'${id}')`,
       },
       custom: null,
       filename: "file.png",
@@ -630,23 +630,23 @@ describe("main-request", () => {
           expect(createResponse.statusCode).toEqual(201);
           const id = createResponse.body.d.ID;
           const stream = fs.createReadStream("./test/_env/data/init/assets/file.png");
-          const req = util.callStream(request, `/v2/main/HeaderStream(guid'${ id }')/data`, true, {
+          const req = util.callStream(request, `/v2/main/HeaderStream(guid'${id}')/data`, true, {
             "content-type": "image/png",
           });
           req.expect(204);
           stream.on("end", async () => {
             req.end(async () => {
-              let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+              let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
               expect(readResponse.statusCode).toEqual(200);
               expect(readResponse.headers["content-type"]).toEqual("image/png");
               expect(readResponse.body.length).toEqual(35372);
-              let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+              let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
               expect(deleteResponse.statusCode).toEqual(204);
-              readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+              readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
               expect(readResponse.statusCode).toEqual(204);
-              deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+              deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')`);
               expect(deleteResponse.statusCode).toEqual(204);
-              readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+              readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
               expect(readResponse.statusCode).toEqual(404);
               done();
             });
@@ -664,21 +664,21 @@ describe("main-request", () => {
     });
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
-    const dataResponse = await util.callBinary(request, `/v2/main/HeaderStream(guid'${ id }')/data`, file, true, {
+    const dataResponse = await util.callBinary(request, `/v2/main/HeaderStream(guid'${id}')/data`, file, true, {
       "content-type": "image/png",
     });
     expect(dataResponse.statusCode).toEqual(204);
-    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
     expect(readResponse.body.length).toEqual(31794);
-    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(204);
-    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(readResponse.statusCode).toEqual(404);
   });
 
@@ -696,7 +696,7 @@ describe("main-request", () => {
       stream.on("end", async () => {
         req.end(async (err, createResponse) => {
           const id = createResponse.body.d.ID;
-          let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+          let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
           expect(readResponse.statusCode).toEqual(200);
           expect(readResponse.body.d).toMatchObject({
             ID: id,
@@ -706,17 +706,17 @@ describe("main-request", () => {
             totalAmount: 11,
             isBlocked: true,
           });
-          readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+          readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
           expect(readResponse.statusCode).toEqual(200);
           expect(readResponse.headers["content-type"]).toEqual("image/png");
           expect(readResponse.body.length).toEqual(35372);
-          let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+          let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
           expect(deleteResponse.statusCode).toEqual(204);
-          readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+          readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
           expect(readResponse.statusCode).toEqual(204);
-          deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+          deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')`);
           expect(deleteResponse.statusCode).toEqual(204);
-          readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+          readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
           expect(readResponse.statusCode).toEqual(404);
           done();
         });
@@ -736,7 +736,7 @@ describe("main-request", () => {
     });
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
-    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.body.d).toMatchObject({
       ID: id,
@@ -746,17 +746,17 @@ describe("main-request", () => {
       totalAmount: 11,
       isBlocked: false,
     });
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
     expect(readResponse.body.length).toEqual(31794);
-    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(204);
-    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(readResponse.statusCode).toEqual(404);
   });
 
@@ -771,7 +771,7 @@ describe("main-request", () => {
     });
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
-    let readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${ id }')`);
+    let readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${id}')`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.body.d).toMatchObject({
       ID: id,
@@ -781,17 +781,17 @@ describe("main-request", () => {
       totalAmount: 11,
       isBlocked: false,
     });
-    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
     expect(readResponse.body.length).toEqual(31794);
-    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStreamDecode(guid'${ id }')/data`);
+    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStreamDecode(guid'${id}')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(204);
-    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStreamDecode(guid'${ id }')`);
+    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStreamDecode(guid'${id}')`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${ id }')`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${id}')`);
     expect(readResponse.statusCode).toEqual(404);
   });
 
@@ -815,7 +815,7 @@ describe("main-request", () => {
     );
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
-    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.body.d).toMatchObject({
       ID: id,
@@ -825,17 +825,17 @@ describe("main-request", () => {
       totalAmount: 11,
       isBlocked: true,
     });
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
     expect(readResponse.body.length).toEqual(17686);
-    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(204);
-    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(readResponse.statusCode).toEqual(404);
   });
 
@@ -856,7 +856,7 @@ describe("main-request", () => {
     );
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
-    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.body.d).toMatchObject({
       ID: id,
@@ -866,17 +866,17 @@ describe("main-request", () => {
       totalAmount: 11,
       isBlocked: false,
     });
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
     expect(readResponse.body.length).toEqual(17686);
-    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(204);
-    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')`);
     expect(readResponse.statusCode).toEqual(404);
   });
 
@@ -928,12 +928,12 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items`);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items`);
     expect(response.body).toBeDefined();
     let data = response.body.d.results[0];
     expect(data).toMatchObject({
       __metadata: {
-        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -951,14 +951,14 @@ describe("main-request", () => {
     });
     data.name = "Test2";
     data.Items.results[0].name = "TestItem2";
-    response = await util.callWrite(request, `/v2/main/Header(guid'${ id }')`, data, true);
+    response = await util.callWrite(request, `/v2/main/Header(guid'${id}')`, data, true);
     expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items`);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items`);
     expect(response.body).toBeDefined();
     data = response.body.d.results[0];
     expect(data).toMatchObject({
       __metadata: {
-        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -982,36 +982,36 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('ES',name)`);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('ES',name)`);
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name))`
+      `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',tolower(name))`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name)) or name eq 'ABC'`
+      `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',tolower(name)) or name eq 'ABC'`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name))%20or%20name%20eq 'ABC'`
+      `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',tolower(name))%20or%20name%20eq 'ABC'`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name)) or substringof(')es , ''''and (t) substringof(''es'',tolower(name))',tolower(name))`
+      `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',tolower(name)) or substringof(')es , ''''and (t) substringof(''es'',tolower(name))',tolower(name))`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=(ID eq guid'${ id }' and (substringof('es',tolower(name)) or (substringof(')es , ''''and (t) substringof(''es'',tolower(name))',tolower(name)))))`
+      `/v2/main/Header?$filter=(ID eq guid'${id}' and (substringof('es',tolower(name)) or (substringof(')es , ''''and (t) substringof(''es'',tolower(name))',tolower(name)))))`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof(tolower('ES'),tolower(name))`
+      `/v2/main/Header?$filter=ID eq guid'${id}' and substringof(tolower('ES'),tolower(name))`
     );
     expect(response.body.d.results).toHaveLength(1);
   });
@@ -1024,17 +1024,17 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' or substringof('er',createdBy) or startswith(createdBy,'By')&$select=ID,name,createdBy`
+      `/v2/main/Header?$filter=ID eq guid'${id}' or substringof('er',createdBy) or startswith(createdBy,'By')&$select=ID,name,createdBy`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and startswith(createdBy,'ANO')&$select=ID,name,createdBy`
+      `/v2/main/Header?$filter=ID eq guid'${id}' and startswith(createdBy,'ANO')&$select=ID,name,createdBy`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and endswith(createdBy,'MOUS')&$select=ID,name,createdBy`
+      `/v2/main/Header?$filter=ID eq guid'${id}' and endswith(createdBy,'MOUS')&$select=ID,name,createdBy`
     );
     expect(response.body.d.results).toHaveLength(1);
   });
@@ -1102,7 +1102,7 @@ describe("main-request", () => {
     const itemID = response.body.d.results[0].Items.results[0].ID;
     response = await util.callWrite(
       request,
-      `/v2/main/Header(${ ID })`,
+      `/v2/main/Header(${ID})`,
       {
         ID,
         FirstItem_ID: itemID,
@@ -1140,7 +1140,7 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     const ID = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ ID }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${ID}')`);
     expect(response.body.d).toMatchObject({
       ID,
       name: "Test %22",
@@ -1165,14 +1165,14 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     expect(id).toBeDefined();
     expect(response.headers.location).toEqual(
-      `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`
+      `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`
     );
     let itemId = response.body.d.Items.results[0].ID;
     expect(itemId).toBeDefined();
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
           type: "test.MainService.Header",
         },
         ID: id,
@@ -1202,11 +1202,11 @@ describe("main-request", () => {
     response = await util.callRead(request, "/v2/main/Header?$filter=name eq 'Test Create'");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
           type: "test.MainService.Header",
         },
         createdBy: "anonymous",
@@ -1215,15 +1215,15 @@ describe("main-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')/Items`,
+            uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')/Items`,
           },
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')/Items`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')/Items`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callWrite(request, `/v2/main/Header(guid'${ id }')/Items`, {
+    response = await util.callWrite(request, `/v2/main/Header(guid'${id}')/Items`, {
       name: "Test Update",
     });
     expect(response.statusCode).toEqual(201);
@@ -1233,7 +1233,7 @@ describe("main-request", () => {
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/HeaderItem(guid'${ itemId }')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/HeaderItem(guid'${itemId}')`,
           type: "test.MainService.HeaderItem",
         },
         name: "Test Update",
@@ -1243,20 +1243,20 @@ describe("main-request", () => {
         header_ID: id,
         header: {
           __deferred: {
-            uri: `http://${ response.request.host.replace(
+            uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderItem(guid'${ itemId }')/header`,
+            )}/v2/main/HeaderItem(guid'${itemId}')/header`,
           },
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')/Items(guid'${ itemId }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')/Items(guid'${itemId}')`);
     expect(response.body).toBeDefined();
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/HeaderItem(guid'${ itemId }')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/HeaderItem(guid'${itemId}')`,
           type: "test.MainService.HeaderItem",
         },
         name: "Test Update",
@@ -1266,10 +1266,10 @@ describe("main-request", () => {
         header_ID: id,
         header: {
           __deferred: {
-            uri: `http://${ response.request.host.replace(
+            uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderItem(guid'${ itemId }')/header`,
+            )}/v2/main/HeaderItem(guid'${itemId}')/header`,
           },
         },
       },
@@ -1284,18 +1284,18 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callWrite(
       request,
-      `/v2/main/Header(guid'${ id }')`,
+      `/v2/main/Header(guid'${id}')`,
       {
         name: "Test2",
       },
       true
     );
     expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
           type: "test.MainService.Header",
         },
         createdBy: "anonymous",
@@ -1304,7 +1304,7 @@ describe("main-request", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')/Items`,
+            uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')/Items`,
           },
         },
       },
@@ -1351,7 +1351,7 @@ describe("main-request", () => {
     let id = response.body.d.ID;
     expect(id).toBeDefined();
     expect(response.body.d.name).toEqual("Test: èèòàù");
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.name).toEqual("Test: èèòàù");
     expect(response.headers["content-type"]).toEqual("application/json");
@@ -1373,7 +1373,7 @@ describe("main-request", () => {
     id = response.body.d.ID;
     expect(id).toBeDefined();
     expect(response.body.d.name).toEqual("Test: èèòàù");
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.name).toEqual("Test: èèòàù");
     expect(response.headers["content-type"]).toEqual("application/json");
@@ -1387,7 +1387,7 @@ describe("main-request", () => {
     const id = response.body.d.ID;
     response = await util.callWrite(
       request,
-      `/v2/main/Header(guid'${ id }')`,
+      `/v2/main/Header(guid'${id}')`,
       {
         name: "Test2",
       },
@@ -1407,19 +1407,19 @@ describe("main-request", () => {
     expect(response.body).toBeDefined();
     let body = response.body;
     const id = body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     body = response.body;
     body.d.name = "Test2";
-    response = await util.callWrite(request, `/v2/main/Header(guid'${ id }')`, body.d, true);
+    response = await util.callWrite(request, `/v2/main/Header(guid'${id}')`, body.d, true);
     expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body.d.name).toEqual("Test2");
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')?$expand=Items,FirstItem`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items,FirstItem`);
     body = response.body;
     body.d.name = "Test3";
-    response = await util.callWrite(request, `/v2/main/Header(guid'${ id }')`, body.d, true);
+    response = await util.callWrite(request, `/v2/main/Header(guid'${id}')`, body.d, true);
     expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body.d.name).toEqual("Test3");
   });
 
@@ -1429,11 +1429,11 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callDelete(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callDelete(request, `/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(204);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(404);
-    response = await util.callDelete(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callDelete(request, `/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(404);
     expect(response.body).toMatchObject({
       error: {
@@ -1780,12 +1780,12 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/unboundNavigationFunction?num=1&text=${ id }`);
+    response = await util.callRead(request, `/v2/main/unboundNavigationFunction?num=1&text=${id}`);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
         },
         createdBy: "anonymous",
         modifiedBy: "anonymous",
@@ -1826,7 +1826,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${ id }'&num=1&text=abc`);
+    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${id}'&num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         boundFunction: {
@@ -1839,7 +1839,7 @@ describe("main-request", () => {
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${ id }'&num=1&text=a%20b%2Fc`);
+    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${id}'&num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
         boundFunction: {
@@ -1860,7 +1860,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundMassFunction?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`);
+    response = await util.callRead(request, `/v2/main/Header_boundMassFunction?ID=guid'${id}'&ids=TEST1&ids='TEST2'`);
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -1891,7 +1891,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitive?ID=guid'${ id }'&num=1`);
+    response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitive?ID=guid'${id}'&num=1`);
     expect(response.body).toMatchObject({
       d: {
         boundFunctionPrimitive: 1,
@@ -1899,7 +1899,7 @@ describe("main-request", () => {
     });
     response = await util.callRead(
       request,
-      `/v2/main/Header_boundMassFunctionPrimitive?ID=guid'${ id }'&text1=abc&text2=def`
+      `/v2/main/Header_boundMassFunctionPrimitive?ID=guid'${id}'&text1=abc&text2=def`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -1914,7 +1914,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitiveString?ID=guid'${ id }'&text=abc`);
+    response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitiveString?ID=guid'${id}'&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         boundFunctionPrimitiveString: "abc",
@@ -1922,7 +1922,7 @@ describe("main-request", () => {
     });
     response = response = await util.callRead(
       request,
-      `/v2/main/Header_boundFunctionPrimitiveLargeString?ID=guid'${ id }'&text=abc`
+      `/v2/main/Header_boundFunctionPrimitiveLargeString?ID=guid'${id}'&text=abc`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -1937,7 +1937,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundFunctionEntity?ID=guid'${ id }'&num=1&text=test`);
+    response = await util.callRead(request, `/v2/main/Header_boundFunctionEntity?ID=guid'${id}'&num=1&text=test`);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
@@ -1953,7 +1953,7 @@ describe("main-request", () => {
     });
     response = await util.callRead(
       request,
-      `/v2/main/Header_boundMassFunctionEntity?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`
+      `/v2/main/Header_boundMassFunctionEntity?ID=guid'${id}'&ids=TEST1&ids='TEST2'`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -1991,7 +1991,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundErrorFunction?ID=guid'${ id }'`);
+    response = await util.callRead(request, `/v2/main/Header_boundErrorFunction?ID=guid'${id}'`);
     expect(response.body).toMatchObject({
       error: {
         code: "ERR01",
@@ -1999,8 +1999,8 @@ describe("main-request", () => {
           lang: "en",
           value: "An error occurred",
         },
-        target: `Header(ID=guid'${ id }',IsActiveEntity=false)/name`,
-        additionalTargets: [`Header(ID=guid'${ id }',IsActiveEntity=false)/description`],
+        target: `Header(ID=guid'${id}',IsActiveEntity=false)/name`,
+        additionalTargets: [`Header(ID=guid'${id}',IsActiveEntity=false)/description`],
         severity: "error",
         ContentID: "1",
         innererror: {
@@ -2026,7 +2026,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundWarningFunction?ID=guid'${ id }'`);
+    response = await util.callRead(request, `/v2/main/Header_boundWarningFunction?ID=guid'${id}'`);
     expect(response.body).toMatchObject({
       d: {
         boundWarningFunction: {
@@ -2053,8 +2053,8 @@ describe("main-request", () => {
       ],
       message: "An Warning occurred",
       severity: expect.stringMatching(/info|warning/),
-      target: `Header(ID=guid'${ id }',IsActiveEntity=false)/name`,
-      additionalTargets: [`Header(ID=guid'${ id }',IsActiveEntity=false)/description`],
+      target: `Header(ID=guid'${id}',IsActiveEntity=false)/name`,
+      additionalTargets: [`Header(ID=guid'${id}',IsActiveEntity=false)/description`],
       ContentID: "1",
     });
   });
@@ -2322,7 +2322,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${ id }'&num=1&text=abc`);
+    response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${id}'&num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         boundAction: {
@@ -2335,7 +2335,7 @@ describe("main-request", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/Header_boundActionInline?ID=guid'${ id }'&num=1&text=abc`);
+    response = await util.callWrite(request, `/v2/main/Header_boundActionInline?ID=guid'${id}'&num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         boundActionInline: {
@@ -2348,7 +2348,7 @@ describe("main-request", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${ id }'&num=1&text=a%20b%2Fc`);
+    response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${id}'&num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
         boundAction: {
@@ -2369,7 +2369,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitive?ID=guid'${ id }'&num=1`);
+    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitive?ID=guid'${id}'&num=1`);
     expect(response.body).toMatchObject({
       d: {
         boundActionPrimitive: 1,
@@ -2377,7 +2377,7 @@ describe("main-request", () => {
     });
     response = await util.callWrite(
       request,
-      `/v2/main/Header_boundMassActionPrimitive?ID=guid'${ id }'&text1=abc&text2=def`
+      `/v2/main/Header_boundMassActionPrimitive?ID=guid'${id}'&text1=abc&text2=def`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -2392,13 +2392,13 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveString?ID=guid'${ id }'&text=abc`);
+    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveString?ID=guid'${id}'&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         boundActionPrimitiveString: "abc",
       },
     });
-    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveLargeString?ID=guid'${ id }'&text=abc`);
+    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveLargeString?ID=guid'${id}'&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         boundActionPrimitiveLargeString: "abc",
@@ -2412,7 +2412,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundMassAction?ID=guid'${ id }'&ids=TEST1`);
+    response = await util.callWrite(request, `/v2/main/Header_boundMassAction?ID=guid'${id}'&ids=TEST1`);
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2427,7 +2427,7 @@ describe("main-request", () => {
         ],
       },
     });
-    response = await util.callWrite(request, `/v2/main/Header_boundMassAction?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`);
+    response = await util.callWrite(request, `/v2/main/Header_boundMassAction?ID=guid'${id}'&ids=TEST1&ids='TEST2'`);
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2452,7 +2452,7 @@ describe("main-request", () => {
     });
     response = await util.callWrite(
       request,
-      `/v2/main/Header_boundMassActionInline?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`
+      `/v2/main/Header_boundMassActionInline?ID=guid'${id}'&ids=TEST1&ids='TEST2'`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -2484,7 +2484,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundActionNoReturn?ID=guid'${ id }'&num=1&text=abc`);
+    response = await util.callWrite(request, `/v2/main/Header_boundActionNoReturn?ID=guid'${id}'&num=1&text=abc`);
     expect(response.body).toEqual({});
   });
 
@@ -2494,7 +2494,7 @@ describe("main-request", () => {
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundActionEntity?ID=guid'${ id }'&num=1&text=test`);
+    response = await util.callWrite(request, `/v2/main/Header_boundActionEntity?ID=guid'${id}'&num=1&text=test`);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
@@ -2510,7 +2510,7 @@ describe("main-request", () => {
     });
     response = await util.callWrite(
       request,
-      `/v2/main/Header_boundMassActionEntity?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`
+      `/v2/main/Header_boundMassActionEntity?ID=guid'${id}'&ids=TEST1&ids='TEST2'`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -2548,7 +2548,7 @@ describe("main-request", () => {
       ID,
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ ID }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${ID}')`);
     expect(response.body && response.body.d).toBeDefined();
     expect(response.body.d).toEqual(
       expect.objectContaining({
@@ -2563,7 +2563,7 @@ describe("main-request", () => {
     expect(response.body && response.body.d && response.body.d.results).toBeDefined();
     response.body.d.results.forEach((result) => {
       result.__metadata.uri = result.__metadata.uri.substr(
-        `http://${ response.request.host.replace("127.0.0.1", "localhost") }`.length
+        `http://${response.request.host.replace("127.0.0.1", "localhost")}`.length
       );
     });
     expect(response.body && response.body.d).toMatchSnapshot();
@@ -2580,7 +2580,7 @@ describe("main-request", () => {
       expect(response.body && response.body.d).toBeDefined();
       let data = response.body && response.body.d;
       data.__metadata.uri = data.__metadata.uri.substr(
-        `http://${ response.request.host.replace("127.0.0.1", "localhost") }`.length
+        `http://${response.request.host.replace("127.0.0.1", "localhost")}`.length
       );
       const id = data.__metadata.uri.substring(
         data.__metadata.uri.indexOf("'") + 1,
@@ -2601,11 +2601,11 @@ describe("main-request", () => {
         value,
       });
 
-      response = await util.callRead(request, `/v2/main/Favorite?$filter=name eq '${ id }'`);
+      response = await util.callRead(request, `/v2/main/Favorite?$filter=name eq '${id}'`);
       expect(response.statusCode).toEqual(200);
       data = response.body && response.body.d && response.body.d.results && response.body.d.results[0];
       data.__metadata.uri = data.__metadata.uri.substr(
-        `http://${ response.request.host.replace("127.0.0.1", "localhost") }`.length
+        `http://${response.request.host.replace("127.0.0.1", "localhost")}`.length
       );
       expect(data).toEqual({
         __metadata: {
@@ -2624,7 +2624,7 @@ describe("main-request", () => {
     expect(response.body && response.body.d && response.body.d.results).toBeDefined();
     response.body.d.results.forEach((result) => {
       result.__metadata.uri = result.__metadata.uri.substr(
-        `http://${ response.request.host.replace("127.0.0.1", "localhost") }`.length
+        `http://${response.request.host.replace("127.0.0.1", "localhost")}`.length
       );
     });
     expect(response.body && response.body.d).toMatchSnapshot();
@@ -2648,69 +2648,69 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     let id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ id }')`, {
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${id}')`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/xyz/v2/main/Header(ID=guid'${ id }')`,
+      "x-forwarded-path": `/xyz/v2/main/Header(ID=guid'${id}')`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       name: "Test",
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/xyz/v2/main/Header(guid'${ id }')`,
+        uri: `https://test:1234/xyz/v2/main/Header(guid'${id}')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ id }')`, {
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${id}')`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/abc/v3/Header(ID=guid'${ id }')/toRootHeader`,
+      "x-forwarded-path": `/abc/v3/Header(ID=guid'${id}')/toRootHeader`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       name: "Test",
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/abc/v3/Header(guid'${ id }')`,
+        uri: `https://test:1234/abc/v3/Header(guid'${id}')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ id }')`, {
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${id}')`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/cockpit/Header(ID=guid'${ id }')`,
+      "x-forwarded-path": `/cockpit/Header(ID=guid'${id}')`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       name: "Test",
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/Header(guid'${ id }')`,
+        uri: `https://test:1234/cockpit/Header(guid'${id}')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ id }')`, {
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${id}')`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/cockpit/v2/Header(ID=guid'${ id }')`,
+      "x-forwarded-path": `/cockpit/v2/Header(ID=guid'${id}')`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       name: "Test",
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/v2/Header(guid'${ id }')`,
+        uri: `https://test:1234/cockpit/v2/Header(guid'${id}')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ id }')`, {
+    response = await util.callRead(request, `/v2/main/Header(ID=guid'${id}')`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `https://test:1234/cockpit/v2/Header(ID=guid'${ id }')`,
+      "x-forwarded-path": `https://test:1234/cockpit/v2/Header(ID=guid'${id}')`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       name: "Test",
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/v2/Header(guid'${ id }')`,
+        uri: `https://test:1234/cockpit/v2/Header(guid'${id}')`,
       },
     });
     response = await util.callRead(request, `/v2/main/Header`, {
@@ -2723,7 +2723,7 @@ describe("main-request", () => {
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/v2/Header(guid'${ response.body.d.results[0].ID }')`,
+        uri: `https://test:1234/cockpit/v2/Header(guid'${response.body.d.results[0].ID}')`,
       },
     });
     response = await util.callRead(request, `/v2/main/Header?a=b`, {
@@ -2736,37 +2736,37 @@ describe("main-request", () => {
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/v2/Header(guid'${ response.body.d.results[0].ID }')`,
+        uri: `https://test:1234/cockpit/v2/Header(guid'${response.body.d.results[0].ID}')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundNavigationFunction?num=1&text=${ id }`, {
+    response = await util.callRead(request, `/v2/main/unboundNavigationFunction?num=1&text=${id}`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/cockpit/unboundNavigationFunction?num=1&text=${ id }`,
+      "x-forwarded-path": `/cockpit/unboundNavigationFunction?num=1&text=${id}`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/Header(guid'${ response.body.d.ID }')`,
+        uri: `https://test:1234/cockpit/Header(guid'${response.body.d.ID}')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundNavigationFunction?num=1&text=${ id }`, {
+    response = await util.callRead(request, `/v2/main/unboundNavigationFunction?num=1&text=${id}`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/cockpit/v2/unboundNavigationFunction?num=1&text=${ id }`,
+      "x-forwarded-path": `/cockpit/v2/unboundNavigationFunction?num=1&text=${id}`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/v2/Header(guid'${ response.body.d.ID }')`,
+        uri: `https://test:1234/cockpit/v2/Header(guid'${response.body.d.ID}')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${ id }'&num=1&text=abc`, {
+    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${id}'&num=1&text=abc`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/cockpit/v2/Header_boundFunction?ID=guid'${ id }'&num=1&text=abc`,
+      "x-forwarded-path": `/cockpit/v2/Header_boundFunction?ID=guid'${id}'&num=1&text=abc`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
@@ -2786,15 +2786,15 @@ describe("main-request", () => {
     });
     expect(response.statusCode).toEqual(201);
     id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/HeaderDelta?!deltatoken='${ new Date().getTime() }'`, {
+    response = await util.callRead(request, `/v2/main/HeaderDelta?!deltatoken='${new Date().getTime()}'`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/cockpit/HeaderDelta?!deltatoken='${ new Date().getTime() }'`,
+      "x-forwarded-path": `/cockpit/HeaderDelta?!deltatoken='${new Date().getTime()}'`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.__delta).toMatch(/https:\/\/test:1234\/cockpit\/HeaderDelta\?!deltatoken='(\d*)'/);
-    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeUndefined();
     response = await util.callRead(request, `/v2/main/$metadata`, {
@@ -2851,7 +2851,7 @@ describe("main-request", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d.name).toEqual("Schöne Träume");
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body.d.name).toEqual("Schöne Träume");
   });
 
@@ -2863,18 +2863,18 @@ describe("main-request", () => {
       {
         Items: {
           __deferred: {
-            uri: `http://${ response.request.host.replace(
+            uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderLargeString(name='A',country='DE')/Items`,
+            )}/v2/main/HeaderLargeString(name='A',country='DE')/Items`,
           },
         },
         __metadata: {
           type: "test.MainService.HeaderLargeString",
-          uri: `http://${ response.request.host.replace(
+          uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderLargeString(name='A',country='DE')`,
+          )}/v2/main/HeaderLargeString(name='A',country='DE')`,
         },
         country: "DE",
         currency: "EUR",
@@ -2884,18 +2884,18 @@ describe("main-request", () => {
       {
         Items: {
           __deferred: {
-            uri: `http://${ response.request.host.replace(
+            uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderLargeString(name='B',country='US')/Items`,
+            )}/v2/main/HeaderLargeString(name='B',country='US')/Items`,
           },
         },
         __metadata: {
           type: "test.MainService.HeaderLargeString",
-          uri: `http://${ response.request.host.replace(
+          uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderLargeString(name='B',country='US')`,
+          )}/v2/main/HeaderLargeString(name='B',country='US')`,
         },
         country: "US",
         currency: "USD",
@@ -2907,18 +2907,18 @@ describe("main-request", () => {
     expect(response.body.d).toEqual({
       Items: {
         __deferred: {
-          uri: `http://${ response.request.host.replace(
+          uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderLargeString(name='A',country='DE')/Items`,
+          )}/v2/main/HeaderLargeString(name='A',country='DE')/Items`,
         },
       },
       __metadata: {
         type: "test.MainService.HeaderLargeString",
-        uri: `http://${ response.request.host.replace(
+        uri: `http://${response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        ) }/v2/main/HeaderLargeString(name='A',country='DE')`,
+        )}/v2/main/HeaderLargeString(name='A',country='DE')`,
       },
       country: "DE",
       currency: "EUR",
@@ -2930,17 +2930,17 @@ describe("main-request", () => {
       {
         __metadata: {
           type: "test.MainService.HeaderItemLargeString",
-          uri: `http://${ response.request.host.replace(
+          uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderItemLargeString(name='a',position='1')`,
+          )}/v2/main/HeaderItemLargeString(name='a',position='1')`,
         },
         header: {
           __deferred: {
-            uri: `http://${ response.request.host.replace(
+            uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderItemLargeString(name='a',position='1')/header`,
+            )}/v2/main/HeaderItemLargeString(name='a',position='1')/header`,
           },
         },
         header_country: "DE",
@@ -2952,17 +2952,17 @@ describe("main-request", () => {
       {
         __metadata: {
           type: "test.MainService.HeaderItemLargeString",
-          uri: `http://${ response.request.host.replace(
+          uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderItemLargeString(name='a',position='2')`,
+          )}/v2/main/HeaderItemLargeString(name='a',position='2')`,
         },
         header: {
           __deferred: {
-            uri: `http://${ response.request.host.replace(
+            uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderItemLargeString(name='a',position='2')/header`,
+            )}/v2/main/HeaderItemLargeString(name='a',position='2')/header`,
           },
         },
         header_country: "DE",
@@ -3027,6 +3027,205 @@ describe("main-request", () => {
           __metadata: {
             type: "test.MainService.Result",
           },
+        },
+      },
+    });
+  });
+
+  it("POST action with linebreak in parameter exceeding max length", async () => {
+    let response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text=0123456789`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundActionMaxLength: "0123456789",
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='0123456789'`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundActionMaxLength: "0123456789",
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text=0123456789a`);
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toMatchObject({
+      error: {
+        code: "400",
+        message: {
+          lang: "en",
+          value:
+            "Deserialization Error: Invalid value 0123456789a (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+        },
+        severity: "error",
+        target: "/#TRANSIENT#",
+        innererror: {
+          errordetails: [
+            {
+              code: "400",
+              message: {
+                lang: "en",
+                value:
+                  "Deserialization Error: Invalid value 0123456789a (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+              },
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
+        },
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='0123456789a'`);
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toMatchObject({
+      error: {
+        code: "400",
+        message: {
+          lang: "en",
+          value:
+            "Deserialization Error: Invalid value 0123456789a (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+        },
+        severity: "error",
+        target: "/#TRANSIENT#",
+        innererror: {
+          errordetails: [
+            {
+              code: "400",
+              message: {
+                lang: "en",
+                value:
+                  "Deserialization Error: Invalid value 0123456789a (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+              },
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
+        },
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text=01234\n5678`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundActionMaxLength: "01234\n5678",
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='01234\n5678'`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundActionMaxLength: "01234\n5678",
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text="01234\n5678"`);
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toMatchObject({
+      error: {
+        code: "400",
+        message: {
+          lang: "en",
+          value:
+            'Deserialization Error: Invalid value "01234\n5678" (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
+        },
+        severity: "error",
+        target: "/#TRANSIENT#",
+        innererror: {
+          errordetails: [
+            {
+              code: "400",
+              message: {
+                lang: "en",
+                value:
+                  'Deserialization Error: Invalid value "01234\n5678" (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
+              },
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
+        },
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='01234\n56789'`);
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toMatchObject({
+      error: {
+        code: "400",
+        message: {
+          lang: "en",
+          value:
+            "Deserialization Error: Invalid value 01234\n56789 (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+        },
+        severity: "error",
+        target: "/#TRANSIENT#",
+        innererror: {
+          errordetails: [
+            {
+              code: "400",
+              message: {
+                lang: "en",
+                value:
+                  "Deserialization Error: Invalid value 01234\n56789 (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+              },
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
+        },
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='"'`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundActionMaxLength: '"',
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='""""""""""'`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundActionMaxLength: '""""""""""',
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text=""""""""""`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundActionMaxLength: '""""""""""',
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='""""\n"""""'`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundActionMaxLength: '""""\n"""""',
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='"""""\n"""""'`);
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toMatchObject({
+      error: {
+        code: "400",
+        message: {
+          lang: "en",
+          value:
+            "Deserialization Error: Invalid value \"\"\"\"\"\n\"\"\"\"\" (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+        },
+        severity: "error",
+        target: "/#TRANSIENT#",
+        innererror: {
+          errordetails: [
+            {
+              code: "400",
+              message: {
+                lang: "en",
+                value:
+                  "Deserialization Error: Invalid value \"\"\"\"\"\n\"\"\"\"\" (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+              },
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
         },
       },
     });

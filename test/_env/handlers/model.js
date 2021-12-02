@@ -275,6 +275,10 @@ module.exports = (srv) => {
     });
   });
 
+  srv.on("unboundActionMaxLength", async (req) => {
+    return req.data.text;
+  });
+
   /* Unbound Function */
 
   srv.on("unboundFunction", async (req) => {

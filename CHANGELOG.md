@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.8.3 - tbd
+## Version 1.8.3 - 2021-12-03
 
 ### Fixed
 
-- Prevent parsing body for HEAD requests against $batch 
+- Prevent parsing body for HEAD requests against $batch
+- Fix single quotes of URL parameters for request body conversion respecting line breaks
 
 ## Version 1.8.2 - 2021-12-01
 

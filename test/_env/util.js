@@ -52,10 +52,7 @@ function callMultipartHead(request, path, boundary = "boundary", headers) {
       request.set(key, headers[key]);
     });
   }
-  return request
-    .accept("multipart/mixed,application/json")
-    .type(`multipart/mixed;boundary=${boundary}`)
-    .send("");
+  return request.accept("multipart/mixed,application/json").type(`multipart/mixed;boundary=${boundary}`).send("");
 }
 
 function callMultipart(request, path, payload, boundary = "boundary", headers) {
