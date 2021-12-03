@@ -143,11 +143,11 @@ describe("main-request", () => {
   it("GET request", async () => {
     let response = await util.callRead(request, "/v2/main/Header");
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(5);
+    expect(response.body.d.results).toHaveLength(6);
     response = await util.callRead(request, "/v2/main/Header?$inlinecount=allpages");
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(5);
-    expect(response.body.d.__count).toEqual("5");
+    expect(response.body.d.results).toHaveLength(6);
+    expect(response.body.d.__count).toEqual("6");
     const id = response.body.d.results[0].ID;
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body.d.__metadata).toEqual({
@@ -188,13 +188,13 @@ describe("main-request", () => {
       accept: "application/xml",
     });
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(5);
+    expect(response.body.d.results).toHaveLength(6);
   });
 
   it("GET request with sap-language", async () => {
     let response = await util.callRead(request, "/v2/main/Header?sap-language=de");
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(5);
+    expect(response.body.d.results).toHaveLength(6);
   });
 
   it("GET request with navigation", async () => {
@@ -379,9 +379,11 @@ describe("main-request", () => {
     response = await util.callRead(request, `/v2/main/Header/$count?$search="Search%20Instance"`);
     expect(response.text).toEqual("1");
     response = await util.callRead(request, `/v2/main/Header/$count?search="`);
-    expect(response.text).toEqual("1");
+    expect(response.text).toEqual("2");
     response = await util.callRead(request, `/v2/main/Header/$count?search=""`);
     expect(response.text).toEqual("0");
+    response = await util.callRead(request, `/v2/main/Header/$count?search=`);
+    expect(response.text).toEqual("11");
     response = await util.callRead(request, `/v2/main/Header/$count?search="""`);
     expect(response.text).toEqual("0");
     response = await util.callRead(request, `/v2/main/Header/$count?search=Search"Quote"`);
@@ -389,6 +391,17 @@ describe("main-request", () => {
     response = await util.callRead(request, `/v2/main/Header/$count?$search="Search\\"Quote\\""`);
     expect(response.text).toEqual("1");
     response = await util.callRead(request, `/v2/main/Header/$count?$search="\\"\\""`);
+    expect(response.text).toEqual("0");
+
+    response = await util.callWrite(request, "/v2/main/Header", {
+      name: '"',
+    });
+    expect(response.statusCode).toEqual(201);
+    response = await util.callRead(request, `/v2/main/Header/$count?search="`);
+    expect(response.text).toEqual("3");
+    response = await util.callRead(request, `/v2/main/Header/$count?search=%22`);
+    expect(response.text).toEqual("3");
+    response = await util.callRead(request, `/v2/main/Header/$count?search=%22%22%22`);
     expect(response.text).toEqual("0");
   });
 
@@ -3209,7 +3222,7 @@ describe("main-request", () => {
         message: {
           lang: "en",
           value:
-            "Deserialization Error: Invalid value \"\"\"\"\"\n\"\"\"\"\" (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+            'Deserialization Error: Invalid value """""\n""""" (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
         },
         severity: "error",
         target: "/#TRANSIENT#",
@@ -3220,7 +3233,7 @@ describe("main-request", () => {
               message: {
                 lang: "en",
                 value:
-                  "Deserialization Error: Invalid value \"\"\"\"\"\n\"\"\"\"\" (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+                  'Deserialization Error: Invalid value """""\n""""" (JavaScript string). The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
               },
               severity: "error",
               target: "/#TRANSIENT#",

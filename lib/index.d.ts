@@ -146,4 +146,9 @@ type Options = {
      * Default content disposition for media streams (inline, attachment). Default is `attachment`.
      */
     contentDisposition?: String | "attachment",
+
+    /**
+     * Specifies if search expression is quoted automatically. Default is `true`.
+     */
+    quoteSearch?: boolean | true
 };

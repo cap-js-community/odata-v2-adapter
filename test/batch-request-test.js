@@ -52,9 +52,9 @@ describe("batch-request", () => {
     expect(responses.length).toEqual(3);
     expect(responses.filter((response) => response.statusCode === 200).length).toEqual(3);
     const [first, second, third] = responses;
-    expect(first.body.d.results.length).toEqual(5);
+    expect(first.body.d.results.length).toEqual(6);
     expect(first.contentTransferEncoding).toEqual("binary");
-    expect(second.body.d.results.length).toEqual(5);
+    expect(second.body.d.results.length).toEqual(6);
     expect(second.contentTransferEncoding).toEqual("binary");
     expect(third.body.d.hasOwnProperty("results")).toEqual(false);
     expect(third.body.d.ID).toEqual(ID);
@@ -93,7 +93,7 @@ describe("batch-request", () => {
     expect(responses.length).toEqual(3);
     const [first] = responses;
     expect(first.body.d.results).toBeDefined();
-    expect(first.body.d.results.length).toEqual(7);
+    expect(first.body.d.results.length).toEqual(8);
     expect(first.body.d.results[0]).toBeDefined();
     expect(first.body.d.results[0].name).toBeDefined();
     expect(first.body.d.results[0].__metadata).toBeDefined();

@@ -24,7 +24,7 @@ describe("analytics-request", () => {
     expect(response.body.d).toBeDefined();
     expect(response.body.d.results).toBeDefined();
     // no aggregation should have happened
-    expect(response.body.d.results.length).toEqual(5);
+    expect(response.body.d.results.length).toEqual(6);
   });
 
   it("GET request with grouping and aggregation", async () => {
@@ -33,6 +33,17 @@ describe("analytics-request", () => {
     expect(response.body).toEqual({
       d: {
         results: [
+          {
+            __metadata: {
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/Header(aggregation'{"key":{"currency":"'ABC'"},"value":["currency","stock"]}')`,
+              type: "test.AnalyticsService.Header",
+            },
+            currency: "ABC",
+            stock: 1,
+          },
           {
             __metadata: {
               uri: `http://${response.request.host.replace(
@@ -131,6 +142,19 @@ describe("analytics-request", () => {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
+              )}/v2/analytics/Header(aggregation'{"key":{"country":"'New%20%22Jersey'","currency":"'ABC'"},"value":["country","currency","stock","price"]}')`,
+              type: "test.AnalyticsService.Header",
+            },
+            country: 'New "Jersey',
+            currency: "ABC",
+            stock: 1,
+            price: "1.23",
+          },
+          {
+            __metadata: {
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
               )}/v2/analytics/Header(aggregation'{"key":{"country":"'New%20York'","currency":"'U%2FSD'"},"value":["country","currency","stock","price"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -179,6 +203,17 @@ describe("analytics-request", () => {
     expect(response.body).toEqual({
       d: {
         results: [
+          {
+            __metadata: {
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/Header(aggregation'{"key":{"currency":"'ABC'"},"value":["currency","stock"]}')`,
+              type: "test.AnalyticsService.Header",
+            },
+            currency: "ABC",
+            stock: 1,
+          },
           {
             __metadata: {
               uri: `http://${response.request.host.replace(

@@ -94,5 +94,13 @@
     "currency": "U/SD",
     "stock": 99,
     "price": "9.99"
+  },
+  {
+    "name": "Header 6",
+    "country": "New \"Jersey",
+    "description": "This is a test Header",
+    "currency": "ABC",
+    "stock": 1,
+    "price": "1.23"
   }
 ]
