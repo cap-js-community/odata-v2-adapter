@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.8.4 - tbd
+## Version 1.8.4 - 2021-12-06
 
 ### Fixed
+
+- Unquote action/function parameter of types `cds.UUID`, `cds.Binary`, `cds.LargeBinary`, `cds.Date`, `cds.Time`, `cds.DateTime`, `cds.Timestamp`
 
 ## Version 1.8.3 - 2021-12-06
 
