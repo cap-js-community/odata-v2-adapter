@@ -140,7 +140,7 @@ describe("todo-request", () => {
         ID: 1,
         __metadata: {
           type: "todo.TodoService.People",
-          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/todo/People(1)`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/todo/People(1)`,
         },
         name: "Joe",
         birthDate: "1990-07-01",
@@ -150,28 +150,28 @@ describe("todo-request", () => {
             {
               __metadata: {
                 type: "todo.TodoService.PlannedTasks",
-                uri: `http://${response.request.host.replace(
+                uri: `http://${ response.request.host.replace(
                   "127.0.0.1",
                   "localhost"
-                )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')`,
+                ) }/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')`,
               },
               endDate: "2019-08-23T00:00:00Z",
               person: {
                 __deferred: {
-                  uri: `http://${response.request.host.replace(
+                  uri: `http://${ response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/person`,
+                  ) }/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/person`,
                 },
               },
               person_ID: 1,
               startDate: "2019-08-23T00:00:00Z",
               task: {
                 __deferred: {
-                  uri: `http://${response.request.host.replace(
+                  uri: `http://${ response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/task`,
+                  ) }/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/task`,
                 },
               },
               task_ID: 1,
@@ -184,7 +184,7 @@ describe("todo-request", () => {
         ID: 2,
         __metadata: {
           type: "todo.TodoService.People",
-          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/todo/People(2)`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/todo/People(2)`,
         },
         name: "Jane",
         birthDate: "1981-08-14",
@@ -197,7 +197,7 @@ describe("todo-request", () => {
         ID: 3,
         __metadata: {
           type: "todo.TodoService.People",
-          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/todo/People(3)`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/todo/People(3)`,
         },
         name: "Bob",
         birthDate: "1978-01-05",
@@ -207,28 +207,28 @@ describe("todo-request", () => {
             {
               __metadata: {
                 type: "todo.TodoService.PlannedTasks",
-                uri: `http://${response.request.host.replace(
+                uri: `http://${ response.request.host.replace(
                   "127.0.0.1",
                   "localhost"
-                )}/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S')`,
+                ) }/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S')`,
               },
               endDate: "2019-08-24T00:00:00Z",
               person: {
                 __deferred: {
-                  uri: `http://${response.request.host.replace(
+                  uri: `http://${ response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S')/person`,
+                  ) }/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S')/person`,
                 },
               },
               person_ID: 3,
               startDate: "2019-08-24T00:00:00Z",
               task: {
                 __deferred: {
-                  uri: `http://${response.request.host.replace(
+                  uri: `http://${ response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S')/task`,
+                  ) }/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.7S')/task`,
                 },
               },
               task_ID: 2,
@@ -245,7 +245,7 @@ describe("todo-request", () => {
     expect(response.body.d).toBeDefined();
     expect(response.body.d.ID).toEqual(1);
     let plannedTaskUri = todo.plannedTasks.results[0].__metadata.uri;
-    plannedTaskUri = plannedTaskUri.substr(`http://${response.request.host.replace("127.0.0.1", "localhost")}`.length);
+    plannedTaskUri = plannedTaskUri.substr(`http://${ response.request.host.replace("127.0.0.1", "localhost") }`.length);
     response = await util.callRead(request, plannedTaskUri, {
       accept: "application/json",
     });
@@ -253,28 +253,28 @@ describe("todo-request", () => {
     expect(response.body.d).toEqual({
       __metadata: {
         type: "todo.TodoService.PlannedTasks",
-        uri: `http://${response.request.host.replace(
+        uri: `http://${ response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')`,
+        ) }/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')`,
       },
       endDate: "2019-08-23T00:00:00Z",
       person: {
         __deferred: {
-          uri: `http://${response.request.host.replace(
+          uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/person`,
+          ) }/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/person`,
         },
       },
       person_ID: 1,
       startDate: "2019-08-23T00:00:00Z",
       task: {
         __deferred: {
-          uri: `http://${response.request.host.replace(
+          uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/task`,
+          ) }/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/task`,
         },
       },
       keyDate: "/Date(1577750400000)/",
@@ -305,28 +305,28 @@ describe("todo-request", () => {
     expect(response.body.d).toEqual({
       __metadata: {
         type: "todo.TodoService.PlannedTasks",
-        uri: `http://${response.request.host.replace(
+        uri: `http://${ response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')`,
+        ) }/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')`,
       },
       endDate: "2019-08-23T00:00:00Z",
       person: {
         __deferred: {
-          uri: `http://${response.request.host.replace(
+          uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/person`,
+          ) }/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/person`,
         },
       },
       person_ID: 1,
       startDate: "2019-08-23T00:00:00Z",
       task: {
         __deferred: {
-          uri: `http://${response.request.host.replace(
+          uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/task`,
+          ) }/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00',keyTime=time'PT12H34M56.789S')/task`,
         },
       },
       keyDate: "/Date(1577750400000)/",
@@ -350,7 +350,7 @@ describe("todo-request", () => {
       ID: 1,
       __metadata: {
         type: "todo.TodoService.People",
-        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/todo/People(1)`,
+        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/todo/People(1)`,
       },
       name: "Joe",
       plannedTasks: {
@@ -535,5 +535,104 @@ describe("todo-request", () => {
     expect(response.body.d).toBeDefined();
     expect(response.body.d.ID).toEqual(1);
     expect(response.body.d.value2).toEqual("1.62");
+  });
+
+  it("Call bound action/function with date/time parameters", async () => {
+    let response = await util.callWrite(request, "/v2/todo/PlannedTasks", {
+      task_ID: 1,
+      person_ID: 1,
+      startDate: "2020-08-23T00:00:00Z",
+      endDate: "2020-08-23T00:00:00Z",
+      keyDate: "/Date(1577750400000)/",
+      keyTime: "PT12H34M56.789S",
+      keyDateEdit: "/Date(1577750400000)/",
+      keyTimeEdit: "PT12H34M56.789S",
+      tentative: true,
+    });
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    response = await util.callWrite(
+      request,
+      `/v2/todo/PlannedTasks_boundAction?task_ID=1&person_ID=1&num=1&text=abc&startDate=datetimeoffset'2019-08-23T00:00:00Z'&endDate=datetimeoffset'2019-08-23T00:00:00Z'&keyDate=datetime'2019-12-31T00:00'&keyTime=time'PT12H34M56.789S'&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00'&keyTime2=time'PT12H34M56.789S'`
+    );
+    expect(response.body).toMatchObject({
+      d: {
+        task_ID: 1,
+        person_ID: 1,
+        startDate: "2019-08-23T00:00:00Z",
+        endDate: "2019-08-23T00:00:00Z",
+        keyDate: "/Date(1577750400000)/",
+        keyTime: "PT12H34M56.789S",
+      },
+    });
+    response = await util.callRead(
+      request,
+      `/v2/todo/PlannedTasks_boundFunction?task_ID=1&person_ID=1&num=1&text=abc&startDate=datetimeoffset'2019-08-23T00:00:00Z'&endDate=datetimeoffset'2019-08-23T00:00:00Z'&keyDate=datetime'2019-12-31T00:00'&keyTime=time'PT12H34M56.789S'&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00'&keyTime2=time'PT12H34M56.789S'`
+    );
+    expect(response.body).toMatchObject({
+      d: {
+        boundFunction: JSON.stringify({
+          key: {
+            task_ID: 1,
+            person_ID: 1,
+            startDate: "2019-08-23T00:00:00Z",
+            endDate: "2019-08-23T00:00:00Z",
+            keyDate: "2019-12-31",
+            keyTime: "12:34:56.789",
+          },
+          data: {
+            num: 1,
+            text: "abc",
+            startDate2: "2019-08-23T00:00:00Z",
+            endDate2: "2019-08-23T00:00:00Z",
+            keyDate2: "2019-12-31",
+            keyTime2: "12:34:56.789",
+          },
+        }),
+      },
+    });
+  });
+
+  it("Call unbound action/function with date/time parameters", async () => {
+    let response = await util.callWrite(request, "/v2/todo/PlannedTasks", {
+      task_ID: 1,
+      person_ID: 1,
+      startDate: "2021-08-23T00:00:00Z",
+      endDate: "2021-08-23T00:00:00Z",
+      keyDate: "/Date(1577750400000)/",
+      keyTime: "PT12H34M56.789S",
+      keyDateEdit: "/Date(1577750400000)/",
+      keyTimeEdit: "PT12H34M56.789S",
+      tentative: true,
+    });
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    response = await util.callWrite(request, `/v2/todo/unboundAction?num=1&text=abc&&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00'&keyTime2=time'PT12H34M56.789S'`);
+    expect(response.body).toMatchObject({
+      d: {
+        task_ID: 1,
+        person_ID: 1,
+        startDate: "2019-08-23T00:00:00Z",
+        endDate: "2019-08-23T00:00:00Z",
+        keyDate: "/Date(1577750400000)/",
+        keyTime: "PT12H34M56.789S",
+      },
+    });
+    response = await util.callRead(request, `/v2/todo/unboundFunction?num=1&text=abc&&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00'&keyTime2=time'PT12H34M56.789S'`);
+    expect(response.body).toMatchObject({
+      d: {
+        unboundFunction: JSON.stringify({
+          key: undefined,
+          data: {
+            num: 1,
+            text: "abc",
+            startDate2: "2019-08-23T00:00:00Z",
+            endDate2: "2019-08-23T00:00:00Z",
+            keyDate2: "2019-12-31",
+            keyTime2: "12:34:56.789",
+          },
+        }),
+      },
+    });
   });
 });

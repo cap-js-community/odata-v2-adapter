@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Prevent parsing body for HEAD requests against $batch
 - Fix single quotes of URL parameters for request body conversion respecting line breaks
 - Introduce proxy option `quoteSearch` to control search expression quoting. Default is `true`
+- Fix bound action call to entity key having association type
+- Fix action/function parameter of types date, time, datetime
 
 ## Version 1.8.2 - 2021-12-01
 

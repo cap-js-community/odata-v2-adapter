@@ -48,5 +48,10 @@ service TodoService {
     entity Tasks as projection on todo.Tasks;
     entity TasksItems as projection on todo.TasksItems;
     entity People as projection on todo.People;
-    entity PlannedTasks as projection on todo.PlannedTasks;
+    entity PlannedTasks as projection on todo.PlannedTasks actions {
+        action boundAction(num: Integer, text: String, startDate2: DateTime, endDate2: DateTime, keyDate2: Date, keyTime2: Time) returns PlannedTasks;
+        function boundFunction(num: Integer, text: String, startDate2: DateTime, endDate2: DateTime, keyDate2: Date, keyTime2: Time) returns String;
+    };
+    action unboundAction(num: Integer, text: String, startDate2: DateTime, endDate2: DateTime, keyDate2: Date, keyTime2: Time) returns PlannedTasks;
+    function unboundFunction(num: Integer, text: String, startDate2: DateTime, endDate2: DateTime, keyDate2: Date, keyTime2: Time) returns String;
 }
