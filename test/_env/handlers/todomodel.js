@@ -19,7 +19,7 @@ module.exports = (srv) => {
       endDate: req.data.endDate2,
       keyDate: req.data.keyDate2,
       keyTime: req.data.keyTime2,
-    }
+    };
   });
 
   srv.on("unboundFunction", async (req) => {
