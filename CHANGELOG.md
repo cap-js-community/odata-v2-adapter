@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Prevent additional call to fill `content-disposition`, in case header is already provided with stream
+
 ## Version 1.8.4 - 2021-12-06
 
 ### Fixed
