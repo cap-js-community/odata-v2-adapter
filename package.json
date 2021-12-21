@@ -38,22 +38,22 @@
   },
   "dependencies": {
     "@sap/logging": "^6.0.3",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "express-fileupload": "^1.2.1",
     "http-proxy-middleware": "^2.0.1",
     "node-fetch": "^2.6.6"
   },
   "devDependencies": {
-    "@sap/cds": "^5.7.2",
+    "@sap/cds": "^5.7.3",
     "@sap/hana-client": "^2.11.14",
     "compression": "^1.7.4",
-    "eslint": "^8.4.1",
+    "eslint": "^8.5.0",
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^25.3.0",
-    "jest": "^27.4.3",
+    "jest": "^27.4.5",
     "jest-junit": "^13.0.0",
-    "passport": "^0.5.0",
+    "passport": "^0.5.2",
     "prettier": "^2.5.1",
     "sqlite3": "^5.0.2",
     "supertest": "^6.1.6"
