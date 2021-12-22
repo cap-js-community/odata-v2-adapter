@@ -1027,6 +1027,11 @@ describe("main-request", () => {
       `/v2/main/Header?$filter=ID eq guid'${id}' and substringof(tolower('ES'),tolower(name))`
     );
     expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}' and substringof(tolower(tolower('ES')),tolower(tolower(name)))`
+    );
+    expect(response.body.d.results).toHaveLength(1);
   });
 
   it("GET request with function 'substringof' and 'startswith'", async () => {
