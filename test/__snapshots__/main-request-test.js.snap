@@ -376,6 +376,7 @@ exports[`main-request GET $metadata 1`] = `
         <EntitySet Name=\\"HeaderStreamAttachment\\" EntityType=\\"test.MainService.HeaderStreamAttachment\\"/>
         <EntitySet Name=\\"HeaderStreamDecode\\" EntityType=\\"test.MainService.HeaderStreamDecode\\"/>
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
+        <EntitySet Name=\\"HeaderBinary\\" EntityType=\\"test.MainService.HeaderBinary\\"/>
         <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderTemporal\\" EntityType=\\"test.MainService.HeaderTemporal\\"/>
         <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
@@ -587,6 +588,14 @@ exports[`main-request GET $metadata 1`] = `
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
         <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderBinary\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"data\\" Type=\\"Edm.Binary\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderAssocKey\\">
         <Key>
@@ -1012,6 +1021,7 @@ exports[`main-request GET $metadata localized 1`] = `
         <EntitySet Name=\\"HeaderStreamAttachment\\" EntityType=\\"test.MainService.HeaderStreamAttachment\\"/>
         <EntitySet Name=\\"HeaderStreamDecode\\" EntityType=\\"test.MainService.HeaderStreamDecode\\"/>
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
+        <EntitySet Name=\\"HeaderBinary\\" EntityType=\\"test.MainService.HeaderBinary\\"/>
         <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderTemporal\\" EntityType=\\"test.MainService.HeaderTemporal\\"/>
         <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
@@ -1223,6 +1233,14 @@ exports[`main-request GET $metadata localized 1`] = `
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
         <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderBinary\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"data\\" Type=\\"Edm.Binary\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderAssocKey\\">
         <Key>
@@ -1648,6 +1666,7 @@ exports[`main-request GET $metadata localized 2`] = `
         <EntitySet Name=\\"HeaderStreamAttachment\\" EntityType=\\"test.MainService.HeaderStreamAttachment\\"/>
         <EntitySet Name=\\"HeaderStreamDecode\\" EntityType=\\"test.MainService.HeaderStreamDecode\\"/>
         <EntitySet Name=\\"HeaderUrlStream\\" EntityType=\\"test.MainService.HeaderUrlStream\\"/>
+        <EntitySet Name=\\"HeaderBinary\\" EntityType=\\"test.MainService.HeaderBinary\\"/>
         <EntitySet Name=\\"HeaderAssocKey\\" EntityType=\\"test.MainService.HeaderAssocKey\\"/>
         <EntitySet Name=\\"HeaderTemporal\\" EntityType=\\"test.MainService.HeaderTemporal\\"/>
         <EntitySet Name=\\"HeaderDelta\\" EntityType=\\"test.MainService.HeaderDelta\\"/>
@@ -1859,6 +1878,14 @@ exports[`main-request GET $metadata localized 2`] = `
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
         <Property Name=\\"mediaType\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"filename\\" Type=\\"Edm.String\\"/>
+      </EntityType>
+      <EntityType Name=\\"HeaderBinary\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"data\\" Type=\\"Edm.Binary\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderAssocKey\\">
         <Key>
@@ -2162,8 +2189,50 @@ exports[`main-request GET $metadata localized 2`] = `
 </edmx:Edmx>"
 `;
 
-exports[`main-request GET service XML format 1`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service JSON format 1`] = `
+Array [
+  "Favorite",
+  "Header",
+  "HeaderAssocKey",
+  "HeaderBinary",
+  "HeaderDelta",
+  "HeaderItem",
+  "HeaderItemDelta",
+  "HeaderItemLargeString",
+  "HeaderLargeString",
+  "HeaderLine",
+  "HeaderStream",
+  "HeaderStreamAttachment",
+  "HeaderStreamDecode",
+  "HeaderTemporal",
+  "HeaderUrlStream",
+  "StringUUID",
+]
+`;
 
-exports[`main-request GET service XML format 2`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service JSON format 2`] = `
+Array [
+  "Favorite",
+  "Header",
+  "HeaderAssocKey",
+  "HeaderBinary",
+  "HeaderDelta",
+  "HeaderItem",
+  "HeaderItemDelta",
+  "HeaderItemLargeString",
+  "HeaderLargeString",
+  "HeaderLine",
+  "HeaderStream",
+  "HeaderStreamAttachment",
+  "HeaderStreamDecode",
+  "HeaderTemporal",
+  "HeaderUrlStream",
+  "StringUUID",
+]
+`;
 
-exports[`main-request GET service XML format 3`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 1`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderBinary\\"><atom:title>HeaderBinary</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
+
+exports[`main-request GET service XML format 2`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderBinary\\"><atom:title>HeaderBinary</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;
+
+exports[`main-request GET service XML format 3`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderBinary\\"><atom:title>HeaderBinary</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection></workspace></service>"`;

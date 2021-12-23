@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Prevent additional call to fill `content-disposition`, in case header is already provided with stream
+- Support OData V2 `binary` media upload via POST for entities with element of type `Binary` and without `@Core.MediaType` annotations
+- Return server error as response, if OData V4 server does not support media upload without `@Core.MediaType` annotation
+  - e.g. `No payload deserializer available for resource kind 'PRIMITIVE' and mime type 'image/png'`
 
 ## Version 1.8.4 - 2021-12-06
 
@@ -245,7 +248,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Align determination of locale including sub tags (e.g. `zh-TW)
+- Align determination of locale including sub tags (e.g. `zh-TW`)
 
 ## Version 1.5.4 - 2021-01-26
 
@@ -282,7 +285,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Fix that file upload error message does not return with `500 status code
+- Fix that file upload error message does not return with `500` status code
 
 ## Version 1.4.61 - 2020-12-11
 
@@ -370,7 +373,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Support OData V2 `binary media upload via POST
+- Support OData V2 `binary` media upload via POST
 - Support OData V2 `multipart/form-data media` upload via POST
 - Update README on logging layers
 
@@ -378,7 +381,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Rewrite batch success status code from `200` to `202
+- Rewrite batch success status code from `200` to `202`
 - Remove OData V4 header `odata-entityid`
 - Propagate `Content-ID` in response to HTTP request headers
 - Remove artificially added `Content-ID` header from batch response

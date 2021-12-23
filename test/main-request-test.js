@@ -41,44 +41,12 @@ describe("main-request", () => {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
-    expect(response.body.d.EntitySets.sort()).toEqual([
-      "Favorite",
-      "Header",
-      "HeaderAssocKey",
-      "HeaderDelta",
-      "HeaderItem",
-      "HeaderItemDelta",
-      "HeaderItemLargeString",
-      "HeaderLargeString",
-      "HeaderLine",
-      "HeaderStream",
-      "HeaderStreamAttachment",
-      "HeaderStreamDecode",
-      "HeaderTemporal",
-      "HeaderUrlStream",
-      "StringUUID",
-    ]);
+    expect(response.body.d.EntitySets.sort()).toMatchSnapshot();
     response = await util.callRead(request, "/v2/main/", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
-    expect(response.body.d.EntitySets.sort()).toEqual([
-      "Favorite",
-      "Header",
-      "HeaderAssocKey",
-      "HeaderDelta",
-      "HeaderItem",
-      "HeaderItemDelta",
-      "HeaderItemLargeString",
-      "HeaderLargeString",
-      "HeaderLine",
-      "HeaderStream",
-      "HeaderStreamAttachment",
-      "HeaderStreamDecode",
-      "HeaderTemporal",
-      "HeaderUrlStream",
-      "StringUUID",
-    ]);
+    expect(response.body.d.EntitySets.sort()).toMatchSnapshot();
   });
 
   it("GET service XML format", async () => {
@@ -926,6 +894,37 @@ describe("main-request", () => {
             },
           ],
         },
+      },
+    });
+  });
+
+  it("POST request with binary without media type annotations fails", async () => {
+    const file = fs.readFileSync("./test/_env/data/init/assets/file.png", "utf8");
+    const createResponse = await util.callBinary(request, `/v2/main/HeaderBinary`, file, false, {
+      "content-type": "image/png",
+      name: "test",
+    });
+    expect(createResponse.statusCode).toEqual(400);
+    expect(createResponse.body.error).toMatchObject({
+      code: "400",
+      message: {
+        lang: "en",
+        value: "No payload deserializer available for resource kind 'PRIMITIVE' and mime type 'image/png'",
+      },
+      severity: "error",
+      target: "/#TRANSIENT#",
+      innererror: {
+        errordetails: [
+          {
+            code: "400",
+            message: {
+              lang: "en",
+              value: "No payload deserializer available for resource kind 'PRIMITIVE' and mime type 'image/png'",
+            },
+            severity: "error",
+            target: "/#TRANSIENT#",
+          },
+        ],
       },
     });
   });

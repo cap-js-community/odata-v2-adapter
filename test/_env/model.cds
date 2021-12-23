@@ -76,6 +76,12 @@ entity HeaderUrlStream: cuid {
     filename: String;
 }
 
+entity HeaderBinary: cuid {
+    // @Core.MediaType
+    data: LargeBinary;
+    name: String;
+}
+
 entity HeaderAssocKey {
     key header: Association to Header;
     num: Double;
@@ -183,6 +189,7 @@ service MainService {
     entity HeaderStreamAttachment as projection on test.HeaderStreamAttachment;
     entity HeaderStreamDecode as projection on test.HeaderStreamDecode;
     entity HeaderUrlStream as projection on test.HeaderUrlStream;
+    entity HeaderBinary as projection on test.HeaderBinary;
     entity HeaderAssocKey as projection on test.HeaderAssocKey;
     entity HeaderTemporal as projection on test.HeaderTemporal;
     entity HeaderDelta as projection on test.HeaderDelta;
