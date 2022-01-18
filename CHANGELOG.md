@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Fix README for combined custom backend bootstrap
+
 ## Version 1.8.5 - 2022-01-17
 
 ### Fixed
