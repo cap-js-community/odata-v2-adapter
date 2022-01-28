@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@sap/logging": "^6.1.0",
+    "@types/express": "^4.17.13",
     "express": "^4.17.2",
     "express-fileupload": "^1.2.1",
     "http-proxy-middleware": "^2.0.2",
