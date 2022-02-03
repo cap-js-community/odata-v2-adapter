@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Proxy option `fixDraftRequests` to convert unsupported draft request to a working version (default: false)
+
 ## Version 1.8.6 - 2022-02-01
 
 ### Fixed

@@ -223,6 +223,7 @@ Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V
   - **propagateMessageToDetails**: Propagates root error or message always to details section. Default is `false`.
   - **contentDisposition**: Default content disposition for media streams (inline, attachment). Default is `attachment`.
   - **quoteSearch**: Specifies if search expression is quoted automatically. Default is `true`.
+  - **fixDraftRequests**: Specifies if unsupported draft requests are converted to a working version. Default is `false`.
 
 All CDS OData V2 Adapter Proxy options can also be specified as part of CDS project-specific configuration
 under section `cds.cov2ap` and accessed via `cds.env.cov2ap`.

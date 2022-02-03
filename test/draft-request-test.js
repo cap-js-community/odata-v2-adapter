@@ -573,4 +573,87 @@ describe("draft-request", () => {
     response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
   });
+
+  it("tests unsupported draft requests", async () => {
+    let response = await util.callWrite(request, "/v2/draft/Header", {
+      name: "Test Header",
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callWrite(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`, {
+      name: "Test Item",
+      description: "ABC",
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    response = await util.callRead(
+      request,
+      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=(IsActiveEntity eq true and substringof('Item',name)) or (IsActiveEntity eq false and (substringof('Item',name) or HasActiveEntity eq false))`
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d).toMatchObject({
+      results: [
+        {
+          name: "Test Item",
+          description: "ABC",
+          startAt: null,
+          endAt: null,
+          header_ID: id,
+          NextItem_ID: null,
+          assoc_header_ID: null,
+          IsActiveEntity: false,
+          HasDraftEntity: false,
+          HasActiveEntity: false,
+        },
+      ],
+    });
+    response = await util.callRead(
+      request,
+      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=(IsActiveEntity eq true and (substringof('_',name) or substringof('ABC',description))) or (IsActiveEntity eq false and ((substringof('_',name) or substringof('ABC',description)) or HasActiveEntity eq false))`
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d).toMatchObject({
+      results: [
+        {
+          name: "Test Item",
+          description: "ABC",
+          startAt: null,
+          endAt: null,
+          header_ID: id,
+          NextItem_ID: null,
+          assoc_header_ID: null,
+          IsActiveEntity: false,
+          HasDraftEntity: false,
+          HasActiveEntity: false,
+        },
+      ],
+    });
+    response = await util.callRead(
+      request,
+      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=((IsActiveEntity eq true and substringof('Item2',name)) or (IsActiveEntity eq false and (substringof('Item2',name) or HasActiveEntity eq false))) or description eq 'ABC'`
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d).toMatchObject({
+      results: [
+        {
+          name: "Test Item",
+          description: "ABC",
+          startAt: null,
+          endAt: null,
+          header_ID: id,
+          NextItem_ID: null,
+          assoc_header_ID: null,
+          IsActiveEntity: false,
+          HasDraftEntity: false,
+          HasActiveEntity: false,
+        },
+      ],
+    });
+  });
 });

@@ -150,5 +150,10 @@ type Options = {
     /**
      * Specifies if search expression is quoted automatically. Default is `true`.
      */
-    quoteSearch?: boolean | true
+    quoteSearch?: boolean | true,
+
+    /**
+     * Specifies if unsupported draft requests are converted to a working version. Default is `false`.
+     */
+    fixDraftRequests?: boolean | false,
 };
