@@ -143,9 +143,14 @@ type Options = {
     propagateMessageToDetails?: boolean | false,
 
     /**
-     * Default content disposition for media streams (inline, attachment). Default is `attachment`.
+     * Default content disposition for media streams (inline, attachment), if not available or calculated. Default is `attachment`.
      */
     contentDisposition?: String | "attachment",
+
+    /**
+     * Calculate content disposition for media streams even if already available. Default is `false`.
+     */
+    calcContentDisposition?: boolean | false,
 
     /**
      * Specifies if search expression is quoted automatically. Default is `true`.
