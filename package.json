@@ -45,10 +45,10 @@
     "node-fetch": "^2.6.7"
   },
   "devDependencies": {
-    "@sap/cds": "^5.8.0",
+    "@sap/cds": "^5.8.1",
     "@sap/hana-client": "^2.12.13",
     "compression": "^1.7.4",
-    "eslint": "^8.8.0",
+    "eslint": "^8.9.0",
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^26.1.0",
