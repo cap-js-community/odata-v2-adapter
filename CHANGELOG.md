@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Refactor locale determination from CDS
-- Serialize body to string in case of type `object` before calculating content length 
+- Serialize body to string in case of type `object` before calculating content length
+- Support `AnalyticalContext` annotations in addition to deprecated `Analytics` annotations
 
 ## Version 1.8.9 - 2022-02-09
 
