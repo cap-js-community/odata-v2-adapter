@@ -1,5 +1,6 @@
 "use strict";
 
+const cds = require("@sap/cds");
 const supertest = require("supertest");
 // eslint-disable-next-line no-restricted-modules
 const fs = require("fs");
@@ -18,6 +19,17 @@ describe("main-request", () => {
 
   afterAll(async () => {
     await env.end();
+  });
+
+  it("Index page including V2 links", async () => {
+    expect(cds.services["test.MainService"].$linkProviders.length).toEqual(1);
+    const provider = cds.services["test.MainService"].$linkProviders[0];
+    const link = provider("Header");
+    expect(link).toEqual({
+      href: "/v2/main/Header",
+      name: "Header (V2)",
+      title: "OData V2",
+    });
   });
 
   it("HEAD service", async () => {

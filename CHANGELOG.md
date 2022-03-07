@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Add OData V2 links via link providers to HTML index page
+
 ## Version 1.8.10 - 2022-03-01
 
 ### Fixed
