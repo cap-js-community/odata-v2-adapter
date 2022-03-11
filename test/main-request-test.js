@@ -3259,4 +3259,19 @@ describe("main-request", () => {
       },
     });
   });
+
+  it("GET calc decimal function", async () => {
+    let response = await util.callRead(request, `/v2/main/calcDecimal?value=1000&percentage=5`);
+    expect(response.body).toMatchObject({
+      d: {
+        calcDecimal: "50",
+      },
+    });
+    response = await util.callRead(request, `/v2/main/calcDecimal?value=1000&percentage=0`);
+    expect(response.body).toMatchObject({
+      d: {
+        calcDecimal: "0",
+      },
+    });
+  });
 });

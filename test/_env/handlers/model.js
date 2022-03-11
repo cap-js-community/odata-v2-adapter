@@ -427,6 +427,10 @@ module.exports = (srv) => {
     return req.run(SELECT.from("test.MainService.Header"));
   });
 
+  srv.on("calcDecimal", async (req) => {
+    return (req.data.value * req.data.percentage) / 100.0;
+  });
+
   srv.on("CREATE", HeaderStream, async (req, next) => {
     if (req.data.filename && req.data.filename.includes("error")) {
       req.error(400, "Filename contains error");

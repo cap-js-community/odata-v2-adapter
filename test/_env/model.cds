@@ -246,4 +246,6 @@ service MainService {
     function unboundWarningFunction() returns Result;
     function unboundNavigationFunction(num: Integer, text: String) returns Header;
     function unboundNavigationsFunction(num: Integer, text: String) returns array of Header;
+
+    function calcDecimal(value: Decimal, percentage: Decimal) returns Decimal;
 }
