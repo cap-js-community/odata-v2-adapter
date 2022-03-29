@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Refactorings to support universal CSN
 - Refactorings to support metadata prototype layering
 
-## Version 1.8.11 - 2002-03-11
+## Version 1.8.11 - 2022-03-11
 
 ### Fixed
 
