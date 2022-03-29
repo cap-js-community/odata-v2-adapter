@@ -92,10 +92,10 @@ entity HeaderAssocKey {
 }
 
 entity HeaderTemporal: cuid { // temporal
-  key validFrom: Timestamp @cds.valid.from;
-  validTo: Timestamp @cds.valid.to;
-  name: String;
-  value: String;
+    key validFrom: Timestamp @cds.valid.from;
+    validTo: Timestamp @cds.valid.to;
+    name: String;
+    value: String;
 }
 
 @cov2ap.deltaResponse: 'timestamp'
