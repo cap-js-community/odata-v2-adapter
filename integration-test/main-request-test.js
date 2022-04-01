@@ -51,7 +51,7 @@ describe("main-request", () => {
         modifiedBy: "anonymous",
         name: null,
         price: null,
-        stock: stock,
+        stock,
       },
     ]);
   });

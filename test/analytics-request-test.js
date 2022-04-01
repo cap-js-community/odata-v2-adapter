@@ -441,4 +441,62 @@ describe("analytics-request", () => {
       },
     });
   });
+
+  it("GET request with grouping and aggregation combined with search", async () => {
+    let response = await util.callRead(request, "/v2/analytics/Header?$select=stock&search=Header");
+    expect(response.body).toBeDefined();
+    expect(response.body).toEqual({
+      error: {
+        code: "501",
+        innererror: {
+          errordetails: [
+            {
+              code: "501",
+              message: {
+                lang: "en",
+                value: 'Feature is not supported: Transformation "10" with query option $apply',
+              },
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
+        },
+        message: {
+          lang: "en",
+          value: 'Feature is not supported: Transformation "10" with query option $apply',
+        },
+        severity: "error",
+        target: "/#TRANSIENT#",
+      },
+    });
+  });
+
+  it("GET request with grouping and aggregation combined with search and filtering", async () => {
+    let response = await util.callRead(request, "/v2/analytics/Header?$select=stock&$filter=currency eq 'USD'&search=Header");
+    expect(response.body).toBeDefined();
+    expect(response.body).toEqual({
+      error: {
+        code: "501",
+        innererror: {
+          errordetails: [
+            {
+              code: "501",
+              message: {
+                lang: "en",
+                value: 'Feature is not supported: Transformation "10" with query option $apply',
+              },
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
+        },
+        message: {
+          lang: "en",
+          value: 'Feature is not supported: Transformation "10" with query option $apply',
+        },
+        severity: "error",
+        target: "/#TRANSIENT#",
+      },
+    });
+  });
 });
