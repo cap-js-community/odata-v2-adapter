@@ -60,9 +60,6 @@
     "supertest": "^6.2.2"
   },
   "license": "SEE LICENSE IN LICENSE",
-  "peerDependencies": {
-    "@sap/cds": "*"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.wdf.sap.corp/cds-community/cds-odata-v2-adapter-proxy.git"
