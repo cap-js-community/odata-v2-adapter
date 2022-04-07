@@ -472,7 +472,10 @@ describe("analytics-request", () => {
   });
 
   it("GET request with grouping and aggregation combined with search and filtering", async () => {
-    let response = await util.callRead(request, "/v2/analytics/Header?$select=stock&$filter=currency eq 'USD'&search=Header");
+    let response = await util.callRead(
+      request,
+      "/v2/analytics/Header?$select=stock&$filter=currency eq 'USD'&search=Header"
+    );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       error: {
