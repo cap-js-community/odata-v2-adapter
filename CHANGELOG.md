@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Remove internal repository reference
+
 ## Version 1.8.14 - 2022-04-08
 
 ### Fixed

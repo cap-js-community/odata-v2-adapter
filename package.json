@@ -48,7 +48,7 @@
     "@sap/cds": "^5.9.2",
     "@sap/hana-client": "^2.12.20",
     "compression": "^1.7.4",
-    "eslint": "^8.12.0",
+    "eslint": "^8.13.0",
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^26.1.4",
@@ -60,10 +60,6 @@
     "supertest": "^6.2.2"
   },
   "license": "SEE LICENSE IN LICENSE",
-  "repository": {
-    "type": "git",
-    "url": "https://github.wdf.sap.corp/cds-community/cds-odata-v2-adapter-proxy.git"
-  },
   "cds": {
     "cov2ap": {
       "path": "v2",
