@@ -475,6 +475,15 @@ describe("todo-request", () => {
     expect(response.body.d.results.length).toEqual(1);
     response = await util.callRead(
       request,
+      "/v2/todo/People(3)/plannedTasks?$filter=keyDate le datetime'2019-12-31T00:00Z' or keyDate ge datetime'2019-12-31T00:00Z' or tentative eq true",
+      {
+        accept: "application/json",
+      }
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    response = await util.callRead(
+      request,
       "/v2/todo/People(3)/plannedTasks?$filter=tentative eq true or keyTime eq time'PT12H34M56.7S'",
       {
         accept: "application/json",

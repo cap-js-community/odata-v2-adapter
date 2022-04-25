@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Remove internal repository reference
+- Document that Singletons are not available in OData V2
+- Ignore omitted elements annotated with `@cds.api.ignore`
+- Support validated for absolute context urls via `cds.odata.contextAbsoluteUrl`.
+- Skip aggregation for measures with aggregation `#NONE` and `#NOP`
+- Support `$count` aggregations for measures with aggregation `#$COUNT`
+- Changed OData type mapping for `Edm.Byte` to `cds.Integer`
 
 ## Version 1.8.14 - 2022-04-08
 
