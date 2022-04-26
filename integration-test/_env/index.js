@@ -7,16 +7,14 @@ const odatav2proxy = require("../../lib");
 
 process.env.XS_APP_LOG_LEVEL = "debug";
 
-const hanaCredentials = require("./db/default-services").hana[0].credentials;
+const credentials = require("./db/default-services").hana[0].credentials;
 
 module.exports = async (service, defaultPort, fnInit) => {
+  // new-canary-dev-02
   cds.env.requires.db = {
     multiTenant: false,
     kind: "hana",
-    credentials: Object.assign(hanaCredentials, {
-      encrypt: true,
-      sslValidateCertificate: false,
-    }),
+    credentials,
   };
   const db = await cds.connect.to("db");
 

@@ -4,5 +4,4 @@ applications:
     path: .
     memory: 128M
     services:
-      - cds-community-test-hana
       - cds-community-test-hana-cloud
