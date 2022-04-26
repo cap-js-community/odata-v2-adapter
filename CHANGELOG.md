@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Abort file upload when limit is reached
+
 ## Version 1.8.15 - 2022-04-25
 
 ### Fixed
