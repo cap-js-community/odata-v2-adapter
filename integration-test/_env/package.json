@@ -7,7 +7,7 @@
     "hdi:sk:create": "cf csk cds-community-test-hana-cloud cds-community-test-hana-cloud-key",
     "hdi:sk:show": "cf service-key cds-community-test-hana-cloud cds-community-test-hana-cloud-key",
     "push": "cd app && cf push",
-    "build": "cds build/all --clean",
+    "build": "cds build --production",
     "deploy": "cd gen/db && npm start",
     "tunnel": "cd db && npm run tunnel"
   },

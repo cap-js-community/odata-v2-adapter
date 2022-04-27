@@ -3,7 +3,7 @@
 const supertest = require("supertest");
 
 const env = require("./_env");
-const util = require("./_env/util");
+const util = require("../test/_env/util");
 
 let context;
 let request;
