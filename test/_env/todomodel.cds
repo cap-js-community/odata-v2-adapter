@@ -8,6 +8,7 @@ entity Tasks {
     value3: DecimalFloat;
     value4: Integer64;
     title: String;
+    @cds.api.ignore
     done: Boolean;
     items: Association to many TasksItems on items.task = $self;
     plannedTasks: Association to many PlannedTasks on plannedTasks.task = $self;
