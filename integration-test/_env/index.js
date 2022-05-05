@@ -12,7 +12,6 @@ const credentials = require("./db/default-services").hana[0].credentials;
 module.exports = async (service, defaultPort, fnInit) => {
   // new-canary-dev-02
   cds.env.requires.db = {
-    multiTenant: false,
     kind: "hana",
     credentials,
   };

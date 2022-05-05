@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Filter out annotation elements in response data starting with `odata.` or including `@odata.`. Elements starting with `@` are excluded as before.
+
 ## Version 1.8.16 - 2022-04-28
 
 ### Fixed
