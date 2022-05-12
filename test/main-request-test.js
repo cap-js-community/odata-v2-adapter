@@ -120,6 +120,15 @@ describe("main-request", () => {
     expect(response.text).toMatchSnapshot();
   });
 
+  it("GET $metadata with propogated headers", async () => {
+    const response = await util.callRead(request, "/v2/main/$metadata", {
+      accept: "application/xml",
+      dwc_header: "on",
+    });
+    expect(response.body).toBeDefined();
+    expect(response.text).toMatchSnapshot();
+  });
+
   it("GET request", async () => {
     let response = await util.callRead(request, "/v2/main/Header");
     expect(response.body).toBeDefined();
