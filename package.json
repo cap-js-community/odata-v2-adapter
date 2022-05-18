@@ -51,10 +51,10 @@
     "eslint": "^8.15.0",
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-jest": "^26.1.5",
+    "eslint-plugin-jest": "^26.2.2",
     "jest": "^28.1.0",
     "jest-junit": "^13.2.0",
-    "passport": "^0.5.2",
+    "passport": "^0.5.3",
     "prettier": "^2.6.2",
     "sqlite3": "5.0.8",
     "supertest": "^6.2.3"
