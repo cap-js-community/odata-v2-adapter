@@ -190,6 +190,11 @@ function shouldCompress(req, res) {
 The shown compression filter function enables compression including
 OData Batch (`$batch`) calls with content type `multipart/mixed`.
 
+### Approuter Compression
+
+`@sap/approuter` now support out-of-the-box compression for OData $batch calls with `multipart/mixed`.
+It's disabled by default, but can be enabled using option [compressResponseMixedTypeContent](https://www.npmjs.com/package/@sap/approuter#compression-property).
+
 ## Documentation
 
 Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V4 Server:
