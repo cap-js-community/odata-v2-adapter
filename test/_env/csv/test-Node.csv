@@ -1,0 +1,8 @@
+nodeID;hierarchyLevel;parentNodeID;drillState;description
+1;0;null;"expanded";"1"
+2;0;null;"expanded";"2"
+3;0;null;"expanded";"3"
+4;1;1;"leaf";"1.1"
+5;1;1;"expanded";"1.2"
+6;2;5;"leaf";"1.2.1"
+7;2;5;"leaf";"1.2.2"

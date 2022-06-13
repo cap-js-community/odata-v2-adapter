@@ -37,7 +37,7 @@
     "prepareRelease": "npm prune --production"
   },
   "dependencies": {
-    "@sap/logging": "^6.1.1",
+    "@sap/logging": "^6.1.2",
     "@types/express": "^4.17.13",
     "express": "^4.18.1",
     "express-fileupload": "^1.4.0",
@@ -45,14 +45,14 @@
     "node-fetch": "^2.6.7"
   },
   "devDependencies": {
-    "@sap/cds": "^5.9.6",
+    "@sap/cds": "^5.9.7",
     "@sap/hana-client": "^2.13.13",
     "compression": "^1.7.4",
-    "eslint": "^8.15.0",
+    "eslint": "^8.17.0",
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-jest": "^26.4.6",
-    "jest": "^28.1.0",
+    "eslint-plugin-jest": "^26.5.3",
+    "jest": "^28.1.1",
     "jest-junit": "^13.2.0",
     "passport": "^0.6.0",
     "prettier": "^2.6.2",

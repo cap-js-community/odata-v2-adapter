@@ -1,13 +1,13 @@
 {
   "_version": "1.8.0",
   "sap.app": {
-    "id": "com.sap.cds.app",
+    "id": "com.sap.cds.app.basic",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
       "version": "1.0.0"
     },
-    "title": "Header - Sample App",
+    "title": "Header - Basic Sample App",
     "description": "{{appDescription}}",
     "tags": {
       "keywords": []

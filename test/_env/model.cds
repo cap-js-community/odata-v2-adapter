@@ -133,8 +133,16 @@ entity Favorite {
 }
 
 entity StringUUID {
-    key ID: UUID @odata.Type : 'Edm.String';
+    key ID: UUID @odata.Type: 'Edm.String';
     name: String;
+}
+
+entity Node {
+    key nodeID: Integer;
+        hierarchyLevel: Integer;
+        parentNodeID: Integer;
+        description: String;
+        drillState: String;
 }
 
 service MainService {
@@ -203,6 +211,8 @@ service MainService {
 
     entity Favorite as projection on test.Favorite;
     entity StringUUID as projection on test.StringUUID;
+
+    entity Node as projection on test.Node;
 
     action unboundAction(num: Integer, text: String) returns Result;
     action unboundMassAction(ids: array of String) returns array of Result;

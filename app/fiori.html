@@ -42,26 +42,39 @@
 				}
 			},
 			applications: {
-				"Header-display": {
-					title: "Header",
-					description: "Sample App",
-					additionalInformation: "SAPUI5.Component=com.sap.cds.app",
+				"BasicHeader-display": {
+					title: "Basic Edit",
+					description: "Basic Editing App",
+					additionalInformation: "SAPUI5.Component=com.sap.cds.app.basic",
 					applicationType: "URL",
-					url: "../"
+					url: "./basic/webapp"
+				},
+				"DraftHeader-display": {
+					title: "Draft Edit",
+					description: "Draft Editing App",
+					additionalInformation: "SAPUI5.Component=com.sap.cds.app.draft",
+					applicationType: "URL",
+					url: "./draft/webapp"
+				},
+				"Hierarchy-display": {
+					title: "Hierarchy",
+					description: "Hierarchy App",
+					additionalInformation: "SAPUI5.Component=com.sap.cds.app.hierarchy",
+					applicationType: "URL",
+					url: "./hierarchy/webapp"
 				}
 			}
 		};
 	</script>
 
-	<script src="https://sapui5.hana.ondemand.com/1.78.2/test-resources/sap/ushell/bootstrap/sandbox.js" id="sap-ushell-bootstrap"></script>
+	<script src="https://sapui5.hana.ondemand.com/test-resources/sap/ushell/bootstrap/sandbox.js" id="sap-ushell-bootstrap"></script>
 
 	<!-- Bootstrap the UI5 core library -->
 	<script id="sap-ui-bootstrap"
-			src="https://sapui5.hana.ondemand.com/1.78.2/resources/sap-ui-core.js"
+			src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
 			data-sap-ui-libs="sap.m, sap.ushell, sap.collaboration"
 			data-sap-ui-theme="sap_fiori_3"
 			data-sap-ui-compatVersion="edge"
-			data-sap-ui-resourceroots='{"com.sap.cds.app": "../"}'
 			data-sap-ui-frameOptions='allow'> 	// NON-SECURE setting for testing environment
 	</script>
 
