@@ -22,14 +22,7 @@ describe("incidents-request", () => {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
-    // ordering independent check
-    expect(response.body).toEqual({ d: { EntitySets: expect.any(Array) } });
-    expect(response.body.d.EntitySets.length).toBe(5);
-    expect(response.body.d.EntitySets).toContain("Category");
-    expect(response.body.d.EntitySets).toContain("Category_texts");
-    expect(response.body.d.EntitySets).toContain("Incidents");
-    expect(response.body.d.EntitySets).toContain("Priority");
-    expect(response.body.d.EntitySets).toContain("Priority_texts");
+    expect(response.body.d.EntitySets.sort()).toMatchSnapshot();
   });
 
   it("GET incidents service data", async () => {

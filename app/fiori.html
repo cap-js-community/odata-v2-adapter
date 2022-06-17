@@ -4,7 +4,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>CDS OData v2 Adapter Proxy - Fiori Elements v2 Sample App</title>
+	<title>CDS OData v2 Adapter Proxy - Fiori Elements V2 Sample Apps</title>
 
 	<!-- Bootstrap the unified shell in sandbox mode for standalone usage.
 
@@ -62,7 +62,21 @@
 					additionalInformation: "SAPUI5.Component=com.sap.cds.app.hierarchy",
 					applicationType: "URL",
 					url: "./hierarchy/webapp"
-				}
+				},
+				"Overview-display": {
+					title: "Overview",
+					description: "Overview App",
+					additionalInformation: "SAPUI5.Component=com.sap.cds.app.overview",
+					applicationType: "URL",
+					url: "./overview/webapp"
+				},
+				"Analytics-display": {
+					title: "Analytics",
+					description: "Analytics App",
+					additionalInformation: "SAPUI5.Component=com.sap.cds.app.analytics",
+					applicationType: "URL",
+					url: "./analytics/webapp"
+				},
 			}
 		};
 	</script>
@@ -72,7 +86,7 @@
 	<!-- Bootstrap the UI5 core library -->
 	<script id="sap-ui-bootstrap"
 			src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
-			data-sap-ui-libs="sap.m, sap.ushell, sap.collaboration"
+			data-sap-ui-libs="sap.m, sap.ushell, sap.collaboration, sap.ovp"
 			data-sap-ui-theme="sap_fiori_3"
 			data-sap-ui-compatVersion="edge"
 			data-sap-ui-frameOptions='allow'> 	// NON-SECURE setting for testing environment

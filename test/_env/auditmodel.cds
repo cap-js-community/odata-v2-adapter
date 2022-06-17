@@ -1,5 +1,6 @@
 namespace audit;
 
+using sap.common from '@sap/cds/common';
 using { managed, cuid } from '@sap/cds/common';
 
 entity Audits: cuid, managed {
@@ -28,6 +29,8 @@ entity Work_Activities {
 }
 
 service AuditService {
+  entity Country as projection on common.Countries;
+  entity Currency as projection on common.Currencies;
   entity Audits as projection on audit.Audits;
   entity Audit_Types as projection on audit.Audit_Types;
   entity Work_Activities as projection on audit.Work_Activities;

@@ -22,11 +22,6 @@ annotate MainService.Node with @(
             TypeNamePlural: 'Nodes',
             Title: { Value: description },
             Description: { Value: description }
-        },
-        FieldGroup#General: {
-            Data: [
-                { $Type: 'UI.DataField', Value: description, Label: 'Description' }
-            ]
         }
     }
 );

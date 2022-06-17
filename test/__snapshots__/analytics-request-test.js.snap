@@ -12,6 +12,9 @@ exports[`analytics-request GET $metadata 1`] = `
   <edmx:Reference Uri=\\"https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
     <edmx:Include Alias=\\"Capabilities\\" Namespace=\\"Org.OData.Capabilities.V1\\"/>
   </edmx:Reference>
+  <edmx:Reference Uri=\\"https://sap.github.io/odata-vocabularies/vocabularies/Common.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+    <edmx:Include Alias=\\"Common\\" Namespace=\\"com.sap.vocabularies.Common.v1\\"/>
+  </edmx:Reference>
   <edmx:Reference Uri=\\"https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
     <edmx:Include Alias=\\"Core\\" Namespace=\\"Org.OData.Core.V1\\"/>
   </edmx:Reference>
@@ -24,7 +27,11 @@ exports[`analytics-request GET $metadata 1`] = `
         <EntitySet Name=\\"Header\\" EntityType=\\"test.AnalyticsService.Header\\" sap:semantics=\\"aggregate\\"/>
         <EntitySet Name=\\"HeaderDisabledAnalytics\\" EntityType=\\"test.AnalyticsService.HeaderDisabledAnalytics\\" sap:semantics=\\"aggregate\\"/>
         <EntitySet Name=\\"HeaderItem\\" EntityType=\\"test.AnalyticsService.HeaderItem\\"/>
+        <EntitySet Name=\\"Country\\" EntityType=\\"test.AnalyticsService.Country\\"/>
+        <EntitySet Name=\\"Currency\\" EntityType=\\"test.AnalyticsService.Currency\\"/>
         <EntitySet Name=\\"HeaderLine\\" EntityType=\\"test.AnalyticsService.HeaderLine\\"/>
+        <EntitySet Name=\\"Country_texts\\" EntityType=\\"test.AnalyticsService.Country_texts\\"/>
+        <EntitySet Name=\\"Currency_texts\\" EntityType=\\"test.AnalyticsService.Currency_texts\\"/>
         <AssociationSet Name=\\"HeaderDisabledAnalytics_Items\\" Association=\\"test.AnalyticsService.HeaderDisabledAnalytics_Items\\">
           <End Role=\\"HeaderDisabledAnalytics\\" EntitySet=\\"HeaderDisabledAnalytics\\"/>
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
@@ -37,6 +44,22 @@ exports[`analytics-request GET $metadata 1`] = `
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
           <End Role=\\"HeaderItem1\\" EntitySet=\\"HeaderItem\\"/>
         </AssociationSet>
+        <AssociationSet Name=\\"Country_texts_1\\" Association=\\"test.AnalyticsService.Country_texts_1\\">
+          <End Role=\\"Country\\" EntitySet=\\"Country\\"/>
+          <End Role=\\"Country_texts\\" EntitySet=\\"Country_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Country_localized\\" Association=\\"test.AnalyticsService.Country_localized\\">
+          <End Role=\\"Country\\" EntitySet=\\"Country\\"/>
+          <End Role=\\"Country_texts\\" EntitySet=\\"Country_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Currency_texts_1\\" Association=\\"test.AnalyticsService.Currency_texts_1\\">
+          <End Role=\\"Currency\\" EntitySet=\\"Currency\\"/>
+          <End Role=\\"Currency_texts\\" EntitySet=\\"Currency_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Currency_localized\\" Association=\\"test.AnalyticsService.Currency_localized\\">
+          <End Role=\\"Currency\\" EntitySet=\\"Currency\\"/>
+          <End Role=\\"Currency_texts\\" EntitySet=\\"Currency_texts\\"/>
+        </AssociationSet>
         <AssociationSet Name=\\"HeaderLine_item\\" Association=\\"test.AnalyticsService.HeaderLine_item\\">
           <End Role=\\"HeaderLine\\" EntitySet=\\"HeaderLine\\"/>
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
@@ -48,11 +71,11 @@ exports[`analytics-request GET $metadata 1`] = `
         </Key>
         <Property Name=\\"ID__\\" Type=\\"Edm.String\\" Nullable=\\"false\\" sap:sortable=\\"false\\" sap:filterable=\\"false\\"/>
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\"/>
-        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"country\\" Type=\\"Edm.String\\" sap:aggregation-role=\\"dimension\\"/>
-        <Property Name=\\"currency\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"stock\\" Type=\\"Edm.Int32\\" sap:aggregation-role=\\"measure\\"/>
-        <Property Name=\\"price\\" Type=\\"Edm.Decimal\\" Scale=\\"2\\" Precision=\\"12\\" sap:aggregation-role=\\"measure\\"/>
+        <Property Name=\\"description\\" Type=\\"Edm.String\\" sap:label=\\"Description\\"/>
+        <Property Name=\\"country\\" Type=\\"Edm.String\\" sap:aggregation-role=\\"dimension\\" sap:label=\\"Country\\"/>
+        <Property Name=\\"currency\\" Type=\\"Edm.String\\" sap:aggregation-role=\\"dimension\\" sap:label=\\"Currency\\"/>
+        <Property Name=\\"stock\\" Type=\\"Edm.Int32\\" sap:aggregation-role=\\"measure\\" sap:label=\\"Stock\\"/>
+        <Property Name=\\"price\\" Type=\\"Edm.Decimal\\" Scale=\\"2\\" Precision=\\"12\\" sap:aggregation-role=\\"measure\\" sap:label=\\"Price\\"/>
         <NavigationProperty Name=\\"Items\\" Relationship=\\"test.AnalyticsService.HeaderItem_header\\" FromRole=\\"Header\\" ToRole=\\"HeaderItem\\"/>
       </EntityType>
       <EntityType Name=\\"HeaderDisabledAnalytics\\" sap:semantics=\\"aggregate\\">
@@ -84,6 +107,27 @@ exports[`analytics-request GET $metadata 1`] = `
         <Property Name=\\"assoc_header_ID\\" Type=\\"Edm.Guid\\"/>
         <NavigationProperty Name=\\"Lines\\" Relationship=\\"test.AnalyticsService.HeaderLine_item\\" FromRole=\\"HeaderItem\\" ToRole=\\"HeaderLine\\"/>
       </EntityType>
+      <EntityType Name=\\"Country\\">
+        <Key>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+        <NavigationProperty Name=\\"texts\\" Relationship=\\"test.AnalyticsService.Country_texts_1\\" FromRole=\\"Country\\" ToRole=\\"Country_texts\\"/>
+        <NavigationProperty Name=\\"localized\\" Relationship=\\"test.AnalyticsService.Country_localized\\" FromRole=\\"Country\\" ToRole=\\"Country_texts\\"/>
+      </EntityType>
+      <EntityType Name=\\"Currency\\">
+        <Key>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+        <Property Name=\\"symbol\\" Type=\\"Edm.String\\" MaxLength=\\"5\\"/>
+        <NavigationProperty Name=\\"texts\\" Relationship=\\"test.AnalyticsService.Currency_texts_1\\" FromRole=\\"Currency\\" ToRole=\\"Currency_texts\\"/>
+        <NavigationProperty Name=\\"localized\\" Relationship=\\"test.AnalyticsService.Currency_localized\\" FromRole=\\"Currency\\" ToRole=\\"Currency_texts\\"/>
+      </EntityType>
       <EntityType Name=\\"HeaderLine\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -93,6 +137,26 @@ exports[`analytics-request GET $metadata 1`] = `
         <Property Name=\\"value\\" Type=\\"Edm.Double\\"/>
         <NavigationProperty Name=\\"item\\" Relationship=\\"test.AnalyticsService.HeaderLine_item\\" FromRole=\\"HeaderLine\\" ToRole=\\"HeaderItem\\"/>
         <Property Name=\\"item_ID\\" Type=\\"Edm.Guid\\"/>
+      </EntityType>
+      <EntityType Name=\\"Country_texts\\">
+        <Key>
+          <PropertyRef Name=\\"locale\\"/>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"locale\\" Type=\\"Edm.String\\" MaxLength=\\"14\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+      </EntityType>
+      <EntityType Name=\\"Currency_texts\\">
+        <Key>
+          <PropertyRef Name=\\"locale\\"/>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"locale\\" Type=\\"Edm.String\\" MaxLength=\\"14\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
       </EntityType>
       <Association Name=\\"HeaderDisabledAnalytics_Items\\">
         <End Role=\\"HeaderDisabledAnalytics\\" Type=\\"test.AnalyticsService.HeaderDisabledAnalytics\\" Multiplicity=\\"1\\">
@@ -117,6 +181,26 @@ exports[`analytics-request GET $metadata 1`] = `
             <PropertyRef Name=\\"NextItem_ID\\"/>
           </Dependent>
         </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"Country_texts_1\\">
+        <End Role=\\"Country\\" Type=\\"test.AnalyticsService.Country\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"Country_texts\\" Type=\\"test.AnalyticsService.Country_texts\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Association Name=\\"Country_localized\\">
+        <End Role=\\"Country\\" Type=\\"test.AnalyticsService.Country\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Country_texts\\" Type=\\"test.AnalyticsService.Country_texts\\" Multiplicity=\\"0..1\\"/>
+      </Association>
+      <Association Name=\\"Currency_texts_1\\">
+        <End Role=\\"Currency\\" Type=\\"test.AnalyticsService.Currency\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"Currency_texts\\" Type=\\"test.AnalyticsService.Currency_texts\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Association Name=\\"Currency_localized\\">
+        <End Role=\\"Currency\\" Type=\\"test.AnalyticsService.Currency\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Currency_texts\\" Type=\\"test.AnalyticsService.Currency_texts\\" Multiplicity=\\"0..1\\"/>
       </Association>
       <Association Name=\\"HeaderLine_item\\">
         <End Role=\\"HeaderLine\\" Type=\\"test.AnalyticsService.HeaderLine\\" Multiplicity=\\"*\\"/>
@@ -164,14 +248,24 @@ exports[`analytics-request GET $metadata 1`] = `
       <Annotations Target=\\"test.AnalyticsService.Header/ID__\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.Hidden\\" Bool=\\"true\\"/>
       </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Header/description\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
       <Annotations Target=\\"test.AnalyticsService.Header/country\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Analytics.Dimension\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Country\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Header/currency\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Analytics.Dimension\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Currency\\"/>
       </Annotations>
       <Annotations Target=\\"test.AnalyticsService.Header/stock\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Analytics.Measure\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Stock\\"/>
       </Annotations>
       <Annotations Target=\\"test.AnalyticsService.Header/price\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Analytics.Measure\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Price\\"/>
       </Annotations>
       <Annotations Target=\\"test.AnalyticsService.HeaderDisabledAnalytics\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Aggregation.ApplySupported\\">
@@ -213,6 +307,67 @@ exports[`analytics-request GET $metadata 1`] = `
       </Annotations>
       <Annotations Target=\\"test.AnalyticsService.HeaderDisabledAnalytics/price\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Analytics.Measure\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Country\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"name\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Country/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Country/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Country/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Country Code\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Currency\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"name\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Currency/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Currency/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Currency/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Currency Code\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Currency/symbol\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Currency Symbol\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Country_texts/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Country_texts/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Country_texts/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Country Code\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Currency_texts/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Currency_texts/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.AnalyticsService.Currency_texts/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Currency Code\\"/>
       </Annotations>
     </Schema>
   </edmx:DataServices>

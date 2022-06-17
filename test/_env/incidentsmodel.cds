@@ -22,6 +22,9 @@ entity Priority : common.CodeList {}
 
 service IncidentsService {
 
+  entity Country as projection on common.Countries;
+  entity Currency as projection on common.Currencies;
+
   entity Incidents as projection on cloud.Incidents;
 
   @readonly entity Category as projection on cloud.Category;

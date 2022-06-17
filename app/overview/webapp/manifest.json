@@ -1,13 +1,13 @@
 {
   "_version": "1.8.0",
   "sap.app": {
-    "id": "com.sap.cds.app.hierarchy",
+    "id": "com.sap.cds.app.overview",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
       "version": "1.0.0"
     },
-    "title": "Node - Hierarchy Sample App",
+    "title": "Overview Sample App",
     "description": "{{appDescription}}",
     "tags": {
       "keywords": []
@@ -27,13 +27,20 @@
           "size": "1x1"
         }
       },
-      "outbounds": {}
+      "outbounds": {
+        "Header-display": {
+          "semanticObject": "Header",
+          "action": "display",
+          "parameters": {
+          }
+        }
+      }
     },
     "ach": "",
     "resources": "resources.json",
     "dataSources": {
-      "mainService": {
-        "uri": "/v2/main",
+      "analyticsService": {
+        "uri": "/v2/analytics",
         "type": "OData"
       }
     },
@@ -86,8 +93,8 @@
         "type": "sap.ui.model.resource.ResourceModel",
         "uri": "i18n/ListReport/Node/i18n.properties"
       },
-      "": {
-        "dataSource": "mainService",
+      "analyticsModel": {
+        "dataSource": "analyticsService",
         "preload": true,
         "settings": {
           "useBatch": true,
@@ -105,28 +112,34 @@
       "cozy": true
     }
   },
-  "sap.ui.generic.app": {
-    "_version": "1.3.0",
-    "settings": {
-      "forceGlobalRefresh": false,
-      "useColumnLayoutForSmartForm": false,
-      "showBasicSearch": false
-    },
-    "pages": {
-      "ListReport|Node": {
-        "entitySet": "Node",
-        "component": {
-          "name": "sap.suite.ui.generic.template.ListReport",
-          "list": true,
-          "settings": {
-            "condensedTableLayout": true,
-            "smartVariantManagement": true,
-            "tableType": "TreeTable",
-            "enableTableFilterInPageVariant": true,
-            "dataLoadSettings": {
-              "loadDataOnAppLaunch": "always"
-            }
-          }
+  "sap.ovp": {
+    "globalFilterModel": "analyticsModel",
+    "globalFilterEntityType": "Header",
+    "containerLayout": "resizable",
+    "enableLiveFilter": true,
+    "considerAnalyticalParameters": false,
+    "showDateInRelativeFormat": true,
+    "cards": {
+      "list01": {
+        "model": "analyticsModel",
+        "template": "sap.ovp.cards.list",
+        "settings": {
+          "title": "Headers",
+          "entitySet": "Header",
+          "identificationAnnotationPath": "com.sap.vocabularies.UI.v1.Identification",
+          "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#Default",
+          "annotationPath": "com.sap.vocabularies.UI.v1.LineItem",
+          "sortBy": "description",
+          "sortOrder": "descending"
+        }
+      },
+      "chart01": {
+        "model": "analyticsModel",
+        "template": "sap.ovp.cards.charts.analytical",
+        "settings": {
+          "title": "Header Chart",
+          "entitySet": "Header",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
         }
       }
     }

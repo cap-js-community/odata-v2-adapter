@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Enhance Fiori Elements apps
+- (Parameterized views parameters association) 
+
 ## Version 1.8.20 - 2022-06-13
 
 ### Fixed

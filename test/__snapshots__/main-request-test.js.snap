@@ -269,6 +269,8 @@ exports[`main-request GET $metadata 1`] = `
   <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
     <Schema Namespace=\\"test.MainService\\" xmlns=\\"http://schemas.microsoft.com/ado/2008/09/edm\\">
       <EntityContainer Name=\\"EntityContainer\\" m:IsDefaultEntityContainer=\\"true\\">
+        <EntitySet Name=\\"Country\\" EntityType=\\"test.MainService.Country\\"/>
+        <EntitySet Name=\\"Currency\\" EntityType=\\"test.MainService.Currency\\"/>
         <EntitySet Name=\\"Header\\" EntityType=\\"test.MainService.Header\\"/>
         <FunctionImport Name=\\"Header_boundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
@@ -386,6 +388,8 @@ exports[`main-request GET $metadata 1`] = `
         <EntitySet Name=\\"Favorite\\" EntityType=\\"test.MainService.Favorite\\"/>
         <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <EntitySet Name=\\"Node\\" EntityType=\\"test.MainService.Node\\"/>
+        <EntitySet Name=\\"Country_texts\\" EntityType=\\"test.MainService.Country_texts\\"/>
+        <EntitySet Name=\\"Currency_texts\\" EntityType=\\"test.MainService.Currency_texts\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -477,6 +481,22 @@ exports[`main-request GET $metadata 1`] = `
           <Parameter Name=\\"value\\" Type=\\"Edm.Decimal\\" Mode=\\"In\\" sap:variable-scale=\\"true\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"percentage\\" Type=\\"Edm.Decimal\\" Mode=\\"In\\" sap:variable-scale=\\"true\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <AssociationSet Name=\\"Country_texts_1\\" Association=\\"test.MainService.Country_texts_1\\">
+          <End Role=\\"Country\\" EntitySet=\\"Country\\"/>
+          <End Role=\\"Country_texts\\" EntitySet=\\"Country_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Country_localized\\" Association=\\"test.MainService.Country_localized\\">
+          <End Role=\\"Country\\" EntitySet=\\"Country\\"/>
+          <End Role=\\"Country_texts\\" EntitySet=\\"Country_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Currency_texts_1\\" Association=\\"test.MainService.Currency_texts_1\\">
+          <End Role=\\"Currency\\" EntitySet=\\"Currency\\"/>
+          <End Role=\\"Currency_texts\\" EntitySet=\\"Currency_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Currency_localized\\" Association=\\"test.MainService.Currency_localized\\">
+          <End Role=\\"Currency\\" EntitySet=\\"Currency\\"/>
+          <End Role=\\"Currency_texts\\" EntitySet=\\"Currency_texts\\"/>
+        </AssociationSet>
         <AssociationSet Name=\\"Header_FirstItem\\" Association=\\"test.MainService.Header_FirstItem\\">
           <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
@@ -510,6 +530,27 @@ exports[`main-request GET $metadata 1`] = `
           <End Role=\\"HeaderLargeString\\" EntitySet=\\"HeaderLargeString\\"/>
         </AssociationSet>
       </EntityContainer>
+      <EntityType Name=\\"Country\\">
+        <Key>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+        <NavigationProperty Name=\\"texts\\" Relationship=\\"test.MainService.Country_texts_1\\" FromRole=\\"Country\\" ToRole=\\"Country_texts\\"/>
+        <NavigationProperty Name=\\"localized\\" Relationship=\\"test.MainService.Country_localized\\" FromRole=\\"Country\\" ToRole=\\"Country_texts\\"/>
+      </EntityType>
+      <EntityType Name=\\"Currency\\">
+        <Key>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+        <Property Name=\\"symbol\\" Type=\\"Edm.String\\" MaxLength=\\"5\\"/>
+        <NavigationProperty Name=\\"texts\\" Relationship=\\"test.MainService.Currency_texts_1\\" FromRole=\\"Currency\\" ToRole=\\"Currency_texts\\"/>
+        <NavigationProperty Name=\\"localized\\" Relationship=\\"test.MainService.Currency_localized\\" FromRole=\\"Currency\\" ToRole=\\"Currency_texts\\"/>
+      </EntityType>
       <EntityType Name=\\"Header\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -691,6 +732,26 @@ exports[`main-request GET $metadata 1`] = `
         <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"drillState\\" Type=\\"Edm.String\\"/>
       </EntityType>
+      <EntityType Name=\\"Country_texts\\">
+        <Key>
+          <PropertyRef Name=\\"locale\\"/>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"locale\\" Type=\\"Edm.String\\" MaxLength=\\"14\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+      </EntityType>
+      <EntityType Name=\\"Currency_texts\\">
+        <Key>
+          <PropertyRef Name=\\"locale\\"/>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"locale\\" Type=\\"Edm.String\\" MaxLength=\\"14\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+      </EntityType>
       <ComplexType Name=\\"Result\\">
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
@@ -736,6 +797,26 @@ exports[`main-request GET $metadata 1`] = `
         <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"age\\" Type=\\"Edm.Int32\\"/>
       </ComplexType>
+      <Association Name=\\"Country_texts_1\\">
+        <End Role=\\"Country\\" Type=\\"test.MainService.Country\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"Country_texts\\" Type=\\"test.MainService.Country_texts\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Association Name=\\"Country_localized\\">
+        <End Role=\\"Country\\" Type=\\"test.MainService.Country\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Country_texts\\" Type=\\"test.MainService.Country_texts\\" Multiplicity=\\"0..1\\"/>
+      </Association>
+      <Association Name=\\"Currency_texts_1\\">
+        <End Role=\\"Currency\\" Type=\\"test.MainService.Currency\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"Currency_texts\\" Type=\\"test.MainService.Currency_texts\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Association Name=\\"Currency_localized\\">
+        <End Role=\\"Currency\\" Type=\\"test.MainService.Currency\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Currency_texts\\" Type=\\"test.MainService.Currency_texts\\" Multiplicity=\\"0..1\\"/>
+      </Association>
       <Association Name=\\"Header_FirstItem\\">
         <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"*\\"/>
         <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
@@ -842,6 +923,47 @@ exports[`main-request GET $metadata 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Annotations Target=\\"test.MainService.Country\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"name\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Country Code\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"name\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Currency Code\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/symbol\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Currency Symbol\\"/>
+      </Annotations>
       <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
@@ -945,6 +1067,26 @@ exports[`main-request GET $metadata 1`] = `
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
         <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Country Code\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Currency Code\\"/>
       </Annotations>
     </Schema>
   </edmx:DataServices>
@@ -966,6 +1108,8 @@ exports[`main-request GET $metadata localized 1`] = `
   <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
     <Schema Namespace=\\"test.MainService\\" xmlns=\\"http://schemas.microsoft.com/ado/2008/09/edm\\">
       <EntityContainer Name=\\"EntityContainer\\" m:IsDefaultEntityContainer=\\"true\\">
+        <EntitySet Name=\\"Country\\" EntityType=\\"test.MainService.Country\\"/>
+        <EntitySet Name=\\"Currency\\" EntityType=\\"test.MainService.Currency\\"/>
         <EntitySet Name=\\"Header\\" EntityType=\\"test.MainService.Header\\"/>
         <FunctionImport Name=\\"Header_boundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
@@ -1083,6 +1227,8 @@ exports[`main-request GET $metadata localized 1`] = `
         <EntitySet Name=\\"Favorite\\" EntityType=\\"test.MainService.Favorite\\"/>
         <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <EntitySet Name=\\"Node\\" EntityType=\\"test.MainService.Node\\"/>
+        <EntitySet Name=\\"Country_texts\\" EntityType=\\"test.MainService.Country_texts\\"/>
+        <EntitySet Name=\\"Currency_texts\\" EntityType=\\"test.MainService.Currency_texts\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -1174,6 +1320,22 @@ exports[`main-request GET $metadata localized 1`] = `
           <Parameter Name=\\"value\\" Type=\\"Edm.Decimal\\" Mode=\\"In\\" sap:variable-scale=\\"true\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"percentage\\" Type=\\"Edm.Decimal\\" Mode=\\"In\\" sap:variable-scale=\\"true\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <AssociationSet Name=\\"Country_texts_1\\" Association=\\"test.MainService.Country_texts_1\\">
+          <End Role=\\"Country\\" EntitySet=\\"Country\\"/>
+          <End Role=\\"Country_texts\\" EntitySet=\\"Country_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Country_localized\\" Association=\\"test.MainService.Country_localized\\">
+          <End Role=\\"Country\\" EntitySet=\\"Country\\"/>
+          <End Role=\\"Country_texts\\" EntitySet=\\"Country_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Currency_texts_1\\" Association=\\"test.MainService.Currency_texts_1\\">
+          <End Role=\\"Currency\\" EntitySet=\\"Currency\\"/>
+          <End Role=\\"Currency_texts\\" EntitySet=\\"Currency_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Currency_localized\\" Association=\\"test.MainService.Currency_localized\\">
+          <End Role=\\"Currency\\" EntitySet=\\"Currency\\"/>
+          <End Role=\\"Currency_texts\\" EntitySet=\\"Currency_texts\\"/>
+        </AssociationSet>
         <AssociationSet Name=\\"Header_FirstItem\\" Association=\\"test.MainService.Header_FirstItem\\">
           <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
@@ -1207,6 +1369,27 @@ exports[`main-request GET $metadata localized 1`] = `
           <End Role=\\"HeaderLargeString\\" EntitySet=\\"HeaderLargeString\\"/>
         </AssociationSet>
       </EntityContainer>
+      <EntityType Name=\\"Country\\">
+        <Key>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+        <NavigationProperty Name=\\"texts\\" Relationship=\\"test.MainService.Country_texts_1\\" FromRole=\\"Country\\" ToRole=\\"Country_texts\\"/>
+        <NavigationProperty Name=\\"localized\\" Relationship=\\"test.MainService.Country_localized\\" FromRole=\\"Country\\" ToRole=\\"Country_texts\\"/>
+      </EntityType>
+      <EntityType Name=\\"Currency\\">
+        <Key>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+        <Property Name=\\"symbol\\" Type=\\"Edm.String\\" MaxLength=\\"5\\"/>
+        <NavigationProperty Name=\\"texts\\" Relationship=\\"test.MainService.Currency_texts_1\\" FromRole=\\"Currency\\" ToRole=\\"Currency_texts\\"/>
+        <NavigationProperty Name=\\"localized\\" Relationship=\\"test.MainService.Currency_localized\\" FromRole=\\"Currency\\" ToRole=\\"Currency_texts\\"/>
+      </EntityType>
       <EntityType Name=\\"Header\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -1388,6 +1571,26 @@ exports[`main-request GET $metadata localized 1`] = `
         <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"drillState\\" Type=\\"Edm.String\\"/>
       </EntityType>
+      <EntityType Name=\\"Country_texts\\">
+        <Key>
+          <PropertyRef Name=\\"locale\\"/>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"locale\\" Type=\\"Edm.String\\" MaxLength=\\"14\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+      </EntityType>
+      <EntityType Name=\\"Currency_texts\\">
+        <Key>
+          <PropertyRef Name=\\"locale\\"/>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"locale\\" Type=\\"Edm.String\\" MaxLength=\\"14\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+      </EntityType>
       <ComplexType Name=\\"Result\\">
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
@@ -1433,6 +1636,26 @@ exports[`main-request GET $metadata localized 1`] = `
         <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"age\\" Type=\\"Edm.Int32\\"/>
       </ComplexType>
+      <Association Name=\\"Country_texts_1\\">
+        <End Role=\\"Country\\" Type=\\"test.MainService.Country\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"Country_texts\\" Type=\\"test.MainService.Country_texts\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Association Name=\\"Country_localized\\">
+        <End Role=\\"Country\\" Type=\\"test.MainService.Country\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Country_texts\\" Type=\\"test.MainService.Country_texts\\" Multiplicity=\\"0..1\\"/>
+      </Association>
+      <Association Name=\\"Currency_texts_1\\">
+        <End Role=\\"Currency\\" Type=\\"test.MainService.Currency\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"Currency_texts\\" Type=\\"test.MainService.Currency_texts\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Association Name=\\"Currency_localized\\">
+        <End Role=\\"Currency\\" Type=\\"test.MainService.Currency\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Currency_texts\\" Type=\\"test.MainService.Currency_texts\\" Multiplicity=\\"0..1\\"/>
+      </Association>
       <Association Name=\\"Header_FirstItem\\">
         <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"*\\"/>
         <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
@@ -1539,6 +1762,47 @@ exports[`main-request GET $metadata localized 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Annotations Target=\\"test.MainService.Country\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"name\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Beschreibung\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Ländercode\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"name\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Beschreibung\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Währungscode\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/symbol\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Währungssymbol\\"/>
+      </Annotations>
       <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
@@ -1642,6 +1906,26 @@ exports[`main-request GET $metadata localized 1`] = `
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
         <Annotation Term=\\"Common.Label\\" String=\\"Geändert von\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Beschreibung\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Ländercode\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Beschreibung\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Währungscode\\"/>
       </Annotations>
     </Schema>
   </edmx:DataServices>
@@ -1663,6 +1947,8 @@ exports[`main-request GET $metadata localized 2`] = `
   <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
     <Schema Namespace=\\"test.MainService\\" xmlns=\\"http://schemas.microsoft.com/ado/2008/09/edm\\">
       <EntityContainer Name=\\"EntityContainer\\" m:IsDefaultEntityContainer=\\"true\\">
+        <EntitySet Name=\\"Country\\" EntityType=\\"test.MainService.Country\\"/>
+        <EntitySet Name=\\"Currency\\" EntityType=\\"test.MainService.Currency\\"/>
         <EntitySet Name=\\"Header\\" EntityType=\\"test.MainService.Header\\"/>
         <FunctionImport Name=\\"Header_boundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
@@ -1780,6 +2066,8 @@ exports[`main-request GET $metadata localized 2`] = `
         <EntitySet Name=\\"Favorite\\" EntityType=\\"test.MainService.Favorite\\"/>
         <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <EntitySet Name=\\"Node\\" EntityType=\\"test.MainService.Node\\"/>
+        <EntitySet Name=\\"Country_texts\\" EntityType=\\"test.MainService.Country_texts\\"/>
+        <EntitySet Name=\\"Currency_texts\\" EntityType=\\"test.MainService.Currency_texts\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -1871,6 +2159,22 @@ exports[`main-request GET $metadata localized 2`] = `
           <Parameter Name=\\"value\\" Type=\\"Edm.Decimal\\" Mode=\\"In\\" sap:variable-scale=\\"true\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"percentage\\" Type=\\"Edm.Decimal\\" Mode=\\"In\\" sap:variable-scale=\\"true\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <AssociationSet Name=\\"Country_texts_1\\" Association=\\"test.MainService.Country_texts_1\\">
+          <End Role=\\"Country\\" EntitySet=\\"Country\\"/>
+          <End Role=\\"Country_texts\\" EntitySet=\\"Country_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Country_localized\\" Association=\\"test.MainService.Country_localized\\">
+          <End Role=\\"Country\\" EntitySet=\\"Country\\"/>
+          <End Role=\\"Country_texts\\" EntitySet=\\"Country_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Currency_texts_1\\" Association=\\"test.MainService.Currency_texts_1\\">
+          <End Role=\\"Currency\\" EntitySet=\\"Currency\\"/>
+          <End Role=\\"Currency_texts\\" EntitySet=\\"Currency_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Currency_localized\\" Association=\\"test.MainService.Currency_localized\\">
+          <End Role=\\"Currency\\" EntitySet=\\"Currency\\"/>
+          <End Role=\\"Currency_texts\\" EntitySet=\\"Currency_texts\\"/>
+        </AssociationSet>
         <AssociationSet Name=\\"Header_FirstItem\\" Association=\\"test.MainService.Header_FirstItem\\">
           <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
@@ -1904,6 +2208,27 @@ exports[`main-request GET $metadata localized 2`] = `
           <End Role=\\"HeaderLargeString\\" EntitySet=\\"HeaderLargeString\\"/>
         </AssociationSet>
       </EntityContainer>
+      <EntityType Name=\\"Country\\">
+        <Key>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+        <NavigationProperty Name=\\"texts\\" Relationship=\\"test.MainService.Country_texts_1\\" FromRole=\\"Country\\" ToRole=\\"Country_texts\\"/>
+        <NavigationProperty Name=\\"localized\\" Relationship=\\"test.MainService.Country_localized\\" FromRole=\\"Country\\" ToRole=\\"Country_texts\\"/>
+      </EntityType>
+      <EntityType Name=\\"Currency\\">
+        <Key>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+        <Property Name=\\"symbol\\" Type=\\"Edm.String\\" MaxLength=\\"5\\"/>
+        <NavigationProperty Name=\\"texts\\" Relationship=\\"test.MainService.Currency_texts_1\\" FromRole=\\"Currency\\" ToRole=\\"Currency_texts\\"/>
+        <NavigationProperty Name=\\"localized\\" Relationship=\\"test.MainService.Currency_localized\\" FromRole=\\"Currency\\" ToRole=\\"Currency_texts\\"/>
+      </EntityType>
       <EntityType Name=\\"Header\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -2085,6 +2410,26 @@ exports[`main-request GET $metadata localized 2`] = `
         <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"drillState\\" Type=\\"Edm.String\\"/>
       </EntityType>
+      <EntityType Name=\\"Country_texts\\">
+        <Key>
+          <PropertyRef Name=\\"locale\\"/>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"locale\\" Type=\\"Edm.String\\" MaxLength=\\"14\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+      </EntityType>
+      <EntityType Name=\\"Currency_texts\\">
+        <Key>
+          <PropertyRef Name=\\"locale\\"/>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"locale\\" Type=\\"Edm.String\\" MaxLength=\\"14\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+      </EntityType>
       <ComplexType Name=\\"Result\\">
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
@@ -2130,6 +2475,26 @@ exports[`main-request GET $metadata localized 2`] = `
         <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"age\\" Type=\\"Edm.Int32\\"/>
       </ComplexType>
+      <Association Name=\\"Country_texts_1\\">
+        <End Role=\\"Country\\" Type=\\"test.MainService.Country\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"Country_texts\\" Type=\\"test.MainService.Country_texts\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Association Name=\\"Country_localized\\">
+        <End Role=\\"Country\\" Type=\\"test.MainService.Country\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Country_texts\\" Type=\\"test.MainService.Country_texts\\" Multiplicity=\\"0..1\\"/>
+      </Association>
+      <Association Name=\\"Currency_texts_1\\">
+        <End Role=\\"Currency\\" Type=\\"test.MainService.Currency\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"Currency_texts\\" Type=\\"test.MainService.Currency_texts\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Association Name=\\"Currency_localized\\">
+        <End Role=\\"Currency\\" Type=\\"test.MainService.Currency\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Currency_texts\\" Type=\\"test.MainService.Currency_texts\\" Multiplicity=\\"0..1\\"/>
+      </Association>
       <Association Name=\\"Header_FirstItem\\">
         <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"*\\"/>
         <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
@@ -2236,6 +2601,47 @@ exports[`main-request GET $metadata localized 2`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Annotations Target=\\"test.MainService.Country\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"name\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Beschreibung\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Ländercode\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"name\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Beschreibung\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Währungscode\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/symbol\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Währungssymbol\\"/>
+      </Annotations>
       <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
@@ -2339,6 +2745,26 @@ exports[`main-request GET $metadata localized 2`] = `
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Description\\" String=\\"Die eindeutige ID eines Benutzers\\"/>
         <Annotation Term=\\"Common.Label\\" String=\\"Geändert von\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Beschreibung\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Ländercode\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Beschreibung\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Währungscode\\"/>
       </Annotations>
     </Schema>
   </edmx:DataServices>
@@ -2360,6 +2786,8 @@ exports[`main-request GET $metadata with propagated headers 1`] = `
   <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
     <Schema Namespace=\\"test.MainService\\" xmlns=\\"http://schemas.microsoft.com/ado/2008/09/edm\\">
       <EntityContainer Name=\\"EntityContainer\\" m:IsDefaultEntityContainer=\\"true\\">
+        <EntitySet Name=\\"Country\\" EntityType=\\"test.MainService.Country\\"/>
+        <EntitySet Name=\\"Currency\\" EntityType=\\"test.MainService.Currency\\"/>
         <EntitySet Name=\\"Header\\" EntityType=\\"test.MainService.Header\\"/>
         <FunctionImport Name=\\"Header_boundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\" sap:action-for=\\"test.MainService.Header\\">
           <Parameter Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\" Mode=\\"In\\"/>
@@ -2477,6 +2905,8 @@ exports[`main-request GET $metadata with propagated headers 1`] = `
         <EntitySet Name=\\"Favorite\\" EntityType=\\"test.MainService.Favorite\\"/>
         <EntitySet Name=\\"StringUUID\\" EntityType=\\"test.MainService.StringUUID\\"/>
         <EntitySet Name=\\"Node\\" EntityType=\\"test.MainService.Node\\"/>
+        <EntitySet Name=\\"Country_texts\\" EntityType=\\"test.MainService.Country_texts\\"/>
+        <EntitySet Name=\\"Currency_texts\\" EntityType=\\"test.MainService.Currency_texts\\"/>
         <FunctionImport Name=\\"unboundAction\\" ReturnType=\\"test.MainService.Result\\" m:HttpMethod=\\"POST\\">
           <Parameter Name=\\"num\\" Type=\\"Edm.Int32\\" Mode=\\"In\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"text\\" Type=\\"Edm.String\\" Mode=\\"In\\" Nullable=\\"true\\"/>
@@ -2568,6 +2998,22 @@ exports[`main-request GET $metadata with propagated headers 1`] = `
           <Parameter Name=\\"value\\" Type=\\"Edm.Decimal\\" Mode=\\"In\\" sap:variable-scale=\\"true\\" Nullable=\\"true\\"/>
           <Parameter Name=\\"percentage\\" Type=\\"Edm.Decimal\\" Mode=\\"In\\" sap:variable-scale=\\"true\\" Nullable=\\"true\\"/>
         </FunctionImport>
+        <AssociationSet Name=\\"Country_texts_1\\" Association=\\"test.MainService.Country_texts_1\\">
+          <End Role=\\"Country\\" EntitySet=\\"Country\\"/>
+          <End Role=\\"Country_texts\\" EntitySet=\\"Country_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Country_localized\\" Association=\\"test.MainService.Country_localized\\">
+          <End Role=\\"Country\\" EntitySet=\\"Country\\"/>
+          <End Role=\\"Country_texts\\" EntitySet=\\"Country_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Currency_texts_1\\" Association=\\"test.MainService.Currency_texts_1\\">
+          <End Role=\\"Currency\\" EntitySet=\\"Currency\\"/>
+          <End Role=\\"Currency_texts\\" EntitySet=\\"Currency_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"Currency_localized\\" Association=\\"test.MainService.Currency_localized\\">
+          <End Role=\\"Currency\\" EntitySet=\\"Currency\\"/>
+          <End Role=\\"Currency_texts\\" EntitySet=\\"Currency_texts\\"/>
+        </AssociationSet>
         <AssociationSet Name=\\"Header_FirstItem\\" Association=\\"test.MainService.Header_FirstItem\\">
           <End Role=\\"Header\\" EntitySet=\\"Header\\"/>
           <End Role=\\"HeaderItem\\" EntitySet=\\"HeaderItem\\"/>
@@ -2601,6 +3047,27 @@ exports[`main-request GET $metadata with propagated headers 1`] = `
           <End Role=\\"HeaderLargeString\\" EntitySet=\\"HeaderLargeString\\"/>
         </AssociationSet>
       </EntityContainer>
+      <EntityType Name=\\"Country\\">
+        <Key>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+        <NavigationProperty Name=\\"texts\\" Relationship=\\"test.MainService.Country_texts_1\\" FromRole=\\"Country\\" ToRole=\\"Country_texts\\"/>
+        <NavigationProperty Name=\\"localized\\" Relationship=\\"test.MainService.Country_localized\\" FromRole=\\"Country\\" ToRole=\\"Country_texts\\"/>
+      </EntityType>
+      <EntityType Name=\\"Currency\\">
+        <Key>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+        <Property Name=\\"symbol\\" Type=\\"Edm.String\\" MaxLength=\\"5\\"/>
+        <NavigationProperty Name=\\"texts\\" Relationship=\\"test.MainService.Currency_texts_1\\" FromRole=\\"Currency\\" ToRole=\\"Currency_texts\\"/>
+        <NavigationProperty Name=\\"localized\\" Relationship=\\"test.MainService.Currency_localized\\" FromRole=\\"Currency\\" ToRole=\\"Currency_texts\\"/>
+      </EntityType>
       <EntityType Name=\\"Header\\">
         <Key>
           <PropertyRef Name=\\"ID\\"/>
@@ -2782,6 +3249,26 @@ exports[`main-request GET $metadata with propagated headers 1`] = `
         <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"drillState\\" Type=\\"Edm.String\\"/>
       </EntityType>
+      <EntityType Name=\\"Country_texts\\">
+        <Key>
+          <PropertyRef Name=\\"locale\\"/>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"locale\\" Type=\\"Edm.String\\" MaxLength=\\"14\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+      </EntityType>
+      <EntityType Name=\\"Currency_texts\\">
+        <Key>
+          <PropertyRef Name=\\"locale\\"/>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"locale\\" Type=\\"Edm.String\\" MaxLength=\\"14\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"3\\" Nullable=\\"false\\"/>
+      </EntityType>
       <ComplexType Name=\\"Result\\">
         <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
@@ -2827,6 +3314,26 @@ exports[`main-request GET $metadata with propagated headers 1`] = `
         <Property Name=\\"code\\" Type=\\"Edm.String\\"/>
         <Property Name=\\"age\\" Type=\\"Edm.Int32\\"/>
       </ComplexType>
+      <Association Name=\\"Country_texts_1\\">
+        <End Role=\\"Country\\" Type=\\"test.MainService.Country\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"Country_texts\\" Type=\\"test.MainService.Country_texts\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Association Name=\\"Country_localized\\">
+        <End Role=\\"Country\\" Type=\\"test.MainService.Country\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Country_texts\\" Type=\\"test.MainService.Country_texts\\" Multiplicity=\\"0..1\\"/>
+      </Association>
+      <Association Name=\\"Currency_texts_1\\">
+        <End Role=\\"Currency\\" Type=\\"test.MainService.Currency\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"Currency_texts\\" Type=\\"test.MainService.Currency_texts\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Association Name=\\"Currency_localized\\">
+        <End Role=\\"Currency\\" Type=\\"test.MainService.Currency\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Currency_texts\\" Type=\\"test.MainService.Currency_texts\\" Multiplicity=\\"0..1\\"/>
+      </Association>
       <Association Name=\\"Header_FirstItem\\">
         <End Role=\\"Header\\" Type=\\"test.MainService.Header\\" Multiplicity=\\"*\\"/>
         <End Role=\\"HeaderItem\\" Type=\\"test.MainService.HeaderItem\\" Multiplicity=\\"0..1\\"/>
@@ -2933,6 +3440,47 @@ exports[`main-request GET $metadata with propagated headers 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Annotations Target=\\"test.MainService.Country\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"name\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Country Code\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"name\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Currency Code\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency/symbol\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Currency Symbol\\"/>
+      </Annotations>
       <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
         <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
@@ -3037,6 +3585,26 @@ exports[`main-request GET $metadata with propagated headers 1`] = `
         <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
         <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
       </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Country_texts/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Country Code\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"test.MainService.Currency_texts/code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Text\\" Path=\\"name\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Currency Code\\"/>
+      </Annotations>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>"
@@ -3044,6 +3612,10 @@ exports[`main-request GET $metadata with propagated headers 1`] = `
 
 exports[`main-request GET service JSON format 1`] = `
 Array [
+  "Country",
+  "Country_texts",
+  "Currency",
+  "Currency_texts",
   "Favorite",
   "Header",
   "HeaderAssocKey",
@@ -3066,6 +3638,10 @@ Array [
 
 exports[`main-request GET service JSON format 2`] = `
 Array [
+  "Country",
+  "Country_texts",
+  "Currency",
+  "Currency_texts",
   "Favorite",
   "Header",
   "HeaderAssocKey",
@@ -3086,8 +3662,8 @@ Array [
 ]
 `;
 
-exports[`main-request GET service XML format 1`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderBinary\\"><atom:title>HeaderBinary</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection><collection href=\\"Node\\"><atom:title>Node</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 1`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Country\\"><atom:title>Country</atom:title></collection><collection href=\\"Currency\\"><atom:title>Currency</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderBinary\\"><atom:title>HeaderBinary</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection><collection href=\\"Node\\"><atom:title>Node</atom:title></collection><collection href=\\"Country_texts\\"><atom:title>Country_texts</atom:title></collection><collection href=\\"Currency_texts\\"><atom:title>Currency_texts</atom:title></collection></workspace></service>"`;
 
-exports[`main-request GET service XML format 2`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderBinary\\"><atom:title>HeaderBinary</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection><collection href=\\"Node\\"><atom:title>Node</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 2`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Country\\"><atom:title>Country</atom:title></collection><collection href=\\"Currency\\"><atom:title>Currency</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderBinary\\"><atom:title>HeaderBinary</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection><collection href=\\"Node\\"><atom:title>Node</atom:title></collection><collection href=\\"Country_texts\\"><atom:title>Country_texts</atom:title></collection><collection href=\\"Currency_texts\\"><atom:title>Currency_texts</atom:title></collection></workspace></service>"`;
 
-exports[`main-request GET service XML format 3`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderBinary\\"><atom:title>HeaderBinary</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection><collection href=\\"Node\\"><atom:title>Node</atom:title></collection></workspace></service>"`;
+exports[`main-request GET service XML format 3`] = `"<?xml version=\\"1.0\\" encoding=\\"utf-8\\" standalone=\\"yes\\" ?><service xml:base=\\"v2/main/\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\" xmlns:app=\\"http://www.w3.org/2007/app\\" xmlns=\\"http://www.w3.org/2007/app\\"><workspace><atom:title>Default</atom:title><collection href=\\"Country\\"><atom:title>Country</atom:title></collection><collection href=\\"Currency\\"><atom:title>Currency</atom:title></collection><collection href=\\"Header\\"><atom:title>Header</atom:title></collection><collection href=\\"HeaderItem\\"><atom:title>HeaderItem</atom:title></collection><collection href=\\"HeaderLine\\"><atom:title>HeaderLine</atom:title></collection><collection href=\\"HeaderStream\\"><atom:title>HeaderStream</atom:title></collection><collection href=\\"HeaderStreamAttachment\\"><atom:title>HeaderStreamAttachment</atom:title></collection><collection href=\\"HeaderStreamDecode\\"><atom:title>HeaderStreamDecode</atom:title></collection><collection href=\\"HeaderUrlStream\\"><atom:title>HeaderUrlStream</atom:title></collection><collection href=\\"HeaderBinary\\"><atom:title>HeaderBinary</atom:title></collection><collection href=\\"HeaderAssocKey\\"><atom:title>HeaderAssocKey</atom:title></collection><collection href=\\"HeaderTemporal\\"><atom:title>HeaderTemporal</atom:title></collection><collection href=\\"HeaderDelta\\"><atom:title>HeaderDelta</atom:title></collection><collection href=\\"HeaderItemDelta\\"><atom:title>HeaderItemDelta</atom:title></collection><collection href=\\"HeaderLargeString\\"><atom:title>HeaderLargeString</atom:title></collection><collection href=\\"HeaderItemLargeString\\"><atom:title>HeaderItemLargeString</atom:title></collection><collection href=\\"Favorite\\"><atom:title>Favorite</atom:title></collection><collection href=\\"StringUUID\\"><atom:title>StringUUID</atom:title></collection><collection href=\\"Node\\"><atom:title>Node</atom:title></collection><collection href=\\"Country_texts\\"><atom:title>Country_texts</atom:title></collection><collection href=\\"Currency_texts\\"><atom:title>Currency_texts</atom:title></collection></workspace></service>"`;

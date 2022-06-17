@@ -1,13 +1,13 @@
 {
   "_version": "1.8.0",
   "sap.app": {
-    "id": "com.sap.cds.app.hierarchy",
+    "id": "com.sap.cds.app.analytics",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
       "version": "1.0.0"
     },
-    "title": "Node - Hierarchy Sample App",
+    "title": "Analytics Sample App",
     "description": "{{appDescription}}",
     "tags": {
       "keywords": []
@@ -27,13 +27,20 @@
           "size": "1x1"
         }
       },
-      "outbounds": {}
+      "outbounds": {
+        "Header-display": {
+          "semanticObject": "Header",
+          "action": "display",
+          "parameters": {
+          }
+        }
+      }
     },
     "ach": "",
     "resources": "resources.json",
     "dataSources": {
-      "mainService": {
-        "uri": "/v2/main",
+      "analyticsService": {
+        "uri": "/v2/analytics",
         "type": "OData"
       }
     },
@@ -87,7 +94,7 @@
         "uri": "i18n/ListReport/Node/i18n.properties"
       },
       "": {
-        "dataSource": "mainService",
+        "dataSource": "analyticsService",
         "preload": true,
         "settings": {
           "useBatch": true,
@@ -112,24 +119,38 @@
       "useColumnLayoutForSmartForm": false,
       "showBasicSearch": false
     },
-    "pages": {
-      "ListReport|Node": {
-        "entitySet": "Node",
+    "pages": [
+      {
+        "entitySet": "Header",
         "component": {
-          "name": "sap.suite.ui.generic.template.ListReport",
+          "name": "sap.suite.ui.generic.template.AnalyticalListPage",
           "list": true,
           "settings": {
+            "hideVisualFilter": false,
+            "defaultFilterMode": "visual",
+            "defaultContentView": "charttable",
+            "smartVariantManagement": false,
             "condensedTableLayout": true,
-            "smartVariantManagement": true,
-            "tableType": "TreeTable",
-            "enableTableFilterInPageVariant": true,
-            "dataLoadSettings": {
-              "loadDataOnAppLaunch": "always"
+            "lazyLoadVisualFilter": true,
+            "showGoButtonOnFilterBar": true
+          }
+        },
+        "pages": [
+          {
+            "entitySet": "Header",
+            "component": {
+              "name": "sap.suite.ui.generic.template.ObjectPage"
+            },
+            "navigation": {
+              "display": {
+                "path": "sap.apps.crossNavigation.outbounds",
+                "target": "Header-display"
+              }
             }
           }
-        }
+        ]
       }
-    }
+    ]
   },
   "sap.fiori": {
     "registrationIds": [],

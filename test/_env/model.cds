@@ -1,5 +1,6 @@
 namespace test;
 
+using sap.common from '@sap/cds/common';
 using { managed, temporal, cuid } from '@sap/cds/common';
 
 type Value: Integer;
@@ -152,6 +153,9 @@ service MainService {
         code: String;
         age: Integer;
     }
+
+    entity Country as projection on common.Countries;
+    entity Currency as projection on common.Currencies;
 
     entity Header as projection on test.Header actions {
         action boundAction(num: Integer, text: String) returns Result;

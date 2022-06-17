@@ -34,18 +34,7 @@
     "dataSources": {
       "mainService": {
         "uri": "/v2/main",
-        "type": "OData",
-        "settings": {
-          "annotations": ["localAnnotations"],
-          "localUri": "localService/metadata.xml"
-        }
-      },
-      "localAnnotations": {
-        "type": "ODataAnnotation",
-        "uri": "annotations/localAnnotations.xml",
-        "settings": {
-          "localUri": "annotations/localAnnotations.xml"
-        }
+        "type": "OData"
       }
     },
     "offline": false,
