@@ -1,6 +1,6 @@
 namespace test;
 
-using { managed, cuid } from '@sap/cds/common';
+using { managed, temporal, cuid } from '@sap/cds/common';
 
 type Value: Integer;
 type Stock: Value;
@@ -91,9 +91,9 @@ entity HeaderAssocKey {
     num: Double;
 }
 
-entity HeaderTemporal: cuid { // temporal
-    key validFrom: Timestamp @cds.valid.from;
-    validTo: Timestamp @cds.valid.to;
+entity HeaderTemporal: cuid, temporal {
+    key validFrom: Timestamp;
+    validTo: Timestamp;
     name: String;
     value: String;
 }

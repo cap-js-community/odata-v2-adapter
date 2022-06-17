@@ -52,6 +52,8 @@ describe("main-request", () => {
         name: null,
         price: null,
         stock,
+        STOCK: stock,
+        CURRENCY: "USD",
       },
     ]);
   });

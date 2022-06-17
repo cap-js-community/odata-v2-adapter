@@ -9,7 +9,12 @@ service MainService {
 
     define entity HeaderParameters (
         STOCK: Integer,
-        CURRENCY: String
-    ) as SELECT * from test.Header where stock=:STOCK and currency=:CURRENCY;
+        CURRENCY: String not null // mandatory parameter
+    ) as SELECT
+        // Hint: Parameters need to be included in view definition as keys, to UI List Report with parameters working
+        key :STOCK as STOCK,
+        key :CURRENCY as CURRENCY,
+        *
+    from test.Header where stock=:STOCK and currency=:CURRENCY;
 
 }
