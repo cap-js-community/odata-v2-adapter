@@ -1,7 +1,0 @@
----
-applications:
-  - name: cds-community-test-app
-    path: .
-    memory: 128M
-    services:
-      - cds-community-test-hana-cloud

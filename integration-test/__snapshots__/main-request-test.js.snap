@@ -50,11 +50,11 @@ exports[`main-request GET $metadata 1`] = `
       </EntityType>
       <EntityType Name=\\"HeaderParametersType\\">
         <Key>
-          <PropertyRef Name=\\"STOCK\\"/>
-          <PropertyRef Name=\\"CURRENCY\\"/>
+          <PropertyRef Name=\\"STOCK_PARAM\\"/>
+          <PropertyRef Name=\\"CURRENCY_PARAM\\"/>
         </Key>
-        <Property Name=\\"STOCK\\" Type=\\"Edm.Int32\\" Nullable=\\"false\\"/>
-        <Property Name=\\"CURRENCY\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
+        <Property Name=\\"STOCK_PARAM\\" Type=\\"Edm.Int32\\" Nullable=\\"false\\"/>
+        <Property Name=\\"CURRENCY_PARAM\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
         <Property Name=\\"ID\\" Type=\\"Edm.Guid\\"/>
         <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
@@ -96,10 +96,10 @@ exports[`main-request GET $metadata 1`] = `
         <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
         <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
       </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderParametersType/STOCK\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+      <Annotations Target=\\"test.MainService.HeaderParametersType/STOCK_PARAM\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
       </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderParametersType/CURRENCY\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+      <Annotations Target=\\"test.MainService.HeaderParametersType/CURRENCY_PARAM\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
         <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
       </Annotations>
       <Annotations Target=\\"test.MainService.HeaderParametersType/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
@@ -129,4 +129,23 @@ exports[`main-request GET $metadata 1`] = `
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>"
+`;
+
+exports[`main-request GET with agreement pricing for key date 1`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "ID": "f8420eac-a36b-49af-b91c-6559b8f7627e",
+        "Item": "77b1f64f-2cc0-47df-aefd-11d93ae3c15d",
+        "__metadata": Object {
+          "type": "AgreementService.AgreementItemPricingForKeyDate",
+        },
+        "keyDate": "/Date(1655683200000)/",
+        "validFrom": "/Date(1640995200000)/",
+        "validTo": "/Date(253402214400000)/",
+      },
+    ],
+  },
+}
 `;

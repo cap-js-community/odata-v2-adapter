@@ -52,8 +52,8 @@ describe("main-request", () => {
         name: null,
         price: null,
         stock,
-        STOCK: stock,
-        CURRENCY: "USD",
+        STOCK_PARAM: stock,
+        CURRENCY_PARAM: "USD",
       },
     ]);
   });
@@ -98,5 +98,14 @@ describe("main-request", () => {
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and endswith(name,'XX')`);
     expect(response.body.d.results).toHaveLength(0);
+  });
+
+  it("GET with agreement pricing for key date", async () => {
+    let response = await util.callRead(request, `/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00Z')/Set`);
+    expect(response.body).toBeDefined();
+    delete response.body.d.results[0].__metadata.uri;
+    expect(response.body).toMatchSnapshot();
+    response = await util.callRead(request, `/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2000-06-20T00:00:00Z')/Set`);
+    expect(response.body.d.results).toEqual([]);
   });
 });

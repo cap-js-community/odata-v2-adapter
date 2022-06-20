@@ -22,6 +22,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "start": "XS_APP_LOG_LEVEL=debug cds run --in-memory",
+    "start:hana": "cd integration-test/_env && npm start",
     "cds:run": "npm start",
     "cds:run:single": "XS_APP_LOG_LEVEL=debug cds serve --in-memory --service MainService --from ./test/_env/model --at /",
     "test": "jest --runInBand --updateSnapshot",
