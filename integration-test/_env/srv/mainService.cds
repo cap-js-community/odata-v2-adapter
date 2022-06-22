@@ -11,7 +11,7 @@ service MainService {
         STOCK: Integer,
         CURRENCY: String not null // mandatory parameter
     ) as SELECT
-        // Parameters need to be included in view definition as keys, to UI List Report with parameters working
+        // Parameters need to be included in view definition as keys, to make UI List Report working with parameters
         key :STOCK as STOCK_PARAM,
         key :CURRENCY as CURRENCY_PARAM,
         // Primary key need to be included in view definition as keys, to make record still identifiable
