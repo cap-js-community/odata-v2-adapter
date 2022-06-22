@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
+## Version 1.8.22 - tbd
+
+- Represent `cds.Date/Edm.DateTime` with second precision (i.e. `00:00:00`) 
+
 ## Version 1.8.21 - 2022-06-22
 
 ### Fixed

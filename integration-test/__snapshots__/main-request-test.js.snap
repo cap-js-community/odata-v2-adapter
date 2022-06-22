@@ -139,12 +139,12 @@ Object {
       Object {
         "Set": Object {
           "__deferred": Object {
-            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00')/Set",
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')/Set",
           },
         },
         "__metadata": Object {
           "type": "AgreementService.AgreementItemPricingForKeyDateParameters",
-          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00')",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')",
         },
         "keyDate": "/Date(1655683200000)/",
       },
@@ -162,12 +162,12 @@ Object {
         "Item": "87b1f64f-2cc0-47df-aefd-11d93ae3c15d",
         "Parameters": Object {
           "__deferred": Object {
-            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
           },
         },
         "__metadata": Object {
           "type": "AgreementService.AgreementItemPricingForKeyDateType",
-          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')",
         },
         "keyDate": "/Date(1655683200000)/",
         "validFrom": "/Date(1641081600000)/",
@@ -178,12 +178,12 @@ Object {
         "Item": "77b1f64f-2cc0-47df-aefd-11d93ae3c15d",
         "Parameters": Object {
           "__deferred": Object {
-            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
           },
         },
         "__metadata": Object {
           "type": "AgreementService.AgreementItemPricingForKeyDateType",
-          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
         },
         "keyDate": "/Date(1655683200000)/",
         "validFrom": "/Date(1640995200000)/",
@@ -203,12 +203,12 @@ Object {
         "Item": "77b1f64f-2cc0-47df-aefd-11d93ae3c15d",
         "Parameters": Object {
           "__deferred": Object {
-            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
           },
         },
         "__metadata": Object {
           "type": "AgreementService.AgreementItemPricingForKeyDateType",
-          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
         },
         "keyDate": "/Date(1655683200000)/",
         "validFrom": "/Date(1640995200000)/",
@@ -226,12 +226,12 @@ Object {
       Object {
         "Set": Object {
           "__deferred": Object {
-            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00')/Set",
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')/Set",
           },
         },
         "__metadata": Object {
           "type": "AgreementService.AgreementItemPricingForKeyDateParameters",
-          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00')",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')",
         },
         "keyDate": "/Date(1655683200000)/",
       },

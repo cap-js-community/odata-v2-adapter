@@ -104,7 +104,7 @@ describe("main-request", () => {
     // Empty Parameters
     let response = await util.callRead(
       request,
-      `/v2/agreement/AgreementItemPricingForKeyDate(datetime'2002-06-20T00:00')`
+      `/v2/agreement/AgreementItemPricingForKeyDate(datetime'2002-06-20T00:00:00')`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toEqual([]);
@@ -112,19 +112,19 @@ describe("main-request", () => {
     // Empty Set
     response = await util.callRead(
       request,
-      `/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2000-06-20T00:00:00Z')/Set`
+      `/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2000-06-20T00:00:00')/Set`
     );
     expect(response.body.d.results).toEqual([]);
 
     // Parameters
-    response = await util.callRead(request, `/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00')`);
+    response = await util.callRead(request, `/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')`);
     expect(response.body).toBeDefined();
     expect(clean(response.body)).toMatchSnapshot();
 
     // Result Set
     response = await util.callRead(
       request,
-      `/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00Z')/Set`
+      `/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00')/Set`
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body)).toMatchSnapshot();
@@ -132,7 +132,7 @@ describe("main-request", () => {
     // Single Entry
     response = await util.callRead(
       request,
-      `/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')`
+      `/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')`
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body)).toMatchSnapshot();
@@ -140,7 +140,7 @@ describe("main-request", () => {
     // Entry Parameters
     response = await util.callRead(
       request,
-      `/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters`
+      `/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters`
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body)).toMatchSnapshot();
