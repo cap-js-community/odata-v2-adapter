@@ -10,6 +10,6 @@ cds.env.requires.db = {
   credentials,
 };
 
-cds.on("bootstrap", app => app.use(proxy()));
+cds.on("bootstrap", (app) => app.use(proxy()));
 
 module.exports = cds.server;

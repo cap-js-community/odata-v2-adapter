@@ -11,9 +11,11 @@ service MainService {
         STOCK: Integer,
         CURRENCY: String not null // mandatory parameter
     ) as SELECT
-        // Hint: Parameters need to be included in view definition as keys, to UI List Report with parameters working
+        // Parameters need to be included in view definition as keys, to UI List Report with parameters working
         key :STOCK as STOCK_PARAM,
         key :CURRENCY as CURRENCY_PARAM,
+        // Primary key need to be included in view definition as keys, to make record still identifiable
+        key ID,
         *
     from test.Header where stock=:STOCK and currency=:CURRENCY;
 }

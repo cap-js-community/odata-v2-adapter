@@ -42,7 +42,7 @@ describe("main-request", () => {
     expect(response.body.d.results).toMatchObject([
       {
         __metadata: {
-          type: "test.MainService.HeaderParameters",
+          type: "test.MainService.HeaderParametersType",
         },
         country: null,
         createdBy: "anonymous",
@@ -56,6 +56,94 @@ describe("main-request", () => {
         CURRENCY_PARAM: "USD",
       },
     ]);
+  });
+
+  it("GET with parameters (header - full circle)", async () => {
+    const stock = 1;
+    // Empty Parameters
+    let response = await util.callRead(request, `/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='XXX')`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toEqual([]);
+
+    // Empty Set
+    response = await util.callRead(request, `/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='XXX')/Set`);
+    expect(response.body.d.results).toEqual([]);
+
+    // Parameters
+    response = await util.callRead(request, `/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='EUR')`);
+    expect(response.body).toBeDefined();
+    expect(clean(response.body)).toMatchSnapshot();
+
+    // Result Set
+    response = await util.callRead(request, `/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='EUR')/Set`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toBeDefined();
+    const ID = response.body.d.results[0].ID;
+    expect(ID).toBeDefined();
+    response.body.d.results = response.body.d.results.slice(0, 1);
+    expect(clean(response.body)).toMatchSnapshot();
+
+    // Single Entry
+    response = await util.callRead(
+      request,
+      `/v2/main/HeaderParametersSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')`
+    );
+    expect(response.body).toBeDefined();
+    expect(clean(response.body)).toMatchSnapshot();
+
+    // Entry Parameters
+    response = await util.callRead(
+      request,
+      `/v2/main/HeaderParametersSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`
+    );
+    expect(response.body).toBeDefined();
+    expect(clean(response.body)).toMatchSnapshot();
+  });
+
+  it("GET with parameters (agreement pricing for key date - full circle)", async () => {
+    // Empty Parameters
+    let response = await util.callRead(
+      request,
+      `/v2/agreement/AgreementItemPricingForKeyDate(datetime'2002-06-20T00:00')`
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toEqual([]);
+
+    // Empty Set
+    response = await util.callRead(
+      request,
+      `/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2000-06-20T00:00:00Z')/Set`
+    );
+    expect(response.body.d.results).toEqual([]);
+
+    // Parameters
+    response = await util.callRead(request, `/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00')`);
+    expect(response.body).toBeDefined();
+    expect(clean(response.body)).toMatchSnapshot();
+
+    // Result Set
+    response = await util.callRead(
+      request,
+      `/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00Z')/Set`
+    );
+    expect(response.body).toBeDefined();
+    expect(clean(response.body)).toMatchSnapshot();
+
+    // Single Entry
+    response = await util.callRead(
+      request,
+      `/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')`
+    );
+    expect(response.body).toBeDefined();
+    expect(clean(response.body)).toMatchSnapshot();
+
+    // Entry Parameters
+    response = await util.callRead(
+      request,
+      `/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters`
+    );
+    expect(response.body).toBeDefined();
+    expect(clean(response.body)).toMatchSnapshot();
   });
 
   it("GET request with function 'substringof'", async () => {
@@ -99,13 +187,21 @@ describe("main-request", () => {
     response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and endswith(name,'XX')`);
     expect(response.body.d.results).toHaveLength(0);
   });
-
-  it("GET with agreement pricing for key date", async () => {
-    let response = await util.callRead(request, `/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00Z')/Set`);
-    expect(response.body).toBeDefined();
-    delete response.body.d.results[0].__metadata.uri;
-    expect(response.body).toMatchSnapshot();
-    response = await util.callRead(request, `/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2000-06-20T00:00:00Z')/Set`);
-    expect(response.body.d.results).toEqual([]);
-  });
 });
+
+function clean(responseBody) {
+  function replacePort(text) {
+    return text.replace(/localhost:([0-9]*)/g, "localhost:00000");
+  }
+
+  responseBody.d.results.forEach((entry) => {
+    entry.__metadata.uri = replacePort(entry.__metadata.uri);
+    if (entry.Set) {
+      entry.Set.__deferred.uri = replacePort(entry.Set.__deferred.uri);
+    }
+    if (entry.Parameters) {
+      entry.Parameters.__deferred.uri = replacePort(entry.Parameters.__deferred.uri);
+    }
+  });
+  return responseBody;
+}

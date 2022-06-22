@@ -52,10 +52,11 @@ exports[`main-request GET $metadata 1`] = `
         <Key>
           <PropertyRef Name=\\"STOCK_PARAM\\"/>
           <PropertyRef Name=\\"CURRENCY_PARAM\\"/>
+          <PropertyRef Name=\\"ID\\"/>
         </Key>
         <Property Name=\\"STOCK_PARAM\\" Type=\\"Edm.Int32\\" Nullable=\\"false\\"/>
         <Property Name=\\"CURRENCY_PARAM\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
-        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\"/>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
         <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
         <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
         <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
@@ -131,19 +132,214 @@ exports[`main-request GET $metadata 1`] = `
 </edmx:Edmx>"
 `;
 
-exports[`main-request GET with agreement pricing for key date 1`] = `
+exports[`main-request GET with parameters (agreement pricing for key date - full circle) 1`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "Set": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00')/Set",
+          },
+        },
+        "__metadata": Object {
+          "type": "AgreementService.AgreementItemPricingForKeyDateParameters",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00')",
+        },
+        "keyDate": "/Date(1655683200000)/",
+      },
+    ],
+  },
+}
+`;
+
+exports[`main-request GET with parameters (agreement pricing for key date - full circle) 2`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "ID": "e8420eac-a36b-49af-b91c-6559b8f7627e",
+        "Item": "87b1f64f-2cc0-47df-aefd-11d93ae3c15d",
+        "Parameters": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+          },
+        },
+        "__metadata": Object {
+          "type": "AgreementService.AgreementItemPricingForKeyDateType",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')",
+        },
+        "keyDate": "/Date(1655683200000)/",
+        "validFrom": "/Date(1641081600000)/",
+        "validTo": "/Date(253402128000000)/",
+      },
+      Object {
+        "ID": "f8420eac-a36b-49af-b91c-6559b8f7627e",
+        "Item": "77b1f64f-2cc0-47df-aefd-11d93ae3c15d",
+        "Parameters": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+          },
+        },
+        "__metadata": Object {
+          "type": "AgreementService.AgreementItemPricingForKeyDateType",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
+        },
+        "keyDate": "/Date(1655683200000)/",
+        "validFrom": "/Date(1640995200000)/",
+        "validTo": "/Date(253402214400000)/",
+      },
+    ],
+  },
+}
+`;
+
+exports[`main-request GET with parameters (agreement pricing for key date - full circle) 3`] = `
 Object {
   "d": Object {
     "results": Array [
       Object {
         "ID": "f8420eac-a36b-49af-b91c-6559b8f7627e",
         "Item": "77b1f64f-2cc0-47df-aefd-11d93ae3c15d",
+        "Parameters": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+          },
+        },
         "__metadata": Object {
-          "type": "AgreementService.AgreementItemPricingForKeyDate",
+          "type": "AgreementService.AgreementItemPricingForKeyDateType",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
         },
         "keyDate": "/Date(1655683200000)/",
         "validFrom": "/Date(1640995200000)/",
         "validTo": "/Date(253402214400000)/",
+      },
+    ],
+  },
+}
+`;
+
+exports[`main-request GET with parameters (agreement pricing for key date - full circle) 4`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "Set": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00')/Set",
+          },
+        },
+        "__metadata": Object {
+          "type": "AgreementService.AgreementItemPricingForKeyDateParameters",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00')",
+        },
+        "keyDate": "/Date(1655683200000)/",
+      },
+    ],
+  },
+}
+`;
+
+exports[`main-request GET with parameters (header - full circle) 1`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "Set": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')/Set",
+          },
+        },
+        "__metadata": Object {
+          "type": "test.MainService.HeaderParametersParameters",
+          "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`main-request GET with parameters (header - full circle) 2`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "CURRENCY_PARAM": "EUR",
+        "ID": "01cbd6e1-8ae7-49eb-9987-feb9b22f031b",
+        "Parameters": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'01cbd6e1-8ae7-49eb-9987-feb9b22f031b')/Parameters",
+          },
+        },
+        "STOCK_PARAM": 1,
+        "__metadata": Object {
+          "type": "test.MainService.HeaderParametersType",
+          "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'01cbd6e1-8ae7-49eb-9987-feb9b22f031b')",
+        },
+        "country": null,
+        "createdAt": "/Date(1655889578471+0000)/",
+        "createdBy": "anonymous",
+        "currency": "EUR",
+        "description": null,
+        "modifiedAt": "/Date(1655889578471+0000)/",
+        "modifiedBy": "anonymous",
+        "name": null,
+        "price": null,
+        "stock": 1,
+      },
+    ],
+  },
+}
+`;
+
+exports[`main-request GET with parameters (header - full circle) 3`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "CURRENCY_PARAM": "EUR",
+        "ID": "01cbd6e1-8ae7-49eb-9987-feb9b22f031b",
+        "Parameters": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'01cbd6e1-8ae7-49eb-9987-feb9b22f031b')/Parameters",
+          },
+        },
+        "STOCK_PARAM": 1,
+        "__metadata": Object {
+          "type": "test.MainService.HeaderParametersType",
+          "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'01cbd6e1-8ae7-49eb-9987-feb9b22f031b')",
+        },
+        "country": null,
+        "createdAt": "/Date(1655889578471+0000)/",
+        "createdBy": "anonymous",
+        "currency": "EUR",
+        "description": null,
+        "modifiedAt": "/Date(1655889578471+0000)/",
+        "modifiedBy": "anonymous",
+        "name": null,
+        "price": null,
+        "stock": 1,
+      },
+    ],
+  },
+}
+`;
+
+exports[`main-request GET with parameters (header - full circle) 4`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "Set": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')/Set",
+          },
+        },
+        "__metadata": Object {
+          "type": "test.MainService.HeaderParametersParameters",
+          "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')",
+        },
       },
     ],
   },

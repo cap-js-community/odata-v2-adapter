@@ -31,8 +31,7 @@
         "Header-display": {
           "semanticObject": "Header",
           "action": "display",
-          "parameters": {
-          }
+          "parameters": {}
         }
       }
     },
