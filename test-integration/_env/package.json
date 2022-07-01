@@ -1,0 +1,59 @@
+{
+  "name": "@sap/cds-odata-v2-adapter-proxy-test-integration",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "XS_APP_LOG_LEVEL=debug cds run --production",
+    "hdi": "cf cs hana hdi-shared cds-community-test-hana-cloud -c '{\"database_id\": \"fa8a6cbe-1cdc-4dea-84cf-877c09b0f651\"}'",
+    "hdi:sk:create": "cf csk cds-community-test-hana-cloud cds-community-test-hana-cloud-key",
+    "hdi:sk:show": "cf service-key cds-community-test-hana-cloud cds-community-test-hana-cloud-key",
+    "build": "cds build --production",
+    "deploy": "cd gen/db && npm start",
+    "test:deploy": "npm run build && npm run deploy"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "cds": {
+    "cov2ap": {
+      "path": "v2",
+      "caseInsensitive": true,
+      "fixDraftRequests": true
+    },
+    "requires": {
+      "db": {
+        "multiTenant": false,
+        "kind": "hana",
+        "vcap": {
+          "tag": "hana"
+        }
+      }
+    },
+    "hana": {
+      "deploy-format": "hdbtable"
+    },
+    "build": {
+      "tasks": [
+        {
+          "src": "db",
+          "for": "hana",
+          "options": {
+            "model": [
+              "db",
+              "srv"
+            ]
+          }
+        },
+        {
+          "src": "srv",
+          "for": "node-cf",
+          "options": {
+            "model": [
+              "db",
+              "srv"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

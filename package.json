@@ -1,10 +1,10 @@
 {
   "name": "@sap/cds-odata-v2-adapter-proxy",
-  "version": "1.8.22",
+  "version": "1.9.0",
   "description": "CDS OData V2 Adapter Proxy for CDS OData V4 Services",
   "homepage": "https://cap.cloud.sap/",
   "engines": {
-    "node": ">=8.9.0"
+    "node": ">=8"
   },
   "author": "Oliver Klemenz, Richard Lindner (SAP SE - https://www.sap.com)",
   "keywords": [
@@ -16,25 +16,34 @@
     "V4"
   ],
   "files": [
-    "lib/"
+    "src/",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE"
   ],
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
-    "start": "XS_APP_LOG_LEVEL=debug cds run --in-memory",
-    "start:hana": "cd integration-test/_env && npm start",
-    "cds:run": "npm start",
-    "cds:run:single": "XS_APP_LOG_LEVEL=debug cds serve --in-memory --service MainService --from ./test/_env/model --at /",
-    "test": "jest --runInBand --updateSnapshot",
-    "test:debug": "XS_APP_LOG_LEVEL=debug jest --runInBand --updateSnapshot",
-    "test:integration": "jest --config=jest-integration.config.js --updateSnapshot",
-    "test:server": "XS_APP_LOG_LEVEL=debug node test-server",
-    "test:approuter": "cd approuter && npm start",
-    "lint": "npm run prettier && npm run eslint",
+    "run": "cd ./test/_env && cds run",
+    "start": "npm start --prefix=./test/_env",
+    "start:file": "npm run start:file --prefix=./test/_env",
+    "start:root": "npm run start:root --prefix=./test/_env",
+    "start:hana": "npm start --prefix=./test-integration/_env",
+    "start:approuter": "npm start --prefix=./approuter",
+    "start:approuter:port": "PORT=5001 npm start --prefix=./approuter",
+    "test": "jest --runInBand --updateSnapshot --forceExit",
+    "test:debug": "XS_APP_LOG_LEVEL=debug npm run test",
+    "test:xmake": "npm run test --scripts-prepend-node-path -- --config=jest-xmake.config.js",
+    "test:unit": "jest --runInBand --updateSnapshot --testPathPattern='/test/' --forceExit",
+    "test:unit:file": "CDS_ENV=testdb npm run test:unit",
+    "test:unit:deploy": "npm run test:deploy --prefix=./test/_env",
+    "test:integration": "jest --runInBand --updateSnapshot --testPathPattern='/test-integration/' --forceExit",
+    "test:integration:deploy": "npm run test:deploy --prefix=./test-integration/_env",
+    "build:unit": "npm run build --prefix=./test/_env",
+    "build:integration": "npm run build --prefix=./test-integration/_env",
+    "lint": "npm run prettier && eslint . --fix",
     "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --loglevel error",
-    "eslint": "eslint . --fix",
     "upgrade-lock": "rm -rf package-lock.json node_modules && npm i --package-lock=true",
-    "test:deploy": "cd test/_env && cds deploy index.cds --to sqlite:test.db --no-save",
     "prepareRelease": "npm prune --production"
   },
   "dependencies": {
@@ -46,34 +55,19 @@
     "node-fetch": "^2.6.7"
   },
   "devDependencies": {
-    "@sap/cds": "^5.9.7",
-    "@sap/hana-client": "^2.13.13",
+    "@sap/cds": "^6.0.0",
+    "@sap/hana-client": "^2.13.21",
     "compression": "^1.7.4",
     "eslint": "^8.18.0",
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^26.5.3",
-    "jest": "^28.1.1",
-    "jest-junit": "^13.2.0",
+    "jest": "^28.1.2",
+    "jest-junit": "^14.0.0",
     "passport": "^0.6.0",
     "prettier": "^2.7.1",
     "sqlite3": "5.0.8",
     "supertest": "^6.2.3"
   },
-  "license": "SEE LICENSE IN LICENSE",
-  "cds": {
-    "cov2ap": {
-      "path": "v2",
-      "caseInsensitive": true,
-      "fixDraftRequests": true
-    },
-    "requires": {
-      "db": {
-        "kind": "sqlite",
-        "credentials": {
-          "database": ":memory:"
-        }
-      }
-    }
-  }
+  "license": "SEE LICENSE IN LICENSE"
 }

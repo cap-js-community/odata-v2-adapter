@@ -1,7 +1,4 @@
-app/
-approuter/
-test/
-integration-test/
-reports/
 node_modules/
-*.ts
+reports/
+test/
+test-integration/

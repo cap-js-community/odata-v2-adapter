@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`incidents GET incidents service 1`] = `
+Array [
+  "Category",
+  "Category_texts",
+  "Country",
+  "Country_texts",
+  "Currency",
+  "Currency_texts",
+  "Incidents",
+  "Priority",
+  "Priority_texts",
+]
+`;

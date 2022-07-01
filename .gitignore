@@ -1,38 +1,11 @@
-gen/
-db/gen/
-srv/gen/
-.gen/
-
-node_modules/
-target/
-*.db
-.DS_Store
-_out
-.che/
-.cds_gen.log
-*.orig
-
-# mta
-*.mtar
-.mta/
-
-# bower
-bower_components/
-
-#coverage
-reports
-
-# idea
 .idea/
-
-#JUnit
-junit.xml
-
-# temp
+.DS_Store
+node_modules/
+reports/
 temp/
-memheap.txt
-memleaks.txt
-
-# typescript
-test-server-ts.js
-test-server-ts.js.map
+test/_env/gen/
+test/_env/util/typescript/test-server.js
+test/_env/util/typescript/test-server.js.map
+test/_env/test.db
+test/_env/test.db-journal
+test-integration/_env/gen/

@@ -3,9 +3,9 @@ root: true
 #  https://eslint.org/docs/rules/
 env:
   node: true
-  es2020: true
+  es2019: true
 parserOptions:
-  ecmaVersion: 10
+  ecmaVersion: 2019
 globals:
   sap: false
   SELECT: false
@@ -17,8 +17,8 @@ globals:
 plugins:
   - jest
 extends:
-  - "eslint:recommended"
-  - "plugin:jest/recommended"
+  - eslint:recommended
+  - plugin:jest/recommended
   - prettier
 rules:
   no-unused-vars: [off]
@@ -31,3 +31,4 @@ rules:
   strict: [error]
   curly: [error]
   no-constant-condition: [error, { checkLoops: false }]
+  no-prototype-builtins: off

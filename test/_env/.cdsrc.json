@@ -1,0 +1,26 @@
+{
+  "requires": {
+    "auth": {
+      "strategy": "mock",
+      "users": {
+        "alice": {
+          "password": "alice",
+          "ID": "alice@wonder.land",
+          "roles": ["XYZ4711"]
+        },
+        "bob": {
+          "password": "bob",
+          "ID": "bob@builder.com",
+          "roles": []
+        }
+      }
+    },
+    "cdsc": {
+      "variableReplacements": {
+        "$user": {
+          "id": "alice@wonder.land"
+        }
+      }
+    }
+  }
+}

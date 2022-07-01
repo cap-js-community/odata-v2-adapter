@@ -1,0 +1,12 @@
+{
+  "name": "@sap/cds-odata-v2-adapter-proxy-test-integration-db",
+  "version": "1.0.0",
+  "dependencies": {
+    "@sap/hdi-deploy": "4.3.3"
+  },
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/@sap/hdi-deploy/deploy.js --exit",
+    "undeploy": "node node_modules/@sap/hdi-deploy/deploy.js --undeploy"
+  }
+}

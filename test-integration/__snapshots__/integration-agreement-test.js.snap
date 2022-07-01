@@ -1,0 +1,629 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`integration-agreement GET $metadata 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<edmx:Edmx Version=\\"1.0\\" xmlns:edmx=\\"http://schemas.microsoft.com/ado/2007/06/edmx\\" xmlns:m=\\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\\" xmlns:sap=\\"http://www.sap.com/Protocols/SAPData\\">
+  <edmx:Reference Uri=\\"https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Aggregation.V1.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+    <edmx:Include Alias=\\"Aggregation\\" Namespace=\\"Org.OData.Aggregation.V1\\"/>
+  </edmx:Reference>
+  <edmx:Reference Uri=\\"https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+    <edmx:Include Alias=\\"Capabilities\\" Namespace=\\"Org.OData.Capabilities.V1\\"/>
+  </edmx:Reference>
+  <edmx:Reference Uri=\\"https://sap.github.io/odata-vocabularies/vocabularies/Common.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+    <edmx:Include Alias=\\"Common\\" Namespace=\\"com.sap.vocabularies.Common.v1\\"/>
+  </edmx:Reference>
+  <edmx:Reference Uri=\\"https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+    <edmx:Include Alias=\\"Core\\" Namespace=\\"Org.OData.Core.V1\\"/>
+  </edmx:Reference>
+  <edmx:Reference Uri=\\"https://sap.github.io/odata-vocabularies/vocabularies/UI.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
+    <edmx:Include Alias=\\"UI\\" Namespace=\\"com.sap.vocabularies.UI.v1\\"/>
+  </edmx:Reference>
+  <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
+    <Schema Namespace=\\"AgreementService\\" xmlns=\\"http://schemas.microsoft.com/ado/2008/09/edm\\">
+      <EntityContainer Name=\\"EntityContainer\\" m:IsDefaultEntityContainer=\\"true\\">
+        <EntitySet Name=\\"Agreement\\" EntityType=\\"AgreementService.Agreement\\"/>
+        <EntitySet Name=\\"AgreementItem\\" EntityType=\\"AgreementService.AgreementItem\\"/>
+        <EntitySet Name=\\"AgreementItemPricing\\" EntityType=\\"AgreementService.AgreementItemPricing\\"/>
+        <EntitySet Name=\\"AgreementStatus\\" EntityType=\\"AgreementService.AgreementStatus\\"/>
+        <EntitySet Name=\\"AgreementStatus_texts\\" EntityType=\\"AgreementService.AgreementStatus_texts\\"/>
+        <EntitySet Name=\\"AgreementItemPricingForKeyDate\\" EntityType=\\"AgreementService.AgreementItemPricingForKeyDateParameters\\" sap:creatable=\\"false\\" sap:updatable=\\"false\\" sap:deletable=\\"false\\" sap:pageable=\\"false\\"/>
+        <EntitySet Name=\\"AgreementItemPricingForKeyDateSet\\" EntityType=\\"AgreementService.AgreementItemPricingForKeyDateType\\" sap:creatable=\\"false\\" sap:updatable=\\"false\\" sap:deletable=\\"false\\" sap:addressable=\\"false\\"/>
+        <AssociationSet Name=\\"AgreementItem_agreement\\" Association=\\"AgreementService.AgreementItem_agreement\\">
+          <End Role=\\"AgreementItem\\" EntitySet=\\"AgreementItem\\"/>
+          <End Role=\\"Agreement\\" EntitySet=\\"Agreement\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"AgreementItemPricing_item\\" Association=\\"AgreementService.AgreementItemPricing_item\\">
+          <End Role=\\"AgreementItemPricing\\" EntitySet=\\"AgreementItemPricing\\"/>
+          <End Role=\\"AgreementItem\\" EntitySet=\\"AgreementItem\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"AgreementItemPricing_status\\" Association=\\"AgreementService.AgreementItemPricing_status\\">
+          <End Role=\\"AgreementItemPricing\\" EntitySet=\\"AgreementItemPricing\\"/>
+          <End Role=\\"AgreementStatus\\" EntitySet=\\"AgreementStatus\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"AgreementStatus_texts_1\\" Association=\\"AgreementService.AgreementStatus_texts_1\\">
+          <End Role=\\"AgreementStatus\\" EntitySet=\\"AgreementStatus\\"/>
+          <End Role=\\"AgreementStatus_texts\\" EntitySet=\\"AgreementStatus_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"AgreementStatus_localized\\" Association=\\"AgreementService.AgreementStatus_localized\\">
+          <End Role=\\"AgreementStatus\\" EntitySet=\\"AgreementStatus\\"/>
+          <End Role=\\"AgreementStatus_texts\\" EntitySet=\\"AgreementStatus_texts\\"/>
+        </AssociationSet>
+        <AssociationSet Name=\\"AgreementItemPricingForKeyDateParameters_Set\\" Association=\\"AgreementService.AgreementItemPricingForKeyDateParameters_Set\\">
+          <End Role=\\"AgreementItemPricingForKeyDateParameters\\" EntitySet=\\"AgreementItemPricingForKeyDate\\"/>
+          <End Role=\\"AgreementItemPricingForKeyDateType\\" EntitySet=\\"AgreementItemPricingForKeyDateSet\\"/>
+        </AssociationSet>
+      </EntityContainer>
+      <EntityType Name=\\"Agreement\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
+        <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
+        <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"description\\" Type=\\"Edm.String\\" MaxLength=\\"100\\"/>
+        <NavigationProperty Name=\\"items\\" Relationship=\\"AgreementService.AgreementItem_agreement\\" FromRole=\\"Agreement\\" ToRole=\\"AgreementItem\\"/>
+      </EntityType>
+      <EntityType Name=\\"AgreementItem\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
+        <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
+        <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <NavigationProperty Name=\\"agreement\\" Relationship=\\"AgreementService.AgreementItem_agreement\\" FromRole=\\"AgreementItem\\" ToRole=\\"Agreement\\"/>
+        <Property Name=\\"agreement_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <NavigationProperty Name=\\"pricings\\" Relationship=\\"AgreementService.AgreementItemPricing_item\\" FromRole=\\"AgreementItem\\" ToRole=\\"AgreementItemPricing\\"/>
+      </EntityType>
+      <EntityType Name=\\"AgreementItemPricing\\">
+        <Key>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <NavigationProperty Name=\\"item\\" Relationship=\\"AgreementService.AgreementItemPricing_item\\" FromRole=\\"AgreementItemPricing\\" ToRole=\\"AgreementItem\\"/>
+        <Property Name=\\"item_ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"validFrom\\" Type=\\"Edm.DateTime\\" sap:display-format=\\"Date\\"/>
+        <Property Name=\\"validTo\\" Type=\\"Edm.DateTime\\" sap:display-format=\\"Date\\"/>
+        <NavigationProperty Name=\\"status\\" Relationship=\\"AgreementService.AgreementItemPricing_status\\" FromRole=\\"AgreementItemPricing\\" ToRole=\\"AgreementStatus\\"/>
+        <Property Name=\\"status_code\\" Type=\\"Edm.String\\" MaxLength=\\"40\\" Nullable=\\"false\\"/>
+      </EntityType>
+      <EntityType Name=\\"AgreementStatus\\">
+        <Key>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"40\\" Nullable=\\"false\\"/>
+        <NavigationProperty Name=\\"texts\\" Relationship=\\"AgreementService.AgreementStatus_texts_1\\" FromRole=\\"AgreementStatus\\" ToRole=\\"AgreementStatus_texts\\"/>
+        <NavigationProperty Name=\\"localized\\" Relationship=\\"AgreementService.AgreementStatus_localized\\" FromRole=\\"AgreementStatus\\" ToRole=\\"AgreementStatus_texts\\"/>
+      </EntityType>
+      <EntityType Name=\\"AgreementStatus_texts\\">
+        <Key>
+          <PropertyRef Name=\\"locale\\"/>
+          <PropertyRef Name=\\"code\\"/>
+        </Key>
+        <Property Name=\\"locale\\" Type=\\"Edm.String\\" MaxLength=\\"14\\" Nullable=\\"false\\"/>
+        <Property Name=\\"name\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
+        <Property Name=\\"descr\\" Type=\\"Edm.String\\" MaxLength=\\"1000\\"/>
+        <Property Name=\\"code\\" Type=\\"Edm.String\\" MaxLength=\\"40\\" Nullable=\\"false\\"/>
+      </EntityType>
+      <EntityType Name=\\"AgreementItemPricingForKeyDateParameters\\" sap:semantics=\\"parameters\\">
+        <Key>
+          <PropertyRef Name=\\"keyDate\\"/>
+        </Key>
+        <Property Name=\\"keyDate\\" Type=\\"Edm.DateTime\\" Nullable=\\"false\\" sap:parameter=\\"mandatory\\" sap:display-format=\\"Date\\"/>
+        <NavigationProperty Name=\\"Set\\" Relationship=\\"AgreementService.AgreementItemPricingForKeyDateParameters_Set\\" FromRole=\\"AgreementItemPricingForKeyDateParameters\\" ToRole=\\"AgreementItemPricingForKeyDateType\\"/>
+      </EntityType>
+      <EntityType Name=\\"AgreementItemPricingForKeyDateType\\">
+        <Key>
+          <PropertyRef Name=\\"keyDate\\"/>
+          <PropertyRef Name=\\"ID\\"/>
+        </Key>
+        <Property Name=\\"keyDate\\" Type=\\"Edm.DateTime\\" Nullable=\\"false\\" sap:display-format=\\"Date\\"/>
+        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
+        <Property Name=\\"Item\\" Type=\\"Edm.Guid\\"/>
+        <Property Name=\\"validFrom\\" Type=\\"Edm.DateTime\\" sap:display-format=\\"Date\\"/>
+        <Property Name=\\"validTo\\" Type=\\"Edm.DateTime\\" sap:display-format=\\"Date\\"/>
+        <NavigationProperty Name=\\"Parameters\\" Relationship=\\"AgreementService.AgreementItemPricingForKeyDateParameters_Set\\" FromRole=\\"AgreementItemPricingForKeyDateType\\" ToRole=\\"AgreementItemPricingForKeyDateParameters\\"/>
+      </EntityType>
+      <Association Name=\\"AgreementItem_agreement\\">
+        <End Role=\\"AgreementItem\\" Type=\\"AgreementService.AgreementItem\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"Agreement\\" Type=\\"AgreementService.Agreement\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role=\\"Agreement\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"AgreementItem\\">
+            <PropertyRef Name=\\"agreement_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"AgreementItemPricing_item\\">
+        <End Role=\\"AgreementItemPricing\\" Type=\\"AgreementService.AgreementItemPricing\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"AgreementItem\\" Type=\\"AgreementService.AgreementItem\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role=\\"AgreementItem\\">
+            <PropertyRef Name=\\"ID\\"/>
+          </Principal>
+          <Dependent Role=\\"AgreementItemPricing\\">
+            <PropertyRef Name=\\"item_ID\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"AgreementItemPricing_status\\">
+        <End Role=\\"AgreementItemPricing\\" Type=\\"AgreementService.AgreementItemPricing\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"AgreementStatus\\" Type=\\"AgreementService.AgreementStatus\\" Multiplicity=\\"1\\"/>
+        <ReferentialConstraint>
+          <Principal Role=\\"AgreementStatus\\">
+            <PropertyRef Name=\\"code\\"/>
+          </Principal>
+          <Dependent Role=\\"AgreementItemPricing\\">
+            <PropertyRef Name=\\"status_code\\"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name=\\"AgreementStatus_texts_1\\">
+        <End Role=\\"AgreementStatus\\" Type=\\"AgreementService.AgreementStatus\\" Multiplicity=\\"1\\">
+          <OnDelete Action=\\"Cascade\\"/>
+        </End>
+        <End Role=\\"AgreementStatus_texts\\" Type=\\"AgreementService.AgreementStatus_texts\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Association Name=\\"AgreementStatus_localized\\">
+        <End Role=\\"AgreementStatus\\" Type=\\"AgreementService.AgreementStatus\\" Multiplicity=\\"*\\"/>
+        <End Role=\\"AgreementStatus_texts\\" Type=\\"AgreementService.AgreementStatus_texts\\" Multiplicity=\\"0..1\\"/>
+      </Association>
+      <Association Name=\\"AgreementItemPricingForKeyDateParameters_Set\\">
+        <End Role=\\"AgreementItemPricingForKeyDateParameters\\" Type=\\"AgreementService.AgreementItemPricingForKeyDateParameters\\" Multiplicity=\\"0..1\\"/>
+        <End Role=\\"AgreementItemPricingForKeyDateType\\" Type=\\"AgreementService.AgreementItemPricingForKeyDateType\\" Multiplicity=\\"*\\"/>
+      </Association>
+      <Annotations Target=\\"AgreementService.EntityContainer/Agreement\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Capabilities.DeleteRestrictions\\">
+          <Record Type=\\"Capabilities.DeleteRestrictionsType\\">
+            <PropertyValue Property=\\"Deletable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.InsertRestrictions\\">
+          <Record Type=\\"Capabilities.InsertRestrictionsType\\">
+            <PropertyValue Property=\\"Insertable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.UpdateRestrictions\\">
+          <Record Type=\\"Capabilities.UpdateRestrictionsType\\">
+            <PropertyValue Property=\\"Updatable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.Agreement/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Created On\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.Agreement/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Created By\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.Agreement/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Changed On\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.Agreement/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.EntityContainer/AgreementItem\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Capabilities.DeleteRestrictions\\">
+          <Record Type=\\"Capabilities.DeleteRestrictionsType\\">
+            <PropertyValue Property=\\"Deletable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.InsertRestrictions\\">
+          <Record Type=\\"Capabilities.InsertRestrictionsType\\">
+            <PropertyValue Property=\\"Insertable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.UpdateRestrictions\\">
+          <Record Type=\\"Capabilities.UpdateRestrictionsType\\">
+            <PropertyValue Property=\\"Updatable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementItem/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Created On\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementItem/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Created By\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementItem/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Changed On\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementItem/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
+        <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.EntityContainer/AgreementItemPricing\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Capabilities.DeleteRestrictions\\">
+          <Record Type=\\"Capabilities.DeleteRestrictionsType\\">
+            <PropertyValue Property=\\"Deletable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.InsertRestrictions\\">
+          <Record Type=\\"Capabilities.InsertRestrictionsType\\">
+            <PropertyValue Property=\\"Insertable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.UpdateRestrictions\\">
+          <Record Type=\\"Capabilities.UpdateRestrictionsType\\">
+            <PropertyValue Property=\\"Updatable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementItemPricing/validFrom\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"validFrom\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementItemPricing/validTo\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"validTo\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementItemPricing/status_code\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.ValueList\\">
+          <Record Type=\\"Common.ValueListType\\">
+            <PropertyValue Property=\\"Label\\" String=\\"AgreementStatus\\"/>
+            <PropertyValue Property=\\"CollectionPath\\" String=\\"AgreementStatus\\"/>
+            <PropertyValue Property=\\"Parameters\\">
+              <Collection>
+                <Record Type=\\"Common.ValueListParameterInOut\\">
+                  <PropertyValue Property=\\"LocalDataProperty\\" PropertyPath=\\"status_code\\"/>
+                  <PropertyValue Property=\\"ValueListProperty\\" String=\\"code\\"/>
+                </Record>
+                <Record Type=\\"Common.ValueListParameterDisplayOnly\\">
+                  <PropertyValue Property=\\"ValueListProperty\\" String=\\"name\\"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementStatus\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"name\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.EntityContainer/AgreementStatus\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Capabilities.DeleteRestrictions\\">
+          <Record Type=\\"Capabilities.DeleteRestrictionsType\\">
+            <PropertyValue Property=\\"Deletable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.InsertRestrictions\\">
+          <Record Type=\\"Capabilities.InsertRestrictionsType\\">
+            <PropertyValue Property=\\"Insertable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.UpdateRestrictions\\">
+          <Record Type=\\"Capabilities.UpdateRestrictionsType\\">
+            <PropertyValue Property=\\"Updatable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementStatus/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementStatus/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementStatus_texts/locale\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Language Code\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementStatus_texts/name\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Name\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementStatus_texts/descr\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"Description\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementItemPricingForKeyDateType\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Aggregation.ApplySupported\\">
+          <Record Type=\\"Aggregation.ApplySupportedType\\">
+            <PropertyValue Property=\\"Transformations\\">
+              <Collection>
+                <String>aggregate</String>
+                <String>groupby</String>
+                <String>filter</String>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property=\\"Rollup\\" EnumMember=\\"None\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"UI.SelectionFields\\">
+          <Collection>
+            <PropertyPath>keyDate</PropertyPath>
+            <PropertyPath>ID</PropertyPath>
+          </Collection>
+        </Annotation>
+        <Annotation Term=\\"UI.LineItem\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"ID\\"/>
+            </Record>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"Item\\"/>
+            </Record>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"validFrom\\"/>
+            </Record>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"validTo\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term=\\"UI.Identification\\">
+          <Collection>
+            <Record Type=\\"UI.DataField\\">
+              <PropertyValue Property=\\"Value\\" Path=\\"ID\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term=\\"UI.HeaderInfo\\">
+          <Record Type=\\"UI.HeaderInfoType\\">
+            <PropertyValue Property=\\"TypeName\\" String=\\"Agreement Item Price\\"/>
+            <PropertyValue Property=\\"TypeNamePlural\\" String=\\"Agreement Item Price\\"/>
+            <PropertyValue Property=\\"Title\\">
+              <Record Type=\\"UI.DataField\\">
+                <PropertyValue Property=\\"Value\\" Path=\\"ID\\"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property=\\"Description\\">
+              <Record Type=\\"UI.DataField\\">
+                <PropertyValue Property=\\"Value\\" Path=\\"Item\\"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"UI.Facets\\">
+          <Collection>
+            <Record Type=\\"UI.ReferenceFacet\\">
+              <PropertyValue Property=\\"Label\\" String=\\"General\\"/>
+              <PropertyValue Property=\\"Target\\" AnnotationPath=\\"@UI.FieldGroup#General\\"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term=\\"UI.FieldGroup\\" Qualifier=\\"General\\">
+          <Record Type=\\"UI.FieldGroupType\\">
+            <PropertyValue Property=\\"Data\\">
+              <Collection>
+                <Record Type=\\"UI.DataField\\">
+                  <PropertyValue Property=\\"Value\\" Path=\\"ID\\"/>
+                  <PropertyValue Property=\\"Label\\" String=\\"ID\\"/>
+                </Record>
+                <Record Type=\\"UI.DataField\\">
+                  <PropertyValue Property=\\"Value\\" Path=\\"Item\\"/>
+                  <PropertyValue Property=\\"Label\\" String=\\"Item ID\\"/>
+                </Record>
+                <Record Type=\\"UI.DataField\\">
+                  <PropertyValue Property=\\"Value\\" Path=\\"validFrom\\"/>
+                  <PropertyValue Property=\\"Label\\" String=\\"Valid From\\"/>
+                </Record>
+                <Record Type=\\"UI.DataField\\">
+                  <PropertyValue Property=\\"Value\\" Path=\\"validTo\\"/>
+                  <PropertyValue Property=\\"Label\\" String=\\"Valid To\\"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.EntityContainer/AgreementItemPricingForKeyDateSet\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Aggregation.ApplySupported\\">
+          <Record Type=\\"Aggregation.ApplySupportedType\\">
+            <PropertyValue Property=\\"Transformations\\">
+              <Collection>
+                <String>aggregate</String>
+                <String>groupby</String>
+                <String>filter</String>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property=\\"Rollup\\" EnumMember=\\"None\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.FilterRestrictions\\">
+          <Record Type=\\"Capabilities.FilterRestrictionsType\\">
+            <PropertyValue Property=\\"NonFilterableProperties\\">
+              <Collection>
+                <PropertyPath>keyDate</PropertyPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.NavigationRestrictions\\">
+          <Record Type=\\"Capabilities.NavigationRestrictionsType\\">
+            <PropertyValue Property=\\"RestrictedProperties\\">
+              <Collection>
+                <Record Type=\\"Capabilities.NavigationPropertyRestriction\\">
+                  <PropertyValue Property=\\"NavigationProperty\\">
+                    <Record/>
+                  </PropertyValue>
+                </Record>
+                <Record Type=\\"Capabilities.NavigationPropertyRestriction\\">
+                  <PropertyValue Property=\\"FilterRestrictions\\">
+                    <Record Type=\\"Capabilities.FilterRestrictionsType\\">
+                      <PropertyValue Property=\\"Filterable\\" Bool=\\"false\\"/>
+                    </Record>
+                  </PropertyValue>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.SortRestrictions\\">
+          <Record Type=\\"Capabilities.SortRestrictionsType\\">
+            <PropertyValue Property=\\"NonSortableProperties\\">
+              <Collection>
+                <PropertyPath>keyDate</PropertyPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.DeleteRestrictions\\">
+          <Record Type=\\"Capabilities.DeleteRestrictionsType\\">
+            <PropertyValue Property=\\"Deletable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.InsertRestrictions\\">
+          <Record Type=\\"Capabilities.InsertRestrictionsType\\">
+            <PropertyValue Property=\\"Insertable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+        <Annotation Term=\\"Capabilities.UpdateRestrictions\\">
+          <Record Type=\\"Capabilities.UpdateRestrictionsType\\">
+            <PropertyValue Property=\\"Updatable\\" Bool=\\"false\\"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementItemPricingForKeyDateType/keyDate\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementItemPricingForKeyDateType/validFrom\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"validFrom\\"/>
+      </Annotations>
+      <Annotations Target=\\"AgreementService.AgreementItemPricingForKeyDateType/validTo\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
+        <Annotation Term=\\"Common.Label\\" String=\\"validTo\\"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>"
+`;
+
+exports[`integration-agreement GET with parameters (agreement pricing for key date - full circle) 1`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "Set": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')/Set",
+          },
+        },
+        "__metadata": Object {
+          "type": "AgreementService.AgreementItemPricingForKeyDateParameters",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')",
+        },
+        "keyDate": "/Date(1655683200000)/",
+      },
+    ],
+  },
+}
+`;
+
+exports[`integration-agreement GET with parameters (agreement pricing for key date - full circle) 2`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "ID": "e8420eac-a36b-49af-b91c-6559b8f7627e",
+        "Item": "87b1f64f-2cc0-47df-aefd-11d93ae3c15d",
+        "Parameters": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+          },
+        },
+        "__metadata": Object {
+          "type": "AgreementService.AgreementItemPricingForKeyDateType",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')",
+        },
+        "keyDate": "/Date(1655683200000)/",
+        "validFrom": "/Date(1641081600000)/",
+        "validTo": "/Date(253402128000000)/",
+      },
+      Object {
+        "ID": "f8420eac-a36b-49af-b91c-6559b8f7627e",
+        "Item": "77b1f64f-2cc0-47df-aefd-11d93ae3c15d",
+        "Parameters": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+          },
+        },
+        "__metadata": Object {
+          "type": "AgreementService.AgreementItemPricingForKeyDateType",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
+        },
+        "keyDate": "/Date(1655683200000)/",
+        "validFrom": "/Date(1640995200000)/",
+        "validTo": "/Date(253402214400000)/",
+      },
+    ],
+  },
+}
+`;
+
+exports[`integration-agreement GET with parameters (agreement pricing for key date - full circle) 3`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "ID": "f8420eac-a36b-49af-b91c-6559b8f7627e",
+        "Item": "77b1f64f-2cc0-47df-aefd-11d93ae3c15d",
+        "Parameters": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+          },
+        },
+        "__metadata": Object {
+          "type": "AgreementService.AgreementItemPricingForKeyDateType",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
+        },
+        "keyDate": "/Date(1655683200000)/",
+        "validFrom": "/Date(1640995200000)/",
+        "validTo": "/Date(253402214400000)/",
+      },
+    ],
+  },
+}
+`;
+
+exports[`integration-agreement GET with parameters (agreement pricing for key date - full circle) 4`] = `
+Object {
+  "d": Object {
+    "results": Array [
+      Object {
+        "Set": Object {
+          "__deferred": Object {
+            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')/Set",
+          },
+        },
+        "__metadata": Object {
+          "type": "AgreementService.AgreementItemPricingForKeyDateParameters",
+          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')",
+        },
+        "keyDate": "/Date(1655683200000)/",
+      },
+    ],
+  },
+}
+`;

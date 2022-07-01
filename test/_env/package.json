@@ -1,0 +1,38 @@
+{
+  "name": "@sap/cds-odata-v2-adapter-proxy-test",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "XS_APP_LOG_LEVEL=debug cds run --in-memory",
+    "start:file": "XS_APP_LOG_LEVEL=debug cds run --profile testdb",
+    "start:root": "XS_APP_LOG_LEVEL=debug cds serve --in-memory --service test.MainService --from ./test/_env/srv/model --at /",
+    "test:deploy": "cds deploy srv/index.cds --to sqlite:test.db --no-save",
+    "build": "cds build",
+    "tsc": "cd util/typescript && tsc"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
+  "cds": {
+    "cov2ap": {
+      "path": "v2",
+      "caseInsensitive": true,
+      "fixDraftRequests": true
+    },
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "database": ":memory:"
+        },
+        "[testdb]": {
+          "kind": "sqlite",
+          "credentials": {
+            "database": "test.db"
+          }
+        }
+      }
+    }
+  }
+}
