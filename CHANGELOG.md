@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
+## Version 1.9.1 - tbd
+
+### Fixed
+
 ## Version 1.9.0 - 2022-07-04
+
+### Fixed
 
 - CDS 6 compatible version
 - Enhance proxy option `target` with mode `auto` to handle dynamic target/port assignment (e.g. for unit-tests)
