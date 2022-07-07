@@ -25,8 +25,7 @@ service AgreementService {
     }
     @Capabilities.NavigationRestrictions: {
         RestrictedProperties: [
-            {NavigationProperty: {path : Parameters}},
-            {FilterRestrictions: {Filterable : false}}
+            {NavigationProperty: Parameters, FilterRestrictions: {Filterable : false}}
         ]
     }
     @Capabilities.SortRestrictions: {
