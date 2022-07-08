@@ -21,11 +21,7 @@
     },
     "requires": {
       "db": {
-        "multiTenant": false,
-        "kind": "hana",
-        "vcap": {
-          "tag": "hana"
-        }
+        "kind": "hana"
       }
     },
     "hana": {
@@ -45,7 +41,7 @@
         },
         {
           "src": "srv",
-          "for": "node-cf",
+          "for": "nodejs",
           "options": {
             "model": [
               "db",
