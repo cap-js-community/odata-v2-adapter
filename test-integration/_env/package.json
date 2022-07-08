@@ -18,6 +18,42 @@
       "path": "v2",
       "caseInsensitive": true,
       "fixDraftRequests": true
+    },
+    "requires": {
+      "db": {
+        "multiTenant": false,
+        "kind": "hana",
+        "vcap": {
+          "tag": "hana"
+        }
+      }
+    },
+    "hana": {
+      "deploy-format": "hdbtable"
+    },
+    "build": {
+      "tasks": [
+        {
+          "src": "db",
+          "for": "hana",
+          "options": {
+            "model": [
+              "db",
+              "srv"
+            ]
+          }
+        },
+        {
+          "src": "srv",
+          "for": "node-cf",
+          "options": {
+            "model": [
+              "db",
+              "srv"
+            ]
+          }
+        }
+      ]
     }
   }
 }
