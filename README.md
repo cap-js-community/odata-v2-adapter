@@ -328,7 +328,7 @@ Logging layers of CDS OData V2 Adapter Proxy start with `cov2ap`.
 - Stream Support (Octet and Url)
 - Content Disposition
 - Content-ID
-- Multi-Tenancy
+- Multitenancy
 - Extensibility
 - Draft Support
 - Search Support

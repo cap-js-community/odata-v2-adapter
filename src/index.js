@@ -229,7 +229,7 @@ function cov2ap(options = {}) {
     service.$linkProviders.push(provider);
   });
 
-  if (cds.mtx && cds.mtx.eventEmitter && cds.env.requires && cds.env.requires.db && cds.env.requires.db.multiTenant) {
+  if (cds.mtx && cds.mtx.eventEmitter && cds.env.requires && cds.env.requires.multitenancy) {
     cds.mtx.eventEmitter.on(cds.mtx.events.TENANT_UPDATED, (tenantId) => {
       delete proxyCache[tenantId];
     });
@@ -609,7 +609,7 @@ function cov2ap(options = {}) {
     let metadata;
     if (mtxRemote && mtxEndpoint) {
       metadata = await getTenantMetadataRemote(req, service);
-    } else if (cds.mtx && cds.env.requires && cds.env.requires.db && cds.env.requires.db.multiTenant) {
+    } else if (cds.mtx && cds.env.requires && cds.env.requires.multitenancy) {
       metadata = await getTenantMetadataLocal(req, service);
     }
     if (!metadata) {
@@ -669,8 +669,8 @@ function cov2ap(options = {}) {
           async (tenantId) => {
             return await cds.mtx.getCsn(tenantId);
           },
-          (tenantId, service, locale) => {
-            return cds.mtx.getEdmx && cds.mtx.getEdmx(tenantId, service, locale, "v2");
+          async (tenantId, service, locale) => {
+            return await cds.mtx.getEdmx(tenantId, service, locale, "v2");
           },
           service
         );
@@ -688,7 +688,7 @@ function cov2ap(options = {}) {
         }
         return await cds.load(model);
       },
-      () => {},
+      async () => {},
       service
     );
   }
