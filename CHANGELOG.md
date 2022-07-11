@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Check on `cds.requires.multitenancy` instead of deprecated `cds.requires.db.multiTenant` (compatible)
+- Move `@types/express` to devDependencies
 
 ## Version 1.9.0 - 2022-07-04
 
