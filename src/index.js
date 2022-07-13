@@ -124,8 +124,8 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} options.target Target which points to OData V4 backend host:port. Use 'auto' to infer the target from server url after listening. Default is e.g. 'http://localhost:4004'.
  * @param {string} options.targetPath Target path to which is redirected. Default is ''.
  * @param {object} options.services Service mapping object from url path name to service name. Default is {}.
- * @param {boolean} options.mtxRemote CDS model is retrieved remotely via MTX endpoint for multitenant scenario. Default is false.
- * @param {string} options.mtxEndpoint Endpoint to retrieve MTX metadata when option 'mtxRemote' is active. Default is '/mtx/v1'.
+ * @param {boolean} options.mtxRemote CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is false.
+ * @param {string} options.mtxEndpoint Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is '/mtx/v1'.
  * @param {boolean} options.ieee754Compatible Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is true.
  * @param {boolean} options.disableNetworkLog Disable networking logging. Default is true.
  * @param {number} options.fileUploadSizeLimit File upload file size limit (in bytes). Default is 10485760 (10 MB).
@@ -234,6 +234,7 @@ function cov2ap(options = {}) {
       delete proxyCache[tenantId];
     });
   }
+  // TODO: Cache invalidation for Streamlined MTX (when extensibility is supported)
 
   router.use(
     `/${path}/*`,
@@ -252,7 +253,7 @@ function cov2ap(options = {}) {
           case "Bearer":
             jwtBody = decodeJwtTokenBody(token);
             req.user = {
-              id: jwtBody.client_id,
+              id: jwtBody.user_name || jwtBody.client_id,
               scopes: jwtBody.scope,
             };
             req.tenantId = jwtBody.zid;
@@ -511,6 +512,7 @@ function cov2ap(options = {}) {
       },
     });
   }
+
   if (target === "auto") {
     cds.on("listening", ({ server, url }) => {
       port = server.address().port;
@@ -611,6 +613,8 @@ function cov2ap(options = {}) {
       metadata = await getTenantMetadataRemote(req, service);
     } else if (cds.mtx && cds.env.requires && cds.env.requires.multitenancy) {
       metadata = await getTenantMetadataLocal(req, service);
+    } else if (cds.env.requires && cds.env.requires["cds.xt.ModelProviderService"]) {
+      metadata = await getTenantMetadataStreamlined(req, service);
     }
     if (!metadata) {
       metadata = await getDefaultMetadata(req, service);
@@ -619,6 +623,7 @@ function cov2ap(options = {}) {
   }
 
   async function getTenantMetadataRemote(req, service) {
+    /* istanbul ignore if  */
     if (req.tenantId) {
       const mtxBasePath =
         mtxEndpoint.startsWith("http://") || mtxEndpoint.startsWith("https://")
@@ -656,6 +661,7 @@ function cov2ap(options = {}) {
   }
 
   async function getTenantMetadataLocal(req, service) {
+    /* istanbul ignore if  */
     if (req.tenantId) {
       if (!proxyCache[req.tenantId]) {
         proxyCache[req.tenantId] = {
@@ -671,6 +677,31 @@ function cov2ap(options = {}) {
           },
           async (tenantId, service, locale) => {
             return await cds.mtx.getEdmx(tenantId, service, locale, "v2");
+          },
+          service
+        );
+      }
+    }
+  }
+
+  async function getTenantMetadataStreamlined(req, service) {
+    /* istanbul ignore if  */
+    if (req.tenantId) {
+      const { "cds.xt.ModelProviderService": mps } = cds.services;
+      if (!proxyCache[req.tenantId]) {
+        proxyCache[req.tenantId] = {
+          isExtended: await mps.isExtended(req.tenantId),
+        };
+      }
+      if (proxyCache[req.tenantId].isExtended) {
+        return await prepareMetadata(
+          determineLocale(req),
+          req.tenantId,
+          async (tenantId) => {
+            return await mps.getCsn(tenantId, ensureArray(req.features), "nodejs"); // TODO: getExtCsn()? (when extensibility is supported)
+          },
+          async (tenantId, service, locale) => {
+            return await mps.getEdmx(tenantId, ensureArray(req.features), service, locale, "v2", "nodejs");
           },
           service
         );
@@ -701,8 +732,13 @@ function cov2ap(options = {}) {
       } else {
         csnRaw = await loadCsn(tenantId);
       }
-      const csn =
-        csnRaw.meta && csnRaw.meta.transformation === "odata" ? csnRaw : cds.linked(cds.compile.for.odata(csnRaw));
+      let csn;
+      if (cds.compile.for.nodejs) {
+        csn = cds.compile.for.nodejs(csnRaw);
+      } else {
+        csn =
+          csnRaw.meta && csnRaw.meta.transformation === "odata" ? csnRaw : cds.linked(cds.compile.for.odata(csnRaw));
+      }
       proxyCache[tenantId] = {
         ...(proxyCache[tenantId] || {}),
         csnRaw,
@@ -803,6 +839,7 @@ function cov2ap(options = {}) {
           type: localName(definitionTypeName),
           values: {},
           keys: {},
+          count: false,
         };
         return definition;
       }
@@ -817,6 +854,7 @@ function cov2ap(options = {}) {
         type: localName(context.name),
         values: {},
         keys: {},
+        count: false,
       };
     }
   }
@@ -1821,6 +1859,8 @@ function cov2ap(options = {}) {
           } else if (part === "Parameters" || part.startsWith("Parameters(")) {
             req.parameters.kind = "Parameters";
             stop = true;
+          } else if (part === "$count") {
+            req.parameters.count = true;
           }
           if (stop) {
             return "";
@@ -1877,6 +1917,9 @@ function cov2ap(options = {}) {
         .join("/");
       if (!url.contextPath.endsWith("/Set")) {
         url.contextPath = `${url.contextPath}/Set`;
+      }
+      if (req.parameters.count) {
+        url.contextPath += "/$count";
       }
     }
   }
@@ -3425,12 +3468,34 @@ function cov2ap(options = {}) {
     return locale || "en";
   }
 
+  const ensureArray = (value) => {
+    if (!value) {
+      return [];
+    }
+    if (Array.isArray(value)) {
+      return value;
+    }
+    if (typeof value === "string") {
+      return value.split(",");
+    }
+    if (typeof value === "object") {
+      return Object.keys(value)
+        .filter((k) => value[k])
+        .sort();
+    }
+    return [];
+  };
+
   function decodeBase64(b64String) {
     return Buffer.from(b64String, "base64").toString();
   }
 
   function decodeJwtTokenBody(token) {
-    return JSON.parse(decodeBase64(token.split(".")[1]));
+    const parts = token.split(".");
+    if (parts.length > 1) {
+      return JSON.parse(decodeBase64(parts[1]));
+    }
+    throw new Error("Invalid JWT token");
   }
 
   function setContentLength(headers, body) {

@@ -70,6 +70,14 @@ describe("integration-agreement", () => {
     expect(response.body).toBeDefined();
     expect(clean(response.body)).toMatchSnapshot();
   });
+
+  it("GET with parameters with $count", async () => {
+    const response = await util.callRead(
+      request,
+      `/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00')/Set/$count`
+    );
+    expect(response.text).toEqual("2");
+  });
 });
 
 function clean(responseBody) {

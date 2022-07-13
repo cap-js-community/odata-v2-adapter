@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.9.1 - tbd
+## Version 1.9.1 - 2022-07-14
 
 ### Fixed
 
+- Compile CSN for Node.js when loaded from CDS MTX services (CDS 6)
 - Check on `cds.requires.multitenancy` instead of deprecated `cds.requires.db.multiTenant` (compatible)
+- Support `$count` with parameterized entities
+- First (alpha) support for CDS Streamlined MTX (no extensibility support yet)
+- Make decoding of JWT token body more robust
 - Move `@types/express` to devDependencies
 
 ## Version 1.9.0 - 2022-07-04

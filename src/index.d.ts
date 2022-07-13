@@ -48,12 +48,12 @@ type Options = {
     services?: [string, string] | object | {},
 
     /**
-     * CDS model is retrieved remotely via MTX endpoint for multitenant scenario. Default is false.
+     * CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is false.
      */
     mtxRemote?: boolean | false,
 
     /**
-     * Endpoint to retrieve MTX metadata when option 'mtxRemote' is active. Default is '/mtx/v1'.
+     * Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is '/mtx/v1'.
      */
     mtxEndpoint?: string | "/mtx/v1",
 
