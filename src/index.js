@@ -248,17 +248,18 @@ function cov2ap(options = {}) {
         let jwtBody;
         switch (authType) {
           case "Basic":
-            req.user = { id: decodeBase64(token).split(":")[0] };
+            req.user = {
+              id: decodeBase64(token).split(":")[0],
+            };
             if (req.user.id && cds.env.requires.auth && cds.env.requires.auth.strategy === "mock") {
-              const authUser = (cds.env.requires.auth.users || {})[req.user.id];
-              req.tenant = authUser && authUser.jwt && authUser.jwt.zid;
+              const user = (cds.env.requires.auth.users || {})[req.user.id];
+              req.tenant = user && user.jwt && user.jwt.zid;
             }
             break;
           case "Bearer":
             jwtBody = decodeJwtTokenBody(token);
             req.user = {
               id: jwtBody.user_name || jwtBody.client_id,
-              scopes: jwtBody.scope,
             };
             req.tenant = jwtBody.zid;
             break;

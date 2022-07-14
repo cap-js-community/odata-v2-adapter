@@ -8,8 +8,7 @@
           "password": "alice",
           "roles": ["XYZ4711"],
           "jwt": {
-            "zid": "tenant",
-            "scopes": []
+            "zid": "tenant"
           }
         },
         "bob": {

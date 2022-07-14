@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Compile CSN for Node.js when loaded from CDS MTX services (CDS 6)
+- Compile CSN for Node.js when loaded from CDS MTX services
 - Check on `cds.requires.multitenancy` instead of deprecated `cds.requires.db.multiTenant` (compatible)
 - Support `$count` with parameterized entities
 - Make decoding of JWT token body more robust (error log in case of invalid JWT)
