@@ -662,12 +662,18 @@ function cov2ap(options = {}) {
   }
 
   async function getTenantMetadataLocal(req, service) {
-    if (!proxyCache[req.tenant]) {
-      proxyCache[req.tenant] = {
-        isExtended: cds.mtx.isExtended(req.tenant),
-      };
+    proxyCache[req.tenant] = proxyCache[req.tenant] || {};
+    if (!proxyCache[req.tenant].isExtended) {
+      proxyCache[req.tenant].isExtended = cds.mtx.isExtended(req.tenant);
     }
-    if (await proxyCache[req.tenant].isExtended) {
+    let isExtended = false;
+    try {
+      isExtended = await proxyCache[req.tenant].isExtended;
+    } catch(err) {
+      delete proxyCache[req.tenant].isExtended;
+      throw err;
+    }
+    if (isExtended) {
       return await prepareMetadata(
         req.tenant,
         async (tenant) => {
@@ -684,12 +690,18 @@ function cov2ap(options = {}) {
 
   async function getTenantMetadataStreamlined(req, service) {
     const { "cds.xt.ModelProviderService": mps } = cds.services;
-    if (!proxyCache[req.tenant]) {
-      proxyCache[req.tenant] = {
-        isExtended: mps.isExtended(req.tenant),
-      };
+    proxyCache[req.tenant] = proxyCache[req.tenant] || {};
+    if (!proxyCache[req.tenant].isExtended) {
+      proxyCache[req.tenant].isExtended = mps.isExtended(req.tenant);
     }
-    if (await proxyCache[req.tenant].isExtended) {
+    let isExtended = false;
+    try {
+      isExtended = await proxyCache[req.tenant].isExtended;
+    } catch(err) {
+      delete proxyCache[req.tenant].isExtended;
+      throw err;
+    }
+    if (isExtended) {
       return await prepareMetadata(
         req.tenant,
         async (tenant) => {
@@ -722,18 +734,29 @@ function cov2ap(options = {}) {
   async function prepareMetadata(tenant, loadCsn, loadEdmx, service, locale) {
     proxyCache[tenant] = proxyCache[tenant] || {};
     proxyCache[tenant].csn = proxyCache[tenant].csn || null;
-    proxyCache[tenant].edmx = proxyCache[tenant].edmx || {};
     if (!proxyCache[tenant].csn) {
       proxyCache[tenant].csn = prepareCSN(tenant, loadCsn);
     }
-    const csn = await proxyCache[tenant].csn;
+    let csn;
+    try {
+      csn = await proxyCache[tenant].csn;
+    } catch(err) {
+      delete proxyCache[tenant].csn;
+      throw err;
+    }
     let edmx;
     if (service) {
+      proxyCache[tenant].edmx = proxyCache[tenant].edmx || {};
       proxyCache[tenant].edmx[service] = proxyCache[tenant].edmx[service] || {};
       if (!proxyCache[tenant].edmx[service][locale]) {
         proxyCache[tenant].edmx[service][locale] = prepareEdmx(tenant, csn, loadEdmx, service, locale);
       }
-      edmx = await proxyCache[tenant].edmx[service][locale];
+      try {
+        edmx = await proxyCache[tenant].edmx[service][locale];
+      } catch(err) {
+        delete await proxyCache[tenant].edmx[service][locale];
+        throw err;
+      }
     }
     return { csn, edmx };
   }
