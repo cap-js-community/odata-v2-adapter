@@ -24,7 +24,7 @@ const edmx = `<?xml version="1.0" encoding="utf-8"?>
 </edmx:Edmx>`;
 
 const authorization = `Basic ${Buffer.from(
-  `${cds.requires.auth.users.alice.ID}:${cds.requires.auth.users.alice.password}`
+  `${cds.requires.auth.users.alice.id}:${cds.requires.auth.users.alice.password}`
 ).toString("base64")}`;
 
 cds.services["cds.xt.ModelProviderService"] = {
@@ -51,7 +51,6 @@ describe("mtx", () => {
     const response = await util.callRead(request, "/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
-      tenant: "tenant",
     });
     expect(response.body).toBeDefined();
     expect(response.text).toEqual(edmx);

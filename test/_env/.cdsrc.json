@@ -4,8 +4,8 @@
       "kind": "mocked-auth",
       "users": {
         "alice": {
+          "id": "alice",
           "password": "alice",
-          "ID": "alice@wonder.land",
           "roles": ["XYZ4711"],
           "jwt": {
             "zid": "tenant",
@@ -13,8 +13,8 @@
           }
         },
         "bob": {
+          "id": "bob",
           "password": "bob",
-          "ID": "bob@builder.com",
           "roles": []
         }
       }
@@ -22,7 +22,7 @@
     "cdsc": {
       "variableReplacements": {
         "$user": {
-          "id": "alice@wonder.land"
+          "id": "alice"
         }
       }
     }

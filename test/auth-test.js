@@ -23,7 +23,7 @@ describe("auth", () => {
     expect(response.headers["www-authenticate"]).toEqual('Basic realm="Users"');
 
     let authorization = `Basic ${Buffer.from(
-      `${cds.requires.auth.users.bob.ID}:${cds.requires.auth.users.bob.password}`
+      `${cds.requires.auth.users.bob.id}:${cds.requires.auth.users.bob.password}`
     ).toString("base64")}`;
     response = await util.callRead(request, "/v2/auth/$metadata", {
       accept: "application/xml",
@@ -32,7 +32,7 @@ describe("auth", () => {
     expect(response.status).toEqual(403);
 
     authorization = `Basic ${Buffer.from(
-      `${cds.requires.auth.users.alice.ID}:${cds.requires.auth.users.alice.password}`
+      `${cds.requires.auth.users.alice.id}:${cds.requires.auth.users.alice.password}`
     ).toString("base64")}`;
     response = await util.callRead(request, "/v2/auth/$metadata", {
       accept: "application/xml",
