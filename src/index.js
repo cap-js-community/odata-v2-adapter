@@ -669,7 +669,7 @@ function cov2ap(options = {}) {
     let isExtended = false;
     try {
       isExtended = await proxyCache[req.tenant].isExtended;
-    } catch(err) {
+    } catch (err) {
       delete proxyCache[req.tenant].isExtended;
       throw err;
     }
@@ -697,7 +697,7 @@ function cov2ap(options = {}) {
     let isExtended = false;
     try {
       isExtended = await proxyCache[req.tenant].isExtended;
-    } catch(err) {
+    } catch (err) {
       delete proxyCache[req.tenant].isExtended;
       throw err;
     }
@@ -740,7 +740,7 @@ function cov2ap(options = {}) {
     let csn;
     try {
       csn = await proxyCache[tenant].csn;
-    } catch(err) {
+    } catch (err) {
       delete proxyCache[tenant].csn;
       throw err;
     }
@@ -753,7 +753,7 @@ function cov2ap(options = {}) {
       }
       try {
         edmx = await proxyCache[tenant].edmx[service][locale];
-      } catch(err) {
+      } catch (err) {
         delete proxyCache[tenant].edmx[service][locale];
         throw err;
       }
