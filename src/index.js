@@ -754,7 +754,7 @@ function cov2ap(options = {}) {
       try {
         edmx = await proxyCache[tenant].edmx[service][locale];
       } catch(err) {
-        delete await proxyCache[tenant].edmx[service][locale];
+        delete proxyCache[tenant].edmx[service][locale];
         throw err;
       }
     }
