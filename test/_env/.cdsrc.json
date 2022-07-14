@@ -1,12 +1,16 @@
 {
   "requires": {
     "auth": {
-      "strategy": "mock",
+      "kind": "mocked-auth",
       "users": {
         "alice": {
           "password": "alice",
           "ID": "alice@wonder.land",
-          "roles": ["XYZ4711"]
+          "roles": ["XYZ4711"],
+          "jwt": {
+            "zid": "tenant",
+            "scopes": []
+          }
         },
         "bob": {
           "password": "bob",

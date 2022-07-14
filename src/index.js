@@ -229,9 +229,9 @@ function cov2ap(options = {}) {
     service.$linkProviders.push(provider);
   });
 
-  if (cds.mtx && cds.mtx.eventEmitter && cds.env.requires && cds.env.requires.multitenancy) {
-    cds.mtx.eventEmitter.on(cds.mtx.events.TENANT_UPDATED, (tenantId) => {
-      delete proxyCache[tenantId];
+  if (cds.mtx) {
+    cds.mtx.eventEmitter.on(cds.mtx.events.TENANT_UPDATED, (tenant) => {
+      delete proxyCache[tenant];
     });
   }
   // TODO: Cache invalidation for Streamlined MTX (when extensibility is supported)
@@ -249,6 +249,7 @@ function cov2ap(options = {}) {
         switch (authType) {
           case "Basic":
             req.user = { id: decodeBase64(token).split(":")[0] };
+            req.tenant = req.headers.tenant;
             break;
           case "Bearer":
             jwtBody = decodeJwtTokenBody(token);
@@ -256,7 +257,7 @@ function cov2ap(options = {}) {
               id: jwtBody.user_name || jwtBody.client_id,
               scopes: jwtBody.scope,
             };
-            req.tenantId = jwtBody.zid;
+            req.tenant = jwtBody.zid;
             break;
         }
       }
@@ -609,12 +610,14 @@ function cov2ap(options = {}) {
 
   async function getMetadata(req, service) {
     let metadata;
-    if (mtxRemote && mtxEndpoint) {
-      metadata = await getTenantMetadataRemote(req, service);
-    } else if (cds.mtx && cds.env.requires && cds.env.requires.multitenancy) {
-      metadata = await getTenantMetadataLocal(req, service);
-    } else if (cds.env.requires && cds.env.requires["cds.xt.ModelProviderService"]) {
-      metadata = await getTenantMetadataStreamlined(req, service);
+    if (req.tenant) {
+      if (mtxRemote && mtxEndpoint) {
+        metadata = await getTenantMetadataRemote(req, service);
+      } else if (cds.mtx && cds.env.requires && cds.env.requires.multitenancy) {
+        metadata = await getTenantMetadataLocal(req, service);
+      } else if (cds.env.requires && cds.env.requires["cds.xt.ModelProviderService"]) {
+        metadata = await getTenantMetadataStreamlined(req, service);
+      }
     }
     if (!metadata) {
       metadata = await getDefaultMetadata(req, service);
@@ -623,95 +626,83 @@ function cov2ap(options = {}) {
   }
 
   async function getTenantMetadataRemote(req, service) {
-    /* istanbul ignore if  */
-    if (req.tenantId) {
-      const mtxBasePath =
-        mtxEndpoint.startsWith("http://") || mtxEndpoint.startsWith("https://")
-          ? mtxEndpoint
-          : `${target}${mtxEndpoint}`;
-      return await prepareMetadata(
-        determineLocale(req),
-        req.tenantId,
-        async (tenantId) => {
-          const response = await fetch(`${mtxBasePath}/metadata/csn/${tenantId}`, {
+    const mtxBasePath =
+      mtxEndpoint.startsWith("http://") || mtxEndpoint.startsWith("https://") ? mtxEndpoint : `${target}${mtxEndpoint}`;
+    return await prepareMetadata(
+      req.tenant,
+      async (tenant) => {
+        const response = await fetch(`${mtxBasePath}/metadata/csn/${tenant}`, {
+          method: "GET",
+          headers: propagateHeaders(req),
+        });
+        if (!response.ok) {
+          throw new Error(await response.text());
+        }
+        return response.json();
+      },
+      async (tenant, service, locale) => {
+        const response = await fetch(
+          `${mtxBasePath}/metadata/edmx/${tenant}?name=${service}&language=${locale}&odataVersion=v2`,
+          {
             method: "GET",
             headers: propagateHeaders(req),
-          });
-          if (!response.ok) {
-            throw new Error(await response.text());
           }
-          return response.json();
+        );
+        if (!response.ok) {
+          throw new Error(await response.text());
+        }
+        return response.text();
+      },
+      service,
+      determineLocale(req)
+    );
+  }
+
+  async function getTenantMetadataLocal(req, service) {
+    if (!proxyCache[req.tenant]) {
+      proxyCache[req.tenant] = {
+        isExtended: cds.mtx.isExtended(req.tenant),
+      };
+    }
+    if (await proxyCache[req.tenant].isExtended) {
+      return await prepareMetadata(
+        req.tenant,
+        async (tenant) => {
+          return await cds.mtx.getCsn(tenant);
         },
-        async (tenantId, service, locale) => {
-          const response = await fetch(
-            `${mtxBasePath}/metadata/edmx/${tenantId}?name=${service}&language=${locale}&odataVersion=v2`,
-            {
-              method: "GET",
-              headers: propagateHeaders(req),
-            }
-          );
-          if (!response.ok) {
-            throw new Error(await response.text());
-          }
-          return response.text();
+        async (tenant, service, locale) => {
+          return await cds.mtx.getEdmx(tenant, service, locale, "v2");
         },
-        service
+        service,
+        determineLocale(req)
       );
     }
   }
 
-  async function getTenantMetadataLocal(req, service) {
-    /* istanbul ignore if  */
-    if (req.tenantId) {
-      if (!proxyCache[req.tenantId]) {
-        proxyCache[req.tenantId] = {
-          isExtended: await cds.mtx.isExtended(req.tenantId),
-        };
-      }
-      if (proxyCache[req.tenantId].isExtended) {
-        return await prepareMetadata(
-          determineLocale(req),
-          req.tenantId,
-          async (tenantId) => {
-            return await cds.mtx.getCsn(tenantId);
-          },
-          async (tenantId, service, locale) => {
-            return await cds.mtx.getEdmx(tenantId, service, locale, "v2");
-          },
-          service
-        );
-      }
-    }
-  }
-
   async function getTenantMetadataStreamlined(req, service) {
-    /* istanbul ignore if  */
-    if (req.tenantId) {
-      const { "cds.xt.ModelProviderService": mps } = cds.services;
-      if (!proxyCache[req.tenantId]) {
-        proxyCache[req.tenantId] = {
-          isExtended: await mps.isExtended(req.tenantId),
-        };
-      }
-      if (proxyCache[req.tenantId].isExtended) {
-        return await prepareMetadata(
-          determineLocale(req),
-          req.tenantId,
-          async (tenantId) => {
-            return await mps.getCsn(tenantId, ensureArray(req.features), "nodejs"); // TODO: getExtCsn()? (when extensibility is supported)
-          },
-          async (tenantId, service, locale) => {
-            return await mps.getEdmx(tenantId, ensureArray(req.features), service, locale, "v2", "nodejs");
-          },
-          service
-        );
-      }
+    const { "cds.xt.ModelProviderService": mps } = cds.services;
+    if (!proxyCache[req.tenant]) {
+      proxyCache[req.tenant] = {
+        isExtended: mps.isExtended(req.tenant),
+      };
+    }
+    if (await proxyCache[req.tenant].isExtended) {
+      return await prepareMetadata(
+        req.tenant,
+        async (tenant) => {
+          return await mps.getCsn(tenant, ensureArray(req.features), "nodejs"); // TODO: getExtCsn()? (when extensibility is supported)
+        },
+        async (tenant, service, locale) => {
+          return await mps.getEdmx(tenant, ensureArray(req.features), service, locale, "v2", "nodejs");
+        },
+        service,
+        determineLocale(req)
+      );
     }
   }
 
   async function getDefaultMetadata(req, service) {
     return await prepareMetadata(
-      determineLocale(req),
       DefaultTenant,
       async () => {
         if (typeof model === "object" && !Array.isArray(model)) {
@@ -720,50 +711,59 @@ function cov2ap(options = {}) {
         return await cds.load(model);
       },
       async () => {},
-      service
+      service,
+      determineLocale(req)
     );
   }
 
-  async function prepareMetadata(locale, tenantId, loadCsn, loadEdmx, service) {
-    if (!(proxyCache[tenantId] && proxyCache[tenantId].csn)) {
-      let csnRaw;
-      if (cds.server && cds.model && tenantId === DefaultTenant) {
-        csnRaw = cds.model;
-      } else {
-        csnRaw = await loadCsn(tenantId);
-      }
-      let csn;
-      if (cds.compile.for.nodejs) {
-        csn = cds.compile.for.nodejs(csnRaw);
-      } else {
-        csn =
-          csnRaw.meta && csnRaw.meta.transformation === "odata" ? csnRaw : cds.linked(cds.compile.for.odata(csnRaw));
-      }
-      proxyCache[tenantId] = {
-        ...(proxyCache[tenantId] || {}),
-        csnRaw,
-        csn,
-        edmx: {},
-      };
+  async function prepareMetadata(tenant, loadCsn, loadEdmx, service, locale) {
+    proxyCache[tenant] = proxyCache[tenant] || {};
+    proxyCache[tenant].csn = proxyCache[tenant].csn || null;
+    proxyCache[tenant].edmx = proxyCache[tenant].edmx || {};
+    if (!proxyCache[tenant].csn) {
+      proxyCache[tenant].csn = prepareCSN(tenant, loadCsn);
     }
+    const csn = await proxyCache[tenant].csn;
+    let edmx;
     if (service) {
-      proxyCache[tenantId].edmx[service] = proxyCache[tenantId].edmx[service] || {};
-      if (!(proxyCache[tenantId].edmx[service] && proxyCache[tenantId].edmx[service][locale])) {
-        let edmx = tenantId !== DefaultTenant && (await loadEdmx(tenantId, service, locale));
-        if (!edmx) {
-          edmx = await cds.compile.to.edmx(proxyCache[tenantId].csnRaw, {
-            service,
-            version: "v2",
-          });
-          edmx = cds.localize(proxyCache[tenantId].csnRaw, locale, edmx);
-        }
-        proxyCache[tenantId].edmx[service][locale] = edmx;
+      proxyCache[tenant].edmx[service] = proxyCache[tenant].edmx[service] || {};
+      if (!proxyCache[tenant].edmx[service][locale]) {
+        proxyCache[tenant].edmx[service][locale] = prepareEdmx(tenant, csn, loadEdmx, service, locale);
       }
+      edmx = await proxyCache[tenant].edmx[service][locale];
     }
-    return {
-      csn: proxyCache[tenantId].csn,
-      edmx: service && proxyCache[tenantId].edmx[service][locale],
-    };
+    return { csn, edmx };
+  }
+
+  async function prepareCSN(tenant, loadCsn) {
+    let csnRaw;
+    if (cds.server && cds.model && tenant === DefaultTenant) {
+      csnRaw = cds.model;
+    } else {
+      csnRaw = await loadCsn(tenant);
+    }
+    let csn;
+    if (cds.compile.for.nodejs) {
+      csn = cds.compile.for.nodejs(csnRaw);
+    } else {
+      csn = csnRaw.meta && csnRaw.meta.transformation === "odata" ? csnRaw : cds.linked(cds.compile.for.odata(csnRaw));
+    }
+    return csn;
+  }
+
+  async function prepareEdmx(tenant, csn, loadEdmx, service, locale) {
+    let edmx;
+    if (tenant !== DefaultTenant) {
+      edmx = await loadEdmx(tenant, service, locale);
+    }
+    if (!edmx) {
+      edmx = await cds.compile.to.edmx(csn, {
+        service,
+        version: "v2",
+      });
+      edmx = cds.localize(csn, locale, edmx);
+    }
+    return edmx;
   }
 
   function localName(name) {

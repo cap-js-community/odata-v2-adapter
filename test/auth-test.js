@@ -47,4 +47,15 @@ describe("auth", () => {
     });
     expect(response.status).toEqual(401);
   });
+
+  it("GET $metadata invalid auth", async () => {
+    const consoleSpy = jest.spyOn(console, "log");
+    let authorization = `Bearer xyz`;
+    let response = await util.callRead(request, "/v2/auth/$metadata", {
+      accept: "application/xml",
+      Authorization: authorization,
+    });
+    expect(response.status).toEqual(401);
+    expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Invalid JWT token"));
+  });
 });
