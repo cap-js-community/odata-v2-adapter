@@ -2,7 +2,7 @@
 
 const cds = require("@sap/cds");
 const supertest = require("supertest");
-const EventEmitter = require("node:events");
+const EventEmitter = require("events");
 
 const util = require("../_env/util/request");
 
