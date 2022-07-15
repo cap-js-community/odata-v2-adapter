@@ -6,10 +6,10 @@ module.exports = {
   ...baseConfig,
   coverageThreshold: {
     global: {
-      branches: 75,
-      functions: 85,
-      lines: 85,
-      statements: 85,
+      branches: 80,
+      functions: 95,
+      lines: 90,
+      statements: 90,
     },
   },
   testMatch: ["**/test/**/*-test.js"],
