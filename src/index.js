@@ -664,16 +664,9 @@ function cov2ap(options = {}) {
 
   async function getTenantMetadataLocal(req, service) {
     proxyCache[req.tenant] = proxyCache[req.tenant] || {};
-    if (!proxyCache[req.tenant].isExtended) {
-      proxyCache[req.tenant].isExtended = cds.mtx.isExtended(req.tenant);
-    }
-    let isExtended = false;
-    try {
-      isExtended = await proxyCache[req.tenant].isExtended;
-    } catch (err) {
-      delete proxyCache[req.tenant].isExtended;
-      throw err;
-    }
+    const isExtended = await callCached(proxyCache[req.tenant], "isExtended", () => {
+      return cds.mtx.isExtended(req.tenant);
+    });
     if (isExtended) {
       return await prepareMetadata(
         req.tenant,
@@ -692,16 +685,9 @@ function cov2ap(options = {}) {
   async function getTenantMetadataStreamlined(req, service) {
     const { "cds.xt.ModelProviderService": mps } = cds.services;
     proxyCache[req.tenant] = proxyCache[req.tenant] || {};
-    if (!proxyCache[req.tenant].isExtended) {
-      proxyCache[req.tenant].isExtended = mps.isExtended(req.tenant);
-    }
-    let isExtended = false;
-    try {
-      isExtended = await proxyCache[req.tenant].isExtended;
-    } catch (err) {
-      delete proxyCache[req.tenant].isExtended;
-      throw err;
-    }
+    const isExtended = await callCached(proxyCache[req.tenant], "isExtended", () => {
+      return mps.isExtended(req.tenant);
+    });
     if (isExtended) {
       return await prepareMetadata(
         req.tenant,
@@ -734,31 +720,17 @@ function cov2ap(options = {}) {
 
   async function prepareMetadata(tenant, loadCsn, loadEdmx, service, locale) {
     proxyCache[tenant] = proxyCache[tenant] || {};
-    proxyCache[tenant].csn = proxyCache[tenant].csn || null;
-    if (!proxyCache[tenant].csn) {
-      proxyCache[tenant].csn = prepareCSN(tenant, loadCsn);
+    const csn = await callCached(proxyCache[tenant], "csn", () => {
+      return prepareCSN(tenant, loadCsn);
+    });
+    if (!service) {
+      return { csn };
     }
-    let csn;
-    try {
-      csn = await proxyCache[tenant].csn;
-    } catch (err) {
-      delete proxyCache[tenant].csn;
-      throw err;
-    }
-    let edmx;
-    if (service) {
-      proxyCache[tenant].edmx = proxyCache[tenant].edmx || {};
-      proxyCache[tenant].edmx[service] = proxyCache[tenant].edmx[service] || {};
-      if (!proxyCache[tenant].edmx[service][locale]) {
-        proxyCache[tenant].edmx[service][locale] = prepareEdmx(tenant, csn, loadEdmx, service, locale);
-      }
-      try {
-        edmx = await proxyCache[tenant].edmx[service][locale];
-      } catch (err) {
-        delete proxyCache[tenant].edmx[service][locale];
-        throw err;
-      }
-    }
+    proxyCache[tenant].edmx = proxyCache[tenant].edmx || {};
+    proxyCache[tenant].edmx[service] = proxyCache[tenant].edmx[service] || {};
+    const edmx = await callCached(proxyCache[tenant].edmx[service], locale, () => {
+      return prepareEdmx(tenant, csn, loadEdmx, service, locale);
+    });
     return { csn, edmx };
   }
 
@@ -795,6 +767,18 @@ function cov2ap(options = {}) {
 
   function localName(name) {
     return name.split(".").pop();
+  }
+
+  async function callCached(cache, field, call) {
+    if (!cache[field]) {
+      cache[field] = call();
+    }
+    try {
+      return await cache[field];
+    } catch (err) {
+      delete cache[field];
+      throw err;
+    }
   }
 
   function localEntityName(definition, req) {
