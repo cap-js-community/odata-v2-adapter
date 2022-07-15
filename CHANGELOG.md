@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Restructure README
+
 ## Version 1.9.1 - 2022-07-15
 
 ### Fixed
