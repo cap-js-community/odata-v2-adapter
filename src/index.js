@@ -229,7 +229,7 @@ function cov2ap(options = {}) {
     service.$linkProviders.push(provider);
   });
 
-  if (cds.mtx && cds.mtx.eventEmitter) {
+  if (cds.mtx && cds.mtx.eventEmitter && cds.env.requires && cds.env.requires.multitenancy) {
     cds.mtx.eventEmitter.on(cds.mtx.events.TENANT_UPDATED, (tenant) => {
       delete proxyCache[tenant];
     });
