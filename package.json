@@ -54,7 +54,7 @@
     "node-fetch": "^2.6.7"
   },
   "devDependencies": {
-    "@sap/cds": "^6.0.3",
+    "@sap/cds": "^6.0.4",
     "@types/express": "^4.17.13",
     "compression": "^1.7.4",
     "eslint": "^8.20.0",

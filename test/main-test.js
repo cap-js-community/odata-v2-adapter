@@ -479,7 +479,7 @@ describe("main", () => {
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
-    response = await util.callRead(request, `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data`);
+    response = await util.callRead(request, "/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data");
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
@@ -487,7 +487,7 @@ describe("main", () => {
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
-      `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data/$value`
+      "/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data/$value"
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -502,7 +502,7 @@ describe("main", () => {
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
-      `/v2/main/HeaderStreamAttachment(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`
+      "/v2/main/HeaderStreamAttachment(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -514,7 +514,7 @@ describe("main", () => {
   it("GET request with url stream", async () => {
     let response = await util.callRead(
       request,
-      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link`,
+      "/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link",
       {
         accept: "image/png",
       }
@@ -522,7 +522,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     response = await util.callRead(
       request,
-      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link`
+      "/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link"
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -532,7 +532,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     response = await util.callRead(
       request,
-      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link/$value`
+      "/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link/$value"
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -541,7 +541,7 @@ describe("main", () => {
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
-      `/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`
+      "/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -550,7 +550,7 @@ describe("main", () => {
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
-      `/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`
+      "/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
     );
     expect(response.statusCode).toEqual(500);
     expect(response.body).toEqual({
@@ -585,7 +585,7 @@ describe("main", () => {
     });
     response = await util.callRead(
       request,
-      `/v2/main/HeaderUrlStream(guid'a8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
+      "/v2/main/HeaderUrlStream(guid'a8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value",
       {
         accept: "image/png",
       }
@@ -683,7 +683,7 @@ describe("main", () => {
   it("POST request with stream", async () => {
     return new Promise((done) => {
       const stream = fs.createReadStream(__dirname + "/_env/srv/init/assets/file.png");
-      const req = util.callStream(request, `/v2/main/HeaderStream`, false, {
+      const req = util.callStream(request, "/v2/main/HeaderStream", false, {
         "content-type": "image/png",
         slug: "file.png",
         custom: "test123",
@@ -725,7 +725,7 @@ describe("main", () => {
 
   it("POST request with binary", async () => {
     const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png", "utf8");
-    const createResponse = await util.callBinary(request, `/v2/main/HeaderStream`, file, false, {
+    const createResponse = await util.callBinary(request, "/v2/main/HeaderStream", file, false, {
       "content-type": "image/png",
       slug: "file.png",
       custom: "test123",
@@ -760,7 +760,7 @@ describe("main", () => {
 
   it("POST request with binary with header decode", async () => {
     const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png", "utf8");
-    const createResponse = await util.callBinary(request, `/v2/main/HeaderStreamDecode`, file, false, {
+    const createResponse = await util.callBinary(request, "/v2/main/HeaderStreamDecode", file, false, {
       "content-type": "image/png",
       slug: new Buffer(encodeURIComponent("test/file?&.png")).toString("base64"),
       custom: "test123",
@@ -797,7 +797,7 @@ describe("main", () => {
     const stream = fs.createReadStream(__dirname + "/_env/srv/init/assets/file.png");
     const createResponse = await util.callAttach(
       request,
-      `/v2/main/HeaderStream`,
+      "/v2/main/HeaderStream",
       stream,
       false,
       {
@@ -840,7 +840,7 @@ describe("main", () => {
   it("POST request with multipart form-data binary", async () => {
     const createResponse = await util.callAttach(
       request,
-      `/v2/main/HeaderStream`,
+      "/v2/main/HeaderStream",
       __dirname + "/_env/srv/init/assets/file.png",
       false,
       {
@@ -880,7 +880,7 @@ describe("main", () => {
 
   it("POST request with binary returning error", async () => {
     const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png", "utf8");
-    const response = await util.callBinary(request, `/v2/main/HeaderStream`, file, false, {
+    const response = await util.callBinary(request, "/v2/main/HeaderStream", file, false, {
       Authorization: "Basic ABC123",
       "content-type": "image/png",
       slug: "file_error.png",
@@ -917,7 +917,7 @@ describe("main", () => {
 
   it("POST request with binary without media type annotations fails", async () => {
     const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png", "utf8");
-    const createResponse = await util.callBinary(request, `/v2/main/HeaderBinary`, file, false, {
+    const createResponse = await util.callBinary(request, "/v2/main/HeaderBinary", file, false, {
       "content-type": "image/png",
       name: "test",
     });
@@ -1084,7 +1084,7 @@ describe("main", () => {
       country: "DE",
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, `/v2/main/Header?$filter=country eq 'X' or country eq 'A'`);
+    response = await util.callRead(request, "/v2/main/Header?$filter=country eq 'X' or country eq 'A'");
     expect(response.body.d.results).toHaveLength(0);
   });
 
@@ -1094,7 +1094,7 @@ describe("main", () => {
       stock: 999,
       country: "US",
     });
-    response = await util.callRead(request, `/v2/main/Header?$filter=stock eq 999`);
+    response = await util.callRead(request, "/v2/main/Header?$filter=stock eq 999");
     expect(response.body.d.results).toHaveLength(1);
   });
 
@@ -1130,7 +1130,7 @@ describe("main", () => {
         },
       ],
     });
-    response = await util.callRead(request, `/v2/main/Header?$expand=Items&$filter=stock eq 1001`);
+    response = await util.callRead(request, "/v2/main/Header?$expand=Items&$filter=stock eq 1001");
     expect(response.body.d.results).toHaveLength(1);
     const ID = response.body.d.results[0].ID;
     expect(response.body.d.results[0].Items.results).toHaveLength(1);
@@ -1147,19 +1147,19 @@ describe("main", () => {
     expect(response.statusCode).toBe(200);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/assoc/num eq 12.01d`
+      "/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/assoc/num eq 12.01d"
     );
     // expect(response.body.d.results).toHaveLength(1);
     expect(response.body).toEqual(sqliteError);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'`
+      "/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'"
     );
     // expect(response.body.d.results).toHaveLength(1);
     expect(response.body).toEqual(sqliteError);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$expand=FirstItem&$filter=FirstItem/name eq 'TestItem1001'`
+      "/v2/main/Header?$expand=FirstItem&$filter=FirstItem/name eq 'TestItem1001'"
     );
     // expect(response.body.d.results).toHaveLength(1);
     expect(response.body).toEqual(sqliteError);
@@ -1178,7 +1178,7 @@ describe("main", () => {
       name: "Test %22",
       country: "US",
     });
-    response = await util.callRead(request, encodeURI(`/v2/main/Header?$filter=name eq 'Test %22'`));
+    response = await util.callRead(request, encodeURI("/v2/main/Header?$filter=name eq 'Test %22'"));
     expect(response.body.d.results).toHaveLength(1);
   });
 
@@ -1492,7 +1492,7 @@ describe("main", () => {
   });
 
   it("GET unbound function", async () => {
-    let response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=abc`);
+    let response = await util.callRead(request, "/v2/main/unboundFunction?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundFunction: {
@@ -1505,7 +1505,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundFunctionInline?num=1&text=abc`);
+    response = await util.callRead(request, "/v2/main/unboundFunctionInline?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundFunctionInline: {
@@ -1518,7 +1518,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=a%20b%2Fc`);
+    response = await util.callRead(request, "/v2/main/unboundFunction?num=1&text=a%20b%2Fc");
     expect(response.body).toMatchObject({
       d: {
         unboundFunction: {
@@ -1531,7 +1531,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text=%27a%20b%2Fc%27`);
+    response = await util.callRead(request, "/v2/main/unboundFunction?num=1&text=%27a%20b%2Fc%27");
     expect(response.body).toMatchObject({
       d: {
         unboundFunction: {
@@ -1544,7 +1544,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundFunction?num=1&text='abc'`);
+    response = await util.callRead(request, "/v2/main/unboundFunction?num=1&text='abc'");
     expect(response.body).toMatchObject({
       d: {
         unboundFunction: {
@@ -1558,7 +1558,7 @@ describe("main", () => {
       },
     });
 
-    const _request = util.callRead(request, `/v2/main/unboundFunction?num=1&text=abc`);
+    const _request = util.callRead(request, "/v2/main/unboundFunction?num=1&text=abc");
     // Set wrong body for GET
     _request.set("content-type", "application/json").send({ code: "TEST" });
     response = await _request;
@@ -1577,7 +1577,7 @@ describe("main", () => {
   });
 
   it("GET unbound mass function", async () => {
-    let response = await util.callRead(request, `/v2/main/unboundMassFunction?ids=TEST1`);
+    let response = await util.callRead(request, "/v2/main/unboundMassFunction?ids=TEST1");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -1592,7 +1592,7 @@ describe("main", () => {
         ],
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundMassFunction?ids=TEST1&ids='TEST2'`);
+    response = await util.callRead(request, "/v2/main/unboundMassFunction?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -1615,7 +1615,7 @@ describe("main", () => {
         ],
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundMassFunctionInline?ids=TEST1&ids='TEST2'`);
+    response = await util.callRead(request, "/v2/main/unboundMassFunctionInline?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -1641,13 +1641,13 @@ describe("main", () => {
   });
 
   it("GET unbound primitive function", async () => {
-    let response = await util.callRead(request, `/v2/main/unboundFunctionPrimitive?num=1`);
+    let response = await util.callRead(request, "/v2/main/unboundFunctionPrimitive?num=1");
     expect(response.body).toMatchObject({
       d: {
         unboundFunctionPrimitive: 1,
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundMassFunctionPrimitive?text1=abc&text2=def`);
+    response = await util.callRead(request, "/v2/main/unboundMassFunctionPrimitive?text1=abc&text2=def");
     expect(response.body).toMatchObject({
       d: {
         results: ["abc", "def"],
@@ -1656,13 +1656,13 @@ describe("main", () => {
   });
 
   it("GET unbound primitive string function", async () => {
-    let response = await util.callRead(request, `/v2/main/unboundFunctionPrimitiveString?text=abc`);
+    let response = await util.callRead(request, "/v2/main/unboundFunctionPrimitiveString?text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundFunctionPrimitiveString: "abc",
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundFunctionPrimitiveLargeString?text=abc`);
+    response = await util.callRead(request, "/v2/main/unboundFunctionPrimitiveLargeString?text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundFunctionPrimitiveLargeString: "abc",
@@ -1671,7 +1671,7 @@ describe("main", () => {
   });
 
   it("GET unbound entity function", async () => {
-    let response = await util.callRead(request, `/v2/main/unboundFunctionEntity?num=1&text=test`);
+    let response = await util.callRead(request, "/v2/main/unboundFunctionEntity?num=1&text=test");
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
@@ -1685,7 +1685,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundMassFunctionEntity?ids=TEST1&ids='TEST2'`);
+    response = await util.callRead(request, "/v2/main/unboundMassFunctionEntity?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -1717,13 +1717,13 @@ describe("main", () => {
   });
 
   it("GET unbound decimal function", async () => {
-    let response = await util.callRead(request, `/v2/main/unboundDecimalFunction`);
+    let response = await util.callRead(request, "/v2/main/unboundDecimalFunction");
     expect(response.body).toMatchObject({
       d: {
         unboundDecimalFunction: "12345.6789",
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundDecimalsFunction`);
+    response = await util.callRead(request, "/v2/main/unboundDecimalsFunction");
     expect(response.body).toMatchObject({
       d: {
         results: ["12345.6789", "12345.6789"],
@@ -1732,7 +1732,7 @@ describe("main", () => {
   });
 
   it("GET unbound function error", async () => {
-    let response = await util.callRead(request, `/v2/main/unboundErrorFunction`);
+    let response = await util.callRead(request, "/v2/main/unboundErrorFunction");
     expect(response.body).toMatchObject({
       error: {
         code: "ERR01",
@@ -1765,7 +1765,7 @@ describe("main", () => {
   });
 
   it("GET unbound function warning", async () => {
-    let response = await util.callRead(request, `/v2/main/unboundWarningFunction`);
+    let response = await util.callRead(request, "/v2/main/unboundWarningFunction");
     expect(response.body).toMatchObject({
       d: {
         unboundWarningFunction: {
@@ -1825,9 +1825,9 @@ describe("main", () => {
         description: null,
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundNavigationsFunction?num=1&text=abc`);
+    response = await util.callRead(request, "/v2/main/unboundNavigationsFunction?num=1&text=abc");
     expect(response.body.d.results.length > 0).toEqual(true);
-    response = await util.callRead(request, `/v2/main/unboundNavigationFunction/Items?num=1&text=abc`);
+    response = await util.callRead(request, "/v2/main/unboundNavigationFunction/Items?num=1&text=abc");
     expect(response.body).toMatchObject({
       error: {
         code: "400",
@@ -2092,7 +2092,7 @@ describe("main", () => {
   });
 
   it("POST unbound action", async () => {
-    let response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=abc`);
+    let response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -2105,7 +2105,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionInline?num=1&text=abc`);
+    response = await util.callWrite(request, "/v2/main/unboundActionInline?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundActionInline: {
@@ -2118,7 +2118,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=a%20b%2Fc`);
+    response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text=a%20b%2Fc");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -2131,7 +2131,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundAction`, {
+    response = await util.callWrite(request, "/v2/main/unboundAction", {
       num: 1,
       text: "abc",
     });
@@ -2147,7 +2147,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundAction?num=1`, {
+    response = await util.callWrite(request, "/v2/main/unboundAction?num=1", {
       text: "abc",
     });
     expect(response.body).toMatchObject({
@@ -2165,7 +2165,7 @@ describe("main", () => {
   });
 
   it("POST unbound action request with sap-language", async () => {
-    let response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=abc&sap-language=de`);
+    let response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text=abc&sap-language=de");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -2181,7 +2181,7 @@ describe("main", () => {
   });
 
   it("POST unbound mass action", async () => {
-    let response = await util.callWrite(request, `/v2/main/unboundMassAction?ids=TEST1`);
+    let response = await util.callWrite(request, "/v2/main/unboundMassAction?ids=TEST1");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2196,30 +2196,7 @@ describe("main", () => {
         ],
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundMassAction?ids=TEST1&ids='TEST2'`);
-    expect(response.body).toMatchObject({
-      d: {
-        results: [
-          {
-            age: 0,
-            code: "TEST1",
-            name: "TEST1",
-            __metadata: {
-              type: "test.MainService.Result",
-            },
-          },
-          {
-            age: 1,
-            code: "TEST2",
-            name: "TEST2",
-            __metadata: {
-              type: "test.MainService.Result",
-            },
-          },
-        ],
-      },
-    });
-    response = await util.callWrite(request, `/v2/main/unboundMassAction`, { ids: ["TEST1", "TEST2"] });
+    response = await util.callWrite(request, "/v2/main/unboundMassAction?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2242,7 +2219,30 @@ describe("main", () => {
         ],
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundMassActionInline?ids=TEST1&ids='TEST2'`);
+    response = await util.callWrite(request, "/v2/main/unboundMassAction", { ids: ["TEST1", "TEST2"] });
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+          {
+            age: 1,
+            code: "TEST2",
+            name: "TEST2",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+        ],
+      },
+    });
+    response = await util.callWrite(request, "/v2/main/unboundMassActionInline?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2268,18 +2268,18 @@ describe("main", () => {
   });
 
   it("POST unbound action request with no return", async () => {
-    let response = await util.callWrite(request, `/v2/main/unboundActionNoReturn?num=1&text=abc`);
+    let response = await util.callWrite(request, "/v2/main/unboundActionNoReturn?num=1&text=abc");
     expect(response.body).toEqual({});
   });
 
   it("POST unbound primitive action", async () => {
-    let response = await util.callWrite(request, `/v2/main/unboundActionPrimitive?num=1`);
+    let response = await util.callWrite(request, "/v2/main/unboundActionPrimitive?num=1");
     expect(response.body).toMatchObject({
       d: {
         unboundActionPrimitive: 1,
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundMassActionPrimitive?text1=abc&text2=def`);
+    response = await util.callWrite(request, "/v2/main/unboundMassActionPrimitive?text1=abc&text2=def");
     expect(response.body).toMatchObject({
       d: {
         results: ["abc", "def"],
@@ -2288,13 +2288,13 @@ describe("main", () => {
   });
 
   it("POST unbound primitive string action", async () => {
-    let response = await util.callWrite(request, `/v2/main/unboundActionPrimitiveString?text=abc`);
+    let response = await util.callWrite(request, "/v2/main/unboundActionPrimitiveString?text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundActionPrimitiveString: "abc",
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionPrimitiveLargeString?text=abc`);
+    response = await util.callWrite(request, "/v2/main/unboundActionPrimitiveLargeString?text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundActionPrimitiveLargeString: "abc",
@@ -2303,7 +2303,7 @@ describe("main", () => {
   });
 
   it("POST unbound entity action", async () => {
-    let response = await util.callWrite(request, `/v2/main/unboundActionEntity?num=1&text=test`);
+    let response = await util.callWrite(request, "/v2/main/unboundActionEntity?num=1&text=test");
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
@@ -2317,7 +2317,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundMassActionEntity?ids=TEST1&ids='TEST2'`);
+    response = await util.callWrite(request, "/v2/main/unboundMassActionEntity?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2745,7 +2745,7 @@ describe("main", () => {
         uri: `https://test:1234/cockpit/v2/Header(guid'${id}')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header`, {
+    response = await util.callRead(request, "/v2/main/Header", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": `/cockpit/v2/Header`,
@@ -2758,7 +2758,7 @@ describe("main", () => {
         uri: `https://test:1234/cockpit/v2/Header(guid'${response.body.d.results[0].ID}')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header?a=b`, {
+    response = await util.callRead(request, "/v2/main/Header?a=b", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": `/cockpit/v2/Header?a=b`,
@@ -2829,13 +2829,13 @@ describe("main", () => {
     response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeUndefined();
-    response = await util.callRead(request, `/v2/main/$metadata`, {
+    response = await util.callRead(request, "/v2/main/$metadata", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": "/cockpit",
     });
     expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, `/v2/main`, {
+    response = await util.callRead(request, "/v2/main", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": "/cockpit",
@@ -2843,7 +2843,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.text).toMatch(/https:\/\/test:1234\/cockpit/);
     expect(response.text).not.toMatch(/v2\/main/);
-    response = await util.callRead(request, `/v2/main/`, {
+    response = await util.callRead(request, "/v2/main/", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": "/cockpit/",
@@ -2851,7 +2851,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.text).toMatch(/https:\/\/test:1234\/cockpit/);
     expect(response.text).not.toMatch(/v2\/main/);
-    response = await util.callRead(request, `/v2/main/`, {
+    response = await util.callRead(request, "/v2/main/", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": "/",
@@ -2859,7 +2859,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.text).toMatch(/https:\/\/test:1234/);
     expect(response.text).not.toMatch(/v2\/main/);
-    response = await util.callRead(request, `/v2/main`, {
+    response = await util.callRead(request, "/v2/main", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": "",
@@ -2867,7 +2867,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.text).toMatch(/https:\/\/test:1234/);
     expect(response.text).not.toMatch(/v2\/main/);
-    response = await util.callRead(request, `/v2/main/`, {
+    response = await util.callRead(request, "/v2/main/", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
     });
@@ -3023,7 +3023,7 @@ describe("main", () => {
     response = await util.callRead(request, "/v2/main/Header?$filter=name eq 'test''test'");
     expect(response.body).toBeDefined();
     expect(response.body.d.results[0]).toMatchObject({ ID });
-    response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=abc'def`);
+    response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text=abc'def");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -3036,7 +3036,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text='test''test'`);
+    response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text='test''test'");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -3049,7 +3049,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundAction?num=1&text=''''`);
+    response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text=''''");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -3065,21 +3065,21 @@ describe("main", () => {
   });
 
   it("POST action with linebreak in parameter exceeding max length", async () => {
-    let response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text=0123456789`);
+    let response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text=0123456789");
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: "0123456789",
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='0123456789'`);
+    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text='0123456789'");
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: "0123456789",
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text=0123456789a`);
+    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text=0123456789a");
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
@@ -3107,7 +3107,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='0123456789a'`);
+    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text='0123456789a'");
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
@@ -3135,14 +3135,14 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text=01234\n5678`);
+    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text=01234\n5678");
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: "01234\n5678",
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='01234\n5678'`);
+    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text='01234\n5678'");
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
@@ -3177,7 +3177,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='01234\n56789'`);
+    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text='01234\n56789'");
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
@@ -3264,13 +3264,13 @@ describe("main", () => {
   });
 
   it("GET calc decimal function", async () => {
-    let response = await util.callRead(request, `/v2/main/calcDecimal?value=1000&percentage=5`);
+    let response = await util.callRead(request, "/v2/main/calcDecimal?value=1000&percentage=5");
     expect(response.body).toMatchObject({
       d: {
         calcDecimal: "50",
       },
     });
-    response = await util.callRead(request, `/v2/main/calcDecimal?value=1000&percentage=0`);
+    response = await util.callRead(request, "/v2/main/calcDecimal?value=1000&percentage=0");
     expect(response.body).toMatchObject({
       d: {
         calcDecimal: "0",

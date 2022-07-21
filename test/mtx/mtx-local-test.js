@@ -90,9 +90,11 @@ describe("mtx", () => {
       accept: "application/xml",
       Authorization: authorization,
     });
-    expect(response.status).toEqual(500);
-    expect(response.text).toEqual("Internal Server Error");
-    expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("MTX isExtended Error"));
+    expect(response.status).toEqual(503);
+    expect(response.text).toEqual(
+      '{"error":{"message":"Unable to get service from service map due to error: MTX isExtended Error","code":"503"}}'
+    );
+    expect(consoleSpy).toHaveBeenCalledWith("[odata] -", expect.objectContaining(new Error("MTX isExtended Error")));
 
     errorExtended = false;
     errorCsn = true;
@@ -100,9 +102,11 @@ describe("mtx", () => {
       accept: "application/xml",
       Authorization: authorization,
     });
-    expect(response.status).toEqual(500);
-    expect(response.text).toEqual("Internal Server Error");
-    expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("MTX getCsn Error"));
+    expect(response.status).toEqual(503);
+    expect(response.text).toEqual(
+      '{"error":{"message":"Unable to get service from service map due to error: MTX getCsn Error","code":"503"}}'
+    );
+    expect(consoleSpy).toHaveBeenCalledWith("[odata] -", expect.objectContaining(new Error("MTX getCsn Error")));
 
     errorCsn = false;
     errorEdmx = true;
@@ -110,9 +114,11 @@ describe("mtx", () => {
       accept: "application/xml",
       Authorization: authorization,
     });
-    expect(response.status).toEqual(500);
-    expect(response.text).toEqual("Internal Server Error");
-    expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("MTX getEdmx Error"));
+    expect(response.status).toEqual(503);
+    expect(response.text).toEqual(
+      '<?xml version="1.0" encoding="UTF-8"?><error xmlns="http://docs.oasis-open.org/odata/ns/metadata"><code>503</code><message>Unable to get EDMX for tenant tenant due to error: MTX getEdmx Error</message></error>'
+    );
+    expect(consoleSpy).toHaveBeenCalledWith("[odata] -", expect.objectContaining(new Error("MTX getEdmx Error")));
 
     errorEdmx = false;
     response = await util.callRead(request, "/v2/main/$metadata", {

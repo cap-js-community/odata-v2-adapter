@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.9.3 - tbd
+## Version 1.9.3 - 2022-07-21
 
 ### Fixed
+
+- Fix batch handling of parameterized entities
 
 ## Version 1.9.2 - 2022-07-18
 

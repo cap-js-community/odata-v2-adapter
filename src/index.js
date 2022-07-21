@@ -369,7 +369,6 @@ function cov2ap(options = {}) {
       req.contexts = [];
       req.contentId = {};
       req.lookupContext = {};
-      req.parameters = null;
       next();
     },
 
@@ -793,7 +792,12 @@ function cov2ap(options = {}) {
       }
     }
     const nameSuffix =
-      definition.kind === "entity" && definition.params && req.parameters && req.parameters.kind === "Set" ? "Set" : "";
+      definition.kind === "entity" &&
+      definition.params &&
+      req.context.parameters &&
+      req.context.parameters.kind === "Set"
+        ? "Set"
+        : "";
     return localName.join("_") + nameSuffix;
   }
 
@@ -844,7 +848,7 @@ function cov2ap(options = {}) {
       const definitionName = definitionTypeName.substring(0, definitionTypeName.length - definitionKind.length);
       const definition = req.csn.definitions[definitionName] || req.csn.definitions[name];
       if (definition && definition.kind === "entity" && definition.params) {
-        req.parameters = {
+        req.lookupContext.parameters = {
           kind: definitionKind,
           entity: localName(definitionName),
           type: localName(definitionTypeName),
@@ -859,7 +863,7 @@ function cov2ap(options = {}) {
 
   function enhanceParametersDefinition(context, req) {
     if (context && context.kind === "entity" && context.params) {
-      req.parameters = req.parameters || {
+      req.lookupContext.parameters = req.lookupContext.parameters || {
         kind: "Parameters",
         entity: localName(context.name),
         type: localName(context.name),
@@ -1164,6 +1168,7 @@ function cov2ap(options = {}) {
       $apply: null,
       aggregationKey: false,
       aggregationFilter: "",
+      parameters: null,
       ...req.lookupContext,
     };
     req.contexts.push(req.context);
@@ -1858,20 +1863,20 @@ function cov2ap(options = {}) {
   }
 
   function convertParameters(url, req) {
-    if (req.parameters) {
+    if (req.context.parameters) {
       let context;
       let stop = false;
       url.contextPath = url.contextPath
         .split("/")
         .map((part) => {
           if (part === "Set" || part.startsWith("Set(")) {
-            req.parameters.kind = "Set";
+            req.context.parameters.kind = "Set";
             stop = true;
           } else if (part === "Parameters" || part.startsWith("Parameters(")) {
-            req.parameters.kind = "Parameters";
+            req.context.parameters.kind = "Parameters";
             stop = true;
           } else if (part === "$count") {
-            req.parameters.count = true;
+            req.context.parameters.count = true;
           }
           if (stop) {
             return "";
@@ -1883,8 +1888,8 @@ function cov2ap(options = {}) {
             keyPart = part.substring(keyStart + 1, keyEnd);
             part = part.substr(0, keyStart);
           }
-          if (part === req.parameters.type) {
-            part = req.parameters.entity;
+          if (part === req.context.parameters.type) {
+            part = req.context.parameters.entity;
           }
           context = lookupContext(part, context, req);
           if (!context) {
@@ -1899,19 +1904,19 @@ function cov2ap(options = {}) {
                   const [name, value] = key.split("=");
                   if (name && value) {
                     if (context.params[name]) {
-                      req.parameters.values[name] = unquoteParameter(context.params[name], value, req);
+                      req.context.parameters.values[name] = unquoteParameter(context.params[name], value, req);
                       return `${name}=${value}`;
                     } else {
-                      req.parameters.keys[name] = unquoteParameter(contextElements[name], value, req);
+                      req.context.parameters.keys[name] = unquoteParameter(contextElements[name], value, req);
                     }
                   } else if (name) {
                     const param = structureKeys(context.params).find(() => true);
                     if (param) {
                       if (context.params[param]) {
-                        req.parameters.values[param] = unquoteParameter(context.params[param], name, req);
+                        req.context.parameters.values[param] = unquoteParameter(context.params[param], name, req);
                         return `${param}=${name}`;
                       } else {
-                        req.parameters.keys[param] = unquoteParameter(contextElements[param], name, req);
+                        req.context.parameters.keys[param] = unquoteParameter(contextElements[param], name, req);
                       }
                     }
                   }
@@ -1929,7 +1934,7 @@ function cov2ap(options = {}) {
       if (!url.contextPath.endsWith("/Set")) {
         url.contextPath = `${url.contextPath}/Set`;
       }
-      if (req.parameters.count) {
+      if (req.context.parameters.count) {
         url.contextPath += "/$count";
       }
     }
@@ -2631,14 +2636,14 @@ function cov2ap(options = {}) {
         body.d.results = body.d.results.map((entry) => {
           return typeof entry == "object" ? entry : { value: entry };
         });
-        if (req.parameters) {
-          if (req.parameters.kind === "Parameters") {
+        if (req.context.parameters) {
+          if (req.context.parameters.kind === "Parameters") {
             body.d.results = body.d.results.slice(0, 1);
-          } else if (req.parameters.kind === "Set") {
-            if (Object.keys(req.parameters.keys).length > 0) {
+          } else if (req.context.parameters.kind === "Set") {
+            if (Object.keys(req.context.parameters.keys).length > 0) {
               body.d.results = body.d.results.filter((entry) => {
-                return Object.keys(req.parameters.keys).every((key) => {
-                  return entry[key] === req.parameters.keys[key];
+                return Object.keys(req.context.parameters.keys).every((key) => {
+                  return entry[key] === req.context.parameters.keys[key];
                 });
               });
             }
@@ -2752,8 +2757,8 @@ function cov2ap(options = {}) {
 
   function addMetadata(data, headers, definition, elements, body, req) {
     const typeSuffix =
-      definition.kind === "entity" && definition.params && req.parameters
-        ? req.parameters.kind === "Set"
+      definition.kind === "entity" && definition.params && req.context.parameters
+        ? req.context.parameters.kind === "Set"
           ? "Type"
           : "Parameters"
         : "";
@@ -2903,8 +2908,8 @@ function cov2ap(options = {}) {
       definition &&
       definition.kind === "entity" &&
       definition.params &&
-      req.parameters &&
-      req.parameters.kind === "Parameters"
+      req.context.parameters &&
+      req.context.parameters.kind === "Parameters"
     ) {
       Object.keys(elements).forEach((name) => {
         if (!definition.params[name]) {
@@ -3029,14 +3034,14 @@ function cov2ap(options = {}) {
         }
       }
     }
-    if (definition.kind === "entity" && definition.params && req.parameters) {
-      if (req.parameters.kind === "Parameters") {
+    if (definition.kind === "entity" && definition.params && req.context.parameters) {
+      if (req.context.parameters.kind === "Parameters") {
         data.Set = {
           __deferred: {
             uri: `${_entityUri}/Set`,
           },
         };
-      } else if (req.parameters.kind === "Set") {
+      } else if (req.context.parameters.kind === "Set") {
         data.Parameters = {
           __deferred: {
             uri: `${_entityUri}/Parameters`,
@@ -3108,7 +3113,7 @@ function cov2ap(options = {}) {
   }
 
   function entityKey(data, entity, elements, req) {
-    if (entity.kind === "entity" && entity.params && req.parameters) {
+    if (entity.kind === "entity" && entity.params && req.context.parameters) {
       return entityKeyParameters(data, entity, elements, req);
     }
     const keyElements = structureKeys(definitionKeys(entity)).reduce((keys, key) => {
@@ -3141,11 +3146,11 @@ function cov2ap(options = {}) {
   function entityKeyParameters(data, entity, elements, req) {
     const keys = definitionKeys(entity);
     const keyElements = [];
-    Object.keys(req.parameters.values).forEach((param) => {
+    Object.keys(req.context.parameters.values).forEach((param) => {
       keyElements.push(entity.params[param]);
     });
-    if (req.parameters.kind === "Set") {
-      Object.keys(req.parameters.keys).forEach((key) => {
+    if (req.context.parameters.kind === "Set") {
+      Object.keys(req.context.parameters.keys).forEach((key) => {
         keyElements.push(keys[key]);
       });
       const columns = entity.query.SELECT.columns || [];
@@ -3157,7 +3162,7 @@ function cov2ap(options = {}) {
         }
       });
     }
-    data = { ...data, ...req.parameters.values, ...req.parameters.keys };
+    data = { ...data, ...req.context.parameters.values, ...req.context.parameters.keys };
     return keyElements
       .map((keyElement) => {
         const type = elementType(keyElement, req);
