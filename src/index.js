@@ -23,8 +23,8 @@ const UUIDLikeRegex = /guid'([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-
 // https://www.w3.org/TR/xmlschema11-2/#nt-duDTFrag
 const DurationRegex =
   /^P(?:(\d)Y)?(?:(\d{1,2})M)?(?:(\d{1,2})D)?T(?:(\d{1,2})H)?(?:(\d{2})M)?(?:(\d{2}(?:\.\d+)?)S)?$/i;
-// Unsupported Draft Request
-const UnsupportedDraftRegex =
+// Unsupported Draft Filter
+const UnsupportedDraftFilterRegex =
   /\(IsActiveEntity eq true and (.*?)\) or \(IsActiveEntity eq false and \((.*?) or HasActiveEntity eq false\)\)/;
 
 // https://cap.cloud.sap/docs/cds/types
@@ -1169,6 +1169,7 @@ function cov2ap(options = {}) {
       aggregationKey: false,
       aggregationFilter: "",
       parameters: null,
+      expandSiblingEntity: false,
       ...req.lookupContext,
     };
     req.contexts.push(req.context);
@@ -1562,6 +1563,10 @@ function cov2ap(options = {}) {
           expands = expands.filter((expand) => !["Set", "Parameters"].includes(expand));
         }
         expands.forEach((expand) => {
+          if (fixDraftRequests && expand === "SiblingEntity") {
+            req.context.expandSiblingEntity = true;
+            return;
+          }
           let current = context.expand;
           expand.split("/").forEach((part) => {
             current[part] = current[part] || { select: {}, expand: {} };
@@ -1637,7 +1642,7 @@ function cov2ap(options = {}) {
     if (filter) {
       // Fix unsupported draft requests
       if (fixDraftRequests) {
-        const match = filter.match(UnsupportedDraftRegex);
+        const match = filter.match(UnsupportedDraftFilterRegex);
         if (match && match.length === 3 && match[1] === match[2]) {
           filter = filter.replace(match[0], match[1]);
         }
@@ -3026,11 +3031,15 @@ function cov2ap(options = {}) {
       const type = elementType(element, req);
       if (element && (type === "cds.Composition" || type === "cds.Association")) {
         if (data[key] === undefined) {
-          data[key] = {
-            __deferred: {
-              uri: `${_entityUri}/${key}`,
-            },
-          };
+          if (fixDraftRequests && req.context.expandSiblingEntity && key === "SiblingEntity") {
+            data[key] = null;
+          } else {
+            data[key] = {
+              __deferred: {
+                uri: `${_entityUri}/${key}`,
+              },
+            };
+          }
         }
       }
     }

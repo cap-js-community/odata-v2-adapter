@@ -1,7 +1,7 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const proxy = require("../../../src");
+const cov2ap = require("../../../src");
 
 const credentials = require("../db/default-services").hana[0].credentials;
 
@@ -11,7 +11,7 @@ cds.env.requires.db = {
 };
 
 cds.on("bootstrap", (app) => {
-  app.use(proxy({ target: "auto" }));
+  app.use(cov2ap({ target: "auto" }));
 });
 
 module.exports = cds.server;

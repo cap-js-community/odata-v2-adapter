@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+Proxy option `fixDraftRequests` suppresses unsupported draft expand to `SiblingEntity` and injects `SiblingEntity: null`
+
 ## Version 1.9.3 - 2022-07-21
 
 ### Fixed

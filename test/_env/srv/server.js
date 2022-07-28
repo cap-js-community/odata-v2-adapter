@@ -1,14 +1,14 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const proxy = require("../../../src");
+const cov2ap = require("../../../src");
 const compression = require("compression");
 
 const init = require("./init");
 
 cds.on("bootstrap", (app) => {
   app.use(compression({ filter: shouldCompress }));
-  app.use(proxy({ target: "auto" }));
+  app.use(cov2ap({ target: "auto" }));
 });
 
 cds.on("listening", ({ server }) => {

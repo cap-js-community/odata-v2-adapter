@@ -572,6 +572,73 @@ describe("draft", () => {
     expect(response.statusCode).toEqual(404);
   });
 
+  it("DELETE draft for active entity", async () => {
+    let response = await util.callWrite(request, "/v2/draft/Header", {
+      name: "Test Create",
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.ID).toEqual(id);
+    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
+    expect(response.statusCode).toEqual(404);
+    response = await util.callWrite(
+      request,
+      `/v2/draft/Header_draftPrepare?ID=guid'${id}'&IsActiveEntity=false`,
+      {},
+      false,
+      {
+        "If-Match": "*",
+      }
+    );
+    expect(response.statusCode).toEqual(200);
+    response = await util.callWrite(
+      request,
+      `/v2/draft/Header_draftActivate?ID=guid'${id}'&IsActiveEntity=false`,
+      {},
+      false,
+      {
+        "If-Match": "*",
+      }
+    );
+    expect(response.statusCode).toEqual(201);
+    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.statusCode).toEqual(404);
+    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.ID).toEqual(id);
+    response = await util.callWrite(
+      request,
+      `/v2/draft/Header_draftEdit?ID=guid'${id}'&IsActiveEntity=true`,
+      {},
+      false,
+      {
+        "If-Match": "*",
+      }
+    );
+    expect(response.statusCode).toEqual(201);
+    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.statusCode).toEqual(200);
+    response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+      "If-Match": "*",
+    });
+    expect(response.statusCode).toEqual(204);
+    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.statusCode).toEqual(404);
+    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
+    expect(response.statusCode).toEqual(200);
+    response = await util.callRead(
+      request,
+      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)?$expand=DraftAdministrativeData%2CSiblingEntity`
+    );
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.ID).toEqual(id);
+    expect(response.body.d.SiblingEntity).toEqual(null);
+  });
+
   it("tests unsupported draft requests", async () => {
     let response = await util.callWrite(request, "/v2/draft/Header", {
       name: "Test Header",

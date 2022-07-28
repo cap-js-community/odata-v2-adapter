@@ -13,8 +13,8 @@
 - Enhance or create `./srv/server.js`:
   ```js
   const cds = require("@sap/cds");
-  const proxy = require("@sap/cds-odata-v2-adapter-proxy");
-  cds.on("bootstrap", (app) => app.use(proxy()));
+  const cov2ap = require("@sap/cds-odata-v2-adapter-proxy");
+  cds.on("bootstrap", (app) => app.use(cov2ap()));
   module.exports = cds.server;
   ```
 - Execute `cds run` from the project root to start the server:
@@ -187,12 +187,12 @@ module in Express app at bootstrap time, e.g. in `srv/server.js`:
 
 ```js
 const cds = require("@sap/cds");
-const proxy = require("@sap/cds-odata-v2-adapter-proxy");
+const cov2ap = require("@sap/cds-odata-v2-adapter-proxy");
 const compression = require("compression");
 
 cds.on("bootstrap", (app) => {
   app.use(compression({ filter: shouldCompress }));
-  app.use(proxy());
+  app.use(cov2ap());
 });
 
 function shouldCompress(req, res) {
@@ -223,7 +223,7 @@ It's disabled by default, but can be enabled using option [compressResponseMixed
 ```js
 const express = require("express");
 const cds = require("@sap/cds");
-const proxy = require("@sap/cds-odata-v2-adapter-proxy");
+const cov2ap = require("@sap/cds-odata-v2-adapter-proxy");
 
 const host = "0.0.0.0";
 const port = process.env.PORT || 4004;
@@ -232,7 +232,7 @@ const port = process.env.PORT || 4004;
   const app = express();
 
   // OData V2
-  app.use(proxy());
+  app.use(cov2ap());
 
   // OData V4
   await cds.connect.to("db");
@@ -259,7 +259,7 @@ Note that `@sap/cds` is a peer dependency and needs to be available as module as
 
 ```js
 const express = require("express");
-const proxy = require("@sap/cds-odata-v2-adapter-proxy");
+const cov2ap = require("@sap/cds-odata-v2-adapter-proxy");
 
 const host = "0.0.0.0";
 const port = process.env.PORT || 4004;
@@ -269,7 +269,7 @@ const port = process.env.PORT || 4004;
 
   // OData V2
   app.use(
-    proxy({
+    cov2ap({
       target: "<odata-v4-backend-url>", // locally e.g. http://localhost:8080
       services: {
         "<odata-v4-service-path>": "<qualified.ServiceName>",
