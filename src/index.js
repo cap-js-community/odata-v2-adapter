@@ -7,9 +7,10 @@ const express = require("express");
 const expressFileUpload = require("express-fileupload");
 const fetch = require("node-fetch");
 const cds = require("@sap/cds");
-const logging = require("@sap/logging");
 const { promisify } = require("util");
 const { createProxyMiddleware } = require("http-proxy-middleware");
+
+const LOG = cds.log("cov2ap");
 
 const SeverityMap = {
   1: "success",
@@ -127,7 +128,6 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} options.mtxRemote CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is false.
  * @param {string} options.mtxEndpoint Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is '/mtx/v1'.
  * @param {boolean} options.ieee754Compatible Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is true.
- * @param {boolean} options.disableNetworkLog Disable networking logging. Default is true.
  * @param {number} options.fileUploadSizeLimit File upload file size limit (in bytes). Default is 10485760 (10 MB).
  * @param {boolean} options.continueOnError Indicates to OData V4 backend to continue on error. Default is false.
  * @param {boolean} options.isoTime Use ISO 8601 format for type cds.Time (Edm.Time). Default is false.
@@ -161,7 +161,6 @@ function cov2ap(options = {}) {
   };
 
   const proxyCache = {};
-  const appContext = logging.createAppContext();
   const router = express.Router();
   const base = optionWithFallback("base", "");
   const path = optionWithFallback("path", "v2");
@@ -175,7 +174,6 @@ function cov2ap(options = {}) {
   const mtxRemote = optionWithFallback("mtxRemote", false);
   const mtxEndpoint = optionWithFallback("mtxEndpoint", "/mtx/v1");
   const ieee754Compatible = optionWithFallback("ieee754Compatible", true);
-  const disableNetworkLog = optionWithFallback("disableNetworkLog", true);
   const fileUploadSizeLimit = optionWithFallback("fileUploadSizeLimit", 10 * 1024 * 1024);
   const continueOnError = optionWithFallback("continueOnError", false);
   const isoTime = optionWithFallback("isoTime", false);
@@ -236,12 +234,16 @@ function cov2ap(options = {}) {
   }
   // TODO: Cache invalidation for Streamlined MTX (when extensibility is supported)
 
-  router.use(
-    `/${path}/*`,
-    logging.middleware({ appContext: appContext, logNetwork: !disableNetworkLog && !process.env.DISABLE_NETWORK_LOG })
-  );
-
   router.use(`/${path}/*`, async (req, res, next) => {
+    req.contextId =
+      req.headers["x-correlation-id"] ||
+      req.headers["x-correlationid"] ||
+      req.headers["x-request-id"] ||
+      req.headers["x-vcap-request-id"] ||
+      cds.utils.uuid();
+    res.set("x-request-id", req.contextId);
+    res.set("x-correlation-id", req.contextId);
+    res.set("x-correlationid", req.contextId);
     try {
       const [authType, token] = (req.headers.authorization && req.headers.authorization.split(" ")) || [];
       if (authType && token) {
@@ -3266,11 +3268,9 @@ function cov2ap(options = {}) {
 
   function propagateHeaders(req, addHeaders = {}) {
     const headers = Object.assign({}, req.headers, addHeaders);
-    if (req.loggingContext) {
-      headers["x-request-id"] = req.loggingContext.id;
-      headers["x-correlationid"] = req.loggingContext.correlationId;
-      headers["x-correlation-id"] = req.loggingContext.correlationId;
-    }
+    headers["x-request-id"] = req.contextId;
+    headers["x-correlation-id"] = req.contextId;
+    headers["x-correlationid"] = req.contextId;
     delete headers.host;
     return headers;
   }
@@ -3714,43 +3714,58 @@ function cov2ap(options = {}) {
   }
 
   function traceRequest(req, name, method, url, headers, body) {
-    if (!req.loggingContext.getTracer(name).isEnabled("debug")) {
-      return;
+    if (LOG._debug) {
+      const _url = url || "";
+      const _headers = JSON.stringify(headers || {});
+      const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
+      trace(req, name, `${method} ${_url}`, _headers && "Headers:", _headers, _body && "Body:", _body);
     }
-    const _url = url || "";
-    const _headers = JSON.stringify(headers || {});
-    const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
-    trace(req, name, `${method} ${_url}`, _headers && "Headers:", _headers, _body && "Body:", _body);
   }
 
   function traceResponse(req, name, statusCode, statusMessage, headers, body) {
-    if (!req.loggingContext.getTracer(name).isEnabled("debug")) {
-      return;
+    if (LOG._debug) {
+      const _headers = JSON.stringify(headers || {});
+      const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
+      trace(
+        req,
+        name,
+        `${statusCode || ""} ${statusMessage || ""}`,
+        _headers && "Headers:",
+        _headers,
+        _body && "Body:",
+        _body
+      );
     }
-    const _headers = JSON.stringify(headers || {});
-    const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
-    trace(
-      req,
-      name,
-      `${statusCode || ""} ${statusMessage || ""}`,
-      _headers && "Headers:",
-      _headers,
-      _body && "Body:",
-      _body
-    );
   }
 
-  function trace(req, name, ...messages) {
-    const message = messages.filter((message) => !!message).join("\n");
-    req.loggingContext.getTracer(`cov2ap/${name}`).debug(message);
+  function trace(req, name, ...lines) {
+    if (LOG._debug) {
+      initCDSContext(req);
+      LOG.debug(name, lines.filter((line) => !!line).join("\n"));
+    }
   }
 
   function logError(req, name, error) {
-    req.loggingContext.getLogger(`/cov2ap/${name}`).error(error);
+    if (LOG._error) {
+      initCDSContext(req);
+      LOG.error(name, error);
+    }
   }
 
   function logWarning(req, name, message, info) {
-    req.loggingContext.getLogger(`/cov2ap/${name}`).warning(`${message}: ${JSON.stringify(info)}`);
+    if (LOG._warn) {
+      initCDSContext(req);
+      LOG.warn(name, message, info);
+    }
+  }
+
+  function initCDSContext(req) {
+    cds.context = cds.context || {
+      id: req.contextId,
+      tenant: req.tenant,
+      user: req.user,
+      _: { req, res: req.res },
+    };
   }
 
   return router;

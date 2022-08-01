@@ -49,13 +49,31 @@ describe("auth", () => {
   });
 
   it("GET $metadata invalid auth", async () => {
-    const consoleSpy = jest.spyOn(console, "log");
+    const consoleSpy = jest.spyOn(console, "error");
     let authorization = `Bearer xyz`;
     let response = await util.callRead(request, "/v2/auth/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
     expect(response.status).toEqual(401);
-    expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Invalid JWT token"));
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "[cov2ap] -",
+      "Authorization",
+      expect.objectContaining(new Error("Invalid JWT token"))
+    );
+  });
+
+  it("GET $metadata check response correlation", async () => {
+    const authorization = `Basic ${Buffer.from(
+      `${cds.requires.auth.users.alice.id}:${cds.requires.auth.users.alice.password}`
+    ).toString("base64")}`;
+    const response = await util.callRead(request, "/v2/auth/$metadata", {
+      accept: "application/xml",
+      Authorization: authorization,
+    });
+    expect(response.status).toEqual(200);
+    expect(response.headers["x-request-id"]).toBeDefined();
+    expect(response.headers["x-correlation-id"]).toBeDefined();
+    expect(response.headers["x-correlationid"]).toBeDefined();
   });
 });

@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "XS_APP_LOG_LEVEL=debug cds run --in-memory",
-    "start:file": "XS_APP_LOG_LEVEL=debug cds run --profile testdb",
-    "start:root": "XS_APP_LOG_LEVEL=debug cds serve --in-memory --service test.MainService --from ./test/_env/srv/model --at /",
+    "start": "cds run --in-memory",
+    "start:file": "cds run --profile testdb",
+    "start:root": "cds serve --in-memory --service test.MainService --from ./test/_env/srv/model --at /",
     "test:deploy": "cds deploy srv/index.cds --to sqlite:test.db --no-save",
     "build": "cds build",
     "tsc": "cd util/typescript && tsc"

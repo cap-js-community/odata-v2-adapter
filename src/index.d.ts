@@ -63,11 +63,6 @@ type Options = {
     ieee754Compatible?: boolean | true,
 
     /**
-     *  Disable networking logging. Default is true.
-     */
-    disableNetworkLog?: boolean | true,
-
-    /**
      * File upload file size limit (in bytes). Default is 10485760 (10 MB).
      */
     fileUploadSizeLimit?: number | 10485760,

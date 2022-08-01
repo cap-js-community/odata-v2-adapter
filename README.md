@@ -35,7 +35,6 @@ The CDS OData V2 Adapter Proxy instantiates an Express router. The following opt
 - **mtxRemote:** CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is `false`.
 - **mtxEndpoint:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is `'/mtx/v1'`.
 - **ieee754Compatible:** Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is `true`.
-- **disableNetworkLog:** Disable networking logging. Default is `true`.
 - **fileUploadSizeLimit:** File upload file size limit (in bytes). Default is `10485760` (10 MB).
 - **continueOnError:** Indicates to OData V4 backend to continue on error. Default is `false`.
 - **isoTime:** Use ISO 8601 format for type cds.Time (Edm.Time). Default is `false`.
@@ -66,38 +65,44 @@ The CDS OData V2 Adapter Proxy instantiates an Express router. The following opt
 
 ### Logging
 
-Logging is controlled with environment variable `XS_APP_LOG_LEVEL`. Especially, proxy requests and proxy responses
-including url and body adaptations can be traced using `XS_APP_LOG_LEVEL=debug`.
-Details can be found at [@sap/logging](https://www.npmjs.com/package/@sap/logging).
+Logging is based on [cds.log](https://cap.cloud.sap/docs/node.js/cds-log), therefore CDS logging configurations apply.
 
-#### Logging Layers
+#### Logging Modules
 
-Logging layers of CDS OData V2 Adapter Proxy start with `cov2ap`.
+| Component                  | Module Name(s) |
+| -------------------------- | -------------- |
+| CDS OData V2 Adapter Proxy | cov2ap         |
 
-#### XS_APP_LOG_LEVEL = error
+##### Debug Mode
 
-- `cov2ap/Authorization` : Error during authorization header parsing
-- `cov2ap/MetadataRequest` : Error during metadata request processing
-- `cov2ap/Request` : Error during request processing
-- `cov2ap/Response` : Error during response processing
-- `cov2ap/Batch` : Error during batch processing
-- `cov2ap/AggregationKey` : Error during aggregation key determination
-- `cov2ap/MediaStream` : Error during media stream processing
-- `cov2ap/ContentDisposition` : Error during content disposition determination
-- `cov2ap/FileUpload` : Error during file upload processing
+Debug log level can be defined via command line environment variable as follows: `CDS_LOG_LEVELS_COV2AP=debug`
 
-#### XS_APP_LOG_LEVEL = warning
+Details on how to set CDS environment can be found at [cds.env](https://cap.cloud.sap/docs/node.js/cds-env).
 
-- `cov2ap/Service` : Service definition not found for request path
-- `cov2ap/Context` : Definition not found in CDS meta model
-- `cov2ap/Batch` : Response changeset order does not match request changeset order
+#### cds.log.levels.cov2ap: "error"
 
-#### XS_APP_LOG_LEVEL = debug
+- `[cov2ap] - Authorization` : Error during authorization header parsing
+- `[cov2ap] - MetadataRequest` : Error during metadata request processing
+- `[cov2ap] - Request` : Error during request processing
+- `[cov2ap] - Response` : Error during response processing
+- `[cov2ap] - Batch` : Error during batch processing
+- `[cov2ap] - AggregationKey` : Error during aggregation key determination
+- `[cov2ap] - MediaStream` : Error during media stream processing
+- `[cov2ap] - ContentDisposition` : Error during content disposition determination
+- `[cov2ap] - FileUpload` : Error during file upload processing
 
-- `cov2ap/Request`: Log of OData V2 client request (url, body, headers)
-- `cov2ap/ProxyRequest`: Log of OData V4 proxy request (url, body, headers)
-- `cov2ap/ProxyResponse`: Log of OData V4 proxy response (status code/message, body, headers)
-- `cov2ap/Response`: Log of OData V2 client response (status code/message, body, headers)
+#### cds.log.levels.cov2ap: "warn"
+
+- `[cov2ap] - Service` : Service definition not found for request path
+- `[cov2ap] - Context` : Definition not found in CDS metamodel
+- `[cov2ap] - Batch` : Response changeset order does not match request changeset order
+
+#### cds.log.levels.cov2ap: "debug"
+
+- `[cov2ap] - Request`: Log of OData V2 client request (url, body, headers)
+- `[cov2ap] - ProxyRequest`: Log of OData V4 proxy request (url, body, headers)
+- `[cov2ap] - ProxyResponse`: Log of OData V4 proxy response (status code/message, body, headers)
+- `[cov2ap] - Response`: Log of OData V2 client response (status code/message, body, headers)
 
 ### CDS Annotations
 
