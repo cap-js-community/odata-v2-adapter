@@ -5,11 +5,9 @@
       "users": {
         "alice": {
           "id": "alice",
+          "tenant": "tenant",
           "password": "alice",
-          "roles": ["XYZ4711"],
-          "jwt": {
-            "zid": "tenant"
-          }
+          "roles": ["XYZ4711"]
         },
         "bob": {
           "id": "bob",

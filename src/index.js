@@ -255,7 +255,7 @@ function cov2ap(options = {}) {
             };
             if (req.user.id && cds.env.requires.auth && cds.env.requires.auth.strategy === "mock") {
               const user = (cds.env.requires.auth.users || {})[req.user.id];
-              req.tenant = user && user.jwt && user.jwt.zid;
+              req.tenant = user && (user.tenant || (user.jwt && user.jwt.zid));
             }
             break;
           case "Bearer":
