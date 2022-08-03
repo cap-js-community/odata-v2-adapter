@@ -171,16 +171,23 @@ cds.on("bootstrap", (app) =>
 
 The OData V2 service provided by the CDS OData V2 Adapter Proxy can be used to serve an SAP Fiori Elements V2 UI.
 
-Fiori Elements examples:
+SAP Fiori Elements V2 examples:
 
-- **Basic Edit**: Basic editing app
-- **Draft Edit**: Draft supported editing app
-- **Hierarchy**: Hierarchical display of data in tree table
+- SQLite based:
+  - **Basic Edit**: Basic editing app
+  - **Draft Edit**: Draft supported editing app
+  - **Hierarchy**: Hierarchical display of data in tree table
+  - **Overview**: Overview Page app
+  - **Analytics**: Analytical List Page app
+- HANA based:
+  - **Parameters**: Parameterized Entity app
 
 Running examples can be tested as follows:
 
 - Clone repository
-- Start server: `npm start`
+- Start server:
+  - SQLite based: `npm start`
+  - HANA based: `npm run start:hana`
 - Open Fiori Launchpad: http://localhost:4004/fiori.html
 
 > Code repository is only available SAP internal.
