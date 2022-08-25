@@ -12,8 +12,8 @@ module.exports = async (context) => {
   if (mainPath === "/") {
     mainPath = "";
   }
-  await initData(context, mainPath);
   await initBinary(context, mainPath);
+  await initData(context, mainPath);
 };
 
 async function initData({ app }, mainPath) {
@@ -34,11 +34,12 @@ async function initData({ app }, mainPath) {
 }
 
 async function initBinary({ port }, mainPath) {
+  const file = fs.readFileSync(__dirname + "/assets/file.png");
   await cds.connect.to("db");
   await cds.run(
     INSERT.into("test.HeaderStream").entries({
       ID: "f8a7a4f7-1901-4032-a237-3fba1d1b2343",
-      data: fs.readFileSync(__dirname + "/assets/file.png"),
+      data: file,
       mediaType: "image/png",
       filename: "file.png",
     })
@@ -46,7 +47,7 @@ async function initBinary({ port }, mainPath) {
   await cds.run(
     INSERT.into("test.HeaderStreamAttachment").entries({
       ID: "f8a7a4f7-1901-4032-a237-3fba1d1b2343",
-      data: fs.readFileSync(__dirname + "/assets/file.png"),
+      data: file,
       mediaType: "image/png",
       filename: "file.png",
     })

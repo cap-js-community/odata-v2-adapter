@@ -57,6 +57,10 @@ cds.mtx = {
   }),
 };
 
+function clearCache() {
+  return cds.mtx.eventEmitter.emit(cds.mtx.events.TENANT_UPDATED, "tenant");
+}
+
 describe("mtx", () => {
   beforeAll(async () => {
     await global._init;
@@ -77,7 +81,7 @@ describe("mtx", () => {
   });
 
   it("MTX event emitter", async () => {
-    const ok = cds.mtx.eventEmitter.emit(cds.mtx.events.TENANT_UPDATED, "tenant");
+    const ok = clearCache();
     expect(ok).toEqual(true);
   });
 
@@ -85,41 +89,55 @@ describe("mtx", () => {
     const consoleSpy = jest.spyOn(console, "error");
 
     cds.env.requires.multitenancy = true;
+
+    clearCache();
     errorExtended = true;
     let response = await util.callRead(request, "/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
-    expect(response.status).toEqual(503);
-    expect(response.text).toEqual(
-      '{"error":{"message":"Unable to get service from service map due to error: MTX isExtended Error","code":"503"}}'
+    expect(response.status).toEqual(500);
+    expect(response.text).toEqual("Internal Server Error");
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "[cov2ap] -",
+      "MetadataRequest",
+      expect.objectContaining(new Error("MTX isExtended Error"))
     );
-    expect(consoleSpy).toHaveBeenCalledWith("[odata] -", expect.objectContaining(new Error("MTX isExtended Error")));
+    consoleSpy.mockClear();
 
+    clearCache();
     errorExtended = false;
     errorCsn = true;
     response = await util.callRead(request, "/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
-    expect(response.status).toEqual(503);
-    expect(response.text).toEqual(
-      '{"error":{"message":"Unable to get service from service map due to error: MTX getCsn Error","code":"503"}}'
+    expect(response.status).toEqual(500);
+    expect(response.text).toEqual("Internal Server Error");
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "[cov2ap] -",
+      "MetadataRequest",
+      expect.objectContaining(new Error("MTX getCsn Error"))
     );
-    expect(consoleSpy).toHaveBeenCalledWith("[odata] -", expect.objectContaining(new Error("MTX getCsn Error")));
+    consoleSpy.mockClear();
 
+    clearCache();
     errorCsn = false;
     errorEdmx = true;
     response = await util.callRead(request, "/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
-    expect(response.status).toEqual(503);
-    expect(response.text).toEqual(
-      '<?xml version="1.0" encoding="UTF-8"?><error xmlns="http://docs.oasis-open.org/odata/ns/metadata"><code>503</code><message>Unable to get EDMX for tenant tenant due to error: MTX getEdmx Error</message></error>'
+    expect(response.status).toEqual(500);
+    expect(response.text).toEqual("Internal Server Error");
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "[cov2ap] -",
+      "MetadataRequest",
+      expect.objectContaining(new Error("MTX getEdmx Error"))
     );
-    expect(consoleSpy).toHaveBeenCalledWith("[odata] -", expect.objectContaining(new Error("MTX getEdmx Error")));
+    consoleSpy.mockClear();
 
+    cds.mtx.eventEmitter.emit(cds.mtx.events.TENANT_UPDATED, "tenant");
     errorEdmx = false;
     response = await util.callRead(request, "/v2/main/$metadata", {
       accept: "application/xml",

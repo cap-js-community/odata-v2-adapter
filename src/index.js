@@ -227,7 +227,7 @@ function cov2ap(options = {}) {
     service.$linkProviders.push(provider);
   });
 
-  if (cds.mtx && cds.mtx.eventEmitter && cds.env.requires && cds.env.requires.multitenancy) {
+  if (cds.mtx && cds.mtx.eventEmitter) {
     cds.mtx.eventEmitter.on(cds.mtx.events.TENANT_UPDATED, (tenant) => {
       delete proxyCache[tenant];
     });
@@ -380,12 +380,13 @@ function cov2ap(options = {}) {
         return next();
       }
 
-      const targetPath = targetUrl(req);
-      const url = parseUrl(targetPath, req);
+      const urlPath = targetUrl(req);
+      const url = parseUrl(urlPath, req);
       const definition = contextFromUrl(url, req);
       if (!definition) {
         return next();
       }
+      convertUrl(url, req);
       const elements = definitionElements(definition);
       const mediaDataElementName =
         findElementByAnnotation(elements, "@Core.MediaType") ||
@@ -430,7 +431,7 @@ function cov2ap(options = {}) {
               filename
             );
           }
-          const url = target + targetPath;
+          const postUrl = target + url.pathname;
           const postHeaders = propagateHeaders(req, {
             ...headers,
             "content-type": "application/json",
@@ -438,9 +439,9 @@ function cov2ap(options = {}) {
           delete postHeaders["transfer-encoding"];
 
           // Trace
-          traceRequest(req, "ProxyRequest", "POST", url, postHeaders, body);
+          traceRequest(req, "ProxyRequest", "POST", postUrl, postHeaders, body);
 
-          const response = await fetch(url, {
+          const response = await fetch(postUrl, {
             method: "POST",
             headers: postHeaders,
             body: JSON.stringify(body),
@@ -904,7 +905,7 @@ function cov2ap(options = {}) {
                 ({ method, url }) => {
                   return {
                     method: method === "MERGE" ? "PATCH" : method,
-                    url: convertUrl(url, req),
+                    url: convertUrlAndSetContext(url, req),
                   };
                 },
                 ({ contentType, body, headers, url, contentId }) => {
@@ -931,7 +932,7 @@ function cov2ap(options = {}) {
         proxyReq.setHeader("accept", headers.accept);
       } else {
         // Single
-        proxyReq.path = convertUrl(proxyReq.path, req);
+        proxyReq.path = convertUrlAndSetContext(proxyReq.path, req);
         if (req.context.serviceRoot && (!headers.accept || headers.accept.includes("xml"))) {
           req.context.serviceRootAsXML = true;
           headers.accept = "application/json";
@@ -976,23 +977,18 @@ function cov2ap(options = {}) {
       }
       proxyReq.method = proxyReq.method === "MERGE" ? "PATCH" : proxyReq.method;
 
-      if (contentType) {
-        if (body !== undefined) {
-          // File Upload
-          if (req.files && Object.keys(req.files).length === 1) {
-            const file = req.files[Object.keys(req.files)[0]];
-            contentType = body["content-type"] || file.mimetype;
-            body = file.data;
-          }
-          proxyReq.setHeader("content-type", contentType);
-          body = normalizeBody(body);
-          proxyReq.setHeader("content-length", Buffer.byteLength(body));
-          proxyReq.write(body);
-          proxyReq.end();
-        } else if ((req.header("transfer-encoding") || "").includes("chunked")) {
-          proxyReq.setHeader("content-type", contentType);
-          req.pipe(proxyReq);
+      if (contentType && body !== undefined) {
+        // File Upload
+        if (req.files && Object.keys(req.files).length === 1) {
+          const file = req.files[Object.keys(req.files)[0]];
+          contentType = body["content-type"] || file.mimetype;
+          body = file.data;
         }
+        proxyReq.setHeader("content-type", contentType);
+        body = normalizeBody(body);
+        proxyReq.setHeader("content-length", Buffer.byteLength(body));
+        proxyReq.write(body);
+        proxyReq.end();
       }
 
       // Trace
@@ -1008,26 +1004,11 @@ function cov2ap(options = {}) {
     }
   }
 
-  function convertUrl(urlPath, req) {
-    let url = parseUrl(urlPath, req);
+  function convertUrlAndSetContext(urlPath, req) {
+    const url = parseUrl(urlPath, req);
     const definition = lookupContextFromUrl(url, req);
     enrichRequest(definition, url, urlPath, req);
-
-    // Order is important
-    convertUrlLinks(url, req);
-    convertUrlDataTypes(url, req);
-    convertUrlCount(url, req);
-    convertDraft(url, req);
-    convertActionFunction(url, req);
-    convertFilter(url, req);
-    convertExpandSelect(url, req);
-    convertSearch(url, req);
-    convertAnalytics(url, req);
-    convertValue(url, req);
-    convertParameters(url, req);
-
-    delete url.search;
-    url.pathname = url.basePath + url.servicePath + url.contextPath;
+    convertUrl(url, req);
     return URL.format(url);
   }
 
@@ -1176,6 +1157,23 @@ function cov2ap(options = {}) {
     };
     req.contexts.push(req.context);
     return req.context;
+  }
+
+  function convertUrl(url, req) {
+    // Order is important
+    convertUrlLinks(url, req);
+    convertUrlDataTypes(url, req);
+    convertUrlCount(url, req);
+    convertDraft(url, req);
+    convertActionFunction(url, req);
+    convertFilter(url, req);
+    convertExpandSelect(url, req);
+    convertSearch(url, req);
+    convertAnalytics(url, req);
+    convertValue(url, req);
+    convertParameters(url, req);
+    delete url.search;
+    url.pathname = url.basePath + url.servicePath + url.contextPath;
   }
 
   function convertUrlLinks(url, req) {
@@ -2397,9 +2395,9 @@ function cov2ap(options = {}) {
       return messageTarget;
     }
     if (req.context.operation && req.context.boundDefinition) {
-      const bindingParamaterName = req.context.operation["@cds.odata.bindingparameter.name"] || "in";
-      if (messageTarget.startsWith(`${bindingParamaterName}/`)) {
-        messageTarget = messageTarget.substr(bindingParamaterName.length + 1);
+      const bindingParameterName = req.context.operation["@cds.odata.bindingparameter.name"] || "in";
+      if (messageTarget.startsWith(`${bindingParameterName}/`)) {
+        messageTarget = messageTarget.substr(bindingParameterName.length + 1);
       }
     }
     let context;

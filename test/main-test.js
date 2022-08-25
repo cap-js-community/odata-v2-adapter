@@ -637,7 +637,7 @@ describe("main", () => {
               let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
               expect(readResponse.statusCode).toEqual(200);
               expect(readResponse.headers["content-type"]).toEqual("image/png");
-              expect(readResponse.body.length).toEqual(35372);
+              expect(readResponse.body.length).toEqual(17686);
               let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
               expect(deleteResponse.statusCode).toEqual(204);
               readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
@@ -655,7 +655,7 @@ describe("main", () => {
   });
 
   it("PUT request with binary", async () => {
-    const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png", "utf8");
+    const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png");
     const createResponse = await util.callWrite(request, "/v2/main/HeaderStream", {
       mediaType: "image/png",
       filename: "test.png",
@@ -669,7 +669,7 @@ describe("main", () => {
     let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
-    expect(readResponse.body.length).toEqual(31794);
+    expect(readResponse.body.length).toEqual(17686);
     let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
     readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
@@ -707,7 +707,7 @@ describe("main", () => {
           readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
           expect(readResponse.statusCode).toEqual(200);
           expect(readResponse.headers["content-type"]).toEqual("image/png");
-          expect(readResponse.body.length).toEqual(35372);
+          expect(readResponse.body.length).toEqual(17686);
           let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
           expect(deleteResponse.statusCode).toEqual(204);
           readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
@@ -724,7 +724,7 @@ describe("main", () => {
   });
 
   it("POST request with binary", async () => {
-    const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png", "utf8");
+    const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png");
     const createResponse = await util.callBinary(request, "/v2/main/HeaderStream", file, false, {
       "content-type": "image/png",
       slug: "file.png",
@@ -747,7 +747,7 @@ describe("main", () => {
     readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
-    expect(readResponse.body.length).toEqual(31794);
+    expect(readResponse.body.length).toEqual(17686);
     let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${id}')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
     readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${id}')/data`);
@@ -759,7 +759,7 @@ describe("main", () => {
   });
 
   it("POST request with binary with header decode", async () => {
-    const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png", "utf8");
+    const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png");
     const createResponse = await util.callBinary(request, "/v2/main/HeaderStreamDecode", file, false, {
       "content-type": "image/png",
       slug: new Buffer(encodeURIComponent("test/file?&.png")).toString("base64"),
@@ -782,7 +782,7 @@ describe("main", () => {
     readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${id}')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
-    expect(readResponse.body.length).toEqual(31794);
+    expect(readResponse.body.length).toEqual(17686);
     let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStreamDecode(guid'${id}')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
     readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${id}')/data`);
@@ -879,7 +879,7 @@ describe("main", () => {
   });
 
   it("POST request with binary returning error", async () => {
-    const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png", "utf8");
+    const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png");
     const response = await util.callBinary(request, "/v2/main/HeaderStream", file, false, {
       Authorization: "Basic ABC123",
       "content-type": "image/png",
@@ -916,7 +916,7 @@ describe("main", () => {
   });
 
   it("POST request with binary without media type annotations fails", async () => {
-    const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png", "utf8");
+    const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png");
     const createResponse = await util.callBinary(request, "/v2/main/HeaderBinary", file, false, {
       "content-type": "image/png",
       name: "test",

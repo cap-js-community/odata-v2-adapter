@@ -7,10 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.9.5 - tbd
+## Version 1.9.5 - 2022-08-29
 
 ### Fixed
 
+- Fix media upload via associations/compositions using POST
+- Fix duplication of streaming request data for media entity (chunked)
 - Update README on sample apps
 
 ## Version 1.9.4 - 2022-08-01
