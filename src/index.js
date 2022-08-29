@@ -2147,7 +2147,12 @@ function cov2ap(options = {}) {
                 body = convertResponseError(body, headers, serviceDefinition, req);
               }
               let statusCodeText;
-              if (req.context.method === "GET" && statusCode !== 204 && isApplicationJSON(contentType) && isEmptyJSON(body)) {
+              if (
+                req.context.method === "GET" &&
+                statusCode !== 204 &&
+                isApplicationJSON(contentType) &&
+                isEmptyJSON(body)
+              ) {
                 statusCode = 404;
                 statusCodeText = "Not Found";
                 body = notFoundErrorResponse();
