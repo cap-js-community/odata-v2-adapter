@@ -136,10 +136,10 @@ CDS supports modelling features that are not compatible with OData V2 standard:
 To provide an OData V2 service based on the CDS OData V2 Adapter Proxy, those CDS modelling features must not be used.
 In general any CDS OData API flavor must not be used in combination with CDS OData V2 Adapter Proxy.
 
-Per default, those modelling incompatibilities are reported as `Warning` and will not stop the compilation. 
-The resulting EDMX V2 may be invalid and not processable by an OData V2 client. To prevent this situation and fail 
-early to detect modelling incompatibilities, the severity for respective codes can be increased to `Error`, 
-by setting the following environment variables: 
+Per default, those modelling incompatibilities are reported as `Warning` and will not stop the compilation.
+The resulting EDMX V2 may be invalid and not processable by an OData V2 client. To prevent this situation and fail
+early to detect modelling incompatibilities, the severity for respective codes can be increased to `Error`,
+by setting the following environment variables:
 
 ```
 "cdsc": {
