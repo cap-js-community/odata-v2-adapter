@@ -2141,7 +2141,18 @@ function cov2ap(options = {}) {
                 convertHeaders(body, headers, serviceDefinition, req);
                 body = convertResponseError(body, headers, serviceDefinition, req);
               }
-              return { body, headers };
+              let statusCodeText;
+              if (statusCode !== 204 && isApplicationJSON(contentType) && isEmptyJSON(body)) {
+                statusCode = 404;
+                statusCodeText = "Not Found";
+                body = notFoundErrorResponse();
+              }
+              if (body && statusCode !== 204) {
+                setContentLength(headers, body);
+              } else {
+                clearContentLength(headers);
+              }
+              return { statusCode, statusCodeText, body, headers };
             },
             resContentIdOrder,
             ProcessingDirection.Response
@@ -2169,15 +2180,20 @@ function cov2ap(options = {}) {
             body = convertResponseBody(Object.assign({}, body), headers, req);
           }
         }
-        if (body && !(headers["transfer-encoding"] || "").includes("chunked") && statusCode !== 204) {
-          setContentLength(headers, body);
-        }
       } else {
         // Failed
         const serviceDefinition = initContext(req);
         convertHeaders(body, headers, serviceDefinition, req);
         body = convertResponseError(body, headers, serviceDefinition, req);
+      }
+      if (req.method !== "HEAD" && statusCode !== 204 && isApplicationJSON(contentType) && isEmptyJSON(body)) {
+        statusCode = 404;
+        body = notFoundErrorResponse();
+      }
+      if (body && !(headers["transfer-encoding"] || "").includes("chunked") && statusCode !== 204) {
         setContentLength(headers, body);
+      } else {
+        clearContentLength(headers);
       }
       respond(req, res, statusCode, headers, body);
     } catch (err) {
@@ -2243,8 +2259,9 @@ function cov2ap(options = {}) {
                 streamRes = mediaResponse.body;
               } catch (err) {
                 logError(req, "MediaStream", err);
-                const errorBody = convertResponseError({ error: err }, {}, context.definition, req);
-                respond(req, res, 500, { "content-type": "application/json" }, errorBody);
+                const headers = { "content-type": "application/json" };
+                const errorBody = convertResponseError({ error: err }, headers, context.definition, req);
+                respond(req, res, 500, headers, errorBody);
                 return;
               }
             }
@@ -2643,14 +2660,16 @@ function cov2ap(options = {}) {
         });
         if (req.context.parameters) {
           if (req.context.parameters.kind === "Parameters") {
-            body.d.results = body.d.results.slice(0, 1);
+            body.d = body.d.results[0];
+            return body.d ? [body.d] : null;
           } else if (req.context.parameters.kind === "Set") {
             if (Object.keys(req.context.parameters.keys).length > 0) {
-              body.d.results = body.d.results.filter((entry) => {
+              body.d = body.d.results.filter((entry) => {
                 return Object.keys(req.context.parameters.keys).every((key) => {
                   return entry[key] === req.context.parameters.keys[key];
                 });
-              });
+              })[0];
+              return body.d ? [body.d] : null;
             }
           }
         }
@@ -3264,6 +3283,37 @@ function cov2ap(options = {}) {
     return String(body);
   }
 
+  function isEmptyJSON(content) {
+    return !content || content === "{}";
+  }
+
+  function notFoundErrorResponse() {
+    return JSON.stringify({
+      error: {
+        code: "404",
+        message: {
+          lang: "en",
+          value: "Not Found",
+        },
+        severity: "error",
+        target: "/#TRANSIENT#",
+        innererror: {
+          errordetails: [
+            {
+              code: "404",
+              message: {
+                lang: "en",
+                value: "Not Found",
+              },
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
+        },
+      },
+    });
+  }
+
   function propagateHeaders(req, addHeaders = {}) {
     const headers = Object.assign({}, req.headers, addHeaders);
     headers["x-request-id"] = req.contextId;
@@ -3525,8 +3575,12 @@ function cov2ap(options = {}) {
     if (body && !(headers["transfer-encoding"] || "").includes("chunked")) {
       headers["content-length"] = Buffer.byteLength(body);
     } else {
-      delete headers["content-length"];
+      clearContentLength(headers);
     }
+  }
+
+  function clearContentLength(headers) {
+    delete headers["content-length"];
   }
 
   function processMultipartMixed(
@@ -3566,7 +3620,9 @@ function cov2ap(options = {}) {
     let bodyAfterBlank = false;
     let previousLineIsBlank = false;
     let index = 0;
+    let httpInfo = [];
     let statusCode;
+    let statusCodeText;
     let contentId;
     let contentIdMisplaced = false;
     let contentTransferEncoding;
@@ -3600,6 +3656,8 @@ function cov2ap(options = {}) {
                 url,
                 contentId,
               });
+              statusCode = (result && result.statusCode) || statusCode;
+              statusCodeText = (result && result.statusCodeText) || statusCodeText;
               body = (result && result.body) || body;
               headers = (result && result.headers) || headers;
             } catch (err) {
@@ -3630,11 +3688,16 @@ function cov2ap(options = {}) {
             // Add content-transfer-encoding to headers (before url = -3)
             newParts.splice(-3, 0, `content-transfer-encoding: ${contentTransferEncoding}`);
           }
+          if (httpInfo && statusCode) {
+            newParts.splice(-1, 0, `${httpInfo[1]} ${statusCode} ${statusCodeText || httpInfo[3]}`);
+          }
           Object.entries(headers).forEach(([name, value]) => {
             newParts.splice(-1, 0, `${name}: ${value}`);
           });
           newParts.push(body);
+          httpInfo = [];
           statusCode = undefined;
+          statusCodeText = undefined;
           contentId = undefined;
           contentIdMisplaced = false;
           contentTransferEncoding = undefined;
@@ -3668,12 +3731,16 @@ function cov2ap(options = {}) {
         method = partMethod;
         url = partUrl;
 
-        newParts.push(part);
         if (part.startsWith("HTTP/")) {
-          const statusCodeMatch = part.match(/^HTTP\/[\d.]+\s+(\d{3})\s.*$/i);
-          if (statusCodeMatch) {
-            statusCode = parseInt(statusCodeMatch.pop());
+          httpInfo = part.match(/^(HTTP\/[\d.]+)\s+(\d{3})\s(.*)$/i);
+          if (httpInfo && httpInfo.length === 4) {
+            statusCode = parseInt(httpInfo[2]);
+          } else {
+            httpInfo = undefined;
           }
+        }
+        if (!statusCode) {
+          newParts.push(part);
         }
       } else if (bodyAfterBlank && (previousLineIsBlank || body !== "")) {
         body = body ? `${body}\r\n${part}` : part;

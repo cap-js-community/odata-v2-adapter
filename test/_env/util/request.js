@@ -143,7 +143,7 @@ function splitMultipartResponse(body, boundary = "boundary") {
         const [_info, _body] = _rest;
         const body = _body && _body.startsWith("{") ? JSON.parse(_body) : _body;
         const [_status, ..._headers] = _info.split("\r\n");
-        const [protocol, _statusCode, statusText] = _status.split(/\s+/);
+        const [protocol, _statusCode, ...statusText] = _status.split(/\s+/);
         const statusCode = parseInt(_statusCode);
         let headers = {};
         _headers.forEach((_header) => {
@@ -153,8 +153,9 @@ function splitMultipartResponse(body, boundary = "boundary") {
           }
         });
         return {
+          protocol,
           statusCode,
-          statusText,
+          statusText: statusText.join(" "),
           headers,
           body,
           contentId: contentId && contentId[1],

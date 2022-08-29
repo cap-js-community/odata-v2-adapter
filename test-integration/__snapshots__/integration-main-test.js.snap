@@ -1,131 +1,131 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`integration-main GET $metadata 1`] = `
-"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
-<edmx:Edmx Version=\\"1.0\\" xmlns:edmx=\\"http://schemas.microsoft.com/ado/2007/06/edmx\\" xmlns:m=\\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\\" xmlns:sap=\\"http://www.sap.com/Protocols/SAPData\\">
-  <edmx:Reference Uri=\\"https://sap.github.io/odata-vocabularies/vocabularies/Common.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
-    <edmx:Include Alias=\\"Common\\" Namespace=\\"com.sap.vocabularies.Common.v1\\"/>
+"<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
   </edmx:Reference>
-  <edmx:Reference Uri=\\"https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
-    <edmx:Include Alias=\\"Core\\" Namespace=\\"Org.OData.Core.V1\\"/>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
   </edmx:Reference>
-  <edmx:Reference Uri=\\"https://sap.github.io/odata-vocabularies/vocabularies/UI.xml\\" xmlns:edmx=\\"http://docs.oasis-open.org/odata/ns/edmx\\">
-    <edmx:Include Alias=\\"UI\\" Namespace=\\"com.sap.vocabularies.UI.v1\\"/>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
   </edmx:Reference>
-  <edmx:DataServices m:DataServiceVersion=\\"2.0\\">
-    <Schema Namespace=\\"test.MainService\\" xmlns=\\"http://schemas.microsoft.com/ado/2008/09/edm\\">
-      <EntityContainer Name=\\"EntityContainer\\" m:IsDefaultEntityContainer=\\"true\\">
-        <EntitySet Name=\\"Header\\" EntityType=\\"test.MainService.Header\\"/>
-        <EntitySet Name=\\"HeaderParameters\\" EntityType=\\"test.MainService.HeaderParametersParameters\\" sap:creatable=\\"false\\" sap:updatable=\\"false\\" sap:deletable=\\"false\\" sap:pageable=\\"false\\"/>
-        <EntitySet Name=\\"HeaderParametersSet\\" EntityType=\\"test.MainService.HeaderParametersType\\" sap:creatable=\\"false\\" sap:updatable=\\"false\\" sap:deletable=\\"false\\" sap:addressable=\\"false\\"/>
-        <AssociationSet Name=\\"HeaderParametersParameters_Set\\" Association=\\"test.MainService.HeaderParametersParameters_Set\\">
-          <End Role=\\"HeaderParametersParameters\\" EntitySet=\\"HeaderParameters\\"/>
-          <End Role=\\"HeaderParametersType\\" EntitySet=\\"HeaderParametersSet\\"/>
+  <edmx:DataServices m:DataServiceVersion="2.0">
+    <Schema Namespace="test.MainService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="Header" EntityType="test.MainService.Header"/>
+        <EntitySet Name="HeaderParameters" EntityType="test.MainService.HeaderParametersParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false"/>
+        <EntitySet Name="HeaderParametersSet" EntityType="test.MainService.HeaderParametersType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false"/>
+        <AssociationSet Name="HeaderParametersParameters_Set" Association="test.MainService.HeaderParametersParameters_Set">
+          <End Role="HeaderParametersParameters" EntitySet="HeaderParameters"/>
+          <End Role="HeaderParametersType" EntitySet="HeaderParametersSet"/>
         </AssociationSet>
       </EntityContainer>
-      <EntityType Name=\\"Header\\">
+      <EntityType Name="Header">
         <Key>
-          <PropertyRef Name=\\"ID\\"/>
+          <PropertyRef Name="ID"/>
         </Key>
-        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
-        <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
-        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
-        <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
-        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"country\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"currency\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"stock\\" Type=\\"Edm.Int32\\"/>
-        <Property Name=\\"price\\" Type=\\"Edm.Decimal\\" Scale=\\"2\\" Precision=\\"12\\"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="country" Type="Edm.String"/>
+        <Property Name="currency" Type="Edm.String"/>
+        <Property Name="stock" Type="Edm.Int32"/>
+        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
       </EntityType>
-      <EntityType Name=\\"HeaderParametersParameters\\" sap:semantics=\\"parameters\\">
+      <EntityType Name="HeaderParametersParameters" sap:semantics="parameters">
         <Key>
-          <PropertyRef Name=\\"STOCK\\"/>
-          <PropertyRef Name=\\"CURRENCY\\"/>
+          <PropertyRef Name="STOCK"/>
+          <PropertyRef Name="CURRENCY"/>
         </Key>
-        <Property Name=\\"STOCK\\" Type=\\"Edm.Int32\\" Nullable=\\"false\\" sap:parameter=\\"mandatory\\"/>
-        <Property Name=\\"CURRENCY\\" Type=\\"Edm.String\\" Nullable=\\"false\\" sap:parameter=\\"mandatory\\"/>
-        <NavigationProperty Name=\\"Set\\" Relationship=\\"test.MainService.HeaderParametersParameters_Set\\" FromRole=\\"HeaderParametersParameters\\" ToRole=\\"HeaderParametersType\\"/>
+        <Property Name="STOCK" Type="Edm.Int32" Nullable="false" sap:parameter="mandatory"/>
+        <Property Name="CURRENCY" Type="Edm.String" Nullable="false" sap:parameter="mandatory"/>
+        <NavigationProperty Name="Set" Relationship="test.MainService.HeaderParametersParameters_Set" FromRole="HeaderParametersParameters" ToRole="HeaderParametersType"/>
       </EntityType>
-      <EntityType Name=\\"HeaderParametersType\\">
+      <EntityType Name="HeaderParametersType">
         <Key>
-          <PropertyRef Name=\\"STOCK_PARAM\\"/>
-          <PropertyRef Name=\\"CURRENCY_PARAM\\"/>
-          <PropertyRef Name=\\"ID\\"/>
+          <PropertyRef Name="STOCK_PARAM"/>
+          <PropertyRef Name="CURRENCY_PARAM"/>
+          <PropertyRef Name="ID"/>
         </Key>
-        <Property Name=\\"STOCK_PARAM\\" Type=\\"Edm.Int32\\" Nullable=\\"false\\"/>
-        <Property Name=\\"CURRENCY_PARAM\\" Type=\\"Edm.String\\" Nullable=\\"false\\"/>
-        <Property Name=\\"ID\\" Type=\\"Edm.Guid\\" Nullable=\\"false\\"/>
-        <Property Name=\\"createdAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
-        <Property Name=\\"createdBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
-        <Property Name=\\"modifiedAt\\" Type=\\"Edm.DateTimeOffset\\" Precision=\\"7\\"/>
-        <Property Name=\\"modifiedBy\\" Type=\\"Edm.String\\" MaxLength=\\"255\\"/>
-        <Property Name=\\"name\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"description\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"country\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"currency\\" Type=\\"Edm.String\\"/>
-        <Property Name=\\"stock\\" Type=\\"Edm.Int32\\"/>
-        <Property Name=\\"price\\" Type=\\"Edm.Decimal\\" Scale=\\"2\\" Precision=\\"12\\"/>
-        <NavigationProperty Name=\\"Parameters\\" Relationship=\\"test.MainService.HeaderParametersParameters_Set\\" FromRole=\\"HeaderParametersType\\" ToRole=\\"HeaderParametersParameters\\"/>
+        <Property Name="STOCK_PARAM" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="CURRENCY_PARAM" Type="Edm.String" Nullable="false"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="country" Type="Edm.String"/>
+        <Property Name="currency" Type="Edm.String"/>
+        <Property Name="stock" Type="Edm.Int32"/>
+        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <NavigationProperty Name="Parameters" Relationship="test.MainService.HeaderParametersParameters_Set" FromRole="HeaderParametersType" ToRole="HeaderParametersParameters"/>
       </EntityType>
-      <Association Name=\\"HeaderParametersParameters_Set\\">
-        <End Role=\\"HeaderParametersParameters\\" Type=\\"test.MainService.HeaderParametersParameters\\" Multiplicity=\\"0..1\\"/>
-        <End Role=\\"HeaderParametersType\\" Type=\\"test.MainService.HeaderParametersType\\" Multiplicity=\\"*\\"/>
+      <Association Name="HeaderParametersParameters_Set">
+        <End Role="HeaderParametersParameters" Type="test.MainService.HeaderParametersParameters" Multiplicity="0..1"/>
+        <End Role="HeaderParametersType" Type="test.MainService.HeaderParametersType" Multiplicity="*"/>
       </Association>
-      <Annotations Target=\\"test.MainService.Header/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Created On\\"/>
+      <Annotations Target="test.MainService.Header/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Created On"/>
       </Annotations>
-      <Annotations Target=\\"test.MainService.Header/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Created By\\"/>
+      <Annotations Target="test.MainService.Header/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Created By"/>
       </Annotations>
-      <Annotations Target=\\"test.MainService.Header/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Changed On\\"/>
+      <Annotations Target="test.MainService.Header/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Changed On"/>
       </Annotations>
-      <Annotations Target=\\"test.MainService.Header/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
+      <Annotations Target="test.MainService.Header/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Changed By"/>
       </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderParametersType/STOCK_PARAM\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+      <Annotations Target="test.MainService.HeaderParametersType/STOCK_PARAM" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.Computed" Bool="true"/>
       </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderParametersType/CURRENCY_PARAM\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
+      <Annotations Target="test.MainService.HeaderParametersType/CURRENCY_PARAM" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.Computed" Bool="true"/>
       </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderParametersType/createdAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Created On\\"/>
+      <Annotations Target="test.MainService.HeaderParametersType/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Created On"/>
       </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderParametersType/createdBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Immutable\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Created By\\"/>
+      <Annotations Target="test.MainService.HeaderParametersType/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Created By"/>
       </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderParametersType/modifiedAt\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Changed On\\"/>
+      <Annotations Target="test.MainService.HeaderParametersType/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Changed On"/>
       </Annotations>
-      <Annotations Target=\\"test.MainService.HeaderParametersType/modifiedBy\\" xmlns=\\"http://docs.oasis-open.org/odata/ns/edm\\">
-        <Annotation Term=\\"UI.HiddenFilter\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Computed\\" Bool=\\"true\\"/>
-        <Annotation Term=\\"Core.Description\\" String=\\"User's unique ID\\"/>
-        <Annotation Term=\\"Common.Label\\" String=\\"Changed By\\"/>
+      <Annotations Target="test.MainService.HeaderParametersType/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Changed By"/>
       </Annotations>
     </Schema>
   </edmx:DataServices>
@@ -133,39 +133,35 @@ exports[`integration-main GET $metadata 1`] = `
 `;
 
 exports[`integration-main GET with parameters (header - full circle) 1`] = `
-Object {
-  "d": Object {
-    "results": Array [
-      Object {
-        "Set": Object {
-          "__deferred": Object {
-            "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')/Set",
-          },
-        },
-        "__metadata": Object {
-          "type": "test.MainService.HeaderParametersParameters",
-          "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')",
-        },
+{
+  "d": {
+    "Set": {
+      "__deferred": {
+        "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')/Set",
       },
-    ],
+    },
+    "__metadata": {
+      "type": "test.MainService.HeaderParametersParameters",
+      "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')",
+    },
   },
 }
 `;
 
 exports[`integration-main GET with parameters (header - full circle) 2`] = `
-Object {
-  "d": Object {
-    "results": Array [
-      Object {
+{
+  "d": {
+    "results": [
+      {
         "CURRENCY_PARAM": "EUR",
         "ID": "00767964-cbec-4e79-a799-314a8e815c9c",
-        "Parameters": Object {
-          "__deferred": Object {
+        "Parameters": {
+          "__deferred": {
             "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'00767964-cbec-4e79-a799-314a8e815c9c')/Parameters",
           },
         },
         "STOCK_PARAM": 1,
-        "__metadata": Object {
+        "__metadata": {
           "type": "test.MainService.HeaderParametersType",
           "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'00767964-cbec-4e79-a799-314a8e815c9c')",
         },
@@ -186,54 +182,46 @@ Object {
 `;
 
 exports[`integration-main GET with parameters (header - full circle) 3`] = `
-Object {
-  "d": Object {
-    "results": Array [
-      Object {
-        "CURRENCY_PARAM": "EUR",
-        "ID": "00767964-cbec-4e79-a799-314a8e815c9c",
-        "Parameters": Object {
-          "__deferred": Object {
-            "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'00767964-cbec-4e79-a799-314a8e815c9c')/Parameters",
-          },
-        },
-        "STOCK_PARAM": 1,
-        "__metadata": Object {
-          "type": "test.MainService.HeaderParametersType",
-          "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'00767964-cbec-4e79-a799-314a8e815c9c')",
-        },
-        "country": null,
-        "createdAt": "/Date(1657711221585+0000)/",
-        "createdBy": "anonymous",
-        "currency": "EUR",
-        "description": null,
-        "modifiedAt": "/Date(1657711221585+0000)/",
-        "modifiedBy": "anonymous",
-        "name": null,
-        "price": null,
-        "stock": 1,
+{
+  "d": {
+    "CURRENCY_PARAM": "EUR",
+    "ID": "00767964-cbec-4e79-a799-314a8e815c9c",
+    "Parameters": {
+      "__deferred": {
+        "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'00767964-cbec-4e79-a799-314a8e815c9c')/Parameters",
       },
-    ],
+    },
+    "STOCK_PARAM": 1,
+    "__metadata": {
+      "type": "test.MainService.HeaderParametersType",
+      "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'00767964-cbec-4e79-a799-314a8e815c9c')",
+    },
+    "country": null,
+    "createdAt": "/Date(1657711221585+0000)/",
+    "createdBy": "anonymous",
+    "currency": "EUR",
+    "description": null,
+    "modifiedAt": "/Date(1657711221585+0000)/",
+    "modifiedBy": "anonymous",
+    "name": null,
+    "price": null,
+    "stock": 1,
   },
 }
 `;
 
 exports[`integration-main GET with parameters (header - full circle) 4`] = `
-Object {
-  "d": Object {
-    "results": Array [
-      Object {
-        "Set": Object {
-          "__deferred": Object {
-            "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')/Set",
-          },
-        },
-        "__metadata": Object {
-          "type": "test.MainService.HeaderParametersParameters",
-          "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')",
-        },
+{
+  "d": {
+    "Set": {
+      "__deferred": {
+        "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')/Set",
       },
-    ],
+    },
+    "__metadata": {
+      "type": "test.MainService.HeaderParametersParameters",
+      "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')",
+    },
   },
 }
 `;

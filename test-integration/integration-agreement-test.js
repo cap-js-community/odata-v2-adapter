@@ -29,8 +29,30 @@ describe("integration-agreement", () => {
       request,
       "/v2/agreement/AgreementItemPricingForKeyDate(datetime'2002-06-20T00:00:00')"
     );
+    expect(response.statusCode).toEqual(404);
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toEqual([]);
+    expect(response.body.error).toEqual({
+      code: "404",
+      innererror: {
+        errordetails: [
+          {
+            code: "404",
+            message: {
+              lang: "en",
+              value: "Not Found",
+            },
+            severity: "error",
+            target: "/#TRANSIENT#",
+          },
+        ],
+      },
+      message: {
+        lang: "en",
+        value: "Not Found",
+      },
+      severity: "error",
+      target: "/#TRANSIENT#",
+    });
 
     // Empty Set
     response = await util.callRead(
@@ -94,11 +116,36 @@ describe("integration-agreement", () => {
     let response = await util.callMultipart(request, "/v2/agreement/$batch", payload);
     expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
-    expect(responses.length).toEqual(2);
-    expect(responses.filter((response) => response.statusCode === 200).length).toEqual(2);
-    const [first, second] = responses;
+    expect(responses.length).toEqual(3);
+    const [first, second, third] = responses;
+    expect(first.statusCode).toEqual(200);
     expect(first.body).toEqual("2");
+    expect(second.statusCode).toEqual(200);
     expect(second.body.d.results.length).toEqual(2);
+    expect(third.statusCode).toEqual(404);
+    expect(third.statusText).toEqual("Not Found");
+    expect(third.body.error).toEqual({
+      code: "404",
+      innererror: {
+        errordetails: [
+          {
+            code: "404",
+            message: {
+              lang: "en",
+              value: "Not Found",
+            },
+            severity: "error",
+            target: "/#TRANSIENT#",
+          },
+        ],
+      },
+      message: {
+        lang: "en",
+        value: "Not Found",
+      },
+      severity: "error",
+      target: "/#TRANSIENT#",
+    });
   });
 });
 
@@ -107,7 +154,7 @@ function clean(responseBody) {
     return text.replace(/localhost:([0-9]*)/g, "localhost:00000");
   }
 
-  responseBody.d.results.forEach((entry) => {
+  function replaceAll(entry) {
     entry.__metadata.uri = replacePort(entry.__metadata.uri);
     if (entry.Set) {
       entry.Set.__deferred.uri = replacePort(entry.Set.__deferred.uri);
@@ -115,6 +162,15 @@ function clean(responseBody) {
     if (entry.Parameters) {
       entry.Parameters.__deferred.uri = replacePort(entry.Parameters.__deferred.uri);
     }
-  });
+  }
+
+  if (responseBody.d.results) {
+    responseBody.d.results.forEach((entry) => {
+      replaceAll(entry);
+    });
+  } else {
+    replaceAll(responseBody.d);
+  }
+
   return responseBody;
 }

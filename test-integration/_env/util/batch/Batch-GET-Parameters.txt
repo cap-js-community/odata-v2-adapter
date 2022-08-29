@@ -8,4 +8,9 @@ Content-Type: application/http
 
 GET AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00')/Set?$skip=0&$top=20&$orderby=keyDate%20asc HTTP/1.1
 
+--boundary
+Content-Type: application/http
+
+GET AgreementItemPricingForKeyDate(keyDate=datetime'2001-06-20T00:00:00') HTTP/1.1
+
 --boundary--
