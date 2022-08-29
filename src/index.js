@@ -3620,7 +3620,7 @@ function cov2ap(options = {}) {
     let bodyAfterBlank = false;
     let previousLineIsBlank = false;
     let index = 0;
-    let httpInfo = [];
+    let httpInfo;
     let statusCode;
     let statusCodeText;
     let contentId;
@@ -3695,7 +3695,7 @@ function cov2ap(options = {}) {
             newParts.splice(-1, 0, `${name}: ${value}`);
           });
           newParts.push(body);
-          httpInfo = [];
+          httpInfo = undefined;
           statusCode = undefined;
           statusCodeText = undefined;
           contentId = undefined;
