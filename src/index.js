@@ -903,10 +903,9 @@ function cov2ap(options = {}) {
                 req.body,
                 contentType,
                 ({ method, url }) => {
-                  return {
-                    method: method === "MERGE" ? "PATCH" : method,
-                    url: convertUrlAndSetContext(url, req),
-                  };
+                  method = convertMethod(method);
+                  url = convertUrlAndSetContext(url, req, method);
+                  return { method, url };
                 },
                 ({ contentType, body, headers, url, contentId }) => {
                   if (contentId) {
@@ -932,7 +931,8 @@ function cov2ap(options = {}) {
         proxyReq.setHeader("accept", headers.accept);
       } else {
         // Single
-        proxyReq.path = convertUrlAndSetContext(proxyReq.path, req);
+        proxyReq.method = convertMethod(proxyReq.method);
+        proxyReq.path = convertUrlAndSetContext(proxyReq.path, req, proxyReq.method);
         if (req.context.serviceRoot && (!headers.accept || headers.accept.includes("xml"))) {
           req.context.serviceRootAsXML = true;
           headers.accept = "application/json";
@@ -975,7 +975,7 @@ function cov2ap(options = {}) {
       if (headers["x-http-method"]) {
         proxyReq.method = headers["x-http-method"].toUpperCase();
       }
-      proxyReq.method = proxyReq.method === "MERGE" ? "PATCH" : proxyReq.method;
+      proxyReq.method = convertMethod(proxyReq.method);
 
       if (contentType && body !== undefined) {
         // File Upload
@@ -1004,10 +1004,14 @@ function cov2ap(options = {}) {
     }
   }
 
-  function convertUrlAndSetContext(urlPath, req) {
+  function convertMethod(method) {
+    return method === "MERGE" ? "PATCH" : method;
+  }
+
+  function convertUrlAndSetContext(urlPath, req, method) {
     const url = parseUrl(urlPath, req);
     const definition = lookupContextFromUrl(url, req);
-    enrichRequest(definition, url, urlPath, req);
+    enrichRequest(definition, url, urlPath, req, method);
     convertUrl(url, req);
     return URL.format(url);
   }
@@ -1131,8 +1135,9 @@ function cov2ap(options = {}) {
     }
   }
 
-  function enrichRequest(definition, url, urlPath, req) {
+  function enrichRequest(definition, url, urlPath, req, method) {
     req.context = {
+      method,
       url,
       urlPath,
       serviceRoot: url.contextPath.length === 0,
@@ -2142,7 +2147,7 @@ function cov2ap(options = {}) {
                 body = convertResponseError(body, headers, serviceDefinition, req);
               }
               let statusCodeText;
-              if (statusCode !== 204 && isApplicationJSON(contentType) && isEmptyJSON(body)) {
+              if (req.context.method === "GET" && statusCode !== 204 && isApplicationJSON(contentType) && isEmptyJSON(body)) {
                 statusCode = 404;
                 statusCodeText = "Not Found";
                 body = notFoundErrorResponse();
@@ -2186,7 +2191,7 @@ function cov2ap(options = {}) {
         convertHeaders(body, headers, serviceDefinition, req);
         body = convertResponseError(body, headers, serviceDefinition, req);
       }
-      if (req.method !== "HEAD" && statusCode !== 204 && isApplicationJSON(contentType) && isEmptyJSON(body)) {
+      if (req.method === "GET" && statusCode !== 204 && isApplicationJSON(contentType) && isEmptyJSON(body)) {
         statusCode = 404;
         body = notFoundErrorResponse();
       }

@@ -154,23 +154,23 @@ exports[`integration-main GET with parameters (header - full circle) 2`] = `
     "results": [
       {
         "CURRENCY_PARAM": "EUR",
-        "ID": "00767964-cbec-4e79-a799-314a8e815c9c",
+        "ID": "0048add6-07fc-45e0-816e-018c22d4d8d4",
         "Parameters": {
           "__deferred": {
-            "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'00767964-cbec-4e79-a799-314a8e815c9c')/Parameters",
+            "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'0048add6-07fc-45e0-816e-018c22d4d8d4')/Parameters",
           },
         },
         "STOCK_PARAM": 1,
         "__metadata": {
           "type": "test.MainService.HeaderParametersType",
-          "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'00767964-cbec-4e79-a799-314a8e815c9c')",
+          "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'0048add6-07fc-45e0-816e-018c22d4d8d4')",
         },
         "country": null,
-        "createdAt": "/Date(1657711221585+0000)/",
+        "createdAt": "/Date(1661789464919+0000)/",
         "createdBy": "anonymous",
         "currency": "EUR",
         "description": null,
-        "modifiedAt": "/Date(1657711221585+0000)/",
+        "modifiedAt": "/Date(1661789464919+0000)/",
         "modifiedBy": "anonymous",
         "name": null,
         "price": null,
@@ -185,23 +185,23 @@ exports[`integration-main GET with parameters (header - full circle) 3`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
-    "ID": "00767964-cbec-4e79-a799-314a8e815c9c",
+    "ID": "0048add6-07fc-45e0-816e-018c22d4d8d4",
     "Parameters": {
       "__deferred": {
-        "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'00767964-cbec-4e79-a799-314a8e815c9c')/Parameters",
+        "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'0048add6-07fc-45e0-816e-018c22d4d8d4')/Parameters",
       },
     },
     "STOCK_PARAM": 1,
     "__metadata": {
       "type": "test.MainService.HeaderParametersType",
-      "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'00767964-cbec-4e79-a799-314a8e815c9c')",
+      "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'0048add6-07fc-45e0-816e-018c22d4d8d4')",
     },
     "country": null,
-    "createdAt": "/Date(1657711221585+0000)/",
+    "createdAt": "/Date(1661789464919+0000)/",
     "createdBy": "anonymous",
     "currency": "EUR",
     "description": null,
-    "modifiedAt": "/Date(1657711221585+0000)/",
+    "modifiedAt": "/Date(1661789464919+0000)/",
     "modifiedBy": "anonymous",
     "name": null,
     "price": null,
