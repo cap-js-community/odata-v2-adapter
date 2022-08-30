@@ -2154,8 +2154,9 @@ function cov2ap(options = {}) {
                 isEmptyJSON(body)
               ) {
                 statusCode = 404;
-                statusCodeText = "Not Found";
                 body = notFoundErrorResponse();
+                statusCodeText = body.error.message;
+                body = convertResponseError(body, headers, serviceDefinition, req);
               }
               if (body && statusCode !== 204) {
                 setContentLength(headers, body);
@@ -2198,7 +2199,8 @@ function cov2ap(options = {}) {
       }
       if (req.method === "GET" && statusCode !== 204 && isApplicationJSON(contentType) && isEmptyJSON(body)) {
         statusCode = 404;
-        body = notFoundErrorResponse();
+        const serviceDefinition = initContext(req);
+        body = convertResponseError(notFoundErrorResponse(), headers, serviceDefinition, req);
       }
       if (body && !(headers["transfer-encoding"] || "").includes("chunked") && statusCode !== 204) {
         setContentLength(headers, body);
@@ -3298,30 +3300,13 @@ function cov2ap(options = {}) {
   }
 
   function notFoundErrorResponse() {
-    return JSON.stringify({
+    return {
       error: {
         code: "404",
-        message: {
-          lang: "en",
-          value: "Not Found",
-        },
+        message: "Not Found",
         severity: "error",
-        target: "/#TRANSIENT#",
-        innererror: {
-          errordetails: [
-            {
-              code: "404",
-              message: {
-                lang: "en",
-                value: "Not Found",
-              },
-              severity: "error",
-              target: "/#TRANSIENT#",
-            },
-          ],
-        },
       },
-    });
+    };
   }
 
   function propagateHeaders(req, addHeaders = {}) {
