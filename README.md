@@ -100,7 +100,7 @@ needs to be set.
 
 - `[cov2ap] - Service`: Invalid service definition (name, path)
 - `[cov2ap] - Context`: Invalid (sub-)definition (name, path)
-- `[cov2ap] - ContentDisposition`: Content disposition info
+- `[cov2ap] - ContentDisposition`: Content disposition warning
 
 #### cds.log.levels.cov2ap: "info"
 
