@@ -147,6 +147,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} options.calcContentDisposition: Calculate content disposition for media streams even if already available. Default is false.
  * @param {boolean} options.quoteSearch: Specifies if search expression is quoted automatically. Default is true.
  * @param {boolean} options.fixDraftRequests: Specifies if unsupported draft requests are converted to a working version. Default is false.
+ * @param {boolean} options.changesetDeviationLogLevel: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
  * @returns {express.Router} CDS OData V2 Adapter Proxy Express Router
  */
 function cov2ap(options = {}) {
@@ -193,6 +194,7 @@ function cov2ap(options = {}) {
   const calcContentDisposition = optionWithFallback("calcContentDisposition", false);
   const quoteSearch = optionWithFallback("quoteSearch", true);
   const fixDraftRequests = optionWithFallback("fixDraftRequests", false);
+  const changesetDeviationLogLevel = optionWithFallback("changesetDeviationLogLevel", "info");
 
   if (caseInsensitive) {
     Object.assign(FilterFunctions, FilterFunctionsCaseInsensitive);
@@ -601,9 +603,9 @@ function cov2ap(options = {}) {
       }
     }
     if (!serviceName || !req.csn.definitions[serviceName] || req.csn.definitions[serviceName].kind !== "service") {
-      logWarning(req, "Service", "Service definition not found for request path", {
-        requestPath: servicePath,
-        serviceName,
+      logWarn(req, "Service", "Invalid service", {
+        name: serviceName,
+        path: servicePath,
       });
       serviceValid = false;
     }
@@ -1048,9 +1050,9 @@ function cov2ap(options = {}) {
     return url;
   }
 
-  function lookupContextFromUrl(url, req, context) {
+  function lookupContextFromUrl(url, req) {
     req.lookupContext = {};
-    return contextFromUrl(url, req, context);
+    return contextFromUrl(url, req);
   }
 
   function contextFromUrl(url, req, context, suppressWarning) {
@@ -1063,7 +1065,7 @@ function cov2ap(options = {}) {
       if (keyStart !== -1) {
         part = part.substr(0, keyStart);
       }
-      context = lookupContext(part, context, req, suppressWarning);
+      context = lookupContext(part, context, req, suppressWarning, url.contextPath);
       if (!context) {
         stop = true;
       }
@@ -1071,7 +1073,7 @@ function cov2ap(options = {}) {
     }, context);
   }
 
-  function lookupContext(name, context, req, suppressWarning) {
+  function lookupContext(name, context, req, suppressWarning, path) {
     if (!name) {
       return context;
     }
@@ -1088,8 +1090,9 @@ function cov2ap(options = {}) {
         }
         enhanceParametersDefinition(context, req);
         if (!context && !suppressWarning) {
-          logWarning(req, "Context", "Definition name not found", {
+          logWarn(req, "Context", "Invalid definition", {
             name,
+            path,
           });
         }
         if (context && (context.kind === "function" || context.kind === "action")) {
@@ -1128,8 +1131,9 @@ function cov2ap(options = {}) {
         return context;
       }
       if (!suppressWarning) {
-        logWarning(req, "Context", "Definition name not found", {
+        logWarn(req, "Context", "Invalid sub-definition", {
           name,
+          path,
         });
       }
     }
@@ -1202,7 +1206,7 @@ function cov2ap(options = {}) {
           keyPart = part.substring(keyStart + 1, keyEnd);
           part = part.substr(0, keyStart);
         }
-        context = lookupContext(part, context, req);
+        context = lookupContext(part, context, req, false, url.contextPath);
         if (!context) {
           stop = true;
         }
@@ -1901,7 +1905,7 @@ function cov2ap(options = {}) {
           if (part === req.context.parameters.type) {
             part = req.context.parameters.entity;
           }
-          context = lookupContext(part, context, req);
+          context = lookupContext(part, context, req, false, url.contextPath);
           if (!context) {
             stop = true;
           }
@@ -2174,9 +2178,9 @@ function cov2ap(options = {}) {
               req.contentIdOrder.every((contentId, index) => contentId === resContentIdOrder[index])
             )
           ) {
-            logWarning(req, "Batch", "Response changeset order does not match request changeset order", {
-              requestContentIds: req.contentIdOrder,
-              responseContentIds: resContentIdOrder,
+            log(changesetDeviationLogLevel, req, "Batch", "Changeset order deviation", {
+              req: req.contentIdOrder,
+              res: resContentIdOrder,
             });
           }
           if (statusCode === 200) {
@@ -2303,7 +2307,7 @@ function cov2ap(options = {}) {
                   )}"`;
                 }
               } else {
-                logWarning(req, "ContentDisposition", await response.text());
+                logWarn(req, "ContentDisposition", await response.text());
               }
             }
           }
@@ -2470,7 +2474,7 @@ function cov2ap(options = {}) {
           keyPart = part.substring(keyStart + 1, keyEnd);
           part = part.substr(0, keyStart);
         }
-        context = lookupContext(part, context, req);
+        context = lookupContext(part, context, req, false, messageTarget);
         if (!context) {
           stop = true;
         }
@@ -3778,7 +3782,7 @@ function cov2ap(options = {}) {
       const _url = url || "";
       const _headers = JSON.stringify(headers || {});
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
-      trace(req, name, `${method} ${_url}`, _headers && "Headers:", _headers, _body && "Body:", _body);
+      logDebug(req, name, `${method} ${_url}`, _headers && "Headers:", _headers, _body && "Body:", _body);
     }
   }
 
@@ -3786,7 +3790,7 @@ function cov2ap(options = {}) {
     if (LOG._debug) {
       const _headers = JSON.stringify(headers || {});
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
-      trace(
+      logDebug(
         req,
         name,
         `${statusCode || ""} ${statusMessage || ""}`,
@@ -3798,24 +3802,53 @@ function cov2ap(options = {}) {
     }
   }
 
-  function trace(req, name, ...lines) {
+  function logError(req, name, error) {
+    if (LOG._error) {
+      initCDSContext(req);
+      LOG.error(`${name}:`, error);
+    }
+  }
+
+  function logWarn(req, name, message, info) {
+    if (LOG._warn) {
+      initCDSContext(req);
+      LOG.warn(`${name}:`, message, info);
+    }
+  }
+
+  function logInfo(req, name, message, info) {
+    if (LOG._info) {
+      initCDSContext(req);
+      LOG.info(`${name}:`, message, info);
+    }
+  }
+
+  function logDebug(req, name, ...lines) {
     if (LOG._debug) {
       initCDSContext(req);
       LOG.debug(name, lines.filter((line) => !!line).join("\n"));
     }
   }
 
-  function logError(req, name, error) {
-    if (LOG._error) {
-      initCDSContext(req);
-      LOG.error(name, error);
-    }
-  }
-
-  function logWarning(req, name, message, info) {
-    if (LOG._warn) {
-      initCDSContext(req);
-      LOG.warn(name, message, info);
+  function log(level, req, name, message, info) {
+    let error;
+    switch (level.toLocaleString()) {
+      case "error":
+        error = new Error(message);
+        error.info = info;
+        logError(req, name, error);
+        break;
+      case "warn":
+        logWarn(req, name, message, info);
+        break;
+      case "info":
+        logInfo(req, name, message, info);
+        break;
+      case "debug":
+        logDebug(req, name, info);
+        break;
+      default:
+        return;
     }
   }
 

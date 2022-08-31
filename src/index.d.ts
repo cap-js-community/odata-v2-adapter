@@ -156,4 +156,9 @@ type Options = {
      * Specifies if unsupported draft requests are converted to a working version. Default is false.
      */
     fixDraftRequests?: boolean | false,
+
+    /**
+     * Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
+     */
+    changesetDeviationLogLevel?: String | "info",
 };

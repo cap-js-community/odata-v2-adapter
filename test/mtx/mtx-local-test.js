@@ -100,7 +100,7 @@ describe("mtx", () => {
     expect(response.text).toEqual("Internal Server Error");
     expect(consoleSpy).toHaveBeenCalledWith(
       "[cov2ap] -",
-      "MetadataRequest",
+      "MetadataRequest:",
       expect.objectContaining(new Error("MTX isExtended Error"))
     );
     consoleSpy.mockClear();
@@ -116,7 +116,7 @@ describe("mtx", () => {
     expect(response.text).toEqual("Internal Server Error");
     expect(consoleSpy).toHaveBeenCalledWith(
       "[cov2ap] -",
-      "MetadataRequest",
+      "MetadataRequest:",
       expect.objectContaining(new Error("MTX getCsn Error"))
     );
     consoleSpy.mockClear();
@@ -132,7 +132,7 @@ describe("mtx", () => {
     expect(response.text).toEqual("Internal Server Error");
     expect(consoleSpy).toHaveBeenCalledWith(
       "[cov2ap] -",
-      "MetadataRequest",
+      "MetadataRequest:",
       expect.objectContaining(new Error("MTX getEdmx Error"))
     );
     consoleSpy.mockClear();
