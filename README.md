@@ -150,7 +150,7 @@ The resulting EDMX V2 may be invalid and not processable by an OData V2 client. 
 early to detect modelling incompatibilities, the severity for respective codes can be increased to `Error`,
 by setting the following environment variables:
 
-```
+```json
 "cdsc": {
     "severities": {
       "odata-spec-violation-array": "Error",
