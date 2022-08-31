@@ -147,7 +147,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} options.calcContentDisposition: Calculate content disposition for media streams even if already available. Default is false.
  * @param {boolean} options.quoteSearch: Specifies if search expression is quoted automatically. Default is true.
  * @param {boolean} options.fixDraftRequests: Specifies if unsupported draft requests are converted to a working version. Default is false.
- * @param {boolean} options.changesetDeviationLogLevel: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
+ * @param {string} options.changesetDeviationLogLevel: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
  * @returns {express.Router} CDS OData V2 Adapter Proxy Express Router
  */
 function cov2ap(options = {}) {
