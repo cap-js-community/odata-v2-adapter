@@ -3359,6 +3359,7 @@ function cov2ap(options = {}) {
     return (
       contentType &&
       (contentType.startsWith("application/xml") ||
+        contentType.startsWith("application/atom+xml") ||
         contentType.startsWith("application/atomsvc+xml") ||
         contentType.startsWith("text/xml") ||
         contentType.startsWith("text/html"))
