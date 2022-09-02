@@ -1154,6 +1154,7 @@ function cov2ap(options = {}) {
       boundDefinition: null,
       returnDefinition: null,
       bodyParameters: {},
+      selects: [],
       $entityValue: false,
       $value: false,
       $count: false,
@@ -1584,8 +1585,8 @@ function cov2ap(options = {}) {
         });
       }
       if (url.query["$select"]) {
-        const selects = url.query["$select"].split(",");
-        selects.forEach((select) => {
+        req.context.selects = url.query["$select"].split(",");
+        req.context.selects.forEach((select) => {
           let current = context;
           let currentDefinition = definition;
           select.split("/").forEach((part) => {
@@ -2700,16 +2701,17 @@ function cov2ap(options = {}) {
     return [body.d];
   }
 
-  function convertResponseData(data, headers, definition, proxyBody, req) {
+  function convertResponseData(data, headers, definition, proxyBody, req, selects) {
     if (data === null) {
       return;
     }
     if (!Array.isArray(data)) {
-      return convertResponseData([data], headers, definition, proxyBody, req);
+      return convertResponseData([data], headers, definition, proxyBody, req, selects);
     }
     if (!definition) {
       return;
     }
+    selects = selects || req.context.selects || [];
     const elements = definitionElements(definition);
     // Recursion
     data.forEach((data) => {
@@ -2720,7 +2722,13 @@ function cov2ap(options = {}) {
         }
         const type = elementType(element, req);
         if (type === "cds.Composition" || type === "cds.Association") {
-          convertResponseData(data[key], headers, element._target, proxyBody, req);
+          const subSelects = selects.reduce((results, select) => {
+            if (select.startsWith(`${element.name}/`)) {
+              results.push(select.substring(element.name.length + 1));
+            }
+            return results;
+          }, []);
+          convertResponseData(data[key], headers, element._target, proxyBody, req, subSelects);
         }
       });
     });
@@ -2730,7 +2738,7 @@ function cov2ap(options = {}) {
     });
     // Deferreds
     data.forEach((data) => {
-      addDeferreds(data, headers, definition, elements, proxyBody, req);
+      addDeferreds(data, headers, definition, elements, proxyBody, req, selects);
     });
     // Modify Payload
     data.forEach((data) => {
@@ -3056,41 +3064,50 @@ function cov2ap(options = {}) {
     });
   }
 
-  function addDeferreds(data, headers, definition, elements, root, req) {
+  function addDeferreds(data, headers, definition, elements, root, req, selects) {
     if (definition.kind !== "entity" || req.context.$apply) {
       return;
     }
+    selects = selects.map((select) => {
+      return select.split("/")[0];
+    });
     const _entityUri = entityUri(data, definition, elements, req);
     for (let key of structureKeys(elements)) {
       const element = elements[key];
       const type = elementType(element, req);
       if (element && (type === "cds.Composition" || type === "cds.Association")) {
         if (data[key] === undefined) {
-          if (fixDraftRequests && req.context.expandSiblingEntity && key === "SiblingEntity") {
-            data[key] = null;
-          } else {
-            data[key] = {
-              __deferred: {
-                uri: `${_entityUri}/${key}`,
-              },
-            };
+          if (selects.length === 0 || selects.includes(key)) {
+            if (fixDraftRequests && req.context.expandSiblingEntity && key === "SiblingEntity") {
+              data[key] = null;
+            } else {
+              data[key] = {
+                __deferred: {
+                  uri: `${_entityUri}/${key}`,
+                },
+              };
+            }
           }
         }
       }
     }
     if (definition.kind === "entity" && definition.params && req.context.parameters) {
       if (req.context.parameters.kind === "Parameters") {
-        data.Set = {
-          __deferred: {
-            uri: `${_entityUri}/Set`,
-          },
-        };
+        if (selects.length === 0 || selects.includes("Set")) {
+          data.Set = {
+            __deferred: {
+              uri: `${_entityUri}/Set`,
+            },
+          };
+        }
       } else if (req.context.parameters.kind === "Set") {
-        data.Parameters = {
-          __deferred: {
-            uri: `${_entityUri}/Parameters`,
-          },
-        };
+        if (selects.length === 0 || selects.includes("Parameters")) {
+          data.Parameters = {
+            __deferred: {
+              uri: `${_entityUri}/Parameters`,
+            },
+          };
+        }
       }
     }
   }

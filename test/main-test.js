@@ -339,6 +339,95 @@ describe("main", () => {
     });
   });
 
+  it("GET request with $select on deferreds", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      name: "Test",
+      Items: [
+        {
+          name: "TestItem",
+        },
+      ],
+    });
+    expect(response.statusCode).toEqual(201);
+    const id = response.body.d.ID;
+    const itemId = response.body.d.Items.results[0].ID;
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}'&$select=ID,name`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toEqual([
+      {
+        __metadata: {
+          type: "test.MainService.Header",
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
+        },
+        ID: id,
+        name: "Test",
+      },
+    ]);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}'&$select=ID,name,Items`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toEqual([
+      {
+        __metadata: {
+          type: "test.MainService.Header",
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
+        },
+        ID: id,
+        name: "Test",
+        Items: {
+          __deferred: {
+            uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')/Items`,
+          },
+        },
+      },
+    ]);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}'&$select=ID,name,Items/ID`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toEqual([
+      {
+        __metadata: {
+          type: "test.MainService.Header",
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
+        },
+        ID: id,
+        name: "Test",
+        Items: {
+          __deferred: {
+            uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')/Items`,
+          },
+        },
+      },
+    ]);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}'&$select=ID,name,Items/ID&$expand=Items`
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toEqual([
+      {
+        __metadata: {
+          type: "test.MainService.Header",
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
+        },
+        ID: id,
+        name: "Test",
+        Items: {
+          results: [
+            {
+              ID: itemId,
+              __metadata: {
+                type: "test.MainService.HeaderItem",
+                uri: `http://${response.request.host.replace(
+                  "127.0.0.1",
+                  "localhost"
+                )}/v2/main/HeaderItem(guid'${itemId}')`,
+              },
+            },
+          ],
+        },
+      },
+    ]);
+  });
+
   it("GET request with search", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",
@@ -368,7 +457,7 @@ describe("main", () => {
     response = await util.callRead(request, `/v2/main/Header/$count?search=""`);
     expect(response.text).toEqual("0");
     response = await util.callRead(request, `/v2/main/Header/$count?search=`);
-    expect(response.text).toEqual("11");
+    expect(response.text).toEqual("12");
     response = await util.callRead(request, `/v2/main/Header/$count?search="""`);
     expect(response.text).toEqual("0");
     response = await util.callRead(request, `/v2/main/Header/$count?search=Search"Quote"`);

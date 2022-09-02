@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Respect `$select` filter for deferreds structure
+
 ## Version 1.9.6 - 2022-09-01
 
 ### Fixed
