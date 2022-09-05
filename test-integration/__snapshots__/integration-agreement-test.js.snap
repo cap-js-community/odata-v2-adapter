@@ -466,7 +466,7 @@ exports[`integration-agreement GET $metadata 1`] = `
             <PropertyValue Property="RestrictedProperties">
               <Collection>
                 <Record Type="Capabilities.NavigationPropertyRestriction">
-                  <PropertyValue Property="NavigationProperty" NavigationPropertyPath="Set/Parameters"/>
+                  <PropertyValue Property="NavigationProperty" NavigationPropertyPath="Parameters"/>
                   <PropertyValue Property="FilterRestrictions">
                     <Record Type="Capabilities.FilterRestrictionsType">
                       <PropertyValue Property="Filterable" Bool="false"/>
