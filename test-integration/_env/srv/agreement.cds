@@ -31,6 +31,7 @@ service AgreementService {
     @Capabilities.SortRestrictions: {
         NonSortableProperties : [keyDate]
     }
+    @cds.redirection.target: false
     entity AgreementItemPricingForKeyDate(keyDate: Date not null) as
     select
       key : keyDate as keyDate,
