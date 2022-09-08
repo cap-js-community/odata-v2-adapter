@@ -87,31 +87,31 @@ needs to be set.
 
 #### cds.log.levels.cov2ap: "error"
 
-- `[cov2ap] - Authorization`: Authorization header parsing error
-- `[cov2ap] - MetadataRequest`: Metadata request processing error
-- `[cov2ap] - Request`: Request processing error
-- `[cov2ap] - Response`: Response processing error
-- `[cov2ap] - Batch`: Batch processing error
-- `[cov2ap] - AggregationKey`: Aggregation key error
-- `[cov2ap] - MediaStream`: Media stream processing error
-- `[cov2ap] - FileUpload`: File upload processing error
+- `cov2ap/Authorization`: Authorization header parsing error
+- `cov2ap/MetadataRequest`: Metadata request processing error
+- `cov2ap/Request`: Request processing error
+- `cov2ap/Response`: Response processing error
+- `cov2ap/Batch`: Batch processing error
+- `cov2ap/AggregationKey`: Aggregation key error
+- `cov2ap/MediaStream`: Media stream processing error
+- `cov2ap/FileUpload`: File upload processing error
 
 #### cds.log.levels.cov2ap: "warn"
 
-- `[cov2ap] - Service`: Invalid service definition (name, path)
-- `[cov2ap] - Context`: Invalid (sub-)definition (name, path)
-- `[cov2ap] - ContentDisposition`: Content disposition warning
+- `cov2ap/Service`: Invalid service definition (name, path)
+- `cov2ap/Context`: Invalid (sub-)definition (name, path)
+- `cov2ap/ContentDisposition`: Content disposition warning
 
 #### cds.log.levels.cov2ap: "info"
 
-- `[cov2ap] - Batch`: Changeset order deviation (req, res)
+- `cov2ap/Batch`: Changeset order deviation (req, res)
 
 #### cds.log.levels.cov2ap: "debug"
 
-- `[cov2ap] - Request`: Log OData V2 client request (url, headers, body)
-- `[cov2ap] - ProxyRequest`: Log OData V4 proxy request (url, headers, body)
-- `[cov2ap] - ProxyResponse`: Log OData V4 proxy response (status code/message, headers, body)
-- `[cov2ap] - Response`: Log OData V2 client response (status code/message, headers, body)
+- `cov2ap/Request`: Log OData V2 client request (url, headers, body)
+- `cov2ap/ProxyRequest`: Log OData V4 proxy request (url, headers, body)
+- `cov2ap/ProxyResponse`: Log OData V4 proxy response (status code/message, headers, body)
+- `cov2ap/Response`: Log OData V2 client response (status code/message, headers, body)
 
 ### CDS Annotations
 

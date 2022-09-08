@@ -10,8 +10,6 @@ const cds = require("@sap/cds");
 const { promisify } = require("util");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
-const LOG = cds.log("cov2ap");
-
 const SeverityMap = {
   1: "success",
   2: "info",
@@ -769,10 +767,6 @@ function cov2ap(options = {}) {
     return edmx;
   }
 
-  function localName(name) {
-    return name.split(".").pop();
-  }
-
   async function callCached(cache, field, call) {
     if (!cache[field]) {
       cache[field] = call();
@@ -785,16 +779,10 @@ function cov2ap(options = {}) {
     }
   }
 
-  function localEntityName(definition, req) {
-    const parts = definition.name.split(".");
-    const localName = [parts.pop()];
-    while (parts.length > 0) {
-      const context = req.csn.definitions[parts.join(".")];
-      if (context && context.kind === "entity") {
-        localName.unshift(parts.pop());
-      } else {
-        break;
-      }
+  function localName(definition, req) {
+    let localName = definition.name;
+    if (isServiceName(definition.name, req)) {
+      localName = odataName(definition.name, req);
     }
     const nameSuffix =
       definition.kind === "entity" &&
@@ -803,7 +791,19 @@ function cov2ap(options = {}) {
       req.context.parameters.kind === "Set"
         ? "Set"
         : "";
-    return localName.join("_") + nameSuffix;
+    return localName + nameSuffix;
+  }
+
+  function isServiceName(name, req) {
+    return name.startsWith(`${req.service}.`);
+  }
+
+  function odataName(name, req) {
+    return name.substring(`${req.service}.`.length).replace(/\./g, "_");
+  }
+
+  function qualifiedODataName(name, req) {
+    return `${req.service}.${odataName(name, req)}`;
   }
 
   function qualifiedName(name, req) {
@@ -812,8 +812,22 @@ function cov2ap(options = {}) {
   }
 
   function lookupDefinition(name, req) {
+    if (["$metadata"].includes(name) || name.startsWith("cds.") || name.startsWith("Edm.")) {
+      return;
+    }
     const definitionName = qualifiedName(name, req);
-    return req.csn.definitions[definitionName] || req.csn.definitions[name];
+    const definition = req.csn.definitions[definitionName] || req.csn.definitions[name];
+    if (definition) {
+      return definition;
+    }
+    for (const name in req.csn.definitions) {
+      if (!isServiceName(name, req)) {
+        continue;
+      }
+      if (definitionName === qualifiedODataName(name, req)) {
+        return req.csn.definitions[name];
+      }
+    }
   }
 
   function lookupBoundDefinition(name, req) {
@@ -855,8 +869,8 @@ function cov2ap(options = {}) {
       if (definition && definition.kind === "entity" && definition.params) {
         req.lookupContext.parameters = {
           kind: definitionKind,
-          entity: localName(definitionName),
-          type: localName(definitionTypeName),
+          entity: localName(definition, req),
+          type: localName({ name: definitionTypeName }, req),
           values: {},
           keys: {},
           count: false,
@@ -870,8 +884,8 @@ function cov2ap(options = {}) {
     if (context && context.kind === "entity" && context.params) {
       req.lookupContext.parameters = req.lookupContext.parameters || {
         kind: "Parameters",
-        entity: localName(context.name),
-        type: localName(context.name),
+        entity: localName(context, req),
+        type: localName(context, req),
         values: {},
         keys: {},
         count: false,
@@ -1385,7 +1399,7 @@ function cov2ap(options = {}) {
 
   function convertUrlDataTypesForFilterElements(part, entity, req, path = "", depth = 0) {
     const elements = definitionElements(entity);
-    for (let name of structureKeys(elements)) {
+    for (const name of structureKeys(elements)) {
       const namePath = (path ? `${path}/` : "") + name;
       if (part.content.includes(namePath)) {
         const element = elements[name];
@@ -1435,7 +1449,7 @@ function cov2ap(options = {}) {
     if (!(definition && (definition.kind === "function" || definition.kind === "action"))) {
       return;
     }
-    const operationLocalName = localEntityName(definition, req);
+    const operationLocalName = localName(definition, req);
     let reqContextPathSuffix = "";
     if (url.contextPath.startsWith(operationLocalName)) {
       reqContextPathSuffix = url.contextPath.substr(operationLocalName.length);
@@ -1443,7 +1457,7 @@ function cov2ap(options = {}) {
     }
     // Key Parameters
     if (definition.parent && definition.parent.kind === "entity") {
-      url.contextPath = localEntityName(definition.parent, req);
+      url.contextPath = localName(definition.parent, req);
       url.contextPath += `(${structureKeys(definitionKeys(definition.parent))
         .reduce((result, name) => {
           const parentElements = definitionElements(definition.parent);
@@ -2616,7 +2630,7 @@ function cov2ap(options = {}) {
     }
 
     if (req.context.operation) {
-      const localOperationName = localName(req.context.operation.name);
+      const localOperationName = localName(req.context.operation, req);
       const isArrayResult = Array.isArray(body.d.results) || Array.isArray(body.d);
       if (req.context.definition.kind === "type") {
         if (returnComplexNested && !isArrayResult) {
@@ -3072,7 +3086,7 @@ function cov2ap(options = {}) {
       return select.split("/")[0];
     });
     const _entityUri = entityUri(data, definition, elements, req);
-    for (let key of structureKeys(elements)) {
+    for (const key of structureKeys(elements)) {
       const element = elements[key];
       const type = elementType(element, req);
       if (element && (type === "cds.Composition" || type === "cds.Association")) {
@@ -3134,9 +3148,9 @@ function cov2ap(options = {}) {
       const definition = req.context.requestDefinition;
       if (definition) {
         if (definition.kind === "entity") {
-          resourceStartPath = localEntityName(definition, req);
+          resourceStartPath = localName(definition, req);
         } else if (definition.kind === "function" || definition.kind === "action") {
-          resourceStartPath = localEntityName(definition.parent || definition, req);
+          resourceStartPath = localName(definition.parent || definition, req);
         }
       }
       const parts = [];
@@ -3162,7 +3176,7 @@ function cov2ap(options = {}) {
   }
 
   function entityUriCollection(entity, req) {
-    return `${serviceUri(req)}${localEntityName(entity, req)}`;
+    return `${serviceUri(req)}${localName(entity, req)}`;
   }
 
   function entityUriKey(key, entity, req) {
@@ -3476,7 +3490,7 @@ function cov2ap(options = {}) {
     if (element) {
       type = element.type;
       if (element["@odata.Type"] || element["@odata.type"]) {
-        const odataType = localName(element["@odata.Type"] || element["@odata.type"]);
+        const odataType = (element["@odata.Type"] || element["@odata.type"]).split(".").pop();
         if (odataType && DataTypeOData[odataType]) {
           type = DataTypeOData[odataType];
         }
@@ -3796,6 +3810,7 @@ function cov2ap(options = {}) {
   }
 
   function traceRequest(req, name, method, url, headers, body) {
+    const LOG = cds.log(`cov2ap/${name}`);
     if (LOG._debug) {
       const _url = url || "";
       const _headers = JSON.stringify(headers || {});
@@ -3805,6 +3820,7 @@ function cov2ap(options = {}) {
   }
 
   function traceResponse(req, name, statusCode, statusMessage, headers, body) {
+    const LOG = cds.log(`cov2ap/${name}`);
     if (LOG._debug) {
       const _headers = JSON.stringify(headers || {});
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
@@ -3821,30 +3837,34 @@ function cov2ap(options = {}) {
   }
 
   function logError(req, name, error) {
+    const LOG = cds.log(`cov2ap/${name}`);
     if (LOG._error) {
       initCDSContext(req);
-      LOG.error(`${name}:`, error);
+      LOG.error(error);
     }
   }
 
   function logWarn(req, name, message, info) {
+    const LOG = cds.log(`cov2ap/${name}`);
     if (LOG._warn) {
       initCDSContext(req);
-      LOG.warn(`${name}:`, message, info);
+      LOG.warn(message, info);
     }
   }
 
   function logInfo(req, name, message, info) {
+    const LOG = cds.log(`cov2ap/${name}`);
     if (LOG._info) {
       initCDSContext(req);
-      LOG.info(`${name}:`, message, info);
+      LOG.info(message, info);
     }
   }
 
   function logDebug(req, name, ...lines) {
+    const LOG = cds.log(`cov2ap/${name}`);
     if (LOG._debug) {
       initCDSContext(req);
-      LOG.debug(name, lines.filter((line) => !!line).join("\n"));
+      LOG.debug(lines.filter((line) => !!line).join("\n"));
     }
   }
 
@@ -3871,12 +3891,11 @@ function cov2ap(options = {}) {
   }
 
   function initCDSContext(req) {
-    cds.context = cds.context || {
-      id: req.contextId,
-      tenant: req.tenant,
-      user: req.user,
-      _: { req, res: req.res },
-    };
+    cds.context = cds.context || {};
+    cds.context.id = cds.context.id || req.contextId;
+    cds.context.tenant = cds.context.tenant || req.tenant;
+    cds.context.user = cds.context.user || req.user;
+    cds.context._ = cds.context._ || { id: req.contextId, req };
   }
 
   return router;

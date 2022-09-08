@@ -3366,4 +3366,298 @@ describe("main", () => {
       },
     });
   });
+
+  it("GET service entity with scoped name", async () => {
+    let response = await util.callRead(request, "/v2/main/context_Name_space_v2");
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+            name: "Test",
+            __metadata: {
+              type: "test.MainService.context.Name_space.v2",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/main/context_Name_space_v2(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+            },
+          },
+        ],
+      },
+    });
+    response = await util.callRead(
+      request,
+      "/v2/main/context_Name_space_v2(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')"
+    );
+    expect(response.body).toMatchObject({
+      d: {
+        ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+        name: "Test",
+        __metadata: {
+          type: "test.MainService.context.Name_space.v2",
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/main/context_Name_space_v2(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+        },
+      },
+    });
+  });
+
+  it("GET localized service entity", async () => {
+    let response = await util.callRead(request, "/v2/main/LocalizedEntity");
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+            name: "Test-DE",
+            texts: {
+              __deferred: {
+                uri: `http://${response.request.host.replace(
+                  "127.0.0.1",
+                  "localhost"
+                )}/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
+              },
+            },
+            localized: {
+              __deferred: {
+                uri: `http://${response.request.host.replace(
+                  "127.0.0.1",
+                  "localhost"
+                )}/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
+              },
+            },
+            __metadata: {
+              type: "test.MainService.LocalizedEntity",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+            },
+          },
+        ],
+      },
+    });
+    const id = response.body.d.results[0].ID;
+    response = await util.callRead(request, `/v2/main/LocalizedEntity(guid'${id}')`);
+    expect(response.body).toMatchObject({
+      d: {
+        ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+        name: "Test-DE",
+        texts: {
+          __deferred: {
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
+          },
+        },
+        localized: {
+          __deferred: {
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
+          },
+        },
+        __metadata: {
+          type: "test.MainService.LocalizedEntity",
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+        },
+      },
+    });
+    response = await util.callRead(request, `/v2/main/LocalizedEntity(guid'${id}')/texts`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            locale: "en",
+            ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+            name: "Test-DE",
+            __metadata: {
+              type: "test.MainService.LocalizedEntity_texts",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/main/LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+            },
+          },
+        ],
+      },
+    });
+    response = await util.callRead(
+      request,
+      "/v2/main/LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')"
+    );
+    expect(response.statusCode).toEqual(405);
+    expect(response.body).toMatchObject({
+      error: {
+        code: "405",
+        message: {
+          lang: "en",
+          value: 'Entity "test.MainService.LocalizedEntity_texts" is not explicitly exposed as part of the service',
+        },
+        severity: "error",
+        target: "/#TRANSIENT#",
+        innererror: {
+          errordetails: [
+            {
+              code: "405",
+              message: {
+                lang: "en",
+                value:
+                  'Entity "test.MainService.LocalizedEntity_texts" is not explicitly exposed as part of the service',
+              },
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
+        },
+      },
+    });
+  });
+
+  it("GET localized service entity with scoped name", async () => {
+    let response = await util.callRead(request, "/v2/main/context_LocalizedEntity");
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+            name: "Test-DE",
+            texts: {
+              __deferred: {
+                uri: `http://${response.request.host.replace(
+                  "127.0.0.1",
+                  "localhost"
+                )}/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
+              },
+            },
+            localized: {
+              __deferred: {
+                uri: `http://${response.request.host.replace(
+                  "127.0.0.1",
+                  "localhost"
+                )}/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
+              },
+            },
+            __metadata: {
+              type: "test.MainService.context.LocalizedEntity",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+            },
+          },
+        ],
+      },
+    });
+    const id = response.body.d.results[0].ID;
+    response = await util.callRead(request, `/v2/main/context_LocalizedEntity(guid'${id}')`);
+    expect(response.body).toMatchObject({
+      d: {
+        ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+        name: "Test-DE",
+        texts: {
+          __deferred: {
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
+          },
+        },
+        localized: {
+          __deferred: {
+            uri: `http://${response.request.host.replace(
+              "127.0.0.1",
+              "localhost"
+            )}/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
+          },
+        },
+        __metadata: {
+          type: "test.MainService.context.LocalizedEntity",
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+        },
+      },
+    });
+    response = await util.callRead(request, `/v2/main/context_LocalizedEntity(guid'${id}')/texts`);
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            locale: "en",
+            ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+            name: "Test-DE",
+            __metadata: {
+              type: "test.MainService.context.LocalizedEntity.texts",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+            },
+          },
+        ],
+      },
+    });
+    response = await util.callRead(
+      request,
+      "/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')"
+    );
+    expect(response.body).toMatchObject({
+      d: {
+        locale: "en",
+        ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+        name: "Test-DE",
+        __metadata: {
+          type: "test.MainService.context.LocalizedEntity.texts",
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost"
+          )}/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+        },
+      },
+    });
+  });
+
+  // TODO: Enable Test (https://github.tools.sap/cap/issues/issues/12350)
+  it.skip("GET unbound service action with scoped name", async () => {
+    const response = await util.callWrite(request, "/v2/main/unbound_Action?num=1&text=abc");
+    expect(response.body).toMatchObject({
+      d: {
+        unbound_Action: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
+        },
+      },
+    });
+  });
+
+  // TODO: Enable Test (https://github.tools.sap/cap/issues/issues/12350)
+  it.skip("GET unbound service function with scoped name", async () => {
+    const response = await util.callRead(request, "/v2/main/unbound_Function?num=1&text=abc");
+    expect(response.body).toMatchObject({
+      d: {
+        unbound_Function: {
+          age: 1,
+          code: "TEST",
+          name: "abc",
+          __metadata: {
+            type: "test.MainService.Result",
+          },
+        },
+      },
+    });
+  });
 });

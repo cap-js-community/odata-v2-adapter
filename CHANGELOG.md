@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Respect `$select` filter for deferreds structure
+- Fix definition lookup for service entities with scoped name
+- Fix definition lookup for unbound service operations (actions, functions) with scoped name
+- Improve Kibana logging even more
+- Use project specific logger
 
 ## Version 1.9.6 - 2022-09-01
 

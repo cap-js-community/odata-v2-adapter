@@ -279,6 +279,16 @@ module.exports = (srv) => {
     return req.data.text;
   });
 
+  srv.on("unbound_Action", async (req) => {
+    return [
+      {
+        code: "TEST",
+        name: req.data.text,
+        age: req.data.num,
+      },
+    ];
+  });
+
   /* Unbound Function */
 
   srv.on("unboundFunction", async (req) => {
@@ -425,6 +435,14 @@ module.exports = (srv) => {
 
   srv.on("unboundNavigationsFunction", async (req) => {
     return req.run(SELECT.from("test.MainService.Header"));
+  });
+
+  srv.on("unbound.Function", async (req) => {
+    return {
+      code: "TEST",
+      name: req.data.text,
+      age: req.data.num,
+    };
   });
 
   srv.on("calcDecimal", async (req) => {

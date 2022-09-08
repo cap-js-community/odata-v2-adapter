@@ -146,6 +146,14 @@ entity Node {
         drillState: String;
 }
 
+entity Namespace: cuid, managed {
+    name: String;
+}
+
+entity LocalizedEntity: cuid, managed {
+    name: localized String;
+}
+
 service MainService {
 
     type Result {
@@ -215,6 +223,9 @@ service MainService {
 
     entity Favorite as projection on test.Favorite;
     entity StringUUID as projection on test.StringUUID;
+    entity context.Name_space.v2 as projection on test.Namespace;
+    entity LocalizedEntity as projection on test.LocalizedEntity;
+    entity context.LocalizedEntity as projection on test.LocalizedEntity;
 
     entity Node as projection on test.Node;
 
@@ -238,6 +249,7 @@ service MainService {
     action unboundActionEntity(num: Integer, text: String) returns Header;
     action unboundMassActionEntity(ids: array of String) returns array of Header;
     action unboundActionMaxLength(text: String(10)) returns String(10);
+    action unbound.Action(num: Integer, text: String) returns Result;
 
     function unboundFunction(num: Integer, text: String) returns Result;
     function unboundMassFunction(ids: array of String) returns array of Result;
@@ -264,6 +276,7 @@ service MainService {
     function unboundWarningFunction() returns Result;
     function unboundNavigationFunction(num: Integer, text: String) returns Header;
     function unboundNavigationsFunction(num: Integer, text: String) returns array of Header;
+    function unbound.Function(num: Integer, text: String) returns Result;
 
     function calcDecimal(value: Decimal, percentage: Decimal) returns Decimal;
 }
