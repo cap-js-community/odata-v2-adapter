@@ -780,10 +780,7 @@ function cov2ap(options = {}) {
   }
 
   function localName(definition, req) {
-    let localName = definition.name;
-    if (isServiceName(definition.name, req)) {
-      localName = odataName(definition.name, req);
-    }
+    const localName = isServiceName(definition.name, req) ? odataName(definition.name, req) : definition.name;
     const nameSuffix =
       definition.kind === "entity" &&
       definition.params &&
