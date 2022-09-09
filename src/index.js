@@ -347,7 +347,7 @@ function cov2ap(options = {}) {
       } else if (isMultipartMixed(contentType)) {
         express.text({ type: "multipart/mixed", limit: bodyParserLimit })(req, res, next);
       } else {
-        req.checkUploadBinary = req.method === "POST";
+        req.checkUploadBinary = req.method;
         next();
       }
     },
@@ -376,7 +376,7 @@ function cov2ap(options = {}) {
 
     // File Upload
     async (req, res, next) => {
-      if (!req.checkUploadBinary) {
+      if (req.checkUploadBinary !== "POST") {
         return next();
       }
 
@@ -990,18 +990,22 @@ function cov2ap(options = {}) {
       }
       proxyReq.method = convertMethod(proxyReq.method);
 
-      if (contentType && body !== undefined) {
-        // File Upload
-        if (req.files && Object.keys(req.files).length === 1) {
-          const file = req.files[Object.keys(req.files)[0]];
-          contentType = body["content-type"] || file.mimetype;
-          body = file.data;
+      if (contentType) {
+        if (body !== undefined) {
+          // File Upload
+          if (req.files && Object.keys(req.files).length === 1) {
+            const file = req.files[Object.keys(req.files)[0]];
+            contentType = body["content-type"] || file.mimetype;
+            body = file.data;
+          }
+          proxyReq.setHeader("content-type", contentType);
+          body = normalizeBody(body);
+          proxyReq.setHeader("content-length", Buffer.byteLength(body));
+          proxyReq.write(body);
+          proxyReq.end();
+        } else if (req.checkUploadBinary) {
+          enforceFileSizeLimit(req, res);
         }
-        proxyReq.setHeader("content-type", contentType);
-        body = normalizeBody(body);
-        proxyReq.setHeader("content-length", Buffer.byteLength(body));
-        proxyReq.write(body);
-        proxyReq.end();
       }
 
       // Trace
@@ -1019,6 +1023,20 @@ function cov2ap(options = {}) {
 
   function convertMethod(method) {
     return method === "MERGE" ? "PATCH" : method;
+  }
+
+  function enforceFileSizeLimit(req, res) {
+    let uploadByteCount = 0;
+    req
+      .on("data", (chunk) => {
+        uploadByteCount += chunk.byteLength;
+        if (uploadByteCount >= fileUploadSizeLimit) {
+          req.emit("limit");
+        }
+      })
+      .on("limit", () => {
+        res.status(413).end("File size limit has been reached");
+      });
   }
 
   function convertUrlAndSetContext(urlPath, req, method) {
