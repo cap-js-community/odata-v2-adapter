@@ -35,7 +35,7 @@ The CDS OData V2 Adapter Proxy instantiates an Express router. The following opt
 - **mtxRemote:** CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is `false`.
 - **mtxEndpoint:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is `'/mtx/v1'`.
 - **ieee754Compatible:** Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is `true`.
-- **fileUploadSizeLimit:** File upload file size limit (in bytes). Default is `10485760` (10 MB).
+- **fileUploadSizeLimit:** File upload file size limit (in bytes) for multipart/form-data requests. Default is `10485760` (10 MB).
 - **continueOnError:** Indicates to OData V4 backend to continue on error. Default is `false`.
 - **isoTime:** Use ISO 8601 format for type cds.Time (Edm.Time). Default is `false`.
 - **isoDate:** Use ISO 8601 format for type cds.Date (Edm.DateTime). Default is `false`.
@@ -87,6 +87,7 @@ needs to be set.
 
 #### cds.log.levels.cov2ap: "error"
 
+- `cov2ap/Proxy`: Proxy processing error
 - `cov2ap/Authorization`: Authorization header parsing error
 - `cov2ap/MetadataRequest`: Metadata request processing error
 - `cov2ap/Request`: Request processing error

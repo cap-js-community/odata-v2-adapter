@@ -63,7 +63,7 @@ type Options = {
     ieee754Compatible?: boolean | true,
 
     /**
-     * File upload file size limit (in bytes). Default is 10485760 (10 MB).
+     * File upload file size limit (in bytes) for multipart/form-data requests. Default is 10485760 (10 MB).
      */
     fileUploadSizeLimit?: number | 10485760,
 

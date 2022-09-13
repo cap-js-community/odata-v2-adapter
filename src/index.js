@@ -126,7 +126,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} options.mtxRemote CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is false.
  * @param {string} options.mtxEndpoint Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is '/mtx/v1'.
  * @param {boolean} options.ieee754Compatible Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is true.
- * @param {number} options.fileUploadSizeLimit File upload file size limit (in bytes). Default is 10485760 (10 MB).
+ * @param {number} options.fileUploadSizeLimit File upload file size limit (in bytes) for multipart/form-data . Default is 10485760 (10 MB).
  * @param {boolean} options.continueOnError Indicates to OData V4 backend to continue on error. Default is false.
  * @param {boolean} options.isoTime Use ISO 8601 format for type cds.Time (Edm.Time). Default is false.
  * @param {boolean} options.isoDate Use ISO 8601 format for type cds.Date (Edm.DateTime). Default is false.
@@ -277,13 +277,13 @@ function cov2ap(options = {}) {
     let serviceValid = true;
     try {
       const metadataUrlPath = targetUrl(req);
-
+      const metadataTargetUrl = target + metadataUrlPath;
       // Trace
       traceRequest(req, "Request", req.method, req.originalUrl, req.headers, req.body);
       traceRequest(req, "ProxyRequest", req.method, metadataUrlPath, req.headers, req.body);
 
       const result = await Promise.all([
-        fetch(target + metadataUrlPath, {
+        fetch(metadataTargetUrl, {
           method: "GET",
           headers: propagateHeaders(req),
         }),
@@ -325,6 +325,12 @@ function cov2ap(options = {}) {
       if (serviceValid) {
         // Error
         logError(req, "MetadataRequest", err);
+        // Trace
+        logWarn(req, "MetadataRequest", "Request with Error", {
+          method: req.method,
+          url: req.originalUrl,
+          target,
+        });
         res.status(500).send("Internal Server Error");
       } else {
         res.status(404).send("Not Found");
@@ -347,7 +353,7 @@ function cov2ap(options = {}) {
       } else if (isMultipartMixed(contentType)) {
         express.text({ type: "multipart/mixed", limit: bodyParserLimit })(req, res, next);
       } else {
-        req.checkUploadBinary = req.method;
+        req.checkUploadBinary = req.method === "POST";
         next();
       }
     },
@@ -376,7 +382,7 @@ function cov2ap(options = {}) {
 
     // File Upload
     async (req, res, next) => {
-      if (req.checkUploadBinary !== "POST") {
+      if (!req.checkUploadBinary) {
         return next();
       }
 
@@ -511,12 +517,9 @@ function cov2ap(options = {}) {
       changeOrigin: true,
       selfHandleResponse: true,
       pathRewrite,
-      onProxyReq: (proxyReq, req, res) => {
-        convertProxyRequest(proxyReq, req, res);
-      },
-      onProxyRes: (proxyRes, req, res) => {
-        convertProxyResponse(proxyRes, req, res);
-      },
+      onError: convertProxyError,
+      onProxyReq: convertProxyRequest,
+      onProxyRes: convertProxyResponse,
     });
   }
 
@@ -890,6 +893,32 @@ function cov2ap(options = {}) {
     }
   }
 
+  function convertProxyError(err, req, res) {
+    logError(req, "Proxy", err);
+    if (!req && !res) {
+      throw err;
+    }
+    if (res.writeHead && !res.headersSent) {
+      if (/HPE_INVALID/.test(err.code)) {
+        res.writeHead(502);
+      } else {
+        switch (err.code) {
+          case "ECONNRESET":
+          case "ENOTFOUND":
+          case "ECONNREFUSED":
+          case "ETIMEDOUT":
+            res.writeHead(504);
+            break;
+          default:
+            res.writeHead(500);
+        }
+      }
+    }
+    if (!res.writableEnded) {
+      res.end("Unexpected error occurred while processing request");
+    }
+  }
+
   /**
    * Convert Proxy Request (v2 -> v4)
    * @param proxyReq Proxy Request
@@ -1003,8 +1032,6 @@ function cov2ap(options = {}) {
           proxyReq.setHeader("content-length", Buffer.byteLength(body));
           proxyReq.write(body);
           proxyReq.end();
-        } else if (req.checkUploadBinary) {
-          enforceFileSizeLimit(req, res);
         }
       }
 
@@ -1013,6 +1040,12 @@ function cov2ap(options = {}) {
     } catch (err) {
       // Error
       logError(req, "Request", err);
+      // Trace
+      logWarn(req, "Request", "Request with Error", {
+        method: req.method,
+        url: req.originalUrl,
+        target,
+      });
       if (err.statusCode) {
         res.status(err.statusCode).send(err.message);
       } else {
@@ -1023,20 +1056,6 @@ function cov2ap(options = {}) {
 
   function convertMethod(method) {
     return method === "MERGE" ? "PATCH" : method;
-  }
-
-  function enforceFileSizeLimit(req, res) {
-    let uploadByteCount = 0;
-    req
-      .on("data", (chunk) => {
-        uploadByteCount += chunk.byteLength;
-        if (uploadByteCount >= fileUploadSizeLimit) {
-          req.emit("limit");
-        }
-      })
-      .on("limit", () => {
-        res.status(413).end("File size limit has been reached");
-      });
   }
 
   function convertUrlAndSetContext(urlPath, req, method) {
