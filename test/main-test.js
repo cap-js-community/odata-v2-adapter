@@ -98,7 +98,7 @@ describe("main", () => {
   it("GET $metadata localized", async () => {
     let response = await util.callRead(request, "/v2/main/$metadata", {
       accept: "application/xml",
-      'accept-language': 'de'
+      "accept-language": "de",
     });
     expect(response.body).toBeDefined();
     expect(response.text).toMatchSnapshot();
