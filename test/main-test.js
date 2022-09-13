@@ -96,19 +96,14 @@ describe("main", () => {
   });
 
   it("GET $metadata localized", async () => {
-    let response = await util.callRead(request, "/v2/main/$metadata?sap-language=de", {
+    let response = await util.callRead(request, "/v2/main/$metadata", {
       accept: "application/xml",
+      'accept-language': 'de'
     });
     expect(response.body).toBeDefined();
     expect(response.text).toMatchSnapshot();
     expect(response.text).toMatch(/Angelegt am/);
-    const metadata_de = response.text;
-    response = await util.callRead(request, "/v2/main/$metadata?sap-language=DE", {
-      accept: "application/xml",
-    });
-    expect(response.body).toBeDefined();
-    expect(response.text).toMatch(/Angelegt am/);
-    expect(response.text).toEqual(metadata_de);
+
     response = await util.callRead(request, "/v2/main/$metadata", {
       "accept-language": "de-DE",
     });
