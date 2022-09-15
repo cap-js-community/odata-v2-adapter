@@ -55,7 +55,7 @@ The CDS OData V2 Adapter Proxy instantiates an Express router. The following opt
 - **quoteSearch**: Specifies if search expression is quoted automatically. Default is `true`.
 - **fixDraftRequests**: Specifies if unsupported draft requests are converted to a working version. Default is `false`.
 - **changesetDeviationLogLevel**: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is `'info'`.
-- **defaultFormat**: Specifies the default response format (json, atom). Default is `'json'`.
+- **defaultFormat**: Specifies the default entity response format (json, atom). Default is `'json'`.
 
 > All CDS OData V2 Adapter Proxy options can also be specified as part of CDS project-specific configuration
 > under section `cds.cov2ap` and accessed during runtime via `cds.env.cov2ap`.

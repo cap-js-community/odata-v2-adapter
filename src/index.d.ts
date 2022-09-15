@@ -163,7 +163,7 @@ type Options = {
     changesetDeviationLogLevel?: String | "info",
 
     /**
-     * Specifies the default response format (json, atom). Default is 'json'
+     * Specifies the default entity response format (json, atom). Default is 'json'
      */
     defaultFormat?: String | "json",
 };

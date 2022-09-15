@@ -148,7 +148,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} options.quoteSearch: Specifies if search expression is quoted automatically. Default is true.
  * @param {boolean} options.fixDraftRequests: Specifies if unsupported draft requests are converted to a working version. Default is false.
  * @param {string} options.changesetDeviationLogLevel: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
- * @param {string} options.defaultFormat: Specifies the default response format (json, atom). Default is 'json'.
+ * @param {string} options.defaultFormat: Specifies the default entity response format (json, atom). Default is 'json'.
  * @returns {express.Router} CDS OData V2 Adapter Proxy Express Router
  */
 function cov2ap(options = {}) {
@@ -963,14 +963,7 @@ function cov2ap(options = {}) {
               delete headers.DataServiceVersion;
               delete headers.maxdataserviceversion;
               delete headers.MaxDataServiceVersion;
-              if (!headers.accept && !req.context.url.query.$format && defaultFormat === "atom") {
-                req.context.serviceResponeAsXML = true;
-              } else if (
-                headers.accept &&
-                headers.accept.includes("xml") &&
-                !headers.accept.includes("json") &&
-                req.context.url.query.$format !== "json"
-              ) {
+              if (isResponseFormatXML(req.context.url.query, headers)) {
                 req.context.serviceResponeAsXML = true;
               }
               if (headers.accept && !headers.accept.includes("application/json")) {
@@ -1009,15 +1002,9 @@ function cov2ap(options = {}) {
           req.context.serviceRootAsXML = true;
           headers.accept = "application/json";
           proxyReq.setHeader("accept", headers.accept);
-        } else if (!headers.accept && !req.query.$format && defaultFormat === "atom") {
-          req.context.serviceResponeAsXML = true;
-        } else if (
-          headers.accept &&
-          headers.accept.includes("xml") &&
-          !headers.accept.includes("json") &&
-          req.query.$format !== "json"
-        ) {
-          req.context.serviceResponeAsXML = true;
+        }
+        if (isResponseFormatXML(req.query, headers)) {
+          req.context.serviceResponseAsXML = true;
         }
         if (headers.accept && !headers.accept.includes("application/json")) {
           headers.accept = "application/json," + headers.accept;
@@ -1100,6 +1087,23 @@ function cov2ap(options = {}) {
 
   function convertMethod(method) {
     return method === "MERGE" ? "PATCH" : method;
+  }
+
+  function isResponseFormatXML(query, headers) {
+    if (query.$format === "atom") {
+      return true;
+    } else if (!headers.accept && !query.$format && defaultFormat === "atom") {
+      return true;
+    } else if (
+      headers.accept &&
+      headers.accept.includes("xml") &&
+      (defaultFormat === "atom" || !headers.accept.includes("html")) &&
+      !headers.accept.includes("json") &&
+      req.query.$format !== "json"
+    ) {
+      return true;
+    }
+    return false;
   }
 
   function convertUrlAndSetContext(urlPath, req, method) {
@@ -2741,7 +2745,7 @@ function cov2ap(options = {}) {
         }
       }
     }
-    if (req.context.serviceResponeAsXML) {
+    if (req.context.serviceResponseAsXML) {
       body = convertResponseBodyToXML(body, req);
       headers["content-type"] = "application/atom+xml;charset=utf-8";
       return body;
