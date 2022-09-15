@@ -161,4 +161,9 @@ type Options = {
      * Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
      */
     changesetDeviationLogLevel?: String | "info",
+
+    /**
+     * Specifies the default response format (json, atom). Default is 'json'
+     */
+    defaultFormat?: String | "json",
 };

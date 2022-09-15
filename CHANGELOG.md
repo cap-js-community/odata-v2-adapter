@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Respect `$format=json` for service root document
+- Introduce proxy options to specify default format (default is `json`)
+- Prepare `Atom (XML)` format support
+
 ## Version 1.9.7 - 2022-09-14
 
 ### Fixed

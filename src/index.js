@@ -9,6 +9,8 @@ const fetch = require("node-fetch");
 const cds = require("@sap/cds");
 const { promisify } = require("util");
 const { createProxyMiddleware } = require("http-proxy-middleware");
+const bodyParser = require("body-parser");
+require("body-parser-xml")(bodyParser);
 
 const SeverityMap = {
   1: "success",
@@ -146,6 +148,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} options.quoteSearch: Specifies if search expression is quoted automatically. Default is true.
  * @param {boolean} options.fixDraftRequests: Specifies if unsupported draft requests are converted to a working version. Default is false.
  * @param {string} options.changesetDeviationLogLevel: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
+ * @param {string} options.defaultFormat: Specifies the default response format (json, atom). Default is 'json'.
  * @returns {express.Router} CDS OData V2 Adapter Proxy Express Router
  */
 function cov2ap(options = {}) {
@@ -193,6 +196,7 @@ function cov2ap(options = {}) {
   const quoteSearch = optionWithFallback("quoteSearch", true);
   const fixDraftRequests = optionWithFallback("fixDraftRequests", false);
   const changesetDeviationLogLevel = optionWithFallback("changesetDeviationLogLevel", "info");
+  const defaultFormat = optionWithFallback("defaultFormat", "json");
 
   if (caseInsensitive) {
     Object.assign(FilterFunctions, FilterFunctionsCaseInsensitive);
@@ -350,6 +354,8 @@ function cov2ap(options = {}) {
 
       if (isApplicationJSON(contentType)) {
         express.json({ limit: bodyParserLimit })(req, res, next);
+      } else if (isXML(contentType)) {
+        bodyParser.xml()(req, res, next);
       } else if (isMultipartMixed(contentType)) {
         express.text({ type: "multipart/mixed", limit: bodyParserLimit })(req, res, next);
       } else {
@@ -697,7 +703,7 @@ function cov2ap(options = {}) {
       return await prepareMetadata(
         req.tenant,
         async (tenant) => {
-          return await mps.getCsn(tenant, ensureArray(req.features), "nodejs"); // TODO: getExtCsn()? (when extensibility is supported)
+          return await mps.getCsn(tenant, ensureArray(req.features), "nodejs");
         },
         async (tenant, service, locale) => {
           return await mps.getEdmx(tenant, ensureArray(req.features), service, locale, "v2", "nodejs");
@@ -937,58 +943,96 @@ function cov2ap(options = {}) {
       if (isMultipartMixed(contentType)) {
         // Multipart
         req.contentIdOrder = [];
-        body =
-          req.method === "HEAD"
-            ? ""
-            : processMultipartMixed(
-                req,
-                req.body,
-                contentType,
-                ({ method, url }) => {
-                  method = convertMethod(method);
-                  url = convertUrlAndSetContext(url, req, method);
-                  return { method, url };
-                },
-                ({ contentType, body, headers, url, contentId }) => {
-                  if (contentId) {
-                    req.contentId[`$${contentId}`] = req.context.url;
-                  }
-                  delete headers.dataserviceversion;
-                  delete headers.DataServiceVersion;
-                  delete headers.maxdataserviceversion;
-                  delete headers.MaxDataServiceVersion;
-                  if (isApplicationJSON(contentType)) {
-                    if (ieee754Compatible) {
-                      contentType = enrichApplicationJSON(contentType);
-                      headers["content-type"] = contentType;
-                    }
-                    body = convertRequestBody(body, headers, url, req);
-                  }
-                  return { body, headers };
-                },
-                req.contentIdOrder,
-                ProcessingDirection.Request
-              );
+        if (req.method === "HEAD") {
+          body = "";
+        } else {
+          body = processMultipartMixed(
+            req,
+            body,
+            contentType,
+            ({ method, url }) => {
+              method = convertMethod(method);
+              url = convertUrlAndSetContext(url, req, method);
+              return { method, url };
+            },
+            ({ contentType, body, headers, url, contentId }) => {
+              if (contentId) {
+                req.contentId[`$${contentId}`] = req.context.url;
+              }
+              delete headers.dataserviceversion;
+              delete headers.DataServiceVersion;
+              delete headers.maxdataserviceversion;
+              delete headers.MaxDataServiceVersion;
+              if (!headers.accept && !req.context.url.query.$format && defaultFormat === "atom") {
+                req.context.serviceResponeAsXML = true;
+              } else if (
+                headers.accept &&
+                headers.accept.includes("xml") &&
+                !headers.accept.includes("json") &&
+                req.context.url.query.$format !== "json"
+              ) {
+                req.context.serviceResponeAsXML = true;
+              }
+              if (headers.accept && !headers.accept.includes("application/json")) {
+                headers.accept = "application/json," + headers.accept;
+              }
+              if (isXML(contentType)) {
+                req.context.serviceRequestAsXML = true;
+                body = convertRequestBodyFromXML(body, req);
+                contentType = "application/json";
+                headers["content-type"] = contentType;
+              }
+              if (isApplicationJSON(contentType)) {
+                if (ieee754Compatible) {
+                  contentType = enrichApplicationJSON(contentType);
+                  headers["content-type"] = contentType;
+                }
+                body = convertRequestBody(body, headers, url, req);
+              }
+              return { body, headers };
+            },
+            req.contentIdOrder,
+            ProcessingDirection.Request
+          );
+        }
         headers.accept = "multipart/mixed,application/json";
         proxyReq.setHeader("accept", headers.accept);
       } else {
         // Single
         proxyReq.method = convertMethod(proxyReq.method);
         proxyReq.path = convertUrlAndSetContext(proxyReq.path, req, proxyReq.method);
-        if (req.context.serviceRoot && (!headers.accept || headers.accept.includes("xml"))) {
+        if (
+          req.context.serviceRoot &&
+          (!headers.accept || headers.accept.includes("xml")) &&
+          req.query.$format !== "json"
+        ) {
           req.context.serviceRootAsXML = true;
           headers.accept = "application/json";
           proxyReq.setHeader("accept", headers.accept);
-        } else if (headers.accept && !headers.accept.includes("application/json")) {
+        } else if (!headers.accept && !req.query.$format && defaultFormat === "atom") {
+          req.context.serviceResponeAsXML = true;
+        } else if (
+          headers.accept &&
+          headers.accept.includes("xml") &&
+          !headers.accept.includes("json") &&
+          req.query.$format !== "json"
+        ) {
+          req.context.serviceResponeAsXML = true;
+        }
+        if (headers.accept && !headers.accept.includes("application/json")) {
           headers.accept = "application/json," + headers.accept;
           proxyReq.setHeader("accept", headers.accept);
+        }
+        if (isXML(contentType)) {
+          req.context.serviceRequestAsXML = true;
+          body = convertRequestBodyFromXML(body, req);
+          contentType = "application/json";
         }
         if (isApplicationJSON(contentType)) {
           if (ieee754Compatible) {
             contentType = enrichApplicationJSON(contentType);
-            headers["content-type"] = contentType;
           }
-          body = convertRequestBody(req.body, req.headers, proxyReq.path, req);
+          body = convertRequestBody(body, req.headers, proxyReq.path, req);
         }
       }
 
@@ -1194,6 +1238,8 @@ function cov2ap(options = {}) {
       urlPath,
       serviceRoot: url.contextPath.length === 0,
       serviceRootAsXML: false,
+      serviceRequestAsXML: false,
+      serviceResponseAsXML: false,
       definition: definition,
       definitionElements: definitionElements(definition),
       requestDefinition: definition,
@@ -1219,6 +1265,7 @@ function cov2ap(options = {}) {
 
   function convertUrl(url, req) {
     // Order is important
+    convertFormat(url, req);
     convertUrlLinks(url, req);
     convertUrlDataTypes(url, req);
     convertUrlCount(url, req);
@@ -1232,6 +1279,12 @@ function cov2ap(options = {}) {
     convertParameters(url, req);
     delete url.search;
     url.pathname = url.basePath + url.servicePath + url.contextPath;
+  }
+
+  function convertFormat(url, req) {
+    if (url.query.$format === "atom") {
+      delete url.query.$format;
+    }
   }
 
   function convertUrlLinks(url, req) {
@@ -2130,6 +2183,11 @@ function cov2ap(options = {}) {
     }, 0);
   }
 
+  function convertRequestBodyFromXML(body, req) {
+    // TODO: convert xml to json
+    return {};
+  }
+
   function initContext(req, index = 0) {
     req.context = req.contexts[index] || {};
     return req.context.definition && req.context.definition.kind === "entity"
@@ -2273,7 +2331,12 @@ function cov2ap(options = {}) {
           convertResponseError(proxyRes.body, proxyRes.headers, undefined, req)
         );
       } else {
-        res.status(500).send("Internal Server Error");
+        if (res.writeHead && !res.headersSent) {
+          res.writeHead(500);
+        }
+        if (!res.writableEnded) {
+          res.end("Internal Server Error");
+        }
       }
     }
   }
@@ -2587,7 +2650,12 @@ function cov2ap(options = {}) {
       }
     }
     if (typeof body === "object") {
-      body = JSON.stringify(body);
+      if (req.context.serviceResponeAsXML) {
+        body = convertResponseBodyToXML(body, req);
+        headers["content-type"] = "application/atom+xml;charset=utf-8";
+      } else {
+        body = JSON.stringify(body);
+      }
     }
     body = `${body}`;
     setContentLength(headers, body);
@@ -2595,27 +2663,13 @@ function cov2ap(options = {}) {
   }
 
   function convertResponseBody(proxyBody, headers, req) {
-    const body = {
+    let body = {
       d: {},
     };
     if (req.context.serviceRoot && proxyBody.value) {
       if (req.context.serviceRootAsXML) {
-        // Service Root XML
-        let xmlBody = `<?xml version="1.0" encoding="utf-8" standalone="yes" ?>`;
-        xmlBody += `<service xml:base="${serviceUri(
-          req
-        )}" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app" xmlns="http://www.w3.org/2007/app">`;
-        xmlBody += `<workspace><atom:title>Default</atom:title>`;
-        xmlBody += proxyBody.value
-          .map((entry) => {
-            return `<collection href="${entry.name}"><atom:title>${entry.name}</atom:title></collection>`;
-          })
-          .join("");
-        xmlBody += `</workspace></service>`;
-        headers["content-type"] = "application/xml";
-        return xmlBody;
+        return convertResponseServiceRootToXML(proxyBody, headers, req);
       } else {
-        // Service Root JSON
         body.d.EntitySets = proxyBody.value.map((entry) => {
           return entry.name;
         });
@@ -2687,7 +2741,11 @@ function cov2ap(options = {}) {
         }
       }
     }
-
+    if (req.context.serviceResponeAsXML) {
+      body = convertResponseBodyToXML(body, req);
+      headers["content-type"] = "application/atom+xml;charset=utf-8";
+      return body;
+    }
     return JSON.stringify(body);
   }
 
@@ -3366,6 +3424,28 @@ function cov2ap(options = {}) {
 
   function isEmptyJSON(content) {
     return !content || content === "{}";
+  }
+
+  function convertResponseServiceRootToXML(proxyBody, headers, req) {
+    let xmlBody = `<?xml version="1.0" encoding="utf-8" standalone="yes" ?>`;
+    xmlBody += `<service xml:base="${serviceUri(
+      req
+    )}" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app" xmlns="http://www.w3.org/2007/app">`;
+    xmlBody += `<workspace><atom:title>Default</atom:title>`;
+    xmlBody += proxyBody.value
+      .map((entry) => {
+        return `<collection href="${entry.name}"><atom:title>${entry.name}</atom:title></collection>`;
+      })
+      .join("");
+    xmlBody += `</workspace></service>`;
+    headers["content-type"] = "application/xml;charset=utf-8";
+    return xmlBody;
+  }
+
+  function convertResponseBodyToXML(body, req) {
+    // TODO: convert json to xml
+    let xmlBody = `<?xml version="1.0" encoding="utf-8" standalone="yes" ?>`;
+    return xmlBody;
   }
 
   function notFoundErrorResponse() {

@@ -55,6 +55,9 @@ describe("main", () => {
     });
     expect(response.body).toBeDefined();
     expect(response.body.d.EntitySets.sort()).toMatchSnapshot();
+    response = await util.callRead(request, "/v2/main/?$format=json");
+    expect(response.body).toBeDefined();
+    expect(response.body.d.EntitySets.sort()).toMatchSnapshot();
   });
 
   it("GET service XML format", async () => {
@@ -72,6 +75,9 @@ describe("main", () => {
     expect(response.text).toMatchSnapshot();
     response = await util.callRead(request, "/v2/main");
     expect(response.text).toBeDefined();
+    response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
+    expect(response.text).toMatchSnapshot();
+    response = await util.callRead(request, "/v2/main/?$format=atom");
     response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
     expect(response.text).toMatchSnapshot();
   });
@@ -167,14 +173,19 @@ describe("main", () => {
     let response = await util.callRead(request, "/v2/main/Header", {
       accept: "application/xml",
     });
-    expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(6);
+    expect(response.text).toBeDefined();
+    response = await util.callRead(request, "/v2/main/Header?$format=atom");
+    expect(response.text).toBeDefined();
+    response = await util.callWrite(request, "/v2/main/Header", "<xml/>", false, {
+      "content-type": "application/atom+xml",
+    });
+    expect(response.text).toBeDefined();
   });
 
   it("GET request with sap-language", async () => {
     let response = await util.callRead(request, "/v2/main/Header?sap-language=de");
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(6);
+    expect(response.body.d.results).toHaveLength(7);
   });
 
   it("GET request with navigation", async () => {
@@ -452,7 +463,7 @@ describe("main", () => {
     response = await util.callRead(request, `/v2/main/Header/$count?search=""`);
     expect(response.text).toEqual("0");
     response = await util.callRead(request, `/v2/main/Header/$count?search=`);
-    expect(response.text).toEqual("12");
+    expect(response.text).toEqual("13");
     response = await util.callRead(request, `/v2/main/Header/$count?search="""`);
     expect(response.text).toEqual("0");
     response = await util.callRead(request, `/v2/main/Header/$count?search=Search"Quote"`);
