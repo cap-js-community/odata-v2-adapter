@@ -29,7 +29,7 @@ describe("analytics", () => {
     expect(response.body.d).toBeDefined();
     expect(response.body.d.results).toBeDefined();
     // no aggregation should have happened
-    expect(response.body.d.results.length).toEqual(6);
+    expect(response.body.d.results.length).toEqual(7);
   });
 
   it("GET request with grouping and aggregation", async () => {
@@ -49,6 +49,18 @@ describe("analytics", () => {
             ID__: 'aggregation\'{"key":{"currency":"\'ABC\'"},"value":["currency","stock"]}\'',
             currency: "ABC",
             stock: 1,
+          },
+          {
+            __metadata: {
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/Header(aggregation'{"key":{"currency":"'CHF'"},"value":["currency","stock"]}')`,
+              type: "test.AnalyticsService.Header",
+            },
+            ID__: 'aggregation\'{"key":{"currency":"\'CHF\'"},"value":["currency","stock"]}\'',
+            currency: "CHF",
+            stock: 11,
           },
           {
             __metadata: {
@@ -196,6 +208,20 @@ describe("analytics", () => {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
+              )}/v2/analytics/Header(aggregation'{"key":{"country":"'Switzerland'","currency":"'CHF'"},"value":["country","currency","stock","price"]}')`,
+              type: "test.AnalyticsService.Header",
+            },
+            ID__: 'aggregation\'{"key":{"country":"\'Switzerland\'","currency":"\'CHF\'"},"value":["country","currency","stock","price"]}\'',
+            country: "Switzerland",
+            currency: "CHF",
+            stock: 11,
+            price: "12.34",
+          },
+          {
+            __metadata: {
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
               )}/v2/analytics/Header(aggregation'{"key":{"country":"'Texas'","currency":"'USD'"},"value":["country","currency","stock","price"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -213,7 +239,7 @@ describe("analytics", () => {
   it("GET request with grouping and aggregation and order by", async () => {
     const response = await util.callRead(
       request,
-      "/v2/analytics/Header?$select=currency,stock&$top=4&$orderby=stock asc"
+      "/v2/analytics/Header?$select=currency,stock&$top=5&$orderby=stock asc"
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -230,6 +256,18 @@ describe("analytics", () => {
             ID__: 'aggregation\'{"key":{"currency":"\'ABC\'"},"value":["currency","stock"]}\'',
             currency: "ABC",
             stock: 1,
+          },
+          {
+            __metadata: {
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/Header(aggregation'{"key":{"currency":"'CHF'"},"value":["currency","stock"]}')`,
+              type: "test.AnalyticsService.Header",
+            },
+            ID__: 'aggregation\'{"key":{"currency":"\'CHF\'"},"value":["currency","stock"]}\'',
+            currency: "CHF",
+            stock: 11,
           },
           {
             __metadata: {
@@ -550,6 +588,18 @@ describe("analytics", () => {
             ID__: 'aggregation\'{"key":{"currency":"\'ABC\'"},"value":["currency","stock"]}\'',
             currency: "ABC",
             stock: 1,
+          },
+          {
+            __metadata: {
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/Header(aggregation'{"key":{"currency":"'CHF'"},"value":["currency","stock"]}')`,
+              type: "test.AnalyticsService.Header",
+            },
+            ID__: 'aggregation\'{"key":{"currency":"\'CHF\'"},"value":["currency","stock"]}\'',
+            currency: "CHF",
+            stock: 11,
           },
           {
             __metadata: {

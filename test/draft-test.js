@@ -40,11 +40,11 @@ describe("draft", () => {
   it("GET request", async () => {
     let response = await util.callRead(request, "/v2/draft/Header");
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(6);
+    expect(response.body.d.results).toHaveLength(7);
     response = await util.callRead(request, "/v2/draft/Header?$inlinecount=allpages");
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(6);
-    expect(response.body.d.__count).toEqual("6");
+    expect(response.body.d.results).toHaveLength(7);
+    expect(response.body.d.__count).toEqual("7");
   });
 
   it("GET request with parameters", async () => {

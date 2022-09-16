@@ -34,7 +34,7 @@ service AgreementService {
     @cds.redirection.target: false
     entity AgreementItemPricingForKeyDate(keyDate: Date not null) as
     select
-      key : keyDate as keyDate,
+      key :keyDate as keyDate,
       key AgreementItemPricing.ID,
           AgreementItemPricing.item.ID as Item,
           @title: '{i18n>validFrom}'
@@ -43,8 +43,8 @@ service AgreementService {
           AgreementItemPricing.validTo
     from agreement.AgreementItemPricing
     where
-          AgreementItemPricing.validFrom <= : keyDate
-      and AgreementItemPricing.validTo   >= : keyDate;
+          AgreementItemPricing.validFrom <= :keyDate
+      and AgreementItemPricing.validTo   >= :keyDate;
 }
 
 /*

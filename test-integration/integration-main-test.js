@@ -54,7 +54,7 @@ describe("integration-main", () => {
     ]);
   });
 
-  it("GET with parameters (header - full circle)", async () => {
+  it("GET with parameters (header - full circle) - parameters", async () => {
     const stock = 1;
     // Empty Parameters
     let response = await util.callRead(request, `/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='XXX')`);
@@ -113,6 +113,67 @@ describe("integration-main", () => {
     response = await util.callRead(
       request,
       `/v2/main/HeaderParametersSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`
+    );
+    expect(response.body).toBeDefined();
+    expect(clean(response.body)).toMatchSnapshot();
+  });
+
+  it("GET with parameters (header - full circle) - set", async () => {
+    const stock = 1;
+    // Empty Parameters
+    let response = await util.callRead(request, `/v2/main/HeaderSet(STOCK=${stock},CURRENCY='XXX')`);
+    expect(response.statusCode).toEqual(404);
+    expect(response.body).toBeDefined();
+    expect(response.body.error).toEqual({
+      code: "404",
+      innererror: {
+        errordetails: [
+          {
+            code: "404",
+            message: {
+              lang: "en",
+              value: "Not Found",
+            },
+            severity: "error",
+            target: "/#TRANSIENT#",
+          },
+        ],
+      },
+      message: {
+        lang: "en",
+        value: "Not Found",
+      },
+      severity: "error",
+      target: "/#TRANSIENT#",
+    });
+
+    // Empty Set
+    response = await util.callRead(request, `/v2/main/HeaderSet(STOCK=${stock},CURRENCY='XXX')/Set`);
+    expect(response.body.d.results).toEqual([]);
+
+    // Parameters
+    response = await util.callRead(request, `/v2/main/HeaderSet(STOCK=${stock},CURRENCY='EUR')`);
+    expect(response.body).toBeDefined();
+    expect(clean(response.body)).toMatchSnapshot();
+
+    // Result Set
+    response = await util.callRead(request, `/v2/main/HeaderSet(STOCK=${stock},CURRENCY='EUR')/Set`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toBeDefined();
+    const ID = response.body.d.results[0].ID;
+    expect(ID).toBeDefined();
+    response.body.d.results = response.body.d.results.slice(0, 1);
+    expect(clean(response.body)).toMatchSnapshot();
+
+    // Single Entry
+    response = await util.callRead(request, `/v2/main/HeaderSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')`);
+    expect(response.body).toBeDefined();
+    expect(clean(response.body)).toMatchSnapshot();
+
+    // Entry Parameters
+    response = await util.callRead(
+      request,
+      `/v2/main/HeaderSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body)).toMatchSnapshot();

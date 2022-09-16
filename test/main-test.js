@@ -31,7 +31,7 @@ describe("main", () => {
   it("HEAD service", async () => {
     let response = await util.callHead(request, "/v2/main");
     expect(response.status).toEqual(200);
-    expect(response.body).toEqual({});
+    expect(response.text).not.toBeDefined();
     expect(response.headers).toMatchObject({
       "content-type": "application/json",
       dataserviceversion: "2.0",
@@ -58,28 +58,6 @@ describe("main", () => {
     response = await util.callRead(request, "/v2/main/?$format=json");
     expect(response.body).toBeDefined();
     expect(response.body.d.EntitySets.sort()).toMatchSnapshot();
-  });
-
-  it("GET service XML format", async () => {
-    let response = await util.callRead(request, "/v2/main", {
-      accept: "application/xml",
-    });
-    expect(response.text).toBeDefined();
-    response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
-    expect(response.text).toMatchSnapshot();
-    response = await util.callRead(request, "/v2/main/", {
-      accept: "application/xml",
-    });
-    expect(response.text).toBeDefined();
-    response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
-    expect(response.text).toMatchSnapshot();
-    response = await util.callRead(request, "/v2/main");
-    expect(response.text).toBeDefined();
-    response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
-    expect(response.text).toMatchSnapshot();
-    response = await util.callRead(request, "/v2/main/?$format=atom");
-    response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
-    expect(response.text).toMatchSnapshot();
   });
 
   it("HEAD $metadata", async () => {
@@ -129,11 +107,11 @@ describe("main", () => {
   it("GET request", async () => {
     let response = await util.callRead(request, "/v2/main/Header");
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(6);
+    expect(response.body.d.results).toHaveLength(7);
     response = await util.callRead(request, "/v2/main/Header?$inlinecount=allpages");
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(6);
-    expect(response.body.d.__count).toEqual("6");
+    expect(response.body.d.results).toHaveLength(7);
+    expect(response.body.d.__count).toEqual("7");
     const id = response.body.d.results[0].ID;
     response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
     expect(response.body.d.__metadata).toEqual({
@@ -185,7 +163,7 @@ describe("main", () => {
   it("GET request with sap-language", async () => {
     let response = await util.callRead(request, "/v2/main/Header?sap-language=de");
     expect(response.body).toBeDefined();
-    expect(response.body.d.results).toHaveLength(7);
+    expect(response.body.d.results).toHaveLength(8);
   });
 
   it("GET request with navigation", async () => {
@@ -463,7 +441,7 @@ describe("main", () => {
     response = await util.callRead(request, `/v2/main/Header/$count?search=""`);
     expect(response.text).toEqual("0");
     response = await util.callRead(request, `/v2/main/Header/$count?search=`);
-    expect(response.text).toEqual("13");
+    expect(response.text).toEqual("14");
     response = await util.callRead(request, `/v2/main/Header/$count?search="""`);
     expect(response.text).toEqual("0");
     response = await util.callRead(request, `/v2/main/Header/$count?search=Search"Quote"`);

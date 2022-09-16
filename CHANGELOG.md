@@ -11,9 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Fix data type conversion for single attribute value responses (incl. $value)
+- Fix response mapping of parameters for `Parameters` entity
 - Respect `$format=json` for service root document
-- Introduce proxy options to specify default format (default is `json`)
-- Prepare `Atom (XML)` format support
+- Introduce proxy options to specify OData default format (default is `json`)
+- `Atom (XML)` format support
 
 ## Version 1.9.7 - 2022-09-14
 

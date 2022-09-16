@@ -202,11 +202,12 @@ The OData V2 service provided by the CDS OData V2 Adapter Proxy can be used to s
 SAP Fiori Elements V2 examples:
 
 - SQLite based:
+  - **Analytics**: Analytical List Page app
   - **Basic Edit**: Basic editing app
   - **Draft Edit**: Draft supported editing app
   - **Hierarchy**: Hierarchical display of data in tree table
   - **Overview**: Overview Page app
-  - **Analytics**: Analytical List Page app
+  - **XML**: Basic app (Atom format)
 - HANA based:
   - **Parameters**: Parameterized Entity app
 

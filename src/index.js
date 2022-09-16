@@ -239,6 +239,7 @@ function cov2ap(options = {}) {
   // TODO: Cache invalidation for Streamlined MTX (when extensibility is supported)
 
   router.use(`/${path}/*`, async (req, res, next) => {
+    req.now = new Date();
     req.contextId =
       req.headers["x-correlation-id"] ||
       req.headers["x-correlationid"] ||
@@ -355,7 +356,7 @@ function cov2ap(options = {}) {
       if (isApplicationJSON(contentType)) {
         express.json({ limit: bodyParserLimit })(req, res, next);
       } else if (isXML(contentType)) {
-        bodyParser.xml()(req, res, next);
+        bodyParser.xml({ limit: bodyParserLimit })(req, res, next);
       } else if (isMultipartMixed(contentType)) {
         express.text({ type: "multipart/mixed", limit: bodyParserLimit })(req, res, next);
       } else {
@@ -964,7 +965,7 @@ function cov2ap(options = {}) {
               delete headers.maxdataserviceversion;
               delete headers.MaxDataServiceVersion;
               if (isResponseFormatXML(req.context.url.query, headers)) {
-                req.context.serviceResponeAsXML = true;
+                req.context.serviceResponseAsXML = true;
               }
               if (headers.accept && !headers.accept.includes("application/json")) {
                 headers.accept = "application/json," + headers.accept;
@@ -1097,9 +1098,8 @@ function cov2ap(options = {}) {
     } else if (
       headers.accept &&
       headers.accept.includes("xml") &&
-      (defaultFormat === "atom" || !headers.accept.includes("html")) &&
-      !headers.accept.includes("json") &&
-      req.query.$format !== "json"
+      (defaultFormat === "atom" || (!headers.accept.includes("json") && !headers.accept.includes("html"))) &&
+      query.$format !== "json"
     ) {
       return true;
     }
@@ -1249,6 +1249,7 @@ function cov2ap(options = {}) {
       requestDefinition: definition,
       serviceUri: "",
       operation: null,
+      operationNested: false,
       boundDefinition: null,
       returnDefinition: null,
       bodyParameters: {},
@@ -2630,6 +2631,9 @@ function cov2ap(options = {}) {
 
   function convertResponseError(body, headers, definition, req) {
     if (!body) {
+      if (req.context.serviceResponseAsXML) {
+        headers["content-type"] = "application/xml;charset=utf-8";
+      }
       return body;
     }
     if (body.error) {
@@ -2654,7 +2658,7 @@ function cov2ap(options = {}) {
       }
     }
     if (typeof body === "object") {
-      if (req.context.serviceResponeAsXML) {
+      if (req.context.serviceResponseAsXML) {
         body = convertResponseBodyToXML(body, req);
         headers["content-type"] = "application/atom+xml;charset=utf-8";
       } else {
@@ -2688,7 +2692,11 @@ function cov2ap(options = {}) {
         const elements = req.context.definitionElements;
         const definitionElement = contextElementFromBody(proxyBody, req);
         if (definitionElement) {
-          body.d[definitionElement.name] = proxyBody.value;
+          body.d[definitionElement.name] = convertDataTypeToV2(
+            proxyBody.value,
+            elementType(definitionElement, req),
+            definition
+          );
           convertResponseElementData(body, headers, definition, elements, proxyBody, req);
           if (req.context.$value) {
             headers["content-type"] = "text/plain";
@@ -2729,19 +2737,23 @@ function cov2ap(options = {}) {
           body.d = {
             [localOperationName]: body.d,
           };
+          req.context.operationNested = true;
         }
       } else if (!req.context.definition.kind && req.context.definition.name && req.context.definitionElements.value) {
         if (returnPrimitivePlain) {
           body.d = isArrayResult ? (body.d.results || body.d).map((entry) => entry.value) : body.d.value;
         }
         if (returnPrimitiveNested) {
-          body.d = isArrayResult
-            ? {
-                results: body.d,
-              }
-            : {
-                [localOperationName]: body.d,
-              };
+          if (isArrayResult) {
+            body.d = {
+              results: body.d,
+            };
+          } else {
+            body.d = {
+              [localOperationName]: body.d,
+            };
+            req.context.operationNested = true;
+          }
         }
       }
     }
@@ -3069,8 +3081,11 @@ function cov2ap(options = {}) {
       req.context.parameters &&
       req.context.parameters.kind === "Parameters"
     ) {
+      const columns = definition.query.SELECT.columns || [];
       Object.keys(elements).forEach((name) => {
-        if (!definition.params[name]) {
+        const param = columns.find((column) => column.as === name);
+        const paramName = (param ? param.ref.join("_") : "") || name;
+        if (!definition.params[paramName]) {
           delete data[name];
         }
       });
@@ -3431,7 +3446,7 @@ function cov2ap(options = {}) {
   }
 
   function convertResponseServiceRootToXML(proxyBody, headers, req) {
-    let xmlBody = `<?xml version="1.0" encoding="utf-8" standalone="yes" ?>`;
+    let xmlBody = `<?xml version="1.0" encoding="utf-8" standalone="yes"?>`;
     xmlBody += `<service xml:base="${serviceUri(
       req
     )}" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app" xmlns="http://www.w3.org/2007/app">`;
@@ -3447,8 +3462,152 @@ function cov2ap(options = {}) {
   }
 
   function convertResponseBodyToXML(body, req) {
-    // TODO: convert json to xml
-    let xmlBody = `<?xml version="1.0" encoding="utf-8" standalone="yes" ?>`;
+    let xmlBody = `<?xml version="1.0" encoding="utf-8" standalone="yes"?>`;
+    const namespace = ` xml:base="${serviceUri(
+      req
+    )}" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom"`;
+    const definition = req.context.definition;
+    if (body && body.d && definition) {
+      xmlBody += convertResponseListToXML(body.d, definition, req, namespace);
+    } else if (body && body.error) {
+      xmlBody += convertResponseErrorToXML(body.error);
+    } else {
+      xmlBody += `<feed${namespace}></feed>`;
+    }
+    return xmlBody;
+  }
+
+  function convertResponseListToXML(data, definition, req, namespace, element) {
+    let xmlBody = "";
+    if (data) {
+      if (data.results) {
+        xmlBody += `<feed${namespace || ""}>`;
+        xmlBody += `<title type="text">${localName(definition, req)}</title>`;
+        xmlBody += `<id>${entityUriCollection(definition, req)}</id>`;
+        xmlBody += `<updated>${req.now.toISOString()}</updated>`;
+        xmlBody += `<link rel="self" title="${element || localName(definition, req)}" href="${entityUriCollection(
+          definition,
+          req
+        )}${element ? `/${element}` : ""}" />`;
+        data.results.forEach((entry) => {
+          if (typeof entry === "object") {
+            xmlBody += convertResponseDataToXML(entry, definition, req);
+          } else {
+            xmlBody += `<entry><content>${entry}</content></entry>`;
+          }
+        });
+        xmlBody += `</feed>`;
+      } else {
+        if (req.context.operationNested) {
+          const operationName = Object.keys(data)[0];
+          if (operationName) {
+            data = data[operationName];
+          }
+        }
+        xmlBody += convertResponseDataToXML(data, definition, req, namespace);
+      }
+    }
+    return xmlBody;
+  }
+
+  function convertResponseDataToXML(data, definition, req, namespace) {
+    let xmlBody = `<entry${namespace || ""}>`;
+    const uri = data.__metadata && data.__metadata.uri;
+    if (uri) {
+      xmlBody += `<id>${uri}</id>`;
+    }
+    xmlBody += `<title type="text"></title>`;
+    xmlBody += `<updated>${req.now.toISOString()}</updated>`;
+    xmlBody += `<author><name /></author>`;
+    if (uri) {
+      xmlBody += `<link rel="edit" title="${localName(definition, req)}" href="${uri}" />`;
+    }
+    const elements = definitionElements(definition);
+    if (typeof data === "object") {
+      Object.keys(data).forEach((key) => {
+        const value = data[key];
+        const element = elements[key];
+        const type = elementType(element, req);
+        if (type === "cds.Composition" || type === "cds.Association") {
+          if (value && value.__deferred) {
+            xmlBody += `<link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/${key}" type="application/atom+xml;type=entry" title="${key}" href="${uri}/${key}" />`;
+          } else {
+            xmlBody += `<link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/${key}" type="application/atom+xml;type=entry" title="${key}" href="${uri}/${key}"><m:inline>`;
+            xmlBody += convertResponseListToXML(value, element._target, req, "", element.name);
+            xmlBody += `</m:inline></link>`;
+          }
+        }
+      });
+      xmlBody += `<category term="${definition.name}" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />`;
+      xmlBody += `<content type="application/xml"><m:properties>`;
+      Object.keys(data).forEach((key) => {
+        if (["__metadata"].includes(key)) {
+          return;
+        }
+        const element = elements[key];
+        const type = elementType(element, req);
+        if (!(type === "cds.Composition" || type === "cds.Association")) {
+          if (data[key] === null) {
+            xmlBody += `<d:${key} m:null="true" />`;
+          } else {
+            let value = data[key];
+            const match = typeof value === "string" && value.match(/\/Date\((.*)\)\//is);
+            const date = match && match.pop();
+            if (date) {
+              value = new Date(parseInt(date.split("+")[0])).toISOString();
+            }
+            xmlBody += `<d:${key}>${value}</d:${key}>`;
+          }
+        }
+      });
+      xmlBody += `</m:properties></content>`;
+    } else {
+      xmlBody += `<content type="text/plain">${data}</content>`;
+    }
+    xmlBody += `</entry>`;
+    return xmlBody;
+  }
+
+  function convertResponseErrorToXML(error) {
+    let xmlBody = `<error xmlns="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">`;
+    xmlBody += convertResponseErrorMessageToXML(error);
+    xmlBody += `</error>`;
+    return xmlBody;
+  }
+
+  function convertResponseErrorMessageToXML(message) {
+    let xmlBody = `<code>${message.code}</code>`;
+    xmlBody += `<severity>${message.severity}</severity>`;
+    if (typeof message.message === "string") {
+      xmlBody += `<message>${message.message}</message>`;
+    } else {
+      xmlBody += `<message xml:lang="${message.message.lang}">${message.message.value}</message>`;
+    }
+    if (message.additionalTargets) {
+      xmlBody += `<additionalTargets>`;
+      message.additionalTargets.forEach((additionalTarget) => {
+        xmlBody += `<target>${additionalTarget}</target>`;
+      });
+      xmlBody += `</additionalTargets>`;
+    }
+    if (message.ContentID) {
+      xmlBody += `<ContentID>${message.ContentID}</ContentID>`;
+    }
+    if (message.target) {
+      xmlBody += `<target>${message.target}</target>`;
+    }
+    if (message.transition) {
+      xmlBody += `<transition>${message.transition}</transition>`;
+    }
+    if (message.innererror && message.innererror.errordetails) {
+      xmlBody += `<innererror><errordetails>`;
+      message.innererror.errordetails.forEach((errorDetail) => {
+        xmlBody += `<errordetail>`;
+        xmlBody += convertResponseErrorMessageToXML(errorDetail);
+        xmlBody += `</errordetail>`;
+      });
+      xmlBody += `</errordetails></innererror>`;
+    }
     return xmlBody;
   }
 
