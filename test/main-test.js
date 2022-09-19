@@ -1387,6 +1387,64 @@ describe("main", () => {
     });
   });
 
+  it("POST request with artificial structures", async () => {
+    let response = await util.callWrite(request, "/v2/main/Header", {
+      d: {
+        __metadata: {
+          type: "test.MainService.Header",
+        },
+        name: "Test Create",
+        FirstItem: {
+          __deferred: {},
+        },
+        Items: {
+          results: [
+            {
+              name: "Test Create Item",
+            },
+          ],
+        },
+      },
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    expect(id).toBeDefined();
+    expect(response.headers.location).toEqual(
+      `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`
+    );
+    let itemId = response.body.d.Items.results[0].ID;
+    expect(itemId).toBeDefined();
+    expect(response.body).toMatchObject({
+      d: {
+        __metadata: {
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
+          type: "test.MainService.Header",
+        },
+        ID: id,
+        createdBy: "anonymous",
+        modifiedBy: "anonymous",
+        name: "Test Create",
+        description: null,
+        Items: {
+          results: [
+            {
+              __metadata: {
+                type: "test.MainService.HeaderItem",
+              },
+              description: null,
+              endAt: null,
+              header_ID: id,
+              name: "Test Create Item",
+              startAt: null,
+            },
+          ],
+        },
+      },
+    });
+  });
+
   it("PUT request", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",

@@ -11,6 +11,11 @@ const { promisify } = require("util");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const bodyParser = require("body-parser");
 require("body-parser-xml")(bodyParser);
+const xml2js = require("xml2js");
+const xmlParser = new xml2js.Parser({
+  async: false,
+  tagNameProcessors: [xml2js.processors.stripPrefix],
+});
 
 const SeverityMap = {
   1: "success",
@@ -356,7 +361,12 @@ function cov2ap(options = {}) {
       if (isApplicationJSON(contentType)) {
         express.json({ limit: bodyParserLimit })(req, res, next);
       } else if (isXML(contentType)) {
-        bodyParser.xml({ limit: bodyParserLimit })(req, res, next);
+        bodyParser.xml({
+          limit: bodyParserLimit,
+          xmlParseOptions: {
+            tagNameProcessors: [xml2js.processors.stripPrefix],
+          },
+        })(req, res, next);
       } else if (isMultipartMixed(contentType)) {
         express.text({ type: "multipart/mixed", limit: bodyParserLimit })(req, res, next);
       } else {
@@ -2070,6 +2080,9 @@ function cov2ap(options = {}) {
           elements: definition.params || {},
         };
       }
+      if (body.d && typeof body.d === "object") {
+        body = body.d;
+      }
       convertRequestData(body, headers, definition, req);
     }
     return JSON.stringify(body);
@@ -2177,6 +2190,10 @@ function cov2ap(options = {}) {
         value = value.slice(0, 19) + "Z"; // Cut millis
       } else if (["cds.Date"].includes(type)) {
         value = value.slice(0, 10); // Cut time
+      } else if (["cds.Timestamp"].includes(type)) {
+        if (!value.endsWith("Z")) {
+          value += "Z";
+        }
       }
     }
     return value;
@@ -2189,8 +2206,52 @@ function cov2ap(options = {}) {
   }
 
   function convertRequestBodyFromXML(body, req) {
-    // TODO: convert xml to json
-    return {};
+    if (typeof body === "string") {
+      xmlParser.parseString(body, (err, xml) => {
+        if (err) {
+          throw err;
+        }
+        body = xml;
+      });
+    }
+    return convertRequestDataFromXML(body && body.entry, req);
+  }
+
+  function convertRequestDataFromXML(data, req) {
+    const result = {};
+    if (data && data.content && data.content[0] && data.content[0].properties && data.content[0].properties[0]) {
+      const properties = data.content[0].properties[0];
+      Object.keys(properties).forEach((name) => {
+        let value = properties[name] && properties[name][0];
+        value = (value && value._) || value;
+        if (value && value.$) {
+          Object.keys(value.$).forEach((key) => {
+            if (key.endsWith("null") && value.$[key] === "true") {
+              value = null;
+            }
+          });
+        }
+        result[name] = value;
+      });
+    }
+    if (data && data.link) {
+      data.link.forEach((link) => {
+        if (link.$ && link.$.rel && link.inline && link.inline[0]) {
+          const name = link.$.rel.split("/").pop();
+          if (link.inline[0].feed && link.inline[0].feed[0]) {
+            result[name] = result[name] || [];
+            (link.inline[0].feed[0].entry || []).forEach((entry) => {
+              result[name].push(convertRequestDataFromXML(entry, req));
+            });
+          } else if (link.inline[0].entry && link.inline[0].entry[0]) {
+            result[name] = convertRequestDataFromXML(link.inline[0].entry[0], req);
+          } else {
+            result[name] = null;
+          }
+        }
+      });
+    }
+    return result;
   }
 
   function initContext(req, index = 0) {

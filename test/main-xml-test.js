@@ -108,11 +108,60 @@ describe("main-xml", () => {
     expect(response.text).toEqual("Header");
   });
 
-  it.skip("POST request", async () => {});
+  it("POST request", async () => {
+    let payload = fs.readFileSync(__dirname + "/_env/util/atom/Atom-POST.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "");
+    let response = await util.callWrite(request, "/v2/main/Header", payload, false, {
+      accept: "application/xml",
+      "content-type": "application/atom+xml",
+    });
+    expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
+    response.text = cleanResponse(response.text);
+    expect(response.text).toMatchSnapshot();
+  });
 
-  it.skip("PUT request", async () => {});
+  it("PUT request", async () => {
+    let payload = fs.readFileSync(__dirname + "/_env/util/atom/Atom-POST.txt", "utf8");
+    payload = payload.replace(/<d:ID>a/g, "<d:ID>b");
+    payload = payload.replace(/\r\n/g, "");
+    let response = await util.callWrite(request, "/v2/main/Header", payload, false, {
+      accept: "application/xml",
+      "content-type": "application/atom+xml",
+    });
+    payload = fs.readFileSync(__dirname + "/_env/util/atom/Atom-PUT.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "");
+    response = await util.callWrite(
+      request,
+      "/v2/main/Header(guid'b853cdb8-5531-4141-b319-d405ae5d1e63')",
+      payload,
+      true,
+      {
+        accept: "application/xml",
+        "content-type": "application/atom+xml",
+      }
+    );
+    expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
+    response.text = cleanResponse(response.text);
+    expect(response.text).toMatchSnapshot();
+  });
 
-  it.skip("DELETE request", async () => {});
+  it("DELETE request", async () => {
+    let payload = fs.readFileSync(__dirname + "/_env/util/atom/Atom-POST.txt", "utf8");
+    payload = payload.replace(/<d:ID>a/g, "<d:ID>c");
+    payload = payload.replace(/\r\n/g, "");
+    let response = await util.callWrite(request, "/v2/main/Header", payload, false, {
+      accept: "application/xml",
+      "content-type": "application/atom+xml",
+    });
+    expect(response.statusCode).toEqual(201);
+    response = await util.callDelete(request, "/v2/main/Header(guid'c853cdb8-5531-4141-b319-d405ae5d1e63')", {
+      accept: "application/xml",
+      "content-type": "application/atom+xml",
+    });
+    expect(response.statusCode).toEqual(204);
+    expect(response.headers["content-type"]).toEqual("application/xml;charset=utf-8");
+    expect(response.text).toEqual("");
+  });
 
   it("GET function", async () => {
     let response = await util.callRead(request, "/v2/main/unboundFunction?num=1&text=abc", {
@@ -229,9 +278,9 @@ describe("main-xml", () => {
     expect(response.text).toMatchSnapshot();
   });
 
-  it("Batch request", async () => {
+  it("GET batch request", async () => {
     const ID = "e0582b6a-6d93-46d9-bd28-98723a285d40";
-    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-GET-XML.txt", "utf8");
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-GET-Atom.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, ID);
     let response = await util.callMultipart(request, "/v2/main/$batch", payload);
@@ -241,7 +290,7 @@ describe("main-xml", () => {
     expect(responses.filter((response) => response.statusCode === 200).length).toEqual(3);
     const [first, second, third] = responses;
     expect(first.headers["content-type"]).toEqual("application/json");
-    expect(first.body.d.results.length).toEqual(7);
+    expect(first.body.d.results.length).toEqual(9);
     expect(first.contentTransferEncoding).toEqual("binary");
     expect(second.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
     second.body = cleanResponse(second.body);
@@ -253,7 +302,27 @@ describe("main-xml", () => {
     expect(third.contentTransferEncoding).toEqual("binary");
   });
 
-  function cleanResponse(text) {
-    return text.replace(/http:\/\/localhost:(\d*)\//g, "").replace(/<updated>.*?<\/updated>/g, "<updated/>");
+  it("POST batch request", async () => {
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-POST-Atom.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/<d:ID>a/g, "<d:ID>d");
+    let response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    expect(responses.filter((response) => response.statusCode === 201).length).toEqual(1);
+    const [first] = responses;
+    expect(first.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
+    first.body = cleanResponse(first.body);
+    expect(first.body).toMatchSnapshot();
+    expect(first.contentTransferEncoding).toEqual("binary");
+  });
+
+    function cleanResponse(text) {
+    return text
+      .replace(/http:\/\/localhost:(\d*)\//g, "")
+      .replace(/<updated>.*?<\/updated>/g, "<updated/>")
+      .replace(/<d:createdAt>.*?<\/d:createdAt>/g, "<d:createdAt/>")
+      .replace(/<d:modifiedAt>.*?<\/d:modifiedAt>/g, "<d:modifiedAt/>");
   }
 });
