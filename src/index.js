@@ -3639,7 +3639,7 @@ function cov2ap(options = {}) {
             const match = typeof value === "string" && value.match(/\/Date\((.*)\)\//is);
             const date = match && match.pop();
             if (date) {
-              value = new Date(parseInt(date.split("+")[0])).toISOString();
+              value = new Date(parseInt(date.split("+")[0])).toISOString().slice(0, 19); // Cut millis
             }
             xmlBody += `<d:${ key } m:type="${ODataType[type]}">${ value }</d:${ key }>`;
           }
