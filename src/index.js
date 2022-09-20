@@ -77,6 +77,24 @@ const DataTypeOData = {
   _String: "cds.LargeString",
 };
 
+// https://cap.cloud.sap/docs/advanced/odata#type-mapping
+const ODataType = {
+  "cds.UUID": "Edm.Guid",
+  "cds.Boolean": "Edm.Boolean",
+  "cds.Integer": "Edm.Int32",
+  "cds.Integer64": "Edm.Int64",
+  "cds.Decimal": "Edm.Decimal",
+  "cds.Double": "Edm.Double",
+  "cds.Date": "Edm.DateTime",
+  "cds.Time": "Edm.Time",
+  "cds.DateTime": "Edm.DateTime",
+  "cds.Timestamp": "Edm.DateTimeOffset",
+  "cds.String": "Edm.String",
+  "cds.Binary": "Edm.Binary",
+  "cds.LargeBinary": "Edm.Binary",
+  "cds.LargeString": "Edm.String",
+};
+
 const AggregationMap = {
   SUM: "sum",
   MIN: "min",
@@ -2222,16 +2240,22 @@ function cov2ap(options = {}) {
     if (data && data.content && data.content[0] && data.content[0].properties && data.content[0].properties[0]) {
       const properties = data.content[0].properties[0];
       Object.keys(properties).forEach((name) => {
-        let value = properties[name] && properties[name][0];
-        value = (value && value._) || value;
-        if (value && value.$) {
-          Object.keys(value.$).forEach((key) => {
-            if (key.endsWith("null") && value.$[key] === "true") {
-              value = null;
-            }
-          });
+        const property = properties[name] && properties[name][0];
+        if (typeof property === "object") {
+          if (property._ !== undefined) {
+            result[name] = property._;
+          }
+          if ( property.$ !== undefined) {
+            Object.keys(property.$).forEach((key) => {
+              if (key.endsWith("null") && property.$[key] === "true") {
+                result[name] = null;
+              }
+            });
+          }
+        } else {
+          result[name] = property;
         }
-        result[name] = value;
+        return result[name];
       });
     }
     if (data && data.link) {
@@ -3617,7 +3641,7 @@ function cov2ap(options = {}) {
             if (date) {
               value = new Date(parseInt(date.split("+")[0])).toISOString();
             }
-            xmlBody += `<d:${key}>${value}</d:${key}>`;
+            xmlBody += `<d:${ key } m:type="${ODataType[type]}">${ value }</d:${ key }>`;
           }
         }
       });

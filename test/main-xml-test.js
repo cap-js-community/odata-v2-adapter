@@ -322,7 +322,7 @@ describe("main-xml", () => {
     return text
       .replace(/http:\/\/localhost:(\d*)\//g, "")
       .replace(/<updated>.*?<\/updated>/g, "<updated/>")
-      .replace(/<d:createdAt>.*?<\/d:createdAt>/g, "<d:createdAt/>")
-      .replace(/<d:modifiedAt>.*?<\/d:modifiedAt>/g, "<d:modifiedAt/>");
+      .replace(/<d:createdAt .*?>.*?<\/d:createdAt>/g, "<d:createdAt/>")
+      .replace(/<d:modifiedAt .*?>.*?<\/d:modifiedAt>/g, "<d:modifiedAt/>");
   }
 });

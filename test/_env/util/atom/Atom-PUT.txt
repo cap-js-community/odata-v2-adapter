@@ -40,7 +40,7 @@
     <content type="application/xml">
         <m:properties>
             <d:ID>b853cdb8-5531-4141-b319-d405ae5d1e63</d:ID>
-            <d:name>Test Create</d:name>
+            <d:name m:type="Edm.String">Test Create</d:name>
             <d:description>Updated</d:description>
         </m:properties>
     </content>
