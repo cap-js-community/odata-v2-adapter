@@ -318,7 +318,7 @@ describe("main-xml", () => {
     expect(first.contentTransferEncoding).toEqual("binary");
   });
 
-    function cleanResponse(text) {
+  function cleanResponse(text) {
     return text
       .replace(/http:\/\/localhost:(\d*)\//g, "")
       .replace(/<updated>.*?<\/updated>/g, "<updated/>")

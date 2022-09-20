@@ -2245,7 +2245,7 @@ function cov2ap(options = {}) {
           if (property._ !== undefined) {
             result[name] = property._;
           }
-          if ( property.$ !== undefined) {
+          if (property.$ !== undefined) {
             Object.keys(property.$).forEach((key) => {
               if (key.endsWith("null") && property.$[key] === "true") {
                 result[name] = null;
@@ -3641,7 +3641,7 @@ function cov2ap(options = {}) {
             if (date) {
               value = new Date(parseInt(date.split("+")[0])).toISOString().slice(0, 19); // Cut millis
             }
-            xmlBody += `<d:${ key } m:type="${ODataType[type]}">${ value }</d:${ key }>`;
+            xmlBody += `<d:${key} m:type="${ODataType[type]}">${value}</d:${key}>`;
           }
         }
       });
