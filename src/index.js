@@ -555,6 +555,9 @@ function cov2ap(options = {}) {
       onError: convertProxyError,
       onProxyReq: convertProxyRequest,
       onProxyRes: convertProxyResponse,
+      logProvider: () => {
+        return cds.log("cov2ap");
+      },
     });
   }
 
@@ -2375,7 +2378,7 @@ function cov2ap(options = {}) {
               req.contentIdOrder.every((contentId, index) => contentId === resContentIdOrder[index])
             )
           ) {
-            log(changesetDeviationLogLevel, req, "Batch", "Changeset order deviation", {
+            log(req, changesetDeviationLogLevel, "Batch", "Changeset order deviation", {
               req: req.contentIdOrder,
               res: resContentIdOrder,
             });
@@ -4172,7 +4175,7 @@ function cov2ap(options = {}) {
   }
 
   function traceRequest(req, name, method, url, headers, body) {
-    const LOG = cds.log(`cov2ap/${name}`);
+    const LOG = cds.log("cov2ap");
     if (LOG._debug) {
       const _url = url || "";
       const _headers = JSON.stringify(headers || {});
@@ -4182,7 +4185,7 @@ function cov2ap(options = {}) {
   }
 
   function traceResponse(req, name, statusCode, statusMessage, headers, body) {
-    const LOG = cds.log(`cov2ap/${name}`);
+    const LOG = cds.log("cov2ap");
     if (LOG._debug) {
       const _headers = JSON.stringify(headers || {});
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
@@ -4199,38 +4202,38 @@ function cov2ap(options = {}) {
   }
 
   function logError(req, name, error) {
-    const LOG = cds.log(`cov2ap/${name}`);
+    const LOG = cds.log("cov2ap");
     if (LOG._error) {
       initCDSContext(req);
-      LOG.error(error);
+      LOG.error(`${name}:`, error);
     }
   }
 
   function logWarn(req, name, message, info) {
-    const LOG = cds.log(`cov2ap/${name}`);
+    const LOG = cds.log("cov2ap");
     if (LOG._warn) {
       initCDSContext(req);
-      LOG.warn(message, info);
+      LOG.warn(`${name}:`, message, info);
     }
   }
 
   function logInfo(req, name, message, info) {
-    const LOG = cds.log(`cov2ap/${name}`);
+    const LOG = cds.log("cov2ap");
     if (LOG._info) {
       initCDSContext(req);
-      LOG.info(message, info);
+      LOG.info(`${name}:`, message, info);
     }
   }
 
   function logDebug(req, name, ...lines) {
-    const LOG = cds.log(`cov2ap/${name}`);
+    const LOG = cds.log("cov2ap");
     if (LOG._debug) {
       initCDSContext(req);
-      LOG.debug(lines.filter((line) => !!line).join("\n"));
+      LOG.debug(`${name}:`, lines.filter((line) => !!line).join("\n"));
     }
   }
 
-  function log(level, req, name, message, info) {
+  function log(req, level, name, message, info) {
     let error;
     switch (level.toLocaleString()) {
       case "error":
@@ -4245,6 +4248,7 @@ function cov2ap(options = {}) {
         logInfo(req, name, message, info);
         break;
       case "debug":
+      case "trace":
         logDebug(req, name, info);
         break;
       default:

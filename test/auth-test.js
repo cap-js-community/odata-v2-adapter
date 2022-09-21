@@ -57,7 +57,8 @@ describe("auth", () => {
     });
     expect(response.status).toEqual(401);
     expect(consoleSpy).toHaveBeenCalledWith(
-      "[cov2ap/Authorization] -",
+      "[cov2ap] -",
+      "Authorization:",
       expect.objectContaining(new Error("Invalid JWT token"))
     );
   });
