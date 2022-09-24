@@ -995,7 +995,7 @@ function cov2ap(options = {}) {
               delete headers.DataServiceVersion;
               delete headers.maxdataserviceversion;
               delete headers.MaxDataServiceVersion;
-              if (isResponseFormatXML(req.context.url.query, headers)) {
+              if (isResponseFormatXML(req.context, headers)) {
                 req.context.serviceResponseAsXML = true;
               }
               if (headers.accept && !headers.accept.includes("application/json")) {
@@ -1035,7 +1035,7 @@ function cov2ap(options = {}) {
           headers.accept = "application/json";
           proxyReq.setHeader("accept", headers.accept);
         }
-        if (isResponseFormatXML(req.query, headers)) {
+        if (isResponseFormatXML(req.context, headers)) {
           req.context.serviceResponseAsXML = true;
         }
         if (headers.accept && !headers.accept.includes("application/json")) {
@@ -1121,16 +1121,16 @@ function cov2ap(options = {}) {
     return method === "MERGE" ? "PATCH" : method;
   }
 
-  function isResponseFormatXML(query, headers) {
-    if (query.$format === "atom") {
+  function isResponseFormatXML(context, headers) {
+    if (context.$format === "atom") {
       return true;
-    } else if (!headers.accept && !query.$format && defaultFormat === "atom") {
+    } else if (!headers.accept && !context.$format && defaultFormat === "atom") {
       return true;
     } else if (
       headers.accept &&
       headers.accept.includes("xml") &&
       (defaultFormat === "atom" || (!headers.accept.includes("json") && !headers.accept.includes("html"))) &&
-      query.$format !== "json"
+      context.$format !== "json"
     ) {
       return true;
     }
@@ -1289,6 +1289,7 @@ function cov2ap(options = {}) {
       $value: false,
       $count: false,
       $apply: null,
+      $format: null,
       aggregationKey: false,
       aggregationFilter: "",
       parameters: null,
@@ -1318,6 +1319,7 @@ function cov2ap(options = {}) {
   }
 
   function convertFormat(url, req) {
+    req.context.$format = url.query.$format;
     if (url.query.$format === "atom") {
       delete url.query.$format;
     }
