@@ -1843,11 +1843,20 @@ function cov2ap(options = {}) {
       if (bracketMax > 0) {
         for (let i = 1; i <= bracketMax; i++) {
           Object.keys(FilterFunctions).forEach((name) => {
-            let pattern = name
+            const placeholders = (name.match(/[$]/g) || []).length;
+            const pattern = name
               .replace(/([()])/g, `${_}\\$1${i}${_}`)
               .replace(/([,])/g, `${_}$1${i}${_}`)
               .replace(/[$]/g, "(.*?)");
-            filter = filter.replace(new RegExp(pattern, "gi"), FilterFunctions[name]);
+            filter = filter.replace(new RegExp(pattern, "gi"), (...args) => {
+              let result = FilterFunctions[name];
+              for (let j = 1; j <= placeholders; j++) {
+                if (args[j] !== undefined) {
+                  result = result.replace(`$${j}`, args[j].trim());
+                }
+              }
+              return result;
+            });
           });
           filter = filter.replace(new RegExp(`${_}([(),])${i}${_}`, "g"), "$1");
         }

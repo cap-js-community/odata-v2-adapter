@@ -1127,6 +1127,21 @@ describe("main", () => {
       `/v2/main/Header?$filter=ID eq guid'${id}' and substringof(tolower(tolower('ES')),tolower(tolower(name)))`
     );
     expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es', name)`);
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and substringof( 'es',name)`);
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callRead(
+      request,
+      `/v2/main/Header?$filter=ID eq guid'${id}' and substringof( tolower('es'), tolower(name))`
+    );
+    expect(response.body.d.results).toHaveLength(1);
+    response = await util.callWrite(request, "/v2/main/Header", {
+      name: "substringof('es',name)",
+    });
+    expect(response.statusCode).toEqual(201);
+    response = await util.callRead(request, `/v2/main/Header?$filter=substringof('substringof(''es'',name)',name)`);
+    expect(response.body.d.results).toHaveLength(1);
   });
 
   it("GET request with function 'substringof' and 'startswith'", async () => {
