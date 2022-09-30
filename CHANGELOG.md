@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Atom format fixes
 - Trim spaces for filter function parameter transformations
+- Allow passing proxy options as command line env (`camelCase` to `snake_case`, escape `_` by doubling)
 
 ## Version 1.9.9 - 2022-09-21
 

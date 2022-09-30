@@ -182,6 +182,14 @@ function cov2ap(options = {}) {
     if (cds.env.cov2ap && Object.prototype.hasOwnProperty.call(cds.env.cov2ap, name)) {
       return cds.env.cov2ap[name];
     }
+    const scName = name.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`);
+    if (cds.env.cov2ap && Object.prototype.hasOwnProperty.call(cds.env.cov2ap, scName)) {
+      return cds.env.cov2ap[scName];
+    }
+    const acName = name.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
+    if (cds.env.cov2ap && Object.prototype.hasOwnProperty.call(cds.env.cov2ap, acName)) {
+      return cds.env.cov2ap[acName]["undefined"];
+    }
     return fallback;
   };
 
