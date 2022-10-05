@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Include new integer types
+
 ## Version 1.9.10 - 2022-10-04
 
 ### Fixed
