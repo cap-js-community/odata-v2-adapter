@@ -3216,7 +3216,8 @@ describe("main", () => {
     });
   });
 
-  it("POST action with linebreak in parameter exceeding max length", async () => {
+  // TODO: Enable with next CDS release
+  it.skip("POST action with linebreak in parameter exceeding max length", async () => {
     let response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text=0123456789");
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
