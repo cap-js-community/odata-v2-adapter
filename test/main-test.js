@@ -3240,7 +3240,7 @@ describe("main", () => {
         message: {
           lang: "en",
           value:
-            "Deserialization Error: Invalid value 0123456789a (JavaScript string) for property \"text\". The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+            'Deserialization Error: Invalid value 0123456789a (JavaScript string) for property "text". The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
         },
         severity: "error",
         target: "/#TRANSIENT#",
@@ -3251,7 +3251,7 @@ describe("main", () => {
               message: {
                 lang: "en",
                 value:
-                  "Deserialization Error: Invalid value 0123456789a (JavaScript string) for property \"text\". The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+                  'Deserialization Error: Invalid value 0123456789a (JavaScript string) for property "text". The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
               },
               severity: "error",
               target: "/#TRANSIENT#",
@@ -3268,7 +3268,7 @@ describe("main", () => {
         message: {
           lang: "en",
           value:
-            "Deserialization Error: Invalid value 0123456789a (JavaScript string) for property \"text\". The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+            'Deserialization Error: Invalid value 0123456789a (JavaScript string) for property "text". The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
         },
         severity: "error",
         target: "/#TRANSIENT#",
@@ -3279,7 +3279,7 @@ describe("main", () => {
               message: {
                 lang: "en",
                 value:
-                  "Deserialization Error: Invalid value 0123456789a (JavaScript string) for property \"text\". The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+                  'Deserialization Error: Invalid value 0123456789a (JavaScript string) for property "text". The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
               },
               severity: "error",
               target: "/#TRANSIENT#",
@@ -3310,7 +3310,7 @@ describe("main", () => {
         message: {
           lang: "en",
           value:
-            'Deserialization Error: Invalid value "01234\n5678" (JavaScript string) for property \"text\". The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
+            'Deserialization Error: Invalid value "01234\n5678" (JavaScript string) for property "text". The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
         },
         severity: "error",
         target: "/#TRANSIENT#",
@@ -3321,7 +3321,7 @@ describe("main", () => {
               message: {
                 lang: "en",
                 value:
-                  'Deserialization Error: Invalid value "01234\n5678" (JavaScript string) for property \"text\". The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
+                  'Deserialization Error: Invalid value "01234\n5678" (JavaScript string) for property "text". The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
               },
               severity: "error",
               target: "/#TRANSIENT#",
@@ -3338,7 +3338,7 @@ describe("main", () => {
         message: {
           lang: "en",
           value:
-            "Deserialization Error: Invalid value 01234\n56789 (JavaScript string) for property \"text\". The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+            'Deserialization Error: Invalid value 01234\n56789 (JavaScript string) for property "text". The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
         },
         severity: "error",
         target: "/#TRANSIENT#",
@@ -3349,7 +3349,7 @@ describe("main", () => {
               message: {
                 lang: "en",
                 value:
-                  "Deserialization Error: Invalid value 01234\n56789 (JavaScript string) for property \"text\". The length of the Edm.String value must not be greater than the MaxLength facet value (10).",
+                  'Deserialization Error: Invalid value 01234\n56789 (JavaScript string) for property "text". The length of the Edm.String value must not be greater than the MaxLength facet value (10).',
               },
               severity: "error",
               target: "/#TRANSIENT#",
