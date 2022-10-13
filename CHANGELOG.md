@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Include new integer types
+- Support new integer types
+- Fallback target `auto` to `default` target until dynamic target/port assignment is available
 
 ## Version 1.9.10 - 2022-10-04
 

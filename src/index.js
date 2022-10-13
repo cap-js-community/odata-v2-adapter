@@ -206,7 +206,8 @@ function cov2ap(options = {}) {
   const rewritePath = `${base ? "/" + base : ""}${targetPath ? "/" : ""}${targetPath}`;
   const pathRewrite = { [`^${sourcePath}`]: rewritePath };
   let port = optionWithFallback("port", process.env.PORT || DefaultPort);
-  let target = optionWithFallback("target", `http://${DefaultHost}:${port}`);
+  let defaultTarget = `http://${DefaultHost}:${port}`;
+  let target = optionWithFallback("target", defaultTarget);
   const services = optionWithFallback("services", {});
   const mtxRemote = optionWithFallback("mtxRemote", false);
   const mtxEndpoint = optionWithFallback("mtxEndpoint", "/mtx/v1");
@@ -574,6 +575,7 @@ function cov2ap(options = {}) {
   }
 
   if (target === "auto") {
+    target = defaultTarget;
     cds.on("listening", ({ server, url }) => {
       port = server.address().port;
       target = url;
