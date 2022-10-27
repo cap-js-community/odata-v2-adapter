@@ -41,7 +41,7 @@ describe("mtx", () => {
 
   it("MTX $metadata (remote)", async () => {
     fetch.mockImplementation((url) => {
-      if (url.includes("/$metadata") || url.includes("/metadata/edmx")) {
+      if (url.endsWith("/main/") || url.includes("/metadata/edmx")) {
         return {
           status: 200,
           ok: true,

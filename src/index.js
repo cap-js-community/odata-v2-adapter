@@ -317,7 +317,10 @@ function cov2ap(options = {}) {
   router.get(`/${path}/*\\$metadata`, async (req, res) => {
     let serviceValid = true;
     try {
-      const metadataUrlPath = targetUrl(req);
+      let metadataUrlPath = targetUrl(req);
+      if (metadataUrlPath.endsWith("/$metadata")) {
+        metadataUrlPath = metadataUrlPath.substring(0, metadataUrlPath.length - 9);
+      }
       const metadataTargetUrl = target + metadataUrlPath;
       // Trace
       traceRequest(req, "Request", req.method, req.originalUrl, req.headers, req.body);
@@ -326,7 +329,10 @@ function cov2ap(options = {}) {
       const result = await Promise.all([
         fetch(metadataTargetUrl, {
           method: "GET",
-          headers: propagateHeaders(req),
+          headers: {
+            ...propagateHeaders(req),
+            accept: "application/json",
+          },
         }),
         (async () => {
           const { csn } = await getMetadata(req);
@@ -340,9 +346,10 @@ function cov2ap(options = {}) {
         })(),
       ]);
       const [metadataResponse, edmx] = result;
-      const headers = convertBasicHeaders(convertToNodeHeaders(metadataResponse.headers));
-      delete headers["content-encoding"];
       const metadataBody = await metadataResponse.text();
+      const headers = convertBasicHeaders(convertToNodeHeaders(metadataResponse.headers));
+      headers["content-type"] = "application/xml";
+      delete headers["content-encoding"];
       let body;
       if (metadataResponse.ok) {
         body = edmx;

@@ -15,12 +15,22 @@ const csn = {
     "test.MainService": {
       kind: "service",
     },
+    "test.MainService.Header": {
+      kind: "entity",
+      elements: [],
+    },
   },
 };
 const edmx = `<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
   <edmx:DataServices m:DataServiceVersion="2.0">
     <Schema Namespace="test.MainService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm"/>
+    <EntityContainer Name="EntityContainer">
+      <EntitySet Name="Header" EntityType="test.MainService.Header">
+      </EntitySet>
+    </EntityContainer>
+    <EntityType Name="Header">
+    </EntityType>
   </edmx:DataServices>
 </edmx:Edmx>`;
 
