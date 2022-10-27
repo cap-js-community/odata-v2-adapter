@@ -391,7 +391,7 @@ describe("batch", () => {
     expect(second.contentTransferEncoding).toEqual("binary");
   });
 
-  it("GET with x-forwarded-path header", async () => {
+  it("GET with x-forwarded headers", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test %22",
       country: "US",

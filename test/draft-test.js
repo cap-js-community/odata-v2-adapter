@@ -720,5 +720,49 @@ describe("draft", () => {
         },
       ],
     });
+    response = await util.callRead(
+      request,
+      decodeURIComponent(`/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=((IsActiveEntity eq true and substringof('Item2',name)) or (IsActiveEntity eq false and (substringof('Item2',name) or HasActiveEntity eq false))) or description eq 'ABC'`)
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d).toMatchObject({
+      results: [
+        {
+          name: "Test Item",
+          description: "ABC",
+          startAt: null,
+          endAt: null,
+          header_ID: id,
+          NextItem_ID: null,
+          assoc_header_ID: null,
+          IsActiveEntity: false,
+          HasDraftEntity: false,
+          HasActiveEntity: false,
+        },
+      ],
+    });
+    response = await util.callRead(
+      request,
+      decodeURIComponent(`/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=(IsActiveEntity eq true and name eq 'Test Item') or (IsActiveEntity eq false and (name eq 'Test Item' or HasActiveEntity eq false))`)
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d).toMatchObject({
+      results: [
+        {
+          name: "Test Item",
+          description: "ABC",
+          startAt: null,
+          endAt: null,
+          header_ID: id,
+          NextItem_ID: null,
+          assoc_header_ID: null,
+          IsActiveEntity: false,
+          HasDraftEntity: false,
+          HasActiveEntity: false,
+        },
+      ],
+    });
   });
 });

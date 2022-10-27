@@ -163,7 +163,12 @@ type Options = {
     changesetDeviationLogLevel?: String | "info",
 
     /**
-     * Specifies the default entity response format (json, atom). Default is 'json'
+     * Specifies the default entity response format (json, atom). Default is 'json'.
      */
     defaultFormat?: String | "json",
+
+    /**
+     * Specifies if 'x-forwarded' headers are processed. Default is 'true'.
+     */
+    processForwardedHeaders: boolean | true,
 };

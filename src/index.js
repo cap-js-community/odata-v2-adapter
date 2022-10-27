@@ -176,6 +176,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} options.fixDraftRequests: Specifies if unsupported draft requests are converted to a working version. Default is false.
  * @param {string} options.changesetDeviationLogLevel: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
  * @param {string} options.defaultFormat: Specifies the default entity response format (json, atom). Default is 'json'.
+ * @param {boolean} options.processForwardedHeaders: Specifies if 'x-forwarded' headers are processed. Default is 'true'.
  * @returns {express.Router} CDS OData V2 Adapter Proxy Express Router
  */
 function cov2ap(options = {}) {
@@ -233,6 +234,7 @@ function cov2ap(options = {}) {
   const fixDraftRequests = optionWithFallback("fixDraftRequests", false);
   const changesetDeviationLogLevel = optionWithFallback("changesetDeviationLogLevel", "info");
   const defaultFormat = optionWithFallback("defaultFormat", "json");
+  const processForwardedHeaders = optionWithFallback("processForwardedHeaders", true);
 
   if (caseInsensitive) {
     Object.assign(FilterFunctions, FilterFunctionsCaseInsensitive);
@@ -1815,6 +1817,7 @@ function cov2ap(options = {}) {
         const match = filter.match(UnsupportedDraftFilterRegex);
         if (match && match.length === 3 && match[1] === match[2]) {
           filter = filter.replace(match[0], match[1]);
+          url.query["$filter"] = filter;
         }
       }
       // Convert functions
@@ -3358,10 +3361,8 @@ function cov2ap(options = {}) {
   }
 
   function rootUri(req) {
-    const protocol = req.header("x-forwarded-proto") || req.protocol || "http";
-    const host =
-      req.header("x-forwarded-host") ||
-      req.headers.host ||
+    const protocol = (processForwardedHeaders && req.header("x-forwarded-proto")) || req.protocol || "http";
+    const host = (processForwardedHeaders && req.header("x-forwarded-host")) || req.headers.host ||
       `${req.hostname || DefaultHost}:${req.socket.address().port || DefaultPort}`;
     return `${protocol}://${host}`.replace(/^http:\/\/127.0.0.1/, `http://${DefaultHost}`);
   }
@@ -3371,9 +3372,7 @@ function cov2ap(options = {}) {
       return req.context.serviceUri;
     }
     let serviceUri = rootUri(req);
-    if (req.header("x-forwarded-path") === undefined) {
-      serviceUri += `${sourcePath}/${req.servicePath}`;
-    } else {
+    if (processForwardedHeaders && req.header("x-forwarded-path") !== undefined) {
       const path = stripSlashes(URL.parse(req.header("x-forwarded-path") || "").pathname || "");
       let resourceStartPath = "";
       const definition = req.context.requestDefinition;
@@ -3401,6 +3400,8 @@ function cov2ap(options = {}) {
       if (parts.length > 0) {
         serviceUri += `/${parts.join("/")}`;
       }
+    } else {
+      serviceUri += `${sourcePath}/${req.servicePath}`;
     }
     req.context.serviceUri = serviceUri.endsWith("/") ? serviceUri : `${serviceUri}/`;
     return req.context.serviceUri;
