@@ -3362,7 +3362,9 @@ function cov2ap(options = {}) {
 
   function rootUri(req) {
     const protocol = (processForwardedHeaders && req.header("x-forwarded-proto")) || req.protocol || "http";
-    const host = (processForwardedHeaders && req.header("x-forwarded-host")) || req.headers.host ||
+    const host =
+      (processForwardedHeaders && req.header("x-forwarded-host")) ||
+      req.headers.host ||
       `${req.hostname || DefaultHost}:${req.socket.address().port || DefaultPort}`;
     return `${protocol}://${host}`.replace(/^http:\/\/127.0.0.1/, `http://${DefaultHost}`);
   }
