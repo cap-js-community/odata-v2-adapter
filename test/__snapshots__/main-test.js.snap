@@ -5234,6 +5234,1251 @@ exports[`main GET $metadata with propagated headers 1`] = `
 </edmx:Edmx>"
 `;
 
+exports[`main GET $metadata with query options 1`] = `
+"<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices m:DataServiceVersion="2.0">
+    <Schema Namespace="test.MainService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="Country" EntityType="test.MainService.Country"/>
+        <EntitySet Name="Currency" EntityType="test.MainService.Currency"/>
+        <EntitySet Name="Header" EntityType="test.MainService.Header"/>
+        <FunctionImport Name="Header_boundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundMassAction" ReturnType="Collection(test.MainService.Result)" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundActionInline" ReturnType="test.MainService.return_test_MainService_Header_boundActionInline" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundMassActionInline" ReturnType="Collection(test.MainService.return_test_MainService_Header_boundMassActionInline)" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundActionNoReturn" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundActionPrimitive" ReturnType="Edm.Int32" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundActionPrimitiveString" ReturnType="Edm.String" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundActionPrimitiveLargeString" ReturnType="Edm.String" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundMassActionPrimitive" ReturnType="Collection(Edm.String)" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="text1" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="text2" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundActionEntity" EntitySet="Header" ReturnType="test.MainService.Header" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundMassActionEntity" EntitySet="Header" ReturnType="Collection(test.MainService.Header)" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundMassFunction" ReturnType="Collection(test.MainService.Result)" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundFunctionInline" ReturnType="test.MainService.return_test_MainService_Header_boundFunctionInline" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundMassFunctionInline" ReturnType="Collection(test.MainService.return_test_MainService_Header_boundMassFunctionInline)" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundFunctionPrimitive" ReturnType="Edm.Int32" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundFunctionPrimitiveString" ReturnType="Edm.String" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundFunctionPrimitiveLargeString" ReturnType="Edm.String" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundMassFunctionPrimitive" ReturnType="Collection(Edm.String)" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="text1" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="text2" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundFunctionEntity" EntitySet="Header" ReturnType="test.MainService.Header" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundMassFunctionEntity" EntitySet="Header" ReturnType="Collection(test.MainService.Header)" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundErrorFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_boundWarningFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <EntitySet Name="HeaderItem" EntityType="test.MainService.HeaderItem"/>
+        <EntitySet Name="HeaderLine" EntityType="test.MainService.HeaderLine"/>
+        <EntitySet Name="HeaderStream" EntityType="test.MainService.HeaderStream"/>
+        <EntitySet Name="HeaderStreamAttachment" EntityType="test.MainService.HeaderStreamAttachment"/>
+        <EntitySet Name="HeaderStreamDecode" EntityType="test.MainService.HeaderStreamDecode"/>
+        <EntitySet Name="HeaderUrlStream" EntityType="test.MainService.HeaderUrlStream"/>
+        <EntitySet Name="HeaderBinary" EntityType="test.MainService.HeaderBinary"/>
+        <EntitySet Name="HeaderAssocKey" EntityType="test.MainService.HeaderAssocKey"/>
+        <EntitySet Name="HeaderTemporal" EntityType="test.MainService.HeaderTemporal"/>
+        <EntitySet Name="HeaderDelta" EntityType="test.MainService.HeaderDelta"/>
+        <EntitySet Name="HeaderItemDelta" EntityType="test.MainService.HeaderItemDelta"/>
+        <EntitySet Name="HeaderLargeString" EntityType="test.MainService.HeaderLargeString"/>
+        <EntitySet Name="HeaderItemLargeString" EntityType="test.MainService.HeaderItemLargeString"/>
+        <EntitySet Name="Favorite" EntityType="test.MainService.Favorite"/>
+        <EntitySet Name="StringUUID" EntityType="test.MainService.StringUUID"/>
+        <EntitySet Name="LocalizedEntity" EntityType="test.MainService.LocalizedEntity"/>
+        <EntitySet Name="Node" EntityType="test.MainService.Node"/>
+        <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
+        <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
+        <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
+        <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
+        <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
+        <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
+        <FunctionImport Name="unboundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundMassAction" ReturnType="Collection(test.MainService.Result)" m:HttpMethod="POST">
+          <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundActionInline" ReturnType="test.MainService.return_test_MainService_unboundActionInline" m:HttpMethod="POST">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundMassActionInline" ReturnType="Collection(test.MainService.return_test_MainService_unboundMassActionInline)" m:HttpMethod="POST">
+          <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundActionNoReturn" m:HttpMethod="POST">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundActionPrimitive" ReturnType="Edm.Int32" m:HttpMethod="POST">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundActionPrimitiveString" ReturnType="Edm.String" m:HttpMethod="POST">
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundActionPrimitiveLargeString" ReturnType="Edm.String" m:HttpMethod="POST">
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundMassActionPrimitive" ReturnType="Collection(Edm.String)" m:HttpMethod="POST">
+          <Parameter Name="text1" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="text2" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundActionEntity" EntitySet="Header" ReturnType="test.MainService.Header" m:HttpMethod="POST">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundMassActionEntity" EntitySet="Header" ReturnType="Collection(test.MainService.Header)" m:HttpMethod="POST">
+          <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundActionMaxLength" ReturnType="Edm.String" m:HttpMethod="POST">
+          <Parameter Name="text" Type="Edm.String" MaxLength="10" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundMassFunction" ReturnType="Collection(test.MainService.Result)" m:HttpMethod="GET">
+          <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundFunctionInline" ReturnType="test.MainService.return_test_MainService_unboundFunctionInline" m:HttpMethod="GET">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundMassFunctionInline" ReturnType="Collection(test.MainService.return_test_MainService_unboundMassFunctionInline)" m:HttpMethod="GET">
+          <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundFunctionPrimitive" ReturnType="Edm.Int32" m:HttpMethod="GET">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundFunctionPrimitiveString" ReturnType="Edm.String" m:HttpMethod="GET">
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundFunctionPrimitiveLargeString" ReturnType="Edm.String" m:HttpMethod="GET">
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundMassFunctionPrimitive" ReturnType="Collection(Edm.String)" m:HttpMethod="GET">
+          <Parameter Name="text1" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="text2" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundFunctionEntity" EntitySet="Header" ReturnType="test.MainService.Header" m:HttpMethod="GET">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundMassFunctionEntity" EntitySet="Header" ReturnType="Collection(test.MainService.Header)" m:HttpMethod="GET">
+          <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundDecimalFunction" ReturnType="Edm.Decimal" m:HttpMethod="GET"/>
+        <FunctionImport Name="unboundDecimalsFunction" ReturnType="Collection(Edm.Decimal)" m:HttpMethod="GET"/>
+        <FunctionImport Name="unboundErrorFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET"/>
+        <FunctionImport Name="unboundWarningFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET"/>
+        <FunctionImport Name="unboundNavigationFunction" EntitySet="Header" ReturnType="test.MainService.Header" m:HttpMethod="GET">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundNavigationsFunction" EntitySet="Header" ReturnType="Collection(test.MainService.Header)" m:HttpMethod="GET">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="calcDecimal" ReturnType="Edm.Decimal" m:HttpMethod="GET">
+          <Parameter Name="value" Type="Edm.Decimal" Mode="In" sap:variable-scale="true" Nullable="true"/>
+          <Parameter Name="percentage" Type="Edm.Decimal" Mode="In" sap:variable-scale="true" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unbound_Action" ReturnType="test.MainService.Result" m:HttpMethod="POST">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unbound_Function" ReturnType="test.MainService.Result" m:HttpMethod="GET">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <AssociationSet Name="Country_texts_1" Association="test.MainService.Country_texts_1">
+          <End Role="Country" EntitySet="Country"/>
+          <End Role="Country_texts" EntitySet="Country_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Country_localized" Association="test.MainService.Country_localized">
+          <End Role="Country" EntitySet="Country"/>
+          <End Role="Country_texts" EntitySet="Country_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Currency_texts_1" Association="test.MainService.Currency_texts_1">
+          <End Role="Currency" EntitySet="Currency"/>
+          <End Role="Currency_texts" EntitySet="Currency_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Currency_localized" Association="test.MainService.Currency_localized">
+          <End Role="Currency" EntitySet="Currency"/>
+          <End Role="Currency_texts" EntitySet="Currency_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Header_FirstItem" Association="test.MainService.Header_FirstItem">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_header" Association="test.MainService.HeaderItem_header">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="Header" EntitySet="Header"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_NextItem" Association="test.MainService.HeaderItem_NextItem">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem1" EntitySet="HeaderItem"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_assoc" Association="test.MainService.HeaderItem_assoc">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderLine_item" Association="test.MainService.HeaderLine_item">
+          <End Role="HeaderLine" EntitySet="HeaderLine"/>
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderAssocKey_header" Association="test.MainService.HeaderAssocKey_header">
+          <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
+          <End Role="Header" EntitySet="Header"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItemDelta_header" Association="test.MainService.HeaderItemDelta_header">
+          <End Role="HeaderItemDelta" EntitySet="HeaderItemDelta"/>
+          <End Role="HeaderDelta" EntitySet="HeaderDelta"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItemLargeString_header" Association="test.MainService.HeaderItemLargeString_header">
+          <End Role="HeaderItemLargeString" EntitySet="HeaderItemLargeString"/>
+          <End Role="HeaderLargeString" EntitySet="HeaderLargeString"/>
+        </AssociationSet>
+        <AssociationSet Name="LocalizedEntity_texts_1" Association="test.MainService.LocalizedEntity_texts_1">
+          <End Role="LocalizedEntity" EntitySet="LocalizedEntity"/>
+          <End Role="LocalizedEntity_texts" EntitySet="LocalizedEntity_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="LocalizedEntity_localized" Association="test.MainService.LocalizedEntity_localized">
+          <End Role="LocalizedEntity" EntitySet="LocalizedEntity"/>
+          <End Role="LocalizedEntity_texts" EntitySet="LocalizedEntity_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="context_LocalizedEntity_texts_1" Association="test.MainService.context_LocalizedEntity_texts_1">
+          <End Role="context_LocalizedEntity" EntitySet="context_LocalizedEntity"/>
+          <End Role="context_LocalizedEntity_texts" EntitySet="context_LocalizedEntity_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="context_LocalizedEntity_localized" Association="test.MainService.context_LocalizedEntity_localized">
+          <End Role="context_LocalizedEntity" EntitySet="context_LocalizedEntity"/>
+          <End Role="context_LocalizedEntity_texts" EntitySet="context_LocalizedEntity_texts"/>
+        </AssociationSet>
+      </EntityContainer>
+      <EntityType Name="Country">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.Country_texts_1" FromRole="Country" ToRole="Country_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.Country_localized" FromRole="Country" ToRole="Country_texts"/>
+      </EntityType>
+      <EntityType Name="Currency">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.Currency_texts_1" FromRole="Currency" ToRole="Currency_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.Currency_localized" FromRole="Currency" ToRole="Currency_texts"/>
+      </EntityType>
+      <EntityType Name="Header">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="country" Type="Edm.String"/>
+        <Property Name="currency" Type="Edm.String"/>
+        <Property Name="stock" Type="Edm.Int32"/>
+        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
+        <NavigationProperty Name="FirstItem" Relationship="test.MainService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
+        <Property Name="FirstItem_ID" Type="Edm.Guid"/>
+      </EntityType>
+      <EntityType Name="HeaderItem">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="startAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="endAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <NavigationProperty Name="header" Relationship="test.MainService.HeaderItem_header" FromRole="HeaderItem" ToRole="Header"/>
+        <Property Name="header_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="NextItem" Relationship="test.MainService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
+        <Property Name="NextItem_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="assoc" Relationship="test.MainService.HeaderItem_assoc" FromRole="HeaderItem" ToRole="HeaderAssocKey"/>
+        <Property Name="assoc_header_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
+      </EntityType>
+      <EntityType Name="HeaderLine">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="value" Type="Edm.Double"/>
+        <NavigationProperty Name="item" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderLine" ToRole="HeaderItem"/>
+        <Property Name="item_ID" Type="Edm.Guid"/>
+      </EntityType>
+      <EntityType Name="HeaderStream" m:HasStream="true">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="mediaType" Type="Edm.String"/>
+        <Property Name="filename" Type="Edm.String"/>
+        <Property Name="custom" Type="Edm.String"/>
+        <Property Name="totalAmount" Type="Edm.Int32"/>
+        <Property Name="isBlocked" Type="Edm.Boolean"/>
+      </EntityType>
+      <EntityType Name="HeaderStreamAttachment" m:HasStream="true">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="mediaType" Type="Edm.String"/>
+        <Property Name="filename" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="HeaderStreamDecode" m:HasStream="true">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="mediaType" Type="Edm.String"/>
+        <Property Name="filename" Type="Edm.String"/>
+        <Property Name="custom" Type="Edm.String"/>
+        <Property Name="totalAmount" Type="Edm.Int32"/>
+        <Property Name="isBlocked" Type="Edm.Boolean"/>
+      </EntityType>
+      <EntityType Name="HeaderUrlStream" m:HasStream="true">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="mediaType" Type="Edm.String"/>
+        <Property Name="filename" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="HeaderBinary">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="data" Type="Edm.Binary"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="HeaderAssocKey">
+        <Key>
+          <PropertyRef Name="header_ID"/>
+        </Key>
+        <NavigationProperty Name="header" Relationship="test.MainService.HeaderAssocKey_header" FromRole="HeaderAssocKey" ToRole="Header"/>
+        <Property Name="header_ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="num" Type="Edm.Double"/>
+      </EntityType>
+      <EntityType Name="HeaderTemporal">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="validFrom"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="validFrom" Type="Edm.DateTimeOffset" Precision="7" Nullable="false"/>
+        <Property Name="validTo" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="value" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="HeaderDelta">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="description" Type="Edm.String"/>
+        <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItemDelta_header" FromRole="HeaderDelta" ToRole="HeaderItemDelta"/>
+      </EntityType>
+      <EntityType Name="HeaderItemDelta">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="description" Type="Edm.String"/>
+        <NavigationProperty Name="header" Relationship="test.MainService.HeaderItemDelta_header" FromRole="HeaderItemDelta" ToRole="HeaderDelta"/>
+        <Property Name="header_ID" Type="Edm.Guid"/>
+      </EntityType>
+      <EntityType Name="HeaderLargeString">
+        <Key>
+          <PropertyRef Name="name"/>
+          <PropertyRef Name="country"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" Nullable="false"/>
+        <Property Name="country" Type="Edm.String" Nullable="false"/>
+        <Property Name="currency" Type="Edm.String"/>
+        <Property Name="stock" Type="Edm.Int32"/>
+        <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItemLargeString_header" FromRole="HeaderLargeString" ToRole="HeaderItemLargeString"/>
+      </EntityType>
+      <EntityType Name="HeaderItemLargeString">
+        <Key>
+          <PropertyRef Name="name"/>
+          <PropertyRef Name="position"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" Nullable="false"/>
+        <Property Name="position" Type="Edm.String" Nullable="false"/>
+        <Property Name="value" Type="Edm.Int32"/>
+        <NavigationProperty Name="header" Relationship="test.MainService.HeaderItemLargeString_header" FromRole="HeaderItemLargeString" ToRole="HeaderLargeString"/>
+        <Property Name="header_name" Type="Edm.String"/>
+        <Property Name="header_country" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="Favorite">
+        <Key>
+          <PropertyRef Name="name"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" Nullable="false"/>
+        <Property Name="value" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="StringUUID">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.String" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="LocalizedEntity">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.LocalizedEntity_texts_1" FromRole="LocalizedEntity" ToRole="LocalizedEntity_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.LocalizedEntity_localized" FromRole="LocalizedEntity" ToRole="LocalizedEntity_texts"/>
+      </EntityType>
+      <EntityType Name="Node">
+        <Key>
+          <PropertyRef Name="nodeID"/>
+        </Key>
+        <Property Name="nodeID" Type="Edm.Int32" Nullable="false" sap:hierarchy-node-for="true"/>
+        <Property Name="hierarchyLevel" Type="Edm.Int32" sap:hierarchy-level-for="true"/>
+        <Property Name="parentNodeID" Type="Edm.Int32" sap:hierarchy-parent-node-for="true"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="drillState" Type="Edm.String" sap:hierarchy-drill-state-for="true"/>
+      </EntityType>
+      <EntityType Name="context_Name_space_v2">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_LocalizedEntity">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.context_LocalizedEntity_texts_1" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.context_LocalizedEntity_localized" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
+      </EntityType>
+      <EntityType Name="Country_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Currency_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="LocalizedEntity_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_LocalizedEntity_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <ComplexType Name="Result">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="code" Type="Edm.String"/>
+        <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_Header_boundActionInline">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="code" Type="Edm.String"/>
+        <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_Header_boundMassActionInline">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="code" Type="Edm.String"/>
+        <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_Header_boundFunctionInline">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="code" Type="Edm.String"/>
+        <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_Header_boundMassFunctionInline">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="code" Type="Edm.String"/>
+        <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_unboundActionInline">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="code" Type="Edm.String"/>
+        <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_unboundMassActionInline">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="code" Type="Edm.String"/>
+        <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_unboundFunctionInline">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="code" Type="Edm.String"/>
+        <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_unboundMassFunctionInline">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="code" Type="Edm.String"/>
+        <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <Association Name="Country_texts_1">
+        <End Role="Country" Type="test.MainService.Country" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="Country_texts" Type="test.MainService.Country_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="Country_localized">
+        <End Role="Country" Type="test.MainService.Country" Multiplicity="*"/>
+        <End Role="Country_texts" Type="test.MainService.Country_texts" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Currency_texts_1">
+        <End Role="Currency" Type="test.MainService.Currency" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="Currency_texts" Type="test.MainService.Currency_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="Currency_localized">
+        <End Role="Currency" Type="test.MainService.Currency" Multiplicity="*"/>
+        <End Role="Currency_texts" Type="test.MainService.Currency_texts" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Header_FirstItem">
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="*"/>
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="HeaderItem">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="Header">
+            <PropertyRef Name="FirstItem_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItem_header">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="0..1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="Header">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="HeaderItem">
+            <PropertyRef Name="header_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItem_NextItem">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
+        <End Role="HeaderItem1" Type="test.MainService.HeaderItem" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="HeaderItem1">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="HeaderItem">
+            <PropertyRef Name="NextItem_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItem_assoc">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
+        <End Role="HeaderAssocKey" Type="test.MainService.HeaderAssocKey" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="HeaderAssocKey">
+            <PropertyRef Name="header_ID"/>
+          </Principal>
+          <Dependent Role="HeaderItem">
+            <PropertyRef Name="assoc_header_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderLine_item">
+        <End Role="HeaderLine" Type="test.MainService.HeaderLine" Multiplicity="*"/>
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="0..1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="HeaderItem">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="HeaderLine">
+            <PropertyRef Name="item_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderAssocKey_header">
+        <End Role="HeaderAssocKey" Type="test.MainService.HeaderAssocKey" Multiplicity="*"/>
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Header">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="HeaderAssocKey">
+            <PropertyRef Name="header_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItemDelta_header">
+        <End Role="HeaderItemDelta" Type="test.MainService.HeaderItemDelta" Multiplicity="*"/>
+        <End Role="HeaderDelta" Type="test.MainService.HeaderDelta" Multiplicity="0..1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="HeaderDelta">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="HeaderItemDelta">
+            <PropertyRef Name="header_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItemLargeString_header">
+        <End Role="HeaderItemLargeString" Type="test.MainService.HeaderItemLargeString" Multiplicity="*"/>
+        <End Role="HeaderLargeString" Type="test.MainService.HeaderLargeString" Multiplicity="0..1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="HeaderLargeString">
+            <PropertyRef Name="name"/>
+            <PropertyRef Name="country"/>
+          </Principal>
+          <Dependent Role="HeaderItemLargeString">
+            <PropertyRef Name="header_name"/>
+            <PropertyRef Name="header_country"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="LocalizedEntity_texts_1">
+        <End Role="LocalizedEntity" Type="test.MainService.LocalizedEntity" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="LocalizedEntity_texts" Type="test.MainService.LocalizedEntity_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="LocalizedEntity_localized">
+        <End Role="LocalizedEntity" Type="test.MainService.LocalizedEntity" Multiplicity="*"/>
+        <End Role="LocalizedEntity_texts" Type="test.MainService.LocalizedEntity_texts" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="context_LocalizedEntity_texts_1">
+        <End Role="context_LocalizedEntity" Type="test.MainService.context_LocalizedEntity" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="context_LocalizedEntity_texts" Type="test.MainService.context_LocalizedEntity_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="context_LocalizedEntity_localized">
+        <End Role="context_LocalizedEntity" Type="test.MainService.context_LocalizedEntity" Multiplicity="*"/>
+        <End Role="context_LocalizedEntity_texts" Type="test.MainService.context_LocalizedEntity_texts" Multiplicity="0..1"/>
+      </Association>
+      <Annotations Target="test.MainService.Country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.MainService.Country/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Country Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Currency Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency/symbol" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency Symbol"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.SelectionFields">
+          <Collection>
+            <PropertyPath>name</PropertyPath>
+            <PropertyPath>currency</PropertyPath>
+            <PropertyPath>country</PropertyPath>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+              <PropertyValue Property="Label" String="Name"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="price"/>
+              <PropertyValue Property="Label" String="Price"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="currency"/>
+              <PropertyValue Property="Label" String="Currency"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="stock"/>
+              <PropertyValue Property="Label" String="Stock"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="country"/>
+              <PropertyValue Property="Label" String="Country"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="Header"/>
+            <PropertyValue Property="TypeNamePlural" String="Headers"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="name"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Description">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="description"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="General"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#General"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="Items"/>
+              <PropertyValue Property="Target" AnnotationPath="Items/@UI.LineItem"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="General">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="name"/>
+                  <PropertyValue Property="Label" String="Name"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="price"/>
+                  <PropertyValue Property="Label" String="Price"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="currency"/>
+                  <PropertyValue Property="Label" String="Currency"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="stock"/>
+                  <PropertyValue Property="Label" String="Stock"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="country"/>
+                  <PropertyValue Property="Label" String="Country"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.MainService.Header/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Created On"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Created By"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Changed On"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Changed By"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.SelectionFields">
+          <Collection>
+            <PropertyPath>name</PropertyPath>
+            <PropertyPath>startAt</PropertyPath>
+            <PropertyPath>endAt</PropertyPath>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+              <PropertyValue Property="Label" String="Name"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="description"/>
+              <PropertyValue Property="Label" String="Description"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="startAt"/>
+              <PropertyValue Property="Label" String="Start At"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="endAt"/>
+              <PropertyValue Property="Label" String="End At"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="Item"/>
+            <PropertyValue Property="TypeNamePlural" String="Items"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="name"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Description">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="description"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="General"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#General"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="General">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="name"/>
+                  <PropertyValue Property="Label" String="Name"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="description"/>
+                  <PropertyValue Property="Label" String="Description"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="startAt"/>
+                  <PropertyValue Property="Label" String="Start At"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="endAt"/>
+                  <PropertyValue Property="Label" String="End At"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderStream" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.MediaType" Path="mediaType"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderStream/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ContentDisposition">
+          <Record Type="Core.ContentDispositionType">
+            <PropertyValue Property="Filename" Path="filename"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.IsMediaType" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderStreamAttachment" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.MediaType" Path="mediaType"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderStreamAttachment/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ContentDisposition">
+          <Record Type="Core.ContentDispositionType">
+            <PropertyValue Property="Filename" Path="filename"/>
+            <PropertyValue Property="Type" String="attachment"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderStreamAttachment/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.IsMediaType" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderStreamDecode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.MediaType" Path="mediaType"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderStreamDecode/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ContentDisposition">
+          <Record Type="Core.ContentDispositionType">
+            <PropertyValue Property="Filename" Path="filename"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderStreamDecode/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.IsMediaType" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderUrlStream" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.MediaType" Path="mediaType"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderUrlStream/link" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.IsURL" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderUrlStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.IsMediaType" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderUrlStream/filename" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ContentDisposition">
+          <Record Type="Core.ContentDispositionType">
+            <PropertyValue Property="Filename" String="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderDelta/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Created On"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderDelta/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Created By"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderDelta/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Changed On"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderDelta/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Changed By"/>
+      </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Created On"/>
+      </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Created By"/>
+      </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Changed On"/>
+      </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Changed By"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Node" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="description"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.SelectionFields">
+          <Collection>
+            <PropertyPath>description</PropertyPath>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="description"/>
+              <PropertyValue Property="Label" String="Description"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="Node"/>
+            <PropertyValue Property="TypeNamePlural" String="Nodes"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="description"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Description">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="description"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.MainService.context_Name_space_v2/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Created On"/>
+      </Annotations>
+      <Annotations Target="test.MainService.context_Name_space_v2/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Created By"/>
+      </Annotations>
+      <Annotations Target="test.MainService.context_Name_space_v2/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Changed On"/>
+      </Annotations>
+      <Annotations Target="test.MainService.context_Name_space_v2/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Changed By"/>
+      </Annotations>
+      <Annotations Target="test.MainService.context_LocalizedEntity/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Created On"/>
+      </Annotations>
+      <Annotations Target="test.MainService.context_LocalizedEntity/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Created By"/>
+      </Annotations>
+      <Annotations Target="test.MainService.context_LocalizedEntity/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Changed On"/>
+      </Annotations>
+      <Annotations Target="test.MainService.context_LocalizedEntity/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Changed By"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Country Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Currency Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.context_LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>"
+`;
+
 exports[`main GET service JSON format 1`] = `
 [
   "Country",

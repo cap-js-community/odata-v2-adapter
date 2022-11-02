@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.9.12 - tbd
+## Version 1.9.12 - 2022-11-02
 
 ### Fixed
+
+- Fix `$metadata` lookup with query options
 
 ## Version 1.9.11 - 2022-11-02
 

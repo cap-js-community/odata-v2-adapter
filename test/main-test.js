@@ -79,6 +79,14 @@ describe("main", () => {
     expect(response.text).toMatchSnapshot();
   });
 
+  it("GET $metadata with query options", async () => {
+    const response = await util.callRead(request, "/v2/main/$metadata?sap-value-list=none&sap-language=EN", {
+      accept: "application/xml",
+    });
+    expect(response.body).toBeDefined();
+    expect(response.text).toMatchSnapshot();
+  });
+
   it("GET $metadata localized", async () => {
     let response = await util.callRead(request, "/v2/main/$metadata", {
       accept: "application/xml",
