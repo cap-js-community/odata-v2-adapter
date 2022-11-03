@@ -49,4 +49,20 @@ service AnalyticsService {
 
     entity Country as projection on common.Countries;
     entity Currency as projection on common.Currencies;
+
+    @Aggregation.ApplySupported.PropertyRestrictions
+    entity Book as projection on test.Book {
+        @Analytics.Dimension
+        key author,
+        @Analytics.Dimension
+        key genre_ID,
+        @Analytics.Measure
+        @Aggregation.default: #SUM
+        stock,
+        @Analytics.Measure
+        @Aggregation.default: #SUM
+        price
+    } actions {
+        action order(number: Integer) returns Book;
+    };
 }

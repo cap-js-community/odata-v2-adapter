@@ -154,6 +154,13 @@ entity LocalizedEntity: cuid, managed {
     name: localized String;
 }
 
+entity Book {
+    key author: String;
+    key genre_ID: Integer;
+    stock: Integer;
+    price: Decimal;
+}
+
 service MainService {
 
     type Result {
@@ -228,6 +235,10 @@ service MainService {
     entity context.LocalizedEntity as projection on test.LocalizedEntity;
 
     entity Node as projection on test.Node;
+    entity Book as projection on test.Book actions {
+        action order(number: Integer) returns Book;
+        action order2(author: String, number: Integer) returns Book;
+    };
 
     action unboundAction(num: Integer, text: String) returns Result;
     action unboundMassAction(ids: array of String) returns array of Result;

@@ -29,6 +29,11 @@ exports[`analytics GET $metadata 1`] = `
         <EntitySet Name="HeaderItem" EntityType="test.AnalyticsService.HeaderItem"/>
         <EntitySet Name="Country" EntityType="test.AnalyticsService.Country"/>
         <EntitySet Name="Currency" EntityType="test.AnalyticsService.Currency"/>
+        <EntitySet Name="Book" EntityType="test.AnalyticsService.Book" sap:semantics="aggregate"/>
+        <FunctionImport Name="Book_order" EntitySet="Book" ReturnType="test.AnalyticsService.Book" m:HttpMethod="POST" sap:action-for="test.AnalyticsService.Book">
+          <Parameter Name="ID__" Type="Edm.String" Nullable="false" Mode="In" sap:sortable="false" sap:filterable="false"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <EntitySet Name="HeaderLine" EntityType="test.AnalyticsService.HeaderLine"/>
         <EntitySet Name="Country_texts" EntityType="test.AnalyticsService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.AnalyticsService.Currency_texts"/>
@@ -127,6 +132,16 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
         <NavigationProperty Name="texts" Relationship="test.AnalyticsService.Currency_texts_1" FromRole="Currency" ToRole="Currency_texts"/>
         <NavigationProperty Name="localized" Relationship="test.AnalyticsService.Currency_localized" FromRole="Currency" ToRole="Currency_texts"/>
+      </EntityType>
+      <EntityType Name="Book" sap:semantics="aggregate">
+        <Key>
+          <PropertyRef Name="ID__"/>
+        </Key>
+        <Property Name="ID__" Type="Edm.String" Nullable="false" sap:sortable="false" sap:filterable="false"/>
+        <Property Name="author" Type="Edm.String" sap:aggregation-role="dimension"/>
+        <Property Name="genre_ID" Type="Edm.Int32" sap:aggregation-role="dimension"/>
+        <Property Name="stock" Type="Edm.Int32" sap:aggregation-role="measure"/>
+        <Property Name="price" Type="Edm.Decimal" sap:aggregation-role="measure" sap:variable-scale="true"/>
       </EntityType>
       <EntityType Name="HeaderLine">
         <Key>
@@ -619,6 +634,35 @@ exports[`analytics GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.AnalyticsService.Currency/symbol" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Currency Symbol"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.EntityContainer/Book" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book/ID__" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book/author" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Dimension" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book/genre_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Dimension" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book/stock" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book/price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Language Code"/>

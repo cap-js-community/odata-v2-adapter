@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = (srv) => {
-  const { Header, HeaderStream } = srv.entities("test.MainService");
+  const { Header, HeaderStream, Book } = srv.entities("test.MainService");
 
   /* Bound Action */
 
@@ -75,6 +75,22 @@ module.exports = (srv) => {
         stock: index,
       };
     });
+  });
+
+  srv.on("order", Book, async (req) => {
+    return {
+      author: req.params[0].author,
+      genre_ID: req.params[0].genre_ID,
+      stock: req.data.number,
+    };
+  });
+
+  srv.on("order2", Book, async (req) => {
+    return {
+      author: req.params[0].author + "|" + req.data.author,
+      genre_ID: req.params[0].genre_ID,
+      stock: req.data.number,
+    };
   });
 
   /* Bound Function */

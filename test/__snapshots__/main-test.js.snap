@@ -389,6 +389,18 @@ exports[`main GET $metadata 1`] = `
         <EntitySet Name="StringUUID" EntityType="test.MainService.StringUUID"/>
         <EntitySet Name="LocalizedEntity" EntityType="test.MainService.LocalizedEntity"/>
         <EntitySet Name="Node" EntityType="test.MainService.Node"/>
+        <EntitySet Name="Book" EntityType="test.MainService.Book"/>
+        <FunctionImport Name="Book_order" EntitySet="Book" ReturnType="test.MainService.Book" m:HttpMethod="POST" sap:action-for="test.MainService.Book">
+          <Parameter Name="author" Type="Edm.String" Nullable="false" Mode="In"/>
+          <Parameter Name="genre_ID" Type="Edm.Int32" Nullable="false" Mode="In"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Book_order2" EntitySet="Book" ReturnType="test.MainService.Book" m:HttpMethod="POST" sap:action-for="test.MainService.Book">
+          <Parameter Name="author" Type="Edm.String" Nullable="false" Mode="In"/>
+          <Parameter Name="genre_ID" Type="Edm.Int32" Nullable="false" Mode="In"/>
+          <Parameter Name="author" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
@@ -773,6 +785,16 @@ exports[`main GET $metadata 1`] = `
         <Property Name="parentNodeID" Type="Edm.Int32" sap:hierarchy-parent-node-for="true"/>
         <Property Name="description" Type="Edm.String"/>
         <Property Name="drillState" Type="Edm.String" sap:hierarchy-drill-state-for="true"/>
+      </EntityType>
+      <EntityType Name="Book">
+        <Key>
+          <PropertyRef Name="author"/>
+          <PropertyRef Name="genre_ID"/>
+        </Key>
+        <Property Name="author" Type="Edm.String" Nullable="false"/>
+        <Property Name="genre_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="stock" Type="Edm.Int32"/>
+        <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -1634,6 +1656,18 @@ exports[`main GET $metadata localized 1`] = `
         <EntitySet Name="StringUUID" EntityType="test.MainService.StringUUID"/>
         <EntitySet Name="LocalizedEntity" EntityType="test.MainService.LocalizedEntity"/>
         <EntitySet Name="Node" EntityType="test.MainService.Node"/>
+        <EntitySet Name="Book" EntityType="test.MainService.Book"/>
+        <FunctionImport Name="Book_order" EntitySet="Book" ReturnType="test.MainService.Book" m:HttpMethod="POST" sap:action-for="test.MainService.Book">
+          <Parameter Name="author" Type="Edm.String" Nullable="false" Mode="In"/>
+          <Parameter Name="genre_ID" Type="Edm.Int32" Nullable="false" Mode="In"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Book_order2" EntitySet="Book" ReturnType="test.MainService.Book" m:HttpMethod="POST" sap:action-for="test.MainService.Book">
+          <Parameter Name="author" Type="Edm.String" Nullable="false" Mode="In"/>
+          <Parameter Name="genre_ID" Type="Edm.Int32" Nullable="false" Mode="In"/>
+          <Parameter Name="author" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
@@ -2018,6 +2052,16 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="parentNodeID" Type="Edm.Int32" sap:hierarchy-parent-node-for="true"/>
         <Property Name="description" Type="Edm.String"/>
         <Property Name="drillState" Type="Edm.String" sap:hierarchy-drill-state-for="true"/>
+      </EntityType>
+      <EntityType Name="Book">
+        <Key>
+          <PropertyRef Name="author"/>
+          <PropertyRef Name="genre_ID"/>
+        </Key>
+        <Property Name="author" Type="Edm.String" Nullable="false"/>
+        <Property Name="genre_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="stock" Type="Edm.Int32"/>
+        <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -2879,6 +2923,18 @@ exports[`main GET $metadata localized 2`] = `
         <EntitySet Name="StringUUID" EntityType="test.MainService.StringUUID"/>
         <EntitySet Name="LocalizedEntity" EntityType="test.MainService.LocalizedEntity"/>
         <EntitySet Name="Node" EntityType="test.MainService.Node"/>
+        <EntitySet Name="Book" EntityType="test.MainService.Book"/>
+        <FunctionImport Name="Book_order" EntitySet="Book" ReturnType="test.MainService.Book" m:HttpMethod="POST" sap:action-for="test.MainService.Book">
+          <Parameter Name="author" Type="Edm.String" Nullable="false" Mode="In"/>
+          <Parameter Name="genre_ID" Type="Edm.Int32" Nullable="false" Mode="In"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Book_order2" EntitySet="Book" ReturnType="test.MainService.Book" m:HttpMethod="POST" sap:action-for="test.MainService.Book">
+          <Parameter Name="author" Type="Edm.String" Nullable="false" Mode="In"/>
+          <Parameter Name="genre_ID" Type="Edm.Int32" Nullable="false" Mode="In"/>
+          <Parameter Name="author" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
@@ -3263,6 +3319,16 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="parentNodeID" Type="Edm.Int32" sap:hierarchy-parent-node-for="true"/>
         <Property Name="description" Type="Edm.String"/>
         <Property Name="drillState" Type="Edm.String" sap:hierarchy-drill-state-for="true"/>
+      </EntityType>
+      <EntityType Name="Book">
+        <Key>
+          <PropertyRef Name="author"/>
+          <PropertyRef Name="genre_ID"/>
+        </Key>
+        <Property Name="author" Type="Edm.String" Nullable="false"/>
+        <Property Name="genre_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="stock" Type="Edm.Int32"/>
+        <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -4124,6 +4190,18 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <EntitySet Name="StringUUID" EntityType="test.MainService.StringUUID"/>
         <EntitySet Name="LocalizedEntity" EntityType="test.MainService.LocalizedEntity"/>
         <EntitySet Name="Node" EntityType="test.MainService.Node"/>
+        <EntitySet Name="Book" EntityType="test.MainService.Book"/>
+        <FunctionImport Name="Book_order" EntitySet="Book" ReturnType="test.MainService.Book" m:HttpMethod="POST" sap:action-for="test.MainService.Book">
+          <Parameter Name="author" Type="Edm.String" Nullable="false" Mode="In"/>
+          <Parameter Name="genre_ID" Type="Edm.Int32" Nullable="false" Mode="In"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Book_order2" EntitySet="Book" ReturnType="test.MainService.Book" m:HttpMethod="POST" sap:action-for="test.MainService.Book">
+          <Parameter Name="author" Type="Edm.String" Nullable="false" Mode="In"/>
+          <Parameter Name="genre_ID" Type="Edm.Int32" Nullable="false" Mode="In"/>
+          <Parameter Name="author" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
@@ -4508,6 +4586,16 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="parentNodeID" Type="Edm.Int32" sap:hierarchy-parent-node-for="true"/>
         <Property Name="description" Type="Edm.String"/>
         <Property Name="drillState" Type="Edm.String" sap:hierarchy-drill-state-for="true"/>
+      </EntityType>
+      <EntityType Name="Book">
+        <Key>
+          <PropertyRef Name="author"/>
+          <PropertyRef Name="genre_ID"/>
+        </Key>
+        <Property Name="author" Type="Edm.String" Nullable="false"/>
+        <Property Name="genre_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="stock" Type="Edm.Int32"/>
+        <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -5369,6 +5457,18 @@ exports[`main GET $metadata with query options 1`] = `
         <EntitySet Name="StringUUID" EntityType="test.MainService.StringUUID"/>
         <EntitySet Name="LocalizedEntity" EntityType="test.MainService.LocalizedEntity"/>
         <EntitySet Name="Node" EntityType="test.MainService.Node"/>
+        <EntitySet Name="Book" EntityType="test.MainService.Book"/>
+        <FunctionImport Name="Book_order" EntitySet="Book" ReturnType="test.MainService.Book" m:HttpMethod="POST" sap:action-for="test.MainService.Book">
+          <Parameter Name="author" Type="Edm.String" Nullable="false" Mode="In"/>
+          <Parameter Name="genre_ID" Type="Edm.Int32" Nullable="false" Mode="In"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Book_order2" EntitySet="Book" ReturnType="test.MainService.Book" m:HttpMethod="POST" sap:action-for="test.MainService.Book">
+          <Parameter Name="author" Type="Edm.String" Nullable="false" Mode="In"/>
+          <Parameter Name="genre_ID" Type="Edm.Int32" Nullable="false" Mode="In"/>
+          <Parameter Name="author" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
@@ -5753,6 +5853,16 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="parentNodeID" Type="Edm.Int32" sap:hierarchy-parent-node-for="true"/>
         <Property Name="description" Type="Edm.String"/>
         <Property Name="drillState" Type="Edm.String" sap:hierarchy-drill-state-for="true"/>
+      </EntityType>
+      <EntityType Name="Book">
+        <Key>
+          <PropertyRef Name="author"/>
+          <PropertyRef Name="genre_ID"/>
+        </Key>
+        <Property Name="author" Type="Edm.String" Nullable="false"/>
+        <Property Name="genre_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="stock" Type="Edm.Int32"/>
+        <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -6481,6 +6591,7 @@ exports[`main GET $metadata with query options 1`] = `
 
 exports[`main GET service JSON format 1`] = `
 [
+  "Book",
   "Country",
   "Country_texts",
   "Currency",
@@ -6512,6 +6623,7 @@ exports[`main GET service JSON format 1`] = `
 
 exports[`main GET service JSON format 2`] = `
 [
+  "Book",
   "Country",
   "Country_texts",
   "Currency",
@@ -6543,6 +6655,7 @@ exports[`main GET service JSON format 2`] = `
 
 exports[`main GET service JSON format 3`] = `
 [
+  "Book",
   "Country",
   "Country_texts",
   "Currency",

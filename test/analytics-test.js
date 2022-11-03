@@ -698,4 +698,111 @@ describe("analytics", () => {
       },
     });
   });
+
+  it("POST bound action on analytical entity", async () => {
+    let response = await util.callRead(
+      request,
+      "/v2/analytics/Book?$select=author,genre_ID,price&$top=124&$inlinecount=allpages"
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    const ID__ = response.body.d.results[0].ID__;
+    response = await util.callWrite(request, `/v2/analytics/Book_order?ID__=${ID__}&number=5`);
+    expect(response.body.d).toMatchObject({
+      author: "Catweazle",
+      genre_ID: 1,
+      stock: 5,
+      __metadata: {
+        type: "test.AnalyticsService.Book",
+        uri: `http://${response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        )}/v2/analytics/Book(author='Catweazle',genre_ID=1)`,
+      },
+    });
+  });
+
+  it("POST bound action on analytical entity with incomplete key", async () => {
+    let response = await util.callRead(
+      request,
+      "/v2/analytics/Book?$select=author,price&$top=124&$inlinecount=allpages"
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    const ID__ = response.body.d.results[0].ID__;
+    response = await util.callWrite(request, `/v2/analytics/Book_order?ID__=${ID__}&number=5`);
+    expect(response.body).toMatchObject({
+      error: {
+        code: "400",
+        message: {
+          lang: "en",
+          value: "No 'Edm.Int32' value found for key 'genre_ID'",
+        },
+        severity: "error",
+        target: "/#TRANSIENT#",
+        innererror: {
+          errordetails: [
+            {
+              code: "400",
+              message: {
+                lang: "en",
+                value: "No 'Edm.Int32' value found for key 'genre_ID'",
+              },
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
+        },
+      },
+    });
+  });
+
+  it("POST bound action on analytical entity with whitespaces in key", async () => {
+    let response = await util.callRead(
+      request,
+      "/v2/analytics/Book?$select=author,genre_ID,price&$top=124&$inlinecount=allpages"
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    const ID__ = response.body.d.results[0].ID__;
+    response = await util.callWrite(
+      request,
+      `/v2/analytics/Book_order?ID__=${ID__.replace("Catweazle", "Cat weazle")}&number=5`
+    );
+    expect(response.body.d).toMatchObject({
+      author: "Cat weazle",
+      genre_ID: 1,
+      stock: 5,
+      __metadata: {
+        type: "test.AnalyticsService.Book",
+        uri: `http://${response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        )}/v2/analytics/Book(author='Cat%20weazle',genre_ID=1)`,
+      },
+    });
+  });
+
+  it("POST bound action on analytical entity with escaped ID__", async () => {
+    let response = await util.callRead(
+      request,
+      "/v2/analytics/Book?$select=author,genre_ID,price&$top=124&$inlinecount=allpages"
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results.length).toEqual(1);
+    const ID__ = response.body.d.results[0].ID__;
+    response = await util.callWrite(request, `/v2/analytics/Book_order?ID__='${ID__.replace(/'/g, "''")}'&number=5`);
+    expect(response.body.d).toMatchObject({
+      author: "Catweazle",
+      genre_ID: 1,
+      stock: 5,
+      __metadata: {
+        type: "test.AnalyticsService.Book",
+        uri: `http://${response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        )}/v2/analytics/Book(author='Catweazle',genre_ID=1)`,
+      },
+    });
+  });
 });

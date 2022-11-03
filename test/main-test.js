@@ -3731,4 +3731,53 @@ describe("main", () => {
       },
     });
   });
+
+  it("POST bound action with composite key", async () => {
+    let response = await util.callRead(request, "/v2/main/Book(author='Catweazle',genre_ID=1)");
+    expect(response.body).toBeDefined();
+    expect(response.body.d.author).toEqual("Catweazle");
+    expect(response.body.d.genre_ID).toEqual(1);
+    response = await util.callWrite(request, `/v2/main/Book_order?author='Catweazle'&genre_ID=1&number=5`);
+    expect(response.body.d).toMatchObject({
+      author: "Catweazle",
+      genre_ID: 1,
+      stock: 5,
+      __metadata: {
+        type: "test.MainService.Book",
+        uri: `http://${response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        )}/v2/main/Book(author='Catweazle',genre_ID=1)`,
+      },
+    });
+    response = await util.callWrite(request, `/v2/main/Book_order2?author='Catweazle'&genre_ID=1&number=5`);
+    expect(response.body.d).toMatchObject({
+      author: "Catweazle|Catweazle",
+      genre_ID: 1,
+      stock: 5,
+      __metadata: {
+        type: "test.MainService.Book",
+        uri: `http://${response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        )}/v2/main/Book(author='Catweazle%7CCatweazle',genre_ID=1)`,
+      },
+    });
+  });
+
+  it("POST bound action with whitespace entity key", async () => {
+    let response = await util.callWrite(request, `/v2/main/Book_order?author='Cat weazle'&genre_ID=1&number=5`);
+    expect(response.body.d).toMatchObject({
+      author: "Cat weazle",
+      genre_ID: 1,
+      stock: 5,
+      __metadata: {
+        type: "test.MainService.Book",
+        uri: `http://${response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        )}/v2/main/Book(author='Cat%20weazle',genre_ID=1)`,
+      },
+    });
+  });
 });

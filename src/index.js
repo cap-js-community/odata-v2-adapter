@@ -1374,71 +1374,36 @@ function cov2ap(options = {}) {
         const contextElements = definitionElements(context);
         const contextKeys = definitionKeys(context);
         if (context && keyPart) {
-          const aggregationMatch =
-            keyPart.match(/^aggregation'(.*)'$/is) ||
-            keyPart.match(/^'aggregation'(.*)''$/is) ||
-            keyPart.match(/^ID__='aggregation'(.*)''$/is);
-          const aggregationKey = aggregationMatch && aggregationMatch.pop();
-          if (aggregationKey) {
-            // Aggregation Key
-            try {
-              const aggregation = JSON.parse(decodeURIKey(aggregationKey));
-              url.query["$select"] = (aggregation.value || []).join(",");
-              delete url.query["$filter"];
-              if (Object.keys(aggregation.key || {}).length > 0) {
-                url.query["$filter"] = Object.keys(aggregation.key || {})
-                  .map((name) => {
-                    return `${name} eq ${aggregation.key[name]}`;
-                  })
-                  .join(" and ");
-              }
-              if (aggregation.filter) {
-                if (!url.query["$filter"]) {
-                  url.query["$filter"] = aggregation.filter;
-                } else {
-                  url.query["$filter"] = `(${url.query["$filter"]}) and (${aggregation.filter})`;
-                }
-                req.context.aggregationFilter = aggregation.filter;
-              }
-              if (aggregation.search) {
-                url.query["search"] = aggregation.search;
-                req.context.aggregationSearch = aggregation.search;
-              }
-              req.context.aggregationKey = true;
-              return part;
-            } catch (err) {
-              // Error
-              logError(req, "AggregationKey", err);
-              return part;
-            }
-          } else {
-            const keys = decodeURIComponent(keyPart).split(",");
-            return encodeURIComponent(
-              `${part}(${keys
-                .map((key) => {
-                  const [name, value] = key.split("=");
-                  let type;
-                  if (name && value) {
-                    if (context.params && context.params[name]) {
-                      type = context.params[name].type;
-                    }
-                    if (!type) {
-                      type = elementType(contextElements[name], req);
-                    }
-                    return `${name}=${replaceConvertDataTypeToV4(value, type)}`;
-                  } else if (name) {
-                    const key = structureKeys(contextKeys).find((key) => {
-                      return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
-                    });
-                    type = key && elementType(contextElements[key], req);
-                    return type && `${replaceConvertDataTypeToV4(name, type)}`;
-                  }
-                  return "";
-                })
-                .filter((part) => !!part)
-                .join(",")})`
-            );
+          const isAggregation = convertAggregationKey(part, keyPart, url, req);
+          if (isAggregation) {
+            return part;
           }
+          const keys = decodeURIComponent(keyPart).split(",");
+          return encodeURIComponent(
+            `${part}(${keys
+              .map((key) => {
+                const [name, value] = key.split("=");
+                let type;
+                if (name && value) {
+                  if (context.params && context.params[name]) {
+                    type = context.params[name].type;
+                  }
+                  if (!type) {
+                    type = elementType(contextElements[name], req);
+                  }
+                  return `${name}=${replaceConvertDataTypeToV4(value, type)}`;
+                } else if (name) {
+                  const key = structureKeys(contextKeys).find((key) => {
+                    return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
+                  });
+                  type = key && elementType(contextElements[key], req);
+                  return type && `${replaceConvertDataTypeToV4(name, type)}`;
+                }
+                return "";
+              })
+              .filter((part) => !!part)
+              .join(",")})`
+          );
         } else {
           return part;
         }
@@ -1529,6 +1494,52 @@ function cov2ap(options = {}) {
     return parts;
   }
 
+  function convertAggregationKey(part, keyPart, url, req) {
+    const aggregationMatch =
+      keyPart.match(/^aggregation'(.*)'$/is) ||
+      keyPart.match(/^'aggregation'(.*)''$/is) ||
+      keyPart.match(/^ID__='aggregation'(.*)''$/is);
+    const aggregationKey = aggregationMatch && aggregationMatch.pop();
+    if (aggregationKey) {
+      // Aggregation Key
+      try {
+        const aggregation = JSON.parse(decodeURIKey(aggregationKey));
+        if (url.query["$select"]) {
+          url.query["$select"] += "," + (aggregation.value || []).join(",");
+        } else {
+          url.query["$select"] = (aggregation.value || []).join(",");
+        }
+        delete url.query["$filter"];
+        if (Object.keys(aggregation.key || {}).length > 0) {
+          url.query["$filter"] = Object.keys(aggregation.key || {})
+            .map((name) => {
+              return `${name} eq ${aggregation.key[name]}`;
+            })
+            .join(" and ");
+        }
+        if (aggregation.filter) {
+          if (!url.query["$filter"]) {
+            url.query["$filter"] = aggregation.filter;
+          } else {
+            url.query["$filter"] = `(${url.query["$filter"]}) and (${aggregation.filter})`;
+          }
+          req.context.aggregationFilter = aggregation.filter;
+        }
+        if (aggregation.search) {
+          url.query["search"] = aggregation.search;
+          req.context.aggregationSearch = aggregation.search;
+        }
+        req.context.aggregationKey = true;
+        return true;
+      } catch (err) {
+        // Error
+        logError(req, "AggregationKey", err);
+        return true;
+      }
+    }
+    return false;
+  }
+
   function convertUrlDataTypesForFilter(filter, context, req) {
     if (filter === null || filter === undefined) {
       return filter;
@@ -1601,6 +1612,24 @@ function cov2ap(options = {}) {
       reqContextPathSuffix = url.contextPath.substr(operationLocalName.length);
       url.contextPath = url.contextPath.substr(0, operationLocalName.length);
     }
+    let queryOptions = { ...url.query };
+
+    if (queryOptions.ID__) {
+      const ID__ = unquoteValue(queryOptions.ID__);
+      const aggregationMatch = ID__.match(/^aggregation'(.*)'$/is);
+      if (aggregationMatch) {
+        const aggregationKey = aggregationMatch && aggregationMatch.pop();
+        try {
+          const aggregation = JSON.parse(decodeURIKey(aggregationKey));
+          queryOptions = { ...queryOptions, ...(aggregation.key || {}) };
+          delete url.query.ID__;
+        } catch (err) {
+          // Error
+          logError(req, "AggregationKey", err);
+        }
+      }
+    }
+
     // Key Parameters
     if (definition.parent && definition.parent.kind === "entity") {
       url.contextPath = localName(definition.parent, req);
@@ -1610,8 +1639,8 @@ function cov2ap(options = {}) {
           const element = parentElements[name];
           const type = elementType(element, req);
           if (!(type === "cds.Composition" || type === "cds.Association")) {
-            const value = url.query[name];
-            result.push(`${name}=${quoteParameter(element, value, req)}`);
+            const value = queryOptions[name];
+            result.push(`${name}=${quoteParameter(element, encodeURIComponent(value), req)}`);
             delete url.query[name];
           }
           return result;
@@ -1621,12 +1650,12 @@ function cov2ap(options = {}) {
     }
     // Function Parameters
     if (definition.kind === "function") {
-      url.contextPath += `(${Object.keys(url.query)
+      url.contextPath += `(${Object.keys(queryOptions)
         .reduce((result, name) => {
           if (!name.startsWith("$")) {
             const element = definition.params && definition.params[name];
             if (element) {
-              let value = url.query[name];
+              let value = queryOptions[name];
               if (Array.isArray(value)) {
                 value = value.map((entry) => {
                   return quoteParameter(element, encodeURIComponent(entry), req);
@@ -1656,11 +1685,11 @@ function cov2ap(options = {}) {
     url.contextPath += reqContextPathSuffix;
     // Action Body
     if (definition.kind === "action") {
-      Object.keys(url.query).forEach((name) => {
+      Object.keys(queryOptions).forEach((name) => {
         if (!name.startsWith("$")) {
           const element = definition.params && definition.params[name];
           if (element) {
-            let value = url.query[name];
+            let value = queryOptions[name];
             if (Array.isArray(value)) {
               value = value.map((entry) => {
                 return unescapeSingleQuote(element, unquoteParameter(element, entry, req), req);
@@ -1710,6 +1739,13 @@ function cov2ap(options = {}) {
       ].includes(elementType(element, req))
     ) {
       return value.replace(/^['](.*)[']$/s, "$1");
+    }
+    return value;
+  }
+
+  function unquoteValue(value) {
+    if (value.match(/^['](.*)[']$/s)) {
+      return value.replace(/^['](.*)[']$/s, "$1").replace(/''/g, "'");
     }
     return value;
   }
