@@ -978,7 +978,7 @@ function cov2ap(options = {}) {
   }
 
   /**
-   * Convert Proxy Request (v2 -> v4)
+   * Convert Proxy Request (V2 -> V4)
    * @param proxyReq Proxy Request
    * @param req Request
    * @param res Response
@@ -2368,7 +2368,7 @@ function cov2ap(options = {}) {
   }
 
   /**
-   * Convert Proxy Response (v4 -> v2)
+   * Convert Proxy Response (V4 -> V2)
    * @param proxyRes Proxy Request
    * @param req Request
    * @param res Response
