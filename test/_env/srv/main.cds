@@ -73,7 +73,7 @@ entity HeaderStreamDecode: cuid {
 
 entity HeaderUrlStream: cuid {
     @Core.MediaType: mediaType
-    @Core.IsURL: true
+    @Core.IsURL
     link: String;
     @Core.IsMediaType
     mediaType: String;
@@ -159,6 +159,7 @@ entity Book {
     key genre_ID: Integer;
     stock: Integer;
     price: Decimal;
+    description: String;
 }
 
 service MainService {

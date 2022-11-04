@@ -104,9 +104,8 @@ const AggregationMap = {
   MIN: "min",
   MAX: "max",
   AVG: "average",
-  COUNT: "countdistinct",
+  COUNT: "$count",
   COUNT_DISTINCT: "countdistinct",
-  $COUNT: "$count",
   NONE: "none",
   NOP: "nop",
 };
@@ -1622,6 +1621,9 @@ function cov2ap(options = {}) {
         try {
           const aggregation = JSON.parse(decodeURIKey(aggregationKey));
           queryOptions = { ...queryOptions, ...(aggregation.key || {}) };
+          if (!url.query["select"]) {
+            url.query["select"] = (aggregation.value || []).join(",");
+          }
           delete url.query.ID__;
         } catch (err) {
           // Error
@@ -2001,7 +2003,8 @@ function cov2ap(options = {}) {
         }
         url.query["$apply"] += `aggregate(${measures
           .map((measure) => {
-            const aggregation = measure["@Aggregation.default"] || measure["@DefaultAggregation"];
+            const aggregation =
+              measure["@Aggregation.default"] || measure["@Aggregation.Default"] || measure["@DefaultAggregation"];
             const aggregationName = aggregation ? aggregation["#"] || aggregation : DefaultAggregation;
             const aggregationFunction = aggregationName ? AggregationMap[aggregationName.toUpperCase()] : undefined;
             if (!aggregationFunction) {
@@ -2013,7 +2016,14 @@ function cov2ap(options = {}) {
             if (aggregationFunction.startsWith("$")) {
               return `${aggregationFunction} as ${AggregationPrefix}${measure.name}`;
             } else {
-              return `${measure.name} with ${aggregationFunction} as ${AggregationPrefix}${measure.name}`;
+              const referenceElement =
+                measure["@Aggregation.referenceElement"] ||
+                measure["@Aggregation.ReferenceElement"] ||
+                measure["@Aggregation.reference"] ||
+                measure["@Aggregation.Reference"];
+              return `${referenceElement || measure.name} with ${aggregationFunction} as ${AggregationPrefix}${
+                measure.name
+              }`;
             }
           })
           .filter((aggregation) => !!aggregation)
@@ -3178,13 +3188,14 @@ function cov2ap(options = {}) {
             return entry.name === name;
           });
           if (element && elementType(element, req) === "cds.Integer") {
-            const aggregation = element["@Aggregation.default"] || element["@DefaultAggregation"];
+            const aggregation =
+              element["@Aggregation.default"] || element["@Aggregation.Default"] || element["@DefaultAggregation"];
             const aggregationName = aggregation ? aggregation["#"] || aggregation : DefaultAggregation;
             const aggregationFunction = aggregationName ? AggregationMap[aggregationName.toUpperCase()] : undefined;
             if (
               aggregationType === "cds.Decimal" &&
               aggregationFunction &&
-              ![AggregationMap.AVG, AggregationMap.COUNT_DISTINCT].includes(aggregationFunction)
+              ![AggregationMap.AVG].includes(aggregationFunction)
             ) {
               const floatValue = parseFloat(aggregationValue);
               if (aggregationValue === `${floatValue}`) {

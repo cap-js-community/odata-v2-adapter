@@ -7,9 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.9.14 - tbd
+## Version 1.9.14 - 2022-11-07
 
 ### Fixed
+
+- Provide `value` section of `ID__` aggregation key as query option `select` to bound action handler
+- Accept aggregation annotations in lowercase and uppercase writing
+- Support `@Aggregation.ReferenceElement` and `@Aggregation.Reference` annotations to perform aggregation on different element
+- Only a single aggregation reference element is supported, specified as array with single element, e.g. `['element']`
+- Map default aggregation `#COUNT` to virtual property `$count` of `$apply`
+- Cast aggregation values of `#COUNT_DISTINCT` to `Integer` type to be represented as number (not as string)
+- Remove unneeded temporary aggregation `$COUNT`
 
 ## Version 1.9.13 - 2022-11-03
 
@@ -182,7 +190,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Ignore omitted elements annotated with `@cds.api.ignore`
 - Support validated for absolute context urls via `cds.odata.contextAbsoluteUrl`.
 - Skip aggregation for measures with aggregation `#NONE` and `#NOP`
-- Support `$count` aggregations for measures with aggregation `#$COUNT`
+- Support `$count` aggregations for measures with aggregation `#COUNT`
 - Changed OData type mapping for `Edm.Byte` to `cds.Integer`
 
 ## Version 1.8.14 - 2022-04-08

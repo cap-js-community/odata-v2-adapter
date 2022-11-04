@@ -6,8 +6,8 @@ using sap.common from '@sap/cds/common';
 service AnalyticsService {
 
     @readonly
-    @Aggregation.ApplySupported.PropertyRestrictions: true
-    @cds.redirection.target: true
+    @Aggregation.ApplySupported.PropertyRestrictions
+    @cds.redirection.target
     entity Header as projection on test.Header {
         ID,
         @title: '{i18n>Description}'
@@ -28,9 +28,36 @@ service AnalyticsService {
         Items
     };
 
+    @cds.redirection.target
+    entity HeaderItem as projection on test.HeaderItem;
+
+    @Aggregation.ApplySupported.PropertyRestrictions
+    entity HeaderItemCount as projection on test.HeaderItem {
+        ID,
+        @title: '{i18n>Name}'
+        name,
+        @title: '{i18n>Description}'
+        description,
+        @Analytics.Dimension
+        @title: '{i18n>StartAt}'
+        startAt,
+        @title: '{i18n>EndAt}'
+        endAt,
+        @Analytics.Measure
+        @Aggregation.default : #COUNT_DISTINCT
+        header.ID as header,
+        @Analytics.Measure
+        @Aggregation.default : #COUNT_DISTINCT
+        @Aggregation.referenceElement: ['header']
+        1 as header2: Integer,
+        @Analytics.Measure
+        @Aggregation.default : #COUNT
+        header.ID as header_count
+    };
+
     @readonly
     @cov2ap.analytics: false
-    @Aggregation.ApplySupported.PropertyRestrictions: true
+    @Aggregation.ApplySupported.PropertyRestrictions
     entity HeaderDisabledAnalytics as projection on test.Header {
         ID,
         description,
@@ -44,8 +71,6 @@ service AnalyticsService {
         price,
         Items
     };
-
-    entity HeaderItem as projection on test.HeaderItem;
 
     entity Country as projection on common.Countries;
     entity Currency as projection on common.Currencies;
@@ -61,7 +86,8 @@ service AnalyticsService {
         stock,
         @Analytics.Measure
         @Aggregation.default: #SUM
-        price
+        price,
+        description
     } actions {
         action order(number: Integer) returns Book;
     };

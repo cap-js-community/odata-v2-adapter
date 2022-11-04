@@ -25,8 +25,9 @@ exports[`analytics GET $metadata 1`] = `
     <Schema Namespace="test.AnalyticsService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
       <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
         <EntitySet Name="Header" EntityType="test.AnalyticsService.Header" sap:semantics="aggregate"/>
-        <EntitySet Name="HeaderDisabledAnalytics" EntityType="test.AnalyticsService.HeaderDisabledAnalytics" sap:semantics="aggregate"/>
         <EntitySet Name="HeaderItem" EntityType="test.AnalyticsService.HeaderItem"/>
+        <EntitySet Name="HeaderItemCount" EntityType="test.AnalyticsService.HeaderItemCount" sap:semantics="aggregate"/>
+        <EntitySet Name="HeaderDisabledAnalytics" EntityType="test.AnalyticsService.HeaderDisabledAnalytics" sap:semantics="aggregate"/>
         <EntitySet Name="Country" EntityType="test.AnalyticsService.Country"/>
         <EntitySet Name="Currency" EntityType="test.AnalyticsService.Currency"/>
         <EntitySet Name="Book" EntityType="test.AnalyticsService.Book" sap:semantics="aggregate"/>
@@ -37,10 +38,6 @@ exports[`analytics GET $metadata 1`] = `
         <EntitySet Name="HeaderLine" EntityType="test.AnalyticsService.HeaderLine"/>
         <EntitySet Name="Country_texts" EntityType="test.AnalyticsService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.AnalyticsService.Currency_texts"/>
-        <AssociationSet Name="HeaderDisabledAnalytics_Items" Association="test.AnalyticsService.HeaderDisabledAnalytics_Items">
-          <End Role="HeaderDisabledAnalytics" EntitySet="HeaderDisabledAnalytics"/>
-          <End Role="HeaderItem" EntitySet="HeaderItem"/>
-        </AssociationSet>
         <AssociationSet Name="HeaderItem_header" Association="test.AnalyticsService.HeaderItem_header">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="Header" EntitySet="Header"/>
@@ -48,6 +45,10 @@ exports[`analytics GET $metadata 1`] = `
         <AssociationSet Name="HeaderItem_NextItem" Association="test.AnalyticsService.HeaderItem_NextItem">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem1" EntitySet="HeaderItem"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderDisabledAnalytics_Items" Association="test.AnalyticsService.HeaderDisabledAnalytics_Items">
+          <End Role="HeaderDisabledAnalytics" EntitySet="HeaderDisabledAnalytics"/>
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
         </AssociationSet>
         <AssociationSet Name="Country_texts_1" Association="test.AnalyticsService.Country_texts_1">
           <End Role="Country" EntitySet="Country"/>
@@ -83,19 +84,6 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12" sap:aggregation-role="measure" sap:label="Price"/>
         <NavigationProperty Name="Items" Relationship="test.AnalyticsService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
       </EntityType>
-      <EntityType Name="HeaderDisabledAnalytics" sap:semantics="aggregate">
-        <Key>
-          <PropertyRef Name="ID__"/>
-        </Key>
-        <Property Name="ID__" Type="Edm.String" Nullable="false" sap:sortable="false" sap:filterable="false"/>
-        <Property Name="ID" Type="Edm.Guid"/>
-        <Property Name="description" Type="Edm.String"/>
-        <Property Name="country" Type="Edm.String" sap:aggregation-role="dimension"/>
-        <Property Name="currency" Type="Edm.String"/>
-        <Property Name="stock" Type="Edm.Int32" sap:aggregation-role="measure"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12" sap:aggregation-role="measure"/>
-        <NavigationProperty Name="Items" Relationship="test.AnalyticsService.HeaderDisabledAnalytics_Items" FromRole="HeaderDisabledAnalytics" ToRole="HeaderItem"/>
-      </EntityType>
       <EntityType Name="HeaderItem">
         <Key>
           <PropertyRef Name="ID"/>
@@ -111,6 +99,33 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
         <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.AnalyticsService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
+      </EntityType>
+      <EntityType Name="HeaderItemCount" sap:semantics="aggregate">
+        <Key>
+          <PropertyRef Name="ID__"/>
+        </Key>
+        <Property Name="ID__" Type="Edm.String" Nullable="false" sap:sortable="false" sap:filterable="false"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="name" Type="Edm.String" sap:label="Name"/>
+        <Property Name="description" Type="Edm.String" sap:label="Description"/>
+        <Property Name="startAt" Type="Edm.DateTimeOffset" Precision="7" sap:aggregation-role="dimension" sap:label="StartAt"/>
+        <Property Name="endAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="EndAt"/>
+        <Property Name="header" Type="Edm.Guid" sap:aggregation-role="measure"/>
+        <Property Name="header2" Type="Edm.Int32" sap:aggregation-role="measure"/>
+        <Property Name="header_count" Type="Edm.Guid" sap:aggregation-role="measure"/>
+      </EntityType>
+      <EntityType Name="HeaderDisabledAnalytics" sap:semantics="aggregate">
+        <Key>
+          <PropertyRef Name="ID__"/>
+        </Key>
+        <Property Name="ID__" Type="Edm.String" Nullable="false" sap:sortable="false" sap:filterable="false"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="country" Type="Edm.String" sap:aggregation-role="dimension"/>
+        <Property Name="currency" Type="Edm.String"/>
+        <Property Name="stock" Type="Edm.Int32" sap:aggregation-role="measure"/>
+        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12" sap:aggregation-role="measure"/>
+        <NavigationProperty Name="Items" Relationship="test.AnalyticsService.HeaderDisabledAnalytics_Items" FromRole="HeaderDisabledAnalytics" ToRole="HeaderItem"/>
       </EntityType>
       <EntityType Name="Country">
         <Key>
@@ -142,6 +157,7 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="genre_ID" Type="Edm.Int32" sap:aggregation-role="dimension"/>
         <Property Name="stock" Type="Edm.Int32" sap:aggregation-role="measure"/>
         <Property Name="price" Type="Edm.Decimal" sap:aggregation-role="measure" sap:variable-scale="true"/>
+        <Property Name="description" Type="Edm.String"/>
       </EntityType>
       <EntityType Name="HeaderLine">
         <Key>
@@ -173,12 +189,6 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
       </EntityType>
-      <Association Name="HeaderDisabledAnalytics_Items">
-        <End Role="HeaderDisabledAnalytics" Type="test.AnalyticsService.HeaderDisabledAnalytics" Multiplicity="1">
-          <OnDelete Action="Cascade"/>
-        </End>
-        <End Role="HeaderItem" Type="test.AnalyticsService.HeaderItem" Multiplicity="*"/>
-      </Association>
       <Association Name="HeaderItem_header">
         <End Role="HeaderItem" Type="test.AnalyticsService.HeaderItem" Multiplicity="*"/>
         <End Role="Header" Type="test.AnalyticsService.Header" Multiplicity="0..1">
@@ -196,6 +206,12 @@ exports[`analytics GET $metadata 1`] = `
             <PropertyRef Name="NextItem_ID"/>
           </Dependent>
         </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderDisabledAnalytics_Items">
+        <End Role="HeaderDisabledAnalytics" Type="test.AnalyticsService.HeaderDisabledAnalytics" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="HeaderItem" Type="test.AnalyticsService.HeaderItem" Multiplicity="*"/>
       </Association>
       <Association Name="Country_texts_1">
         <End Role="Country" Type="test.AnalyticsService.Country" Multiplicity="1">
@@ -552,6 +568,51 @@ exports[`analytics GET $metadata 1`] = `
       <Annotations Target="test.AnalyticsService.Header/price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Analytics.Measure" Bool="true"/>
         <Annotation Term="Common.Label" String="Price"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.EntityContainer/HeaderItemCount" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/ID__" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/description" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/startAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Dimension" Bool="true"/>
+        <Annotation Term="Common.Label" String="StartAt"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/endAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="EndAt"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/header2" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+        <Annotation Term="Aggregation.referenceElement">
+          <Collection>
+            <String>header</String>
+          </Collection>
+        </Annotation>
+        <Annotation Term="Core.Computed" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/header_count" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.HeaderDisabledAnalytics" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Aggregation.ApplySupported">

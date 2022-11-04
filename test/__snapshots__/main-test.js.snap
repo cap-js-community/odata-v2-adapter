@@ -795,6 +795,7 @@ exports[`main GET $metadata 1`] = `
         <Property Name="genre_ID" Type="Edm.Int32" Nullable="false"/>
         <Property Name="stock" Type="Edm.Int32"/>
         <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
+        <Property Name="description" Type="Edm.String"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -2062,6 +2063,7 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="genre_ID" Type="Edm.Int32" Nullable="false"/>
         <Property Name="stock" Type="Edm.Int32"/>
         <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
+        <Property Name="description" Type="Edm.String"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -3329,6 +3331,7 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="genre_ID" Type="Edm.Int32" Nullable="false"/>
         <Property Name="stock" Type="Edm.Int32"/>
         <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
+        <Property Name="description" Type="Edm.String"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -4596,6 +4599,7 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="genre_ID" Type="Edm.Int32" Nullable="false"/>
         <Property Name="stock" Type="Edm.Int32"/>
         <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
+        <Property Name="description" Type="Edm.String"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -5863,6 +5867,7 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="genre_ID" Type="Edm.Int32" Nullable="false"/>
         <Property Name="stock" Type="Edm.Int32"/>
         <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
+        <Property Name="description" Type="Edm.String"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>

@@ -699,6 +699,144 @@ describe("analytics", () => {
     });
   });
 
+  it("GET request with COUNT_DISTINCT", async () => {
+    const response = await util.callRead(request, "/v2/analytics/HeaderItemCount?$select=startAt,header");
+    expect(response.body).toEqual({
+      d: {
+        results: [
+          {
+            ID__: 'aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1546300800000%2B0000)%2F\'"},"value":["startAt","header"]}\'',
+            __metadata: {
+              type: "test.AnalyticsService.HeaderItemCount",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1546300800000%2B0000)%2F\'"},"value":["startAt","header"]}\')`,
+            },
+            header: "4",
+            startAt: "/Date(1546300800000+0000)/",
+          },
+          {
+            ID__: 'aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1577836800000%2B0000)%2F\'"},"value":["startAt","header"]}\'',
+            __metadata: {
+              type: "test.AnalyticsService.HeaderItemCount",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1577836800000%2B0000)%2F\'"},"value":["startAt","header"]}\')`,
+            },
+            header: "4",
+            startAt: "/Date(1577836800000+0000)/",
+          },
+          {
+            ID__: 'aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1640995200000%2B0000)%2F\'"},"value":["startAt","header"]}\'',
+            __metadata: {
+              type: "test.AnalyticsService.HeaderItemCount",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1640995200000%2B0000)%2F\'"},"value":["startAt","header"]}\')`,
+            },
+            header: "1",
+            startAt: "/Date(1640995200000+0000)/",
+          },
+        ],
+      },
+    });
+  });
+
+  it("GET request with COUNT_DISTINCT and reference element and integer type", async () => {
+    const response = await util.callRead(request, "/v2/analytics/HeaderItemCount?$select=startAt,header2");
+    expect(response.body).toEqual({
+      d: {
+        results: [
+          {
+            ID__: 'aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1546300800000%2B0000)%2F\'"},"value":["startAt","header2"]}\'',
+            __metadata: {
+              type: "test.AnalyticsService.HeaderItemCount",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1546300800000%2B0000)%2F\'"},"value":["startAt","header2"]}\')`,
+            },
+            header2: 4,
+            startAt: "/Date(1546300800000+0000)/",
+          },
+          {
+            ID__: 'aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1577836800000%2B0000)%2F\'"},"value":["startAt","header2"]}\'',
+            __metadata: {
+              type: "test.AnalyticsService.HeaderItemCount",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1577836800000%2B0000)%2F\'"},"value":["startAt","header2"]}\')`,
+            },
+            header2: 4,
+            startAt: "/Date(1577836800000+0000)/",
+          },
+          {
+            ID__: 'aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1640995200000%2B0000)%2F\'"},"value":["startAt","header2"]}\'',
+            __metadata: {
+              type: "test.AnalyticsService.HeaderItemCount",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1640995200000%2B0000)%2F\'"},"value":["startAt","header2"]}\')`,
+            },
+            header2: 1,
+            startAt: "/Date(1640995200000+0000)/",
+          },
+        ],
+      },
+    });
+  });
+
+  it("GET request with COUNT", async () => {
+    const response = await util.callRead(request, "/v2/analytics/HeaderItemCount?$select=startAt,header_count");
+    expect(response.body).toEqual({
+      d: {
+        results: [
+          {
+            ID__: 'aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1546300800000%2B0000)%2F\'"},"value":["startAt","header_count"]}\'',
+            __metadata: {
+              type: "test.AnalyticsService.HeaderItemCount",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1546300800000%2B0000)%2F\'"},"value":["startAt","header_count"]}\')`,
+            },
+            header_count: "4",
+            startAt: "/Date(1546300800000+0000)/",
+          },
+          {
+            ID__: 'aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1577836800000%2B0000)%2F\'"},"value":["startAt","header_count"]}\'',
+            __metadata: {
+              type: "test.AnalyticsService.HeaderItemCount",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1577836800000%2B0000)%2F\'"},"value":["startAt","header_count"]}\')`,
+            },
+            header_count: "4",
+            startAt: "/Date(1577836800000+0000)/",
+          },
+          {
+            ID__: 'aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1640995200000%2B0000)%2F\'"},"value":["startAt","header_count"]}\'',
+            __metadata: {
+              type: "test.AnalyticsService.HeaderItemCount",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              )}/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1640995200000%2B0000)%2F\'"},"value":["startAt","header_count"]}\')`,
+            },
+            header_count: "2",
+            startAt: "/Date(1640995200000+0000)/",
+          },
+        ],
+      },
+    });
+  });
+
   it("POST bound action on analytical entity", async () => {
     let response = await util.callRead(
       request,
@@ -712,6 +850,7 @@ describe("analytics", () => {
       author: "Catweazle",
       genre_ID: 1,
       stock: 5,
+      description: "author,genre_ID,price",
       __metadata: {
         type: "test.AnalyticsService.Book",
         uri: `http://${response.request.host.replace(
@@ -773,6 +912,7 @@ describe("analytics", () => {
       author: "Cat weazle",
       genre_ID: 1,
       stock: 5,
+      description: "author,genre_ID,price",
       __metadata: {
         type: "test.AnalyticsService.Book",
         uri: `http://${response.request.host.replace(
@@ -796,6 +936,7 @@ describe("analytics", () => {
       author: "Catweazle",
       genre_ID: 1,
       stock: 5,
+      description: "author,genre_ID,price",
       __metadata: {
         type: "test.AnalyticsService.Book",
         uri: `http://${response.request.host.replace(
