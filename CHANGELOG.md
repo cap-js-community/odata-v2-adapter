@@ -15,8 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Accept aggregation annotations in lowercase and uppercase writing
 - Support `@Aggregation.ReferenceElement` and `@Aggregation.Reference` annotations to perform aggregation on different element
 - Only a single aggregation reference element is supported, specified as array with single element, e.g. `['element']`
+- Cast aggregation values of `#COUNT_DISTINCT` to `Integer` type to be represented as number (not as string), if typed accordingly
 - Map default aggregation `#COUNT` to virtual property `$count` of `$apply`
-- Cast aggregation values of `#COUNT_DISTINCT` to `Integer` type to be represented as number (not as string)
 - Remove unneeded temporary aggregation `$COUNT`
 
 ## Version 1.9.13 - 2022-11-03
