@@ -850,7 +850,8 @@ describe("analytics", () => {
       author: "Catweazle",
       genre_ID: 1,
       stock: 5,
-      description: "author,genre_ID,price",
+      description:
+        'aggregation\'{"key":{"author":"\'Catweazle\'","genre_ID":"1"},"value":["author","genre_ID","price"]}\'',
       __metadata: {
         type: "test.AnalyticsService.Book",
         uri: `http://${response.request.host.replace(
@@ -912,7 +913,8 @@ describe("analytics", () => {
       author: "Cat weazle",
       genre_ID: 1,
       stock: 5,
-      description: "author,genre_ID,price",
+      description:
+        'aggregation\'{"key":{"author":"\'Cat weazle\'","genre_ID":"1"},"value":["author","genre_ID","price"]}\'',
       __metadata: {
         type: "test.AnalyticsService.Book",
         uri: `http://${response.request.host.replace(
@@ -936,7 +938,8 @@ describe("analytics", () => {
       author: "Catweazle",
       genre_ID: 1,
       stock: 5,
-      description: "author,genre_ID,price",
+      description:
+        'aggregation\'{"key":{"author":"\'Catweazle\'","genre_ID":"1"},"value":["author","genre_ID","price"]}\'',
       __metadata: {
         type: "test.AnalyticsService.Book",
         uri: `http://${response.request.host.replace(

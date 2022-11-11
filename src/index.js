@@ -1621,10 +1621,7 @@ function cov2ap(options = {}) {
         try {
           const aggregation = JSON.parse(decodeURIKey(aggregationKey));
           queryOptions = { ...queryOptions, ...(aggregation.key || {}) };
-          if (!url.query["select"]) {
-            url.query["select"] = (aggregation.value || []).join(",");
-          }
-          delete url.query.ID__;
+          url.query.ID__ = ID__;
         } catch (err) {
           // Error
           logError(req, "AggregationKey", err);
