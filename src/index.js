@@ -378,7 +378,11 @@ function cov2ap(options = {}) {
           url: req.originalUrl,
           target,
         });
-        res.status(500).send("Internal Server Error");
+        if (err.statusCode) {
+          res.status(err.statusCode).send(err.message);
+        } else {
+          res.status(500).send("Internal Server Error");
+        }
       } else {
         res.status(404).send("Not Found");
       }
@@ -423,15 +427,31 @@ function cov2ap(options = {}) {
         res.status(500).send("Internal Server Error");
         return;
       }
-      const service = serviceFromRequest(req);
-      req.base = base;
-      req.service = service.name;
-      req.servicePath = service.path;
-      req.context = {};
-      req.contexts = [];
-      req.contentId = {};
-      req.lookupContext = {};
-      next();
+      try {
+        const service = serviceFromRequest(req);
+        req.base = base;
+        req.service = service.name;
+        req.servicePath = service.path;
+        req.context = {};
+        req.contexts = [];
+        req.contentId = {};
+        req.lookupContext = {};
+        next();
+      } catch (err) {
+        // Error
+        logError(req, "Request", err);
+        // Trace
+        logWarn(req, "Request", "Request with Error", {
+          method: req.method,
+          url: req.originalUrl,
+          target,
+        });
+        if (err.statusCode) {
+          res.status(err.statusCode).send(err.message);
+        } else {
+          res.status(500).send("Internal Server Error");
+        }
+      }
     },
 
     // File Upload
@@ -667,6 +687,20 @@ function cov2ap(options = {}) {
         path: servicePath,
       });
       serviceValid = false;
+    }
+    if (
+      serviceName &&
+      req.csn.definitions[serviceName] &&
+      req.csn.definitions[serviceName]["@protocol"] &&
+      !req.csn.definitions[serviceName]["@protocol"].startsWith("odata")
+    ) {
+      logWarn(req, "Service", "Invalid service protocol", {
+        name: serviceName,
+        path: servicePath,
+      });
+      const error = new Error("Invalid service protocol. Only OData services supported");
+      error.statusCode = 400;
+      throw error;
     }
     return {
       name: serviceName,

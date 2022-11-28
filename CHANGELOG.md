@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.9.16 - tbd
+## Version 1.9.16 - 2022-12-01
 
 ### Fixed
+
+- Reject proxy processing of non OData services
 
 ## Version 1.9.15 - 2022-11-11
 
