@@ -63,7 +63,7 @@
     "@sap/cds": "^6.3.2",
     "@types/express": "^4.17.14",
     "compression": "^1.7.4",
-    "eslint": "^8.28.0",
+    "eslint": "^8.29.0",
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^27.1.6",
@@ -73,7 +73,7 @@
     "passport": "^0.6.0",
     "prettier": "^2.8.0",
     "sqlite3": "5.1.2",
-    "supertest": "^6.3.1"
+    "supertest": "^6.3.2"
   },
   "license": "SEE LICENSE IN LICENSE"
 }
