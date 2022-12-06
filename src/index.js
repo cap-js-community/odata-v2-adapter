@@ -3,6 +3,7 @@
 // OData V2/V4 Delta: http://docs.oasis-open.org/odata/new-in-odata/v4.0/cn01/new-in-odata-v4.0-cn01.html
 
 const URL = require("url");
+const { pipeline } = require("stream");
 const express = require("express");
 const expressFileUpload = require("express-fileupload");
 const fetch = require("node-fetch");
@@ -2634,7 +2635,12 @@ function cov2ap(options = {}) {
     Object.entries(headers).forEach(([name, value]) => {
       res.setHeader(name, value);
     });
-    streamRes.pipe(res);
+    pipeline(streamRes, res, (err) => {
+      if (err) {
+        logError(req, "MediaStream", err);
+        respond(req, res, 500, {}, "Internal Server Error");
+      }
+    });
 
     // Trace
     traceResponse(req, "Response", res.statusCode, res.statusMessage, headers, {});
