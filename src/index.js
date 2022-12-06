@@ -2638,7 +2638,6 @@ function cov2ap(options = {}) {
     pipeline(streamRes, res, (err) => {
       if (err) {
         logError(req, "MediaStream", err);
-        respond(req, res, 500, {}, "Internal Server Error");
       }
     });
 
