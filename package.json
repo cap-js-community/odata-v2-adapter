@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@sap/cds": "^6.3.2",
-    "@types/express": "^4.17.14",
+    "@types/express": "^4.17.15",
     "compression": "^1.7.4",
     "eslint": "^8.29.0",
     "eslint-config": "^0.3.0",
@@ -72,7 +72,7 @@
     "jest-junit": "^15.0.0",
     "passport": "^0.6.0",
     "prettier": "^2.8.1",
-    "sqlite3": "5.1.2",
+    "sqlite3": "5.1.4",
     "supertest": "^6.3.3"
   },
   "license": "SEE LICENSE IN LICENSE"

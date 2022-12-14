@@ -155,7 +155,12 @@ function clean(responseBody) {
   }
 
   function replaceAll(entry) {
-    entry.__metadata.uri = replacePort(entry.__metadata.uri);
+    if (entry.__next) {
+      entry.__next = replacePort(entry.__next);
+    }
+    if (entry.__metadata) {
+      entry.__metadata.uri = replacePort(entry.__metadata.uri);
+    }
     if (entry.Set) {
       entry.Set.__deferred.uri = replacePort(entry.Set.__deferred.uri);
     }
@@ -164,12 +169,11 @@ function clean(responseBody) {
     }
   }
 
+  replaceAll(responseBody.d);
   if (responseBody.d.results) {
     responseBody.d.results.forEach((entry) => {
       replaceAll(entry);
     });
-  } else {
-    replaceAll(responseBody.d);
   }
 
   return responseBody;

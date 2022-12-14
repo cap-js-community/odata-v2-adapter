@@ -223,6 +223,7 @@ exports[`integration-main GET with parameters (header - full circle) - parameter
 exports[`integration-main GET with parameters (header - full circle) - parameters 2`] = `
 {
   "d": {
+    "__next": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')/Set?$skiptoken=1000",
     "results": [
       {
         "CURRENCY_PARAM": "EUR",
@@ -321,6 +322,7 @@ exports[`integration-main GET with parameters (header - full circle) - set 1`] =
 exports[`integration-main GET with parameters (header - full circle) - set 2`] = `
 {
   "d": {
+    "__next": "http://localhost:00000/v2/main/HeaderSet(STOCK=1,CURRENCY='EUR')/Set?$skiptoken=1000",
     "results": [
       {
         "CURRENCY_PARAM": "EUR",

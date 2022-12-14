@@ -1149,7 +1149,6 @@ function cov2ap(options = {}) {
           body = normalizeBody(body);
           proxyReq.setHeader("content-length", Buffer.byteLength(body));
           proxyReq.write(body);
-          proxyReq.end();
         }
       }
 

@@ -12,7 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Reject proxy processing of non OData services
-- Use pipeline for result streaming
+- Use stream pipeline for result streaming
+- Proxy does not end request to target anymore after writing body
+- Document that managed compositions will not work correctly in Fiori Elements V2
 
 ## Version 1.9.15 - 2022-11-11
 
