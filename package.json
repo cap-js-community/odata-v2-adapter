@@ -63,7 +63,7 @@
     "@sap/cds": "^6.4.0",
     "@types/express": "^4.17.15",
     "compression": "^1.7.4",
-    "eslint": "^8.29.0",
+    "eslint": "^8.30.0",
     "eslint-config": "^0.3.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^27.1.7",
