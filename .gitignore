@@ -6,6 +6,6 @@ temp/
 test/_env/gen/
 test/_env/util/typescript/test-server.js
 test/_env/util/typescript/test-server.js.map
-test/_env/test.db
-test/_env/test.db-journal
+test/_env/test.sqlite
+test/_env/test.sqlite-journal
 test-integration/_env/gen/
