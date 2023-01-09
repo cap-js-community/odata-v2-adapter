@@ -60,7 +60,7 @@ describe("mtx", () => {
   });
 
   it("MTX event emitter", async () => {
-    // not yet available
+    // TODO: not yet available
     expect(true).toEqual(true);
   });
 });

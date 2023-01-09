@@ -1883,7 +1883,7 @@ function cov2ap(options = {}) {
       if (fixDraftRequests) {
         const match = filter.match(UnsupportedDraftFilterRegex);
         if (match && match.length === 3 && match[1] === match[2]) {
-          filter = filter.replace(match[0], match[1]);
+          filter = filter.replace(match[0], encodeReplaceValue(match[1]));
           url.query["$filter"] = filter;
         }
       }
@@ -1943,7 +1943,7 @@ function cov2ap(options = {}) {
               let result = FilterFunctions[name];
               for (let j = 1; j <= placeholders; j++) {
                 if (args[j] !== undefined) {
-                  result = result.replace(`$${j}`, args[j].trim());
+                  result = result.replace(`$${j}`, encodeReplaceValue(args[j].trim()));
                 }
               }
               return result;
@@ -3307,7 +3307,7 @@ function cov2ap(options = {}) {
     value = convertDataTypeToV2(value, type, definition);
     if (DataTypeMap[type]) {
       if (!value.match(DataTypeMap[type].v2.replace("$1", ".*"))) {
-        value = DataTypeMap[type].v2.replace("$1", value);
+        value = DataTypeMap[type].v2.replace("$1", encodeReplaceValue(value));
       }
     }
     return value;
@@ -3874,6 +3874,13 @@ function cov2ap(options = {}) {
 
   function decodeURIKey(value) {
     return decodeURIComponent(value).replace(/%2F/g, "/");
+  }
+
+  function encodeReplaceValue(value) {
+    if (typeof value === "string") {
+      return value.replace(/\$/g, "$$$$");
+    }
+    return value;
   }
 
   function targetUrl(req) {
