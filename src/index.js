@@ -2689,6 +2689,12 @@ function cov2ap(options = {}) {
     delete headers.Location;
   }
 
+  function convertToUnicode(string) {
+    return string.replace(/[\u007F-\uFFFF]/g, (chr) => {
+      return "\\u" + ("0000" + chr.charCodeAt(0).toString(16)).substr(-4);
+    });
+  }
+
   function convertMessages(body, headers, definition, req) {
     if (headers["sap-messages"]) {
       const messages = JSON.parse(headers["sap-messages"]);
@@ -2697,7 +2703,7 @@ function cov2ap(options = {}) {
         rootMessage.details = Array.isArray(rootMessage.details) ? rootMessage.details : [];
         rootMessage.details.push(...messages);
         const message = convertMessage(rootMessage, definition, req);
-        headers["sap-message"] = JSON.stringify(message);
+        headers["sap-message"] = convertToUnicode(JSON.stringify(message));
       }
       delete headers["sap-messages"];
     }

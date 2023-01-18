@@ -1975,6 +1975,17 @@ describe("main", () => {
     });
   });
 
+  it("GET unbound function escaped warning", async () => {
+    let response = await util.callRead(request, "/v2/main/unboundEscapedWarningFunction");
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "WARN01",
+      details: [],
+      message: "Użytkownik",
+      severity: "warning",
+      target: "/#TRANSIENT#",
+    });
+  });
+
   it("GET unbound function with navigation", async () => {
     let response = await util.callWrite(request, "/v2/main/Header", {
       name: "Test",

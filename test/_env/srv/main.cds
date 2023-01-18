@@ -286,6 +286,7 @@ service MainService {
     function unboundDecimalsFunction() returns array of Decimal(19,4);
     function unboundErrorFunction() returns Result;
     function unboundWarningFunction() returns Result;
+    function unboundEscapedWarningFunction() returns String;
     function unboundNavigationFunction(num: Integer, text: String) returns Header;
     function unboundNavigationsFunction(num: Integer, text: String) returns array of Header;
     function unbound.Function(num: Integer, text: String) returns Result;

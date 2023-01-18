@@ -445,6 +445,14 @@ module.exports = (srv) => {
     };
   });
 
+  srv.on("unboundEscapedWarningFunction", async (req) => {
+    const warn = new Error("óáé");
+    warn.code = "WARN01";
+    warn.message = "Użytkownik";
+    warn.numericSeverity = 3;
+    req.info(warn);
+  });
+
   srv.on("unboundNavigationFunction", async (req) => {
     return req.run(SELECT.from("test.MainService.Header").where({ ID: req.data.text }));
   });
