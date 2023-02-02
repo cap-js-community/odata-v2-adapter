@@ -307,6 +307,13 @@ function cov2ap(options = {}) {
               id: jwtBody.user_name || jwtBody.client_id,
             };
             req.tenant = jwtBody.zid;
+            if (!req.authInfo) {
+              req.authInfo = {
+                getSubdomain: () => {
+                  return jwtBody.ext_attr && jwtBody.ext_attr.zdn;
+                }
+              };
+            }
             break;
         }
       }
@@ -2636,7 +2643,7 @@ function cov2ap(options = {}) {
     });
     pipeline(streamRes, res, (err) => {
       if (err) {
-        logError(req, "MediaStream", err);
+        logError(req, "StreamPipeline", err);
       }
     });
 
@@ -4385,11 +4392,10 @@ function cov2ap(options = {}) {
   }
 
   function initCDSContext(req) {
-    cds.context = cds.context || {};
-    cds.context.id = cds.context.id || req.contextId;
-    cds.context.tenant = cds.context.tenant || req.tenant;
-    cds.context.user = cds.context.user || req.user;
-    cds.context._ = cds.context._ || { id: req.contextId, req };
+    if (cds.context) {
+      return;
+    }
+    cds.context = new cds.EventContext({ id: req.contextId, user: req.user, tenant: req.tenant, http: { req, res: req.res } });
   }
 
   return router;

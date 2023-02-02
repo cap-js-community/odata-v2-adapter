@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Provide subdomain information to logs
+- Use correct correlation-id for logging
+
 ## Version 1.9.18 - 2023-01-18
 
 ### Fixed
