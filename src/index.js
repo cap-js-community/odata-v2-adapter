@@ -311,7 +311,7 @@ function cov2ap(options = {}) {
               req.authInfo = {
                 getSubdomain: () => {
                   return jwtBody.ext_attr && jwtBody.ext_attr.zdn;
-                }
+                },
               };
             }
             break;
@@ -4395,7 +4395,12 @@ function cov2ap(options = {}) {
     if (cds.context) {
       return;
     }
-    cds.context = new cds.EventContext({ id: req.contextId, user: req.user, tenant: req.tenant, http: { req, res: req.res } });
+    cds.context = new cds.EventContext({
+      id: req.contextId,
+      user: req.user,
+      tenant: req.tenant,
+      http: { req, res: req.res },
+    });
   }
 
   return router;
