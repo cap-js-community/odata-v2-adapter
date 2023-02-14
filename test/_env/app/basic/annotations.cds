@@ -3,7 +3,19 @@ using test.MainService from '../../srv/main';
 annotate MainService.Header with @(
     UI: {
         Identification: [
-            { Value: name }
+            { Value: name },
+            {
+                $Type: 'UI.DataFieldForAction',
+                Label: 'Bound Action',
+                Action: 'MainService.EntityContainer/Header_boundAction',
+                InvocationGrouping: #Isolated
+            },
+            {
+                $Type: 'UI.DataFieldForAction',
+                Label: 'Unbound Action',
+                Action: 'MainService.EntityContainer/unboundAction',
+                InvocationGrouping: #Isolated
+            }
         ],
         SelectionFields: [ name, currency, country ],
         LineItem: [
