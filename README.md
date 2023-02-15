@@ -413,7 +413,7 @@ For more details see [CONTRIBUTION](CONTRIBUTING.md) guide.
 - Stream Support (Octet and Url)
 - Content Disposition
 - Content-ID
-- Multitenancy
+- Multitenancy (mtx, mtxs)
 - Feature Toggles
 - Extensibility
 - Draft Support

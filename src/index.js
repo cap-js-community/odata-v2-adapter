@@ -791,16 +791,29 @@ function cov2ap(options = {}) {
     const { "cds.xt.ModelProviderService": mps } = cds.services;
     proxyCache[req.tenant] = proxyCache[req.tenant] || {};
     const isExtended = await callCached(proxyCache[req.tenant], "isExtended", () => {
-      return mps.isExtended(req.tenant);
+      return mps.isExtended({
+        tenant: req.tenant,
+      });
     });
     if (isExtended) {
       return await prepareMetadata(
         req.tenant,
         async (tenant) => {
-          return await mps.getCsn(tenant, ensureArray(req.features), "nodejs");
+          return await mps.getCsn({
+            tenant,
+            toggles: ensureArray(req.features),
+            for: "nodejs",
+          });
         },
         async (tenant, service, locale) => {
-          return await mps.getEdmx(tenant, ensureArray(req.features), service, undefined, locale, "v2", "nodejs");
+          return await mps.getEdmx({
+            tenant,
+            toggles: ensureArray(req.features),
+            service,
+            locale,
+            flavor: "v2",
+            for: "nodejs",
+          });
         },
         service,
         determineLocale(req)
