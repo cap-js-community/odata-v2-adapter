@@ -1098,6 +1098,16 @@ exports[`main GET $metadata 1`] = `
             <Record Type="UI.DataField">
               <PropertyValue Property="Value" Path="name"/>
             </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Bound Action"/>
+              <PropertyValue Property="Action" String="MainService.EntityContainer/Header_boundAction"/>
+              <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/Isolated"/>
+            </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Unbound Action"/>
+              <PropertyValue Property="Action" String="MainService.EntityContainer/unboundAction"/>
+              <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/Isolated"/>
+            </Record>
           </Collection>
         </Annotation>
         <Annotation Term="UI.SelectionFields">
@@ -2366,6 +2376,16 @@ exports[`main GET $metadata localized 1`] = `
           <Collection>
             <Record Type="UI.DataField">
               <PropertyValue Property="Value" Path="name"/>
+            </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Bound Action"/>
+              <PropertyValue Property="Action" String="MainService.EntityContainer/Header_boundAction"/>
+              <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/Isolated"/>
+            </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Unbound Action"/>
+              <PropertyValue Property="Action" String="MainService.EntityContainer/unboundAction"/>
+              <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/Isolated"/>
             </Record>
           </Collection>
         </Annotation>
@@ -3636,6 +3656,16 @@ exports[`main GET $metadata localized 2`] = `
             <Record Type="UI.DataField">
               <PropertyValue Property="Value" Path="name"/>
             </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Bound Action"/>
+              <PropertyValue Property="Action" String="MainService.EntityContainer/Header_boundAction"/>
+              <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/Isolated"/>
+            </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Unbound Action"/>
+              <PropertyValue Property="Action" String="MainService.EntityContainer/unboundAction"/>
+              <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/Isolated"/>
+            </Record>
           </Collection>
         </Annotation>
         <Annotation Term="UI.SelectionFields">
@@ -4905,6 +4935,16 @@ exports[`main GET $metadata with propagated headers 1`] = `
             <Record Type="UI.DataField">
               <PropertyValue Property="Value" Path="name"/>
             </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Bound Action"/>
+              <PropertyValue Property="Action" String="MainService.EntityContainer/Header_boundAction"/>
+              <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/Isolated"/>
+            </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Unbound Action"/>
+              <PropertyValue Property="Action" String="MainService.EntityContainer/unboundAction"/>
+              <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/Isolated"/>
+            </Record>
           </Collection>
         </Annotation>
         <Annotation Term="UI.SelectionFields">
@@ -6173,6 +6213,16 @@ exports[`main GET $metadata with query options 1`] = `
           <Collection>
             <Record Type="UI.DataField">
               <PropertyValue Property="Value" Path="name"/>
+            </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Bound Action"/>
+              <PropertyValue Property="Action" String="MainService.EntityContainer/Header_boundAction"/>
+              <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/Isolated"/>
+            </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Unbound Action"/>
+              <PropertyValue Property="Action" String="MainService.EntityContainer/unboundAction"/>
+              <PropertyValue Property="InvocationGrouping" EnumMember="UI.OperationGroupingType/Isolated"/>
             </Record>
           </Collection>
         </Annotation>

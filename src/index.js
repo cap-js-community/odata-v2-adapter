@@ -800,7 +800,7 @@ function cov2ap(options = {}) {
           return await mps.getCsn(tenant, ensureArray(req.features), "nodejs");
         },
         async (tenant, service, locale) => {
-          return await mps.getEdmx(tenant, ensureArray(req.features), service, locale, "v2", "nodejs");
+          return await mps.getEdmx(tenant, ensureArray(req.features), service, undefined, locale, "v2", "nodejs");
         },
         service,
         determineLocale(req)
