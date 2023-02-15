@@ -48,7 +48,8 @@
     "lint": "npm run prettier && eslint . --fix",
     "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --loglevel error",
     "upgrade-lock": "rm -rf package-lock.json node_modules && npm i --package-lock=true",
-    "prepareRelease": "npm prune --production"
+    "prepareRelease": "npm prune --production",
+    "audit": "npm audit --only=prod"
   },
   "dependencies": {
     "body-parser": "^1.20.1",
