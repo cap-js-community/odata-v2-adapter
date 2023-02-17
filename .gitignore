@@ -9,3 +9,4 @@ test/_env/util/typescript/test-server.js.map
 test/_env/test.sqlite
 test/_env/test.sqlite-journal
 test-integration/_env/gen/
+test-integration/_env/db/default-services.json
