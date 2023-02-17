@@ -16,10 +16,8 @@
     "V4"
   ],
   "files": [
-    "src/",
-    "CHANGELOG.md",
-    "README.md",
-    "LICENSE"
+    "src",
+    "CHANGELOG.md"
   ],
   "main": "src/index.js",
   "types": "src/index.d.ts",
