@@ -358,7 +358,7 @@ function cov2ap(options = {}) {
       headers["content-type"] = "application/xml";
       delete headers["content-encoding"];
       let body;
-      if (metadataResponse.ok) {
+      if (metadataResponse.ok || metadataResponse.status === 304) {
         body = edmx;
       } else {
         body = metadataBody;

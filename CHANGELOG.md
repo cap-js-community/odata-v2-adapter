@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Use named parameters for mtxs actions to protect against incompatible changes
+- Allow status code 304 (not modified) when reading OData V4 metadata (as success)
 
 ## Version 1.9.19 - 2023-02-15
 
