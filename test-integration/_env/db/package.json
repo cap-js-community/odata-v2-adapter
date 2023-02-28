@@ -1,5 +1,5 @@
 {
-  "name": "@sap/cds-odata-v2-adapter-proxy-test-integration-db",
+  "name": "@cap-js-community/odata-v2-adapter-test-integration-db",
   "version": "1.0.0",
   "dependencies": {
     "@sap/hdi-deploy": "4.3.3"

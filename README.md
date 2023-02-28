@@ -1,6 +1,6 @@
-# @sap/cds-odata-v2-adapter-proxy (cov2ap)
+# @cap-js-community/odata-v2-adapter (cov2ap)
 
-### [CDS OData V2 Adapter Proxy](https://www.npmjs.com/package/@sap/cds-odata-v2-adapter-proxy) for [CDS OData V4 Services](https://cap.cloud.sap/docs/).
+### [CDS OData V2 Adapter](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter) for [CDS OData V4 Services](https://cap.cloud.sap/docs/).
 
 > Exposes a full-fledged OData V2 service, converting OData V2 requests to CDS OData V4 service calls and responses back.
 > Runs in context of the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
@@ -9,11 +9,11 @@
 
 ## Getting Started
 
-- Run `npm install @sap/cds-odata-v2-adapter-proxy -s` in `@sap/cds` project
+- Run `npm install @cap-js-community/odata-v2-adapter -s` in `@sap/cds` project
 - Enhance or create `./srv/server.js`:
   ```js
   const cds = require("@sap/cds");
-  const cov2ap = require("@sap/cds-odata-v2-adapter-proxy");
+  const cov2ap = require("@cap-js-community/odata-v2-adapter");
   cds.on("bootstrap", (app) => app.use(cov2ap()));
   module.exports = cds.server;
   ```
@@ -23,10 +23,10 @@
 
 ## Options
 
-The CDS OData V2 Adapter Proxy instantiates an Express router. The following options are available:
+The CDS OData V2 Adapter instantiates an Express router. The following options are available:
 
 - **base:** Base path under which the service is reachable. Default is `''`.
-- **path:** Path under which the proxy is reachable. Default is `'v2'`.
+- **path:** Path under which the service is reachable. Default is `'v2'`.
 - **model:** CDS service model (path(s) or CSN). Default is `'all'`.
 - **port:** Target port which points to OData V4 backend port. Default is process.env.PORT or `4004`.
 - **target:** Target which points to OData V4 backend host:port. Use `'auto'` to infer the target from server url after listening. Default is e.g. `'http://localhost:4004'`.
@@ -58,7 +58,7 @@ The CDS OData V2 Adapter Proxy instantiates an Express router. The following opt
 - **defaultFormat**: Specifies the default entity response format (json, atom). Default is `'json'`.
 - **processForwardedHeaders** Specifies if the `x-forwarded` headers are processed. Default is `true`.
 
-> All CDS OData V2 Adapter Proxy options can also be specified as part of CDS project-specific configuration
+> All CDS OData V2 Adapter options can also be specified as part of CDS project-specific configuration
 > under section `cds.cov2ap` and accessed during runtime via `cds.env.cov2ap`.
 
 > Options can also be passed as command line environment variable, by converting the camel-cased option name to snake-case.
@@ -80,9 +80,9 @@ Logging is based on [cds.log](https://cap.cloud.sap/docs/node.js/cds-log), there
 
 #### Logging Modules
 
-| Component                  | Module Name(s) |
-| -------------------------- | -------------- |
-| CDS OData V2 Adapter Proxy | cov2ap         |
+| Component            | Module Name(s) |
+| -------------------- | -------------- |
+| CDS OData V2 Adapter | cov2ap         |
 
 #### Kibana Logging
 
@@ -92,7 +92,7 @@ feature toggle `cds.features.kibana_formatter: true` needs to be set.
 #### Debug Mode
 
 Debug mode can be activated to log requests and responses processed (V2) and initiated (V4)
-by CDS OData V2 Adapter Proxy. The following information can be retrieved for analysis:
+by CDS OData V2 Adapter. The following information can be retrieved for analysis:
 
 - **Request:** url, headers, body
 - **Response:** status code/message, headers, body
@@ -152,7 +152,7 @@ Logging can be configured to respect the following log levels:
 
 ### CDS Annotations
 
-The following CDS OData V2 Adapter Proxy specific annotations are supported:
+The following CDS OData V2 Adapter specific annotations are supported:
 
 **Entity Level**:
 
@@ -172,7 +172,7 @@ The following CDS OData V2 Adapter Proxy specific annotations are supported:
 
 ### CDS Modeling Restrictions
 
-CDS project configuration `cds.odata.version` shall be set to `v4`, as OData proxy maps to OData V4.
+CDS project configuration `cds.odata.version` shall be set to `v4`, as OData V2 maps to OData V4.
 CDS supports modelling features that are not compatible with OData V2 standard:
 
 - **Singletons:** Usage of annotation `@odata.singleton` is not supported in combination with OData V2
@@ -180,8 +180,8 @@ CDS supports modelling features that are not compatible with OData V2 standard:
 - **Arrayed Types:** Usages of `array of` or `many` in entity element definitions lead to CDS compilation error: `Element must not be an "array of" for OData V2`
 - **Managed Compositions:** The usage of managed composition (currently) produces Format Exception in Fiori Elements V2 for Date/Time data types
 
-To provide an OData V2 service based on the CDS OData V2 Adapter Proxy, those CDS modelling features must not be used.
-In general any CDS OData API flavor must not be used in combination with CDS OData V2 Adapter Proxy.
+To provide an OData V2 service based on the CDS OData V2 Adapter, those CDS modelling features must not be used.
+In general any CDS OData API flavor must not be used in combination with CDS OData V2 Adapter.
 
 Per default, those modelling incompatibilities are reported as `Warning` and will not stop the compilation.
 The resulting EDMX V2 may be invalid and not processable by an OData V2 client. To prevent this situation and fail
@@ -204,18 +204,18 @@ by setting the following environment variables:
 
 ### Cloud Foundry Deployment
 
-When deploying the CDS OData V2 Adapter Proxy to Cloud Foundry, make sure that it has access to the whole CDS model.
+When deploying the CDS OData V2 Adapter to Cloud Foundry, make sure that it has access to the whole CDS model.
 Especially, it’s the case, that normally the Node.js server is only based on folder `srv` and folder `db` is then missing on Cloud Foundry.
 
 To come around this situation, trigger a `cds build` during development time, that generates a `csn.json` at location `gen/srv/srv/csn.json`.
-Point your Cloud Foundry deployment of the CDS OData V2 Adapter Proxy to the folder `gen/srv` (using manifest.json or MTA), so that
+Point your Cloud Foundry deployment of the CDS OData V2 Adapter to the folder `gen/srv` (using manifest.json or MTA), so that
 the CDS models can be found via file `srv/csn.json`, during runtime execution on Cloud Foundry.
 
 Make sure, that all i18n property files reside next to the `csn.json` in a `i18n` or `_i18n` folder, to be detected by localization.
 
 ### Multitenancy, Feature Toggles and Extensibility (MTX)
 
-CDS OData V2 Adapter Proxy supports multitenant scenarios. Basic extensibility is already supported in combination with the
+CDS OData V2 Adapter supports multitenant scenarios. Basic extensibility is already supported in combination with the
 [CDS MTX](https://www.npmjs.com/package/@sap/cds-mtx) module. More advanced extensibility scenarios and feature toggles
 are supported in combination with the [CDS Streamlined MTX services](https://www.npmjs.com/package/@sap/cds-mtxs).
 
@@ -235,7 +235,7 @@ cds.on("bootstrap", (app) =>
 
 ### SAP Fiori Elements V2
 
-The OData V2 service provided by the CDS OData V2 Adapter Proxy can be used to serve an SAP Fiori Elements V2 UI.
+The OData V2 service provided by the CDS OData V2 Adapter can be used to serve an SAP Fiori Elements V2 UI.
 
 SAP Fiori Elements V2 examples:
 
@@ -266,7 +266,7 @@ module in Express app at bootstrap time, e.g. in `srv/server.js`:
 
 ```js
 const cds = require("@sap/cds");
-const cov2ap = require("@sap/cds-odata-v2-adapter-proxy");
+const cov2ap = require("@cap-js-community/odata-v2-adapter");
 const compression = require("compression");
 
 cds.on("bootstrap", (app) => {
@@ -296,13 +296,13 @@ It's disabled by default, but can be enabled using option [compressResponseMixed
 
 ### CAP Node.js Custom
 
-- Run `npm install @sap/cds-odata-v2-adapter-proxy -s` in `@sap/cds` project
+- Run `npm install @cap-js-community/odata-v2-adapter -s` in `@sap/cds` project
 - Create new file `./srv/index.js`:
 
 ```js
 const express = require("express");
 const cds = require("@sap/cds");
-const cov2ap = require("@sap/cds-odata-v2-adapter-proxy");
+const cov2ap = require("@cap-js-community/odata-v2-adapter");
 
 const host = "0.0.0.0";
 const port = process.env.PORT || 4004;
@@ -332,13 +332,13 @@ Note that `@sap/cds` is a peer dependency and needs to be available as module as
 
 > For CAP Java projects prefer the Native OData V2 Adapter ([com.sap.cds/cds-adapter-odata-v2](https://mvnrepository.com/artifact/com.sap.cds/cds-adapter-odata-v2)).
 
-- Run `npm install @sap/cds-odata-v2-adapter-proxy -s` in `@sap/cds` project
+- Run `npm install @cap-js-community/odata-v2-adapter -s` in `@sap/cds` project
 - Provide CDS models (`db`, `srv`, `app`) or compile a generated CSN (see details below)
 - Create new file `./srv/index.js`:
 
 ```js
 const express = require("express");
-const cov2ap = require("@sap/cds-odata-v2-adapter-proxy");
+const cov2ap = require("@cap-js-community/odata-v2-adapter");
 
 const host = "0.0.0.0";
 const port = process.env.PORT || 4004;
@@ -367,10 +367,10 @@ const port = process.env.PORT || 4004;
 
 #### Additional Considerations
 
-- A deployed version of CDS OData V2 Adapter Proxy shall have option `target` set to the deployed OData V4 backend URL.
+- A deployed version of CDS OData V2 Adapter shall have option `target` set to the deployed OData V4 backend URL.
   This can be retrieved from the Cloud Foundry environment using `process.env`, for example,
   from the `destinations` environment variable. Locally e.g. http://localhost:8080 can be used.
-- In proxy option `services`, every OData V4 service URL path needs to mapped to
+- In option `services`, every OData V4 service URL path needs to mapped to
   the corresponding fully qualified CDS service name, e.g. `"/odata/v4/MainService/": "test.MainService"`,
   to establish the back-link connection between OData URL and its CDS service.
 - Make sure, that your CDS models are also available in the project.
@@ -379,9 +379,9 @@ const port = process.env.PORT || 4004;
 - Alternatively, a `cds build` can be triggered as described in section "Cloud Foundry Deployment".
 - If not detected automatically, the model path can be set with option `model` (especially if `csn.json`/`srv.json` option is used).
 - Make sure, that all i18n property files reside next to the `csn.json` in a `i18n` or `_i18n` folder, to be detected by localization.
-- In a multitenant scenario in combination with a standalone proxy, the CDS model can be retrieved remotely via MTX endpoint (`mtxEndpoint`) by setting proxy option `mtxRemote: true`.
-- Proxy option `mtxEndpoint` can be specified as absolute url (starting with `http://` or `https://`), to be able to address MTX Sidecar
-  possibly available under a target different from OData v4 backend URL. If not specified absolutely, proxy `target` is prepended to `mtxEndpoint`.
+- In a multitenant scenario in combination with a standalone app, the CDS model can be retrieved remotely via MTX endpoint (`mtxEndpoint`) by setting option `mtxRemote: true`.
+- Option `mtxEndpoint` can be specified as absolute url (starting with `http://` or `https://`), to be able to address MTX Sidecar
+  possibly available under a target different from OData v4 backend URL. If not specified absolutely, `target` is prepended to `mtxEndpoint`.
 
 ## Contributions
 

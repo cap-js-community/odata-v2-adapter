@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@sap/cds-odata-v2-adapter-proxy-approuter",
+  "name": "@cap-js-community/odata-v2-adapter-approuter",
   "version": "1.0.0",
   "engines": {
     "node": "^14.0.0",

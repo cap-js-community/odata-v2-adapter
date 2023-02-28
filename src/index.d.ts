@@ -1,14 +1,14 @@
 import {RequestHandler} from "express";
 
 /**
- * CDS OData V2 Adapter Proxy
- * @param {Options} options CDS OData V2 Adapter Proxy options
- * @return {RequestHandler} CDS OData V2 Adapter Proxy Express RequestHandler
+ * CDS OData V2 Adapter
+ * @param {Options} options CDS OData V2 Adapter options
+ * @return {RequestHandler} CDS OData V2 Adapter Express RequestHandler
  */
 export default function cov2ap(options?: Options): RequestHandler;
 
 /**
- * CDS OData V2 Adapter Proxy options
+ * CDS OData V2 Adapter options
  */
 type Options = {
 
@@ -18,7 +18,7 @@ type Options = {
     base?: string | "",
 
     /**
-     * Path under which the proxy is reachable. Default is 'v2'.
+     * Path under which the service is reachable. Default is 'v2'.
      */
     path?: string | "v2",
 
@@ -170,5 +170,5 @@ type Options = {
     /**
      * Specifies if 'x-forwarded' headers are processed. Default is 'true'.
      */
-    processForwardedHeaders: boolean | true,
+    processForwardedHeaders?: boolean | true,
 };

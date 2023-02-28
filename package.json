@@ -1,12 +1,12 @@
 {
-  "name": "@sap/cds-odata-v2-adapter-proxy",
+  "name": "@cap-js-community/odata-v2-adapter",
   "version": "1.9.20",
-  "description": "CDS OData V2 Adapter Proxy for CDS OData V4 Services",
+  "description": "CDS OData V2 Adapter for CDS OData V4 Services",
   "homepage": "https://cap.cloud.sap/",
   "engines": {
     "node": ">=8"
   },
-  "author": "Oliver Klemenz, Richard Lindner (SAP SE - https://www.sap.com)",
+  "author": "Oliver Klemenz <oklemenz@gmail.com>, Richard Lindner <rlindner81@gmail.com>",
   "keywords": [
     "COV2AP",
     "CAP",
@@ -74,5 +74,5 @@
     "sqlite3": "5.1.4",
     "supertest": "^6.3.3"
   },
-  "license": "SEE LICENSE IN LICENSE"
+  "license": "Apache-2.0"
 }

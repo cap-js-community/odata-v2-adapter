@@ -143,10 +143,10 @@ function convertToNodeHeaders(webHeaders) {
 }
 
 /**
- * Instantiates a CDS OData V2 Adapter Proxy Express Router for a CDS-based OData V4 Server:
- * @param {object} options CDS OData V2 Adapter Proxy options object.
+ * Instantiates a CDS OData V2 Adapter Express Router for a CDS-based OData V4 Server:
+ * @param {object} options CDS OData V2 Adapter options object.
  * @param {string} options.base Base path under which the service is reachable. Default is ''.
- * @param {string} options.path Path under which the proxy is reachable. Default is 'v2'.
+ * @param {string} options.path Path under which the service is reachable. Default is 'v2'.
  * @param {string|string[]|object} options.model CDS service model (path(s) or CSN). Default is 'all'.
  * @param {number} options.port Target port which points to OData V4 backend port. Default is process.env.PORT or 4004.
  * @param {string} options.target Target which points to OData V4 backend host:port. Use 'auto' to infer the target from server url after listening. Default is e.g. 'http://localhost:4004'.
@@ -177,7 +177,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} options.changesetDeviationLogLevel: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
  * @param {string} options.defaultFormat: Specifies the default entity response format (json, atom). Default is 'json'.
  * @param {boolean} options.processForwardedHeaders: Specifies if 'x-forwarded' headers are processed. Default is 'true'.
- * @returns {express.Router} CDS OData V2 Adapter Proxy Express Router
+ * @returns {express.Router} CDS OData V2 Adapter Express Router
  */
 function cov2ap(options = {}) {
   const optionWithFallback = (name, fallback) => {
