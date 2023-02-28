@@ -1,0 +1,544 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`draft GET $metadata 1`] = `
+"<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices m:DataServiceVersion="2.0">
+    <Schema Namespace="test.DraftService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="Header" EntityType="test.DraftService.Header"/>
+        <FunctionImport Name="Header_draftPrepare" EntitySet="Header" ReturnType="test.DraftService.Header" m:HttpMethod="POST" sap:action-for="test.DraftService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" Mode="In"/>
+          <Parameter Name="SideEffectsQualifier" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_draftActivate" EntitySet="Header" ReturnType="test.DraftService.Header" m:HttpMethod="POST" sap:action-for="test.DraftService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="Header_draftEdit" EntitySet="Header" ReturnType="test.DraftService.Header" m:HttpMethod="POST" sap:action-for="test.DraftService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" Mode="In"/>
+          <Parameter Name="PreserveChanges" Type="Edm.Boolean" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <EntitySet Name="HeaderItem" EntityType="test.DraftService.HeaderItem"/>
+        <FunctionImport Name="HeaderItem_draftPrepare" EntitySet="HeaderItem" ReturnType="test.DraftService.HeaderItem" m:HttpMethod="POST" sap:action-for="test.DraftService.HeaderItem">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" Mode="In"/>
+          <Parameter Name="SideEffectsQualifier" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <EntitySet Name="HeaderLine" EntityType="test.DraftService.HeaderLine"/>
+        <FunctionImport Name="HeaderLine_draftPrepare" EntitySet="HeaderLine" ReturnType="test.DraftService.HeaderLine" m:HttpMethod="POST" sap:action-for="test.DraftService.HeaderLine">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" Mode="In"/>
+          <Parameter Name="SideEffectsQualifier" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <EntitySet Name="DraftAdministrativeData" EntityType="test.DraftService.DraftAdministrativeData"/>
+        <AssociationSet Name="Header_FirstItem" Association="test.DraftService.Header_FirstItem">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+        </AssociationSet>
+        <AssociationSet Name="Header_DraftAdministrativeData" Association="test.DraftService.Header_DraftAdministrativeData">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="DraftAdministrativeData" EntitySet="DraftAdministrativeData"/>
+        </AssociationSet>
+        <AssociationSet Name="Header_SiblingEntity" Association="test.DraftService.Header_SiblingEntity">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="Header1" EntitySet="Header"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_header" Association="test.DraftService.HeaderItem_header">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="Header" EntitySet="Header"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_NextItem" Association="test.DraftService.HeaderItem_NextItem">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem1" EntitySet="HeaderItem"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_DraftAdministrativeData" Association="test.DraftService.HeaderItem_DraftAdministrativeData">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="DraftAdministrativeData" EntitySet="DraftAdministrativeData"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_SiblingEntity" Association="test.DraftService.HeaderItem_SiblingEntity">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem1" EntitySet="HeaderItem"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderLine_item" Association="test.DraftService.HeaderLine_item">
+          <End Role="HeaderLine" EntitySet="HeaderLine"/>
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderLine_DraftAdministrativeData" Association="test.DraftService.HeaderLine_DraftAdministrativeData">
+          <End Role="HeaderLine" EntitySet="HeaderLine"/>
+          <End Role="DraftAdministrativeData" EntitySet="DraftAdministrativeData"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderLine_SiblingEntity" Association="test.DraftService.HeaderLine_SiblingEntity">
+          <End Role="HeaderLine" EntitySet="HeaderLine"/>
+          <End Role="HeaderLine1" EntitySet="HeaderLine"/>
+        </AssociationSet>
+      </EntityContainer>
+      <EntityType Name="Header">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7" ConcurrencyMode="Fixed"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="country" Type="Edm.String"/>
+        <Property Name="currency" Type="Edm.String"/>
+        <Property Name="stock" Type="Edm.Int32"/>
+        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <NavigationProperty Name="Items" Relationship="test.DraftService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
+        <NavigationProperty Name="FirstItem" Relationship="test.DraftService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
+        <Property Name="FirstItem_ID" Type="Edm.Guid"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.Header_DraftAdministrativeData" FromRole="Header" ToRole="DraftAdministrativeData"/>
+        <Property Name="DraftAdministrativeData_DraftUUID" Type="Edm.Guid"/>
+        <NavigationProperty Name="SiblingEntity" Relationship="test.DraftService.Header_SiblingEntity" FromRole="Header" ToRole="Header1"/>
+      </EntityType>
+      <EntityType Name="HeaderItem">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="startAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="endAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <NavigationProperty Name="header" Relationship="test.DraftService.HeaderItem_header" FromRole="HeaderItem" ToRole="Header"/>
+        <Property Name="header_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="NextItem" Relationship="test.DraftService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
+        <Property Name="NextItem_ID" Type="Edm.Guid"/>
+        <Property Name="assoc_header_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="Lines" Relationship="test.DraftService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.HeaderItem_DraftAdministrativeData" FromRole="HeaderItem" ToRole="DraftAdministrativeData"/>
+        <Property Name="DraftAdministrativeData_DraftUUID" Type="Edm.Guid"/>
+        <NavigationProperty Name="SiblingEntity" Relationship="test.DraftService.HeaderItem_SiblingEntity" FromRole="HeaderItem" ToRole="HeaderItem1"/>
+      </EntityType>
+      <EntityType Name="HeaderLine">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="value" Type="Edm.Double"/>
+        <NavigationProperty Name="item" Relationship="test.DraftService.HeaderLine_item" FromRole="HeaderLine" ToRole="HeaderItem"/>
+        <Property Name="item_ID" Type="Edm.Guid"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.HeaderLine_DraftAdministrativeData" FromRole="HeaderLine" ToRole="DraftAdministrativeData"/>
+        <Property Name="DraftAdministrativeData_DraftUUID" Type="Edm.Guid"/>
+        <NavigationProperty Name="SiblingEntity" Relationship="test.DraftService.HeaderLine_SiblingEntity" FromRole="HeaderLine" ToRole="HeaderLine1"/>
+      </EntityType>
+      <EntityType Name="DraftAdministrativeData">
+        <Key>
+          <PropertyRef Name="DraftUUID"/>
+        </Key>
+        <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+        <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+      </EntityType>
+      <ComplexType Name="Result">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="code" Type="Edm.String"/>
+        <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <Association Name="Header_FirstItem">
+        <End Role="Header" Type="test.DraftService.Header" Multiplicity="*"/>
+        <End Role="HeaderItem" Type="test.DraftService.HeaderItem" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Header_DraftAdministrativeData">
+        <End Role="Header" Type="test.DraftService.Header" Multiplicity="*"/>
+        <End Role="DraftAdministrativeData" Type="test.DraftService.DraftAdministrativeData" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="DraftAdministrativeData">
+            <PropertyRef Name="DraftUUID"/>
+          </Principal>
+          <Dependent Role="Header">
+            <PropertyRef Name="DraftAdministrativeData_DraftUUID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Header_SiblingEntity">
+        <End Role="Header" Type="test.DraftService.Header" Multiplicity="*"/>
+        <End Role="Header1" Type="test.DraftService.Header" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="HeaderItem_header">
+        <End Role="HeaderItem" Type="test.DraftService.HeaderItem" Multiplicity="*"/>
+        <End Role="Header" Type="test.DraftService.Header" Multiplicity="0..1">
+          <OnDelete Action="Cascade"/>
+        </End>
+      </Association>
+      <Association Name="HeaderItem_NextItem">
+        <End Role="HeaderItem" Type="test.DraftService.HeaderItem" Multiplicity="*"/>
+        <End Role="HeaderItem1" Type="test.DraftService.HeaderItem" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="HeaderItem_DraftAdministrativeData">
+        <End Role="HeaderItem" Type="test.DraftService.HeaderItem" Multiplicity="*"/>
+        <End Role="DraftAdministrativeData" Type="test.DraftService.DraftAdministrativeData" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="DraftAdministrativeData">
+            <PropertyRef Name="DraftUUID"/>
+          </Principal>
+          <Dependent Role="HeaderItem">
+            <PropertyRef Name="DraftAdministrativeData_DraftUUID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItem_SiblingEntity">
+        <End Role="HeaderItem" Type="test.DraftService.HeaderItem" Multiplicity="*"/>
+        <End Role="HeaderItem1" Type="test.DraftService.HeaderItem" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="HeaderLine_item">
+        <End Role="HeaderLine" Type="test.DraftService.HeaderLine" Multiplicity="*"/>
+        <End Role="HeaderItem" Type="test.DraftService.HeaderItem" Multiplicity="0..1">
+          <OnDelete Action="Cascade"/>
+        </End>
+      </Association>
+      <Association Name="HeaderLine_DraftAdministrativeData">
+        <End Role="HeaderLine" Type="test.DraftService.HeaderLine" Multiplicity="*"/>
+        <End Role="DraftAdministrativeData" Type="test.DraftService.DraftAdministrativeData" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="DraftAdministrativeData">
+            <PropertyRef Name="DraftUUID"/>
+          </Principal>
+          <Dependent Role="HeaderLine">
+            <PropertyRef Name="DraftAdministrativeData_DraftUUID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderLine_SiblingEntity">
+        <End Role="HeaderLine" Type="test.DraftService.HeaderLine" Multiplicity="*"/>
+        <End Role="HeaderLine1" Type="test.DraftService.HeaderLine" Multiplicity="0..1"/>
+      </Association>
+      <Annotations Target="test.DraftService.Header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.SelectionFields">
+          <Collection>
+            <PropertyPath>name</PropertyPath>
+            <PropertyPath>currency</PropertyPath>
+            <PropertyPath>country</PropertyPath>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+              <PropertyValue Property="Label" String="Name"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="price"/>
+              <PropertyValue Property="Label" String="Price"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="currency"/>
+              <PropertyValue Property="Label" String="Currency"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="stock"/>
+              <PropertyValue Property="Label" String="Stock"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="country"/>
+              <PropertyValue Property="Label" String="Country"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="Header"/>
+            <PropertyValue Property="TypeNamePlural" String="Headers"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="name"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Description">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="description"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="General"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#General"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="Items"/>
+              <PropertyValue Property="Target" AnnotationPath="Items/@UI.LineItem"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="General">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="name"/>
+                  <PropertyValue Property="Label" String="Name"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="price"/>
+                  <PropertyValue Property="Label" String="Price"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="currency"/>
+                  <PropertyValue Property="Label" String="Currency"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="stock"/>
+                  <PropertyValue Property="Label" String="Stock"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="country"/>
+                  <PropertyValue Property="Label" String="Country"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.DraftService.EntityContainer/Header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="test.DraftService.EntityContainer/Header_draftActivate"/>
+            <PropertyValue Property="EditAction" String="test.DraftService.EntityContainer/Header_draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="test.DraftService.EntityContainer/Header_draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Created On"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Created By"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Changed On"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Common.Label" String="Changed By"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header/IsActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header/HasActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header/HasDraftEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header/DraftAdministrativeData" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header/DraftAdministrativeData_DraftUUID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.HeaderItem" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.SelectionFields">
+          <Collection>
+            <PropertyPath>name</PropertyPath>
+            <PropertyPath>startAt</PropertyPath>
+            <PropertyPath>endAt</PropertyPath>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+              <PropertyValue Property="Label" String="Name"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="description"/>
+              <PropertyValue Property="Label" String="Description"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="startAt"/>
+              <PropertyValue Property="Label" String="Start At"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="endAt"/>
+              <PropertyValue Property="Label" String="End At"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="Item"/>
+            <PropertyValue Property="TypeNamePlural" String="Items"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="name"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Description">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="description"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="General"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#General"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="General">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="name"/>
+                  <PropertyValue Property="Label" String="Name"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="description"/>
+                  <PropertyValue Property="Label" String="Description"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="startAt"/>
+                  <PropertyValue Property="Label" String="Start At"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="endAt"/>
+                  <PropertyValue Property="Label" String="End At"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.DraftService.EntityContainer/HeaderItem" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.DraftNode">
+          <Record Type="Common.DraftNodeType">
+            <PropertyValue Property="PreparationAction" String="test.DraftService.EntityContainer/HeaderItem_draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.DraftService.HeaderItem/IsActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.HeaderItem/HasActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.HeaderItem/HasDraftEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.HeaderItem/DraftAdministrativeData" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.HeaderItem/DraftAdministrativeData_DraftUUID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.EntityContainer/HeaderLine" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.DraftNode">
+          <Record Type="Common.DraftNodeType">
+            <PropertyValue Property="PreparationAction" String="test.DraftService.EntityContainer/HeaderLine_draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.DraftService.HeaderLine/IsActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.HeaderLine/HasActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.HeaderLine/HasDraftEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.HeaderLine/DraftAdministrativeData" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.HeaderLine/DraftAdministrativeData_DraftUUID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.DraftAdministrativeData" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Draft Administrative Data"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.DraftAdministrativeData/DraftUUID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Draft (Technical ID)"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.DraftAdministrativeData/CreationDateTime" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Draft Created On"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.DraftAdministrativeData/CreatedByUser" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Draft Created By"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.DraftAdministrativeData/DraftIsCreatedByMe" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Draft Created By Me"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.DraftAdministrativeData/LastChangeDateTime" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Draft Last Changed On"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.DraftAdministrativeData/LastChangedByUser" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Draft Last Changed By"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.DraftAdministrativeData/InProcessByUser" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Draft In Process By"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.DraftAdministrativeData/DraftIsProcessedByMe" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Draft In Process By Me"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>"
+`;

@@ -1,0 +1,34 @@
+---
+root: true
+#  https://eslint.org/docs/rules/
+env:
+  node: true
+  es2019: true
+parserOptions:
+  ecmaVersion: 2019
+globals:
+  sap: false
+  SELECT: false
+  INSERT: false
+  UPDATE: false
+  DELETE: false
+  CREATE: false
+  DROP: false
+plugins:
+  - jest
+extends:
+  - eslint:recommended
+  - plugin:jest/recommended
+  - prettier
+rules:
+  no-unused-vars: [off]
+  require-atomic-updates: [off]
+  jest/no-conditional-expect: [off]
+  no-restricted-modules: [error, child_process, fs] # security
+  no-eval: [error] # security
+  no-implied-eval: [error] # security
+  no-console: [error] # ops
+  strict: [error]
+  curly: [error]
+  no-constant-condition: [error, { checkLoops: false }]
+  no-prototype-builtins: off

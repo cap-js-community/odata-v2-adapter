@@ -1,0 +1,2 @@
+ID;audit_type_ID;work_activity_ID;start_date;end_date;auditor;audit_status;review_status
+3168ace2-574e-4b28-a831-9954d4e38cab;1;1;2020-11-01T00:00:00Z;2020-12-31T00:00:00Z;Test Auditor;in progress;open

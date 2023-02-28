@@ -1,0 +1,757 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`analytics GET $metadata 1`] = `
+"<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Aggregation.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Aggregation" Namespace="Org.OData.Aggregation.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Analytics.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Analytics" Namespace="com.sap.vocabularies.Analytics.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices m:DataServiceVersion="2.0">
+    <Schema Namespace="test.AnalyticsService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="Header" EntityType="test.AnalyticsService.Header" sap:semantics="aggregate"/>
+        <EntitySet Name="HeaderItem" EntityType="test.AnalyticsService.HeaderItem"/>
+        <EntitySet Name="HeaderItemCount" EntityType="test.AnalyticsService.HeaderItemCount" sap:semantics="aggregate"/>
+        <EntitySet Name="HeaderDisabledAnalytics" EntityType="test.AnalyticsService.HeaderDisabledAnalytics" sap:semantics="aggregate"/>
+        <EntitySet Name="Country" EntityType="test.AnalyticsService.Country"/>
+        <EntitySet Name="Currency" EntityType="test.AnalyticsService.Currency"/>
+        <EntitySet Name="Book" EntityType="test.AnalyticsService.Book" sap:semantics="aggregate"/>
+        <FunctionImport Name="Book_order" EntitySet="Book" ReturnType="test.AnalyticsService.Book" m:HttpMethod="POST" sap:action-for="test.AnalyticsService.Book">
+          <Parameter Name="ID__" Type="Edm.String" Nullable="false" Mode="In" sap:sortable="false" sap:filterable="false"/>
+          <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <EntitySet Name="HeaderLine" EntityType="test.AnalyticsService.HeaderLine"/>
+        <EntitySet Name="Country_texts" EntityType="test.AnalyticsService.Country_texts"/>
+        <EntitySet Name="Currency_texts" EntityType="test.AnalyticsService.Currency_texts"/>
+        <AssociationSet Name="HeaderItem_header" Association="test.AnalyticsService.HeaderItem_header">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="Header" EntitySet="Header"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_NextItem" Association="test.AnalyticsService.HeaderItem_NextItem">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem1" EntitySet="HeaderItem"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderDisabledAnalytics_Items" Association="test.AnalyticsService.HeaderDisabledAnalytics_Items">
+          <End Role="HeaderDisabledAnalytics" EntitySet="HeaderDisabledAnalytics"/>
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+        </AssociationSet>
+        <AssociationSet Name="Country_texts_1" Association="test.AnalyticsService.Country_texts_1">
+          <End Role="Country" EntitySet="Country"/>
+          <End Role="Country_texts" EntitySet="Country_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Country_localized" Association="test.AnalyticsService.Country_localized">
+          <End Role="Country" EntitySet="Country"/>
+          <End Role="Country_texts" EntitySet="Country_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Currency_texts_1" Association="test.AnalyticsService.Currency_texts_1">
+          <End Role="Currency" EntitySet="Currency"/>
+          <End Role="Currency_texts" EntitySet="Currency_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Currency_localized" Association="test.AnalyticsService.Currency_localized">
+          <End Role="Currency" EntitySet="Currency"/>
+          <End Role="Currency_texts" EntitySet="Currency_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderLine_item" Association="test.AnalyticsService.HeaderLine_item">
+          <End Role="HeaderLine" EntitySet="HeaderLine"/>
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+        </AssociationSet>
+      </EntityContainer>
+      <EntityType Name="Header" sap:semantics="aggregate">
+        <Key>
+          <PropertyRef Name="ID__"/>
+        </Key>
+        <Property Name="ID__" Type="Edm.String" Nullable="false" sap:sortable="false" sap:filterable="false"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String" sap:label="Description"/>
+        <Property Name="country" Type="Edm.String" sap:aggregation-role="dimension" sap:label="Country"/>
+        <Property Name="currency" Type="Edm.String" sap:aggregation-role="dimension" sap:label="Currency"/>
+        <Property Name="stock" Type="Edm.Int32" sap:aggregation-role="measure" sap:label="Stock"/>
+        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12" sap:aggregation-role="measure" sap:label="Price"/>
+        <NavigationProperty Name="Items" Relationship="test.AnalyticsService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
+      </EntityType>
+      <EntityType Name="HeaderItem">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="startAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="endAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <NavigationProperty Name="header" Relationship="test.AnalyticsService.HeaderItem_header" FromRole="HeaderItem" ToRole="Header"/>
+        <Property Name="header_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="NextItem" Relationship="test.AnalyticsService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
+        <Property Name="NextItem_ID" Type="Edm.Guid"/>
+        <Property Name="assoc_header_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="Lines" Relationship="test.AnalyticsService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
+      </EntityType>
+      <EntityType Name="HeaderItemCount" sap:semantics="aggregate">
+        <Key>
+          <PropertyRef Name="ID__"/>
+        </Key>
+        <Property Name="ID__" Type="Edm.String" Nullable="false" sap:sortable="false" sap:filterable="false"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="name" Type="Edm.String" sap:label="Name"/>
+        <Property Name="description" Type="Edm.String" sap:label="Description"/>
+        <Property Name="startAt" Type="Edm.DateTimeOffset" Precision="7" sap:aggregation-role="dimension" sap:label="StartAt"/>
+        <Property Name="endAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="EndAt"/>
+        <Property Name="header" Type="Edm.Guid" sap:aggregation-role="measure"/>
+        <Property Name="header2" Type="Edm.Int32" sap:aggregation-role="measure"/>
+        <Property Name="header_count" Type="Edm.Guid" sap:aggregation-role="measure"/>
+      </EntityType>
+      <EntityType Name="HeaderDisabledAnalytics" sap:semantics="aggregate">
+        <Key>
+          <PropertyRef Name="ID__"/>
+        </Key>
+        <Property Name="ID__" Type="Edm.String" Nullable="false" sap:sortable="false" sap:filterable="false"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="country" Type="Edm.String" sap:aggregation-role="dimension"/>
+        <Property Name="currency" Type="Edm.String"/>
+        <Property Name="stock" Type="Edm.Int32" sap:aggregation-role="measure"/>
+        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12" sap:aggregation-role="measure"/>
+        <NavigationProperty Name="Items" Relationship="test.AnalyticsService.HeaderDisabledAnalytics_Items" FromRole="HeaderDisabledAnalytics" ToRole="HeaderItem"/>
+      </EntityType>
+      <EntityType Name="Country">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <NavigationProperty Name="texts" Relationship="test.AnalyticsService.Country_texts_1" FromRole="Country" ToRole="Country_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.AnalyticsService.Country_localized" FromRole="Country" ToRole="Country_texts"/>
+      </EntityType>
+      <EntityType Name="Currency">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+        <NavigationProperty Name="texts" Relationship="test.AnalyticsService.Currency_texts_1" FromRole="Currency" ToRole="Currency_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.AnalyticsService.Currency_localized" FromRole="Currency" ToRole="Currency_texts"/>
+      </EntityType>
+      <EntityType Name="Book" sap:semantics="aggregate">
+        <Key>
+          <PropertyRef Name="ID__"/>
+        </Key>
+        <Property Name="ID__" Type="Edm.String" Nullable="false" sap:sortable="false" sap:filterable="false"/>
+        <Property Name="author" Type="Edm.String" sap:aggregation-role="dimension"/>
+        <Property Name="genre_ID" Type="Edm.Int32" sap:aggregation-role="dimension"/>
+        <Property Name="stock" Type="Edm.Int32" sap:aggregation-role="measure"/>
+        <Property Name="price" Type="Edm.Decimal" sap:aggregation-role="measure" sap:variable-scale="true"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="HeaderLine">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="value" Type="Edm.Double"/>
+        <NavigationProperty Name="item" Relationship="test.AnalyticsService.HeaderLine_item" FromRole="HeaderLine" ToRole="HeaderItem"/>
+        <Property Name="item_ID" Type="Edm.Guid"/>
+      </EntityType>
+      <EntityType Name="Country_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Currency_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <Association Name="HeaderItem_header">
+        <End Role="HeaderItem" Type="test.AnalyticsService.HeaderItem" Multiplicity="*"/>
+        <End Role="Header" Type="test.AnalyticsService.Header" Multiplicity="0..1">
+          <OnDelete Action="Cascade"/>
+        </End>
+      </Association>
+      <Association Name="HeaderItem_NextItem">
+        <End Role="HeaderItem" Type="test.AnalyticsService.HeaderItem" Multiplicity="*"/>
+        <End Role="HeaderItem1" Type="test.AnalyticsService.HeaderItem" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="HeaderItem1">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="HeaderItem">
+            <PropertyRef Name="NextItem_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderDisabledAnalytics_Items">
+        <End Role="HeaderDisabledAnalytics" Type="test.AnalyticsService.HeaderDisabledAnalytics" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="HeaderItem" Type="test.AnalyticsService.HeaderItem" Multiplicity="*"/>
+      </Association>
+      <Association Name="Country_texts_1">
+        <End Role="Country" Type="test.AnalyticsService.Country" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="Country_texts" Type="test.AnalyticsService.Country_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="Country_localized">
+        <End Role="Country" Type="test.AnalyticsService.Country" Multiplicity="*"/>
+        <End Role="Country_texts" Type="test.AnalyticsService.Country_texts" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Currency_texts_1">
+        <End Role="Currency" Type="test.AnalyticsService.Currency" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="Currency_texts" Type="test.AnalyticsService.Currency_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="Currency_localized">
+        <End Role="Currency" Type="test.AnalyticsService.Currency" Multiplicity="*"/>
+        <End Role="Currency_texts" Type="test.AnalyticsService.Currency_texts" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="HeaderLine_item">
+        <End Role="HeaderLine" Type="test.AnalyticsService.HeaderLine" Multiplicity="*"/>
+        <End Role="HeaderItem" Type="test.AnalyticsService.HeaderItem" Multiplicity="0..1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="HeaderItem">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="HeaderLine">
+            <PropertyRef Name="item_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Annotations Target="test.AnalyticsService.Header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.PresentationVariant" Qualifier="Price">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="price"/>
+                  <PropertyValue Property="Descending" Bool="true"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Visualizations">
+              <Collection>
+                <AnnotationPath>@UI.Chart#Price</AnnotationPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Chart" Qualifier="Price">
+          <Record Type="UI.ChartDefinitionType">
+            <PropertyValue Property="Qualifier" Path="Price"/>
+            <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Bar"/>
+            <PropertyValue Property="Measures">
+              <Collection>
+                <PropertyPath>price</PropertyPath>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="MeasureAttributes">
+              <Collection>
+                <Record Type="UI.ChartMeasureAttributeType">
+                  <PropertyValue Property="Measure" PropertyPath="Price"/>
+                  <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Dimensions">
+              <Collection>
+                <PropertyPath>currency</PropertyPath>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="DimensionAttributes">
+              <Collection>
+                <Record Type="UI.ChartDimensionAttributeType">
+                  <PropertyValue Property="Dimension" PropertyPath="Currency"/>
+                  <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.PresentationVariant" Qualifier="Stock">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="stock"/>
+                  <PropertyValue Property="Descending" Bool="true"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Visualizations">
+              <Collection>
+                <AnnotationPath>@UI.Chart#Stock</AnnotationPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Chart" Qualifier="Stock">
+          <Record Type="UI.ChartDefinitionType">
+            <PropertyValue Property="Qualifier" Path="Stock"/>
+            <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/>
+            <PropertyValue Property="Measures">
+              <Collection>
+                <PropertyPath>stock</PropertyPath>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="MeasureAttributes">
+              <Collection>
+                <Record Type="UI.ChartMeasureAttributeType">
+                  <PropertyValue Property="Measure" PropertyPath="Stock"/>
+                  <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Dimensions">
+              <Collection>
+                <PropertyPath>country</PropertyPath>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="DimensionAttributes">
+              <Collection>
+                <Record Type="UI.ChartDimensionAttributeType">
+                  <PropertyValue Property="Dimension" PropertyPath="Country"/>
+                  <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.SelectionFields">
+          <Collection>
+            <PropertyPath>description</PropertyPath>
+            <PropertyPath>country</PropertyPath>
+            <PropertyPath>currency</PropertyPath>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Description"/>
+              <PropertyValue Property="Value" Path="description"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Country"/>
+              <PropertyValue Property="Value" Path="country"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Currency"/>
+              <PropertyValue Property="Value" Path="currency"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Stock"/>
+              <PropertyValue Property="Value" Path="stock"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Price"/>
+              <PropertyValue Property="Value" Path="price"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.DataPoint">
+          <Collection>
+            <Record>
+              <PropertyValue Property="Title" String="Price"/>
+              <PropertyValue Property="Value" Path="price"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.Chart">
+          <Record Type="UI.ChartDefinitionType">
+            <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/>
+            <PropertyValue Property="Measures">
+              <Collection>
+                <PropertyPath>price</PropertyPath>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="MeasureAttributes">
+              <Collection>
+                <Record Type="UI.ChartMeasureAttributeType">
+                  <PropertyValue Property="Measure" PropertyPath="price"/>
+                  <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Dimensions">
+              <Collection>
+                <PropertyPath>currency</PropertyPath>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="DimensionAttributes">
+              <Collection>
+                <Record Type="UI.ChartDimensionAttributeType">
+                  <PropertyValue Property="Dimension" PropertyPath="currency"/>
+                  <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.EntityContainer/Header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.PresentationVariant" Qualifier="Price">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="price"/>
+                  <PropertyValue Property="Descending" Bool="true"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Visualizations">
+              <Collection>
+                <AnnotationPath>@UI.Chart#Price</AnnotationPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.PresentationVariant" Qualifier="Stock">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="stock"/>
+                  <PropertyValue Property="Descending" Bool="true"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Visualizations">
+              <Collection>
+                <AnnotationPath>@UI.Chart#Stock</AnnotationPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Header/ID__" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Header/description" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Header/country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Dimension" Bool="true"/>
+        <Annotation Term="Common.ValueList" Qualifier="Stock">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Header"/>
+            <PropertyValue Property="Label" String="Currency"/>
+            <PropertyValue Property="SearchSupported" Bool="true"/>
+            <PropertyValue Property="PresentationVariantQualifier" String="Stock"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="country"/>
+                  <PropertyValue Property="ValueListProperty" String="country"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Country"/>
+            <PropertyValue Property="Label" String="Country"/>
+            <PropertyValue Property="SearchSupported" Bool="true"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="country"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="descr"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Common.Label" String="Country"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Header/currency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Dimension" Bool="true"/>
+        <Annotation Term="Common.ValueList" Qualifier="Price">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Header"/>
+            <PropertyValue Property="Label" String="Country"/>
+            <PropertyValue Property="SearchSupported" Bool="true"/>
+            <PropertyValue Property="PresentationVariantQualifier" String="Price"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="currency"/>
+                  <PropertyValue Property="ValueListProperty" String="currency"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Currency"/>
+            <PropertyValue Property="Label" String="Country"/>
+            <PropertyValue Property="SearchSupported" Bool="true"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="currency"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="descr"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Common.Label" String="Currency"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Header/stock" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+        <Annotation Term="Common.Label" String="Stock"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Header/price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+        <Annotation Term="Common.Label" String="Price"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.EntityContainer/HeaderItemCount" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/ID__" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/description" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/startAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Dimension" Bool="true"/>
+        <Annotation Term="Common.Label" String="StartAt"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/endAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="EndAt"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/header2" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+        <Annotation Term="Aggregation.referenceElement">
+          <Collection>
+            <String>header</String>
+          </Collection>
+        </Annotation>
+        <Annotation Term="Core.Computed" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/header_count" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderDisabledAnalytics" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.EntityContainer/HeaderDisabledAnalytics" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderDisabledAnalytics/ID__" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderDisabledAnalytics/country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Dimension" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderDisabledAnalytics/stock" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderDisabledAnalytics/price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Country/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Country/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Country/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Country Code"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Currency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Currency/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Currency/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Currency/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Currency Code"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Currency/symbol" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency Symbol"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.EntityContainer/Book" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="PropertyRestrictions" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book/ID__" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book/author" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Dimension" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book/genre_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Dimension" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book/stock" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Book/price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Country Code"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Currency Code"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>"
+`;

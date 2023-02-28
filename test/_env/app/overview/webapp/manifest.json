@@ -1,0 +1,156 @@
+{
+  "_version": "1.8.0",
+  "sap.app": {
+    "id": "com.sap.cds.app.overview",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "title": "Overview App",
+    "description": "{{appDescription}}",
+    "tags": {
+      "keywords": []
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "appShow": {
+          "title": "{{appTitle}}",
+          "semanticObject": "Node",
+          "action": "display",
+          "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+          },
+          "icon": "sap-icon://settings",
+          "size": "1x1"
+        }
+      },
+      "outbounds": {
+        "Header-display": {
+          "semanticObject": "Header",
+          "action": "display",
+          "parameters": {}
+        }
+      }
+    },
+    "ach": "",
+    "resources": "resources.json",
+    "dataSources": {
+      "analyticsService": {
+        "uri": "/v2/analytics",
+        "type": "OData"
+      }
+    },
+    "offline": false,
+    "sourceTemplate": {
+      "id": "ui5template.smartTemplate",
+      "version": "1.40.12"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    },
+    "supportedThemes": ["sap_hcb", "sap_belize", "sap_belize_deep", "sap_fiori_3"]
+  },
+  "sap.ui5": {
+    "resources": {
+      "js": [],
+      "css": []
+    },
+    "dependencies": {
+      "minUI5Version": "1.65.6",
+      "libs": {},
+      "components": {}
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      },
+      "json": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "i18n|sap.suite.ui.generic.template.ListReport|Node": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/ListReport/Node/i18n.properties"
+      },
+      "analyticsModel": {
+        "dataSource": "analyticsService",
+        "preload": true,
+        "settings": {
+          "useBatch": true,
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "refreshAfterChange": true,
+          "metadataUrlParams": {
+            "sap-value-list": "none"
+          }
+        }
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    }
+  },
+  "sap.ovp": {
+    "globalFilterModel": "analyticsModel",
+    "globalFilterEntityType": "Header",
+    "containerLayout": "resizable",
+    "enableLiveFilter": true,
+    "considerAnalyticalParameters": false,
+    "showDateInRelativeFormat": true,
+    "cards": {
+      "list01": {
+        "model": "analyticsModel",
+        "template": "sap.ovp.cards.list",
+        "settings": {
+          "title": "Headers",
+          "entitySet": "Header",
+          "identificationAnnotationPath": "com.sap.vocabularies.UI.v1.Identification",
+          "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#Default",
+          "annotationPath": "com.sap.vocabularies.UI.v1.LineItem",
+          "sortBy": "description",
+          "sortOrder": "descending"
+        }
+      },
+      "chart01": {
+        "model": "analyticsModel",
+        "template": "sap.ovp.cards.charts.analytical",
+        "settings": {
+          "title": "Header Chart",
+          "entitySet": "Header",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  },
+  "sap.platform.hcp": {
+    "uri": ""
+  },
+  "sap.platform.cf": {
+    "oAuthScopes": []
+  }
+}

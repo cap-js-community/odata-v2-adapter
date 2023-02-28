@@ -1,0 +1,8 @@
+--boundary
+Content-Type: application/http
+
+PUT Tasks(1) HTTP/1.1
+Content-Type: application/json
+
+{"value2": "1.62"}
+--boundary--

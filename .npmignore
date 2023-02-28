@@ -1,0 +1,16 @@
+.idea/
+node_modules/
+reports/
+test/
+test-integration/
+.eslintignore
+.eslintrc.yml
+.gitignore
+.npmignore
+.prettierignore
+.prettierrc.yml
+.xmake.cfg
+CONTRIBUTING.md
+jest.config.js
+jest.setup.js
+jest-xmake.config.js

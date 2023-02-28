@@ -1,0 +1,27 @@
+{
+  "requires": {
+    "auth": {
+      "kind": "mocked-auth",
+      "users": {
+        "alice": {
+          "id": "alice",
+          "tenant": "tenant",
+          "password": "alice",
+          "roles": ["XYZ4711"]
+        },
+        "bob": {
+          "id": "bob",
+          "password": "bob",
+          "roles": []
+        }
+      }
+    },
+    "cdsc": {
+      "variableReplacements": {
+        "$user": {
+          "id": "alice"
+        }
+      }
+    }
+  }
+}

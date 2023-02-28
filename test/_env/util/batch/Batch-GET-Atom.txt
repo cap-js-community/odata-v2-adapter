@@ -1,0 +1,30 @@
+--boundary
+Content-Type: application/http
+
+GET Header HTTP/1.1
+
+--boundary
+Content-Type: application/http
+
+GET Header?$skip=0&$top=100&$orderby=name asc&$select=stock,name,name&$filter=ID eq guid'{{ID}}'&$inlinecount=allpages HTTP/1.1
+sap-cancel-on-close: true
+sap-contextid-accept: header
+Accept: application/xml
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
+--boundary
+Content-Type: application/http
+
+GET Header(guid'{{ID}}') HTTP/1.1
+sap-cancel-on-close: true
+sap-contextid-accept: header
+Accept: application/xml
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
+--boundary--

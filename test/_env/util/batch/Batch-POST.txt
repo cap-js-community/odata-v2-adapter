@@ -1,0 +1,26 @@
+--boundary
+Content-Type: application/http
+Content-ID: 1
+
+POST Header HTTP/1.1
+Content-Type: application/json
+
+{"name":"Test – ABC"}
+--boundary
+Content-Type: application/http
+
+POST $1/Items HTTP/1.1
+Content-Type: application/json
+
+{"name":"Test Item"}
+--boundary
+Content-Type: application/http
+
+GET Header?$expand=FirstItem%2CItems HTTP/1.1
+
+--boundary
+Content-Type: application/http
+
+GET Header?$filter=(name eq 'Test – ABC') HTTP/1.1
+
+--boundary--

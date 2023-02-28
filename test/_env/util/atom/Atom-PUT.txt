@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<entry xml:base="http://localhost:4004/v2/main/" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom">
+    <author>
+        <name />
+    </author>
+    <link rel="http://schemas.microsoft.com/ado/2007/08/dataservices/related/Items" type="application/atom+xml;type=entry" title="Items">
+        <m:inline>
+            <feed>
+                <title type="text">HeaderItem</title>
+                <entry>
+                    <author>
+                        <name />
+                    </author>
+                    <category term="test.MainService.HeaderItem" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+                    <content type="application/xml">
+                        <m:properties>
+                            <d:ID>b853cdb8-5531-4141-b319-d405ae5d1e61</d:ID>
+                            <d:name>Test Create Item 1 - Updated</d:name>
+                            <d:description m:null="true" />
+                        </m:properties>
+                    </content>
+                </entry>
+                <entry>
+                    <author>
+                        <name />
+                    </author>
+                    <category term="test.MainService.HeaderItem" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+                    <content type="application/xml">
+                        <m:properties>
+                            <d:ID>b853cdb8-5531-4141-b319-d405ae5d1e62</d:ID>
+                            <d:name>Test Create Item 2 - Updated</d:name>
+                            <d:description m:null="true" />
+                        </m:properties>
+                    </content>
+                </entry>
+            </feed>
+        </m:inline>
+    </link>
+    <category term="test.MainService.Header" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+    <content type="application/xml">
+        <m:properties>
+            <d:ID>b853cdb8-5531-4141-b319-d405ae5d1e63</d:ID>
+            <d:name m:type="Edm.String">Test Create</d:name>
+            <d:description>Updated</d:description>
+        </m:properties>
+    </content>
+</entry>

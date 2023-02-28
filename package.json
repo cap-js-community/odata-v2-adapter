@@ -1,0 +1,78 @@
+{
+  "name": "@sap/cds-odata-v2-adapter-proxy",
+  "version": "1.9.20",
+  "description": "CDS OData V2 Adapter Proxy for CDS OData V4 Services",
+  "homepage": "https://cap.cloud.sap/",
+  "engines": {
+    "node": ">=8"
+  },
+  "author": "Oliver Klemenz, Richard Lindner (SAP SE - https://www.sap.com)",
+  "keywords": [
+    "COV2AP",
+    "CAP",
+    "CDS",
+    "ODATA",
+    "V2",
+    "V4"
+  ],
+  "files": [
+    "src",
+    "CHANGELOG.md"
+  ],
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "run": "cd ./test/_env && cds run",
+    "start": "npm start --prefix=./test/_env",
+    "start:debug": "CDS_LOG_LEVELS_COV2AP=debug npm start",
+    "start:file": "npm run start:file --prefix=./test/_env",
+    "start:root": "npm run start:root --prefix=./test/_env",
+    "start:hana": "npm start --prefix=./test-integration/_env",
+    "start:hana:debug": "CDS_LOG_LEVELS_COV2AP=debug npm run start:hana",
+    "start:approuter": "npm start --prefix=./approuter",
+    "start:approuter:port": "PORT=5001 npm start --prefix=./approuter",
+    "test": "jest --silent",
+    "test:verbose": "jest",
+    "test:update": "npm test -- -u",
+    "test:debug": "CDS_LOG_LEVELS_COV2AP=debug npm run test",
+    "test:xmake": "npm run test --scripts-prepend-node-path -- --config=jest-xmake.config.js",
+    "test:unit": "jest --testPathPattern='/test/'",
+    "test:unit:file": "CDS_ENV=testdb npm run test:unit",
+    "test:unit:deploy": "cd ./test/_env && npm run test:deploy",
+    "test:integration": "jest --testPathPattern='/test-integration/'",
+    "test:integration:deploy": "npm run test:deploy --prefix=./test-integration/_env",
+    "build:unit": "npm run build --prefix=./test/_env",
+    "build:integration": "npm run build --prefix=./test-integration/_env",
+    "lint": "npm run prettier && eslint . --fix",
+    "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --loglevel error",
+    "upgrade-lock": "rm -rf package-lock.json node_modules && npm i --package-lock=true",
+    "prepareRelease": "npm prune --production",
+    "audit": "npm audit --only=prod"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "body-parser-xml": "^2.0.3",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "http-proxy-middleware": "^2.0.6",
+    "node-fetch": "^2.6.9",
+    "xml2js": "^0.4.23"
+  },
+  "devDependencies": {
+    "@sap/cds": "^6.6.0",
+    "@types/express": "^4.17.17",
+    "compression": "^1.7.4",
+    "eslint": "^8.35.0",
+    "eslint-config": "^0.3.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-jest": "^27.2.1",
+    "hdb": "^0.19.5",
+    "jest": "^29.4.3",
+    "jest-junit": "^15.0.0",
+    "passport": "^0.6.0",
+    "prettier": "^2.8.4",
+    "sqlite3": "5.1.4",
+    "supertest": "^6.3.3"
+  },
+  "license": "SEE LICENSE IN LICENSE"
+}
