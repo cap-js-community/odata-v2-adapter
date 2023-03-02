@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Cache invalidation for Streamlined MTX (extensibility enabled)
 - Use named parameters for mtxs actions to protect against incompatible changes
 - Allow status code 304 (not modified) when reading OData V4 metadata (as success)
 

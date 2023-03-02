@@ -274,7 +274,9 @@ function cov2ap(options = {}) {
       delete proxyCache[tenant];
     });
   }
-  // TODO: Cache invalidation for Streamlined MTX (when extensibility is supported)
+  cds.on("cds.xt.TENANT_UPDATED", ({ tenant }) => {
+    delete proxyCache[tenant];
+  });
 
   router.use(`/${path}/*`, async (req, res, next) => {
     req.now = new Date();
