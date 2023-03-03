@@ -6,7 +6,7 @@ module.exports = {
   bail: false,
   clearMocks: true,
   collectCoverage: true,
-  collectCoverageFrom: ["**/index.js"],
+  collectCoverageFrom: ["**/src/index.js"],
   coverageDirectory: "reports/coverage/unit/",
   coverageReporters: ["lcov", "text"],
   coverageThreshold: {

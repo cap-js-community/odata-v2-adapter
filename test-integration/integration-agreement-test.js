@@ -15,6 +15,11 @@ describe("integration-agreement", () => {
     request = supertest(cds.app);
   });
 
+  afterAll(async () => {
+    await cds.disconnect();
+    await cds.shutdown();
+  });
+
   it("GET $metadata", async () => {
     const response = await util.callRead(request, "/v2/agreement/$metadata", {
       accept: "application/xml",
