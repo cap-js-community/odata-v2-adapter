@@ -23,6 +23,6 @@ module.exports = {
   resetModules: false,
   testMatch: ["**/test/**/*-test.js", "**/test-integration/**/*-test.js"],
   testPathIgnorePatterns: ["/node_modules/"],
-  verbose: false,
+  verbose: true,
   setupFilesAfterEnv: ["./jest.setup.js"],
 };
