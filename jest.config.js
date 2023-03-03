@@ -6,7 +6,7 @@ module.exports = {
   bail: false,
   clearMocks: true,
   collectCoverage: true,
-  collectCoverageFrom: ["**/index.js", "!**/srv/**/*.js", "!**/test/**/*.js", "!**/test-integration/**/*.js"],
+  collectCoverageFrom: ["**/index.js"],
   coverageDirectory: "reports/coverage/unit/",
   coverageReporters: ["lcov", "text"],
   coverageThreshold: {
@@ -23,6 +23,6 @@ module.exports = {
   resetModules: false,
   testMatch: ["**/test/**/*-test.js", "**/test-integration/**/*-test.js"],
   testPathIgnorePatterns: ["/node_modules/"],
-  verbose: true,
+  verbose: false,
   setupFilesAfterEnv: ["./jest.setup.js"],
 };
