@@ -28,6 +28,8 @@ jobs:
           cache: "npm"
       - run: npm ci --package-lock
       - run: npm test
+        env:
+          HANA_DB_CREDENTIALS: ${{secrets.HANA_DB_CREDENTIALS}}
 
   lint:
     runs-on: ubuntu-latest

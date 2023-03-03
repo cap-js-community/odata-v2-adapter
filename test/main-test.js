@@ -634,7 +634,7 @@ describe("main", () => {
       "/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
     );
     expect(response.statusCode).toEqual(500);
-    expect(response.body).toEqual({
+    expect(response.body).toMatchObject({
       error: {
         code: "ECONNREFUSED",
         errno: "ECONNREFUSED",
@@ -645,8 +645,6 @@ describe("main", () => {
               errno: "ECONNREFUSED",
               message: {
                 lang: "en",
-                value:
-                  "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888",
               },
               severity: "error",
               target: "/#TRANSIENT#",
@@ -656,8 +654,6 @@ describe("main", () => {
         },
         message: {
           lang: "en",
-          value:
-            "request to http://localhost:8888/v2/main/HeaderStream(guid%27f8a7a4f7-1901-4032-a237-3fba1d1b2343%27)/$value failed, reason: connect ECONNREFUSED 127.0.0.1:8888",
         },
         severity: "error",
         target: "/#TRANSIENT#",

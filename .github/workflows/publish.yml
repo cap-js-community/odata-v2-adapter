@@ -18,6 +18,8 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm ci --package-lock
       - run: npm test
+        env:
+          HANA_DB_CREDENTIALS: ${{secrets.HANA_DB_CREDENTIALS}}
       - run: npm run lint:ci
       - run: npm publish --access public
         env:

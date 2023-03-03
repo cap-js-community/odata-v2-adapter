@@ -1,5 +1,9 @@
 # @cap-js-community/odata-v2-adapter (cov2ap)
 
+[![npm version](https://badge.fury.io/js/@cap-js-community%2Fmtx-tool.svg)](https://badge.fury.io/js/@cap-js-community%2Fmtx-tool)
+[![REUSE status](https://api.reuse.software/badge/github.com/cap-js-community/mtx-tool)](https://api.reuse.software/info/github.com/cap-js-community/mtx-tool)
+![CI Main](https://github.com/cap-js-community/mtx-tool/actions/workflows/ci-main.yml/badge.svg)
+
 ### [CDS OData V2 Adapter](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter) for [CDS OData V4 Services](https://cap.cloud.sap/docs/).
 
 > Exposes a full-fledged OData V2 service, converting OData V2 requests to CDS OData V4 service calls and responses back.
