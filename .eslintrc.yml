@@ -3,9 +3,7 @@ root: true
 #  https://eslint.org/docs/rules/
 env:
   node: true
-  es2019: true
-parserOptions:
-  ecmaVersion: 2019
+  es2020: true
 globals:
   sap: false
   SELECT: false

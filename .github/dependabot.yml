@@ -1,0 +1,24 @@
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "11:00"
+      timezone: "Europe/Berlin"
+    allow:
+      - dependency-type: production
+    ignore:
+      # node-fetch v3 is ESM-only, which we don't support
+      # https://github.com/node-fetch/node-fetch#commonjs
+      - dependency-name: node-fetch
+        versions: ["3.x"]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "11:00"
+      timezone: "Europe/Berlin"
