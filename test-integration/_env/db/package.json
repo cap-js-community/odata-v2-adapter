@@ -2,7 +2,7 @@
   "name": "@cap-js-community/odata-v2-adapter-test-integration-db",
   "version": "1.0.0",
   "dependencies": {
-    "@sap/hdi-deploy": "4.3.3"
+    "@sap/hdi-deploy": "4.5.3"
   },
   "private": true,
   "scripts": {
