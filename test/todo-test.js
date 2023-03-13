@@ -14,7 +14,7 @@ let request;
 describe("todo", () => {
   beforeAll(async () => {
     await global._init;
-    request = supertest(cds.app);
+    request = supertest(cds.app.server);
   });
 
   it("GET request with datetime key", async () => {

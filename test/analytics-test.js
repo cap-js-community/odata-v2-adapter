@@ -12,7 +12,7 @@ let request;
 describe("analytics", () => {
   beforeAll(async () => {
     await global._init;
-    request = supertest(cds.app);
+    request = supertest(cds.app.server);
   });
 
   it("GET $metadata", async () => {

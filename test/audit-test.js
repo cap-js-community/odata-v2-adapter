@@ -14,7 +14,7 @@ let request;
 describe("auth", () => {
   beforeAll(async () => {
     await global._init;
-    request = supertest(cds.app);
+    request = supertest(cds.app.server);
   });
 
   it("POST audit", async () => {

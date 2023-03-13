@@ -36,7 +36,7 @@ const authorization = `Basic ${Buffer.from(
 describe("mtx", () => {
   beforeAll(async () => {
     await global._init;
-    request = supertest(cds.app);
+    request = supertest(cds.app.server);
   });
 
   it("MTX $metadata (remote)", async () => {

@@ -20,7 +20,7 @@ const invalidAuth = `Basic ${Buffer.from(
 describe("auth", () => {
   beforeAll(async () => {
     await global._init;
-    request = supertest(cds.app);
+    request = supertest(cds.app.server);
   });
 
   it("GET $metadata auth", async () => {

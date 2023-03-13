@@ -12,7 +12,7 @@ let request;
 describe("emissions", () => {
   beforeAll(async () => {
     await global._init;
-    request = supertest(cds.app);
+    request = supertest(cds.app.server);
   });
 
   it("GET emissions", async () => {

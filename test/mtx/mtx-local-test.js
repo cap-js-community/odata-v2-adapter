@@ -74,7 +74,7 @@ function clearCache() {
 describe("mtx", () => {
   beforeAll(async () => {
     await global._init;
-    request = supertest(cds.app);
+    request = supertest(cds.app.server);
   });
 
   it("MTX $metadata (local)", async () => {
@@ -88,11 +88,6 @@ describe("mtx", () => {
     expect(cds.mtx.getCsn).toHaveBeenCalled();
     expect(cds.mtx.getEdmx).toHaveBeenCalled();
     expect(cds.mtx.isExtended).toHaveBeenCalled();
-  });
-
-  it("MTX event emitter", async () => {
-    const ok = clearCache();
-    expect(ok).toEqual(true);
   });
 
   it("MTX $metadata error resilient", async () => {
@@ -147,8 +142,37 @@ describe("mtx", () => {
     );
     consoleSpy.mockClear();
 
-    cds.mtx.eventEmitter.emit(cds.mtx.events.TENANT_UPDATED, "tenant");
+    clearCache();
     errorEdmx = false;
+    response = await util.callRead(request, "/v2/main/$metadata", {
+      accept: "application/xml",
+      Authorization: authorization,
+    });
+    expect(response.body).toBeDefined();
+    expect(response.text).toEqual(edmx);
+    expect(cds.mtx.getCsn).toHaveBeenCalled();
+    expect(cds.mtx.getEdmx).toHaveBeenCalled();
+    expect(cds.mtx.isExtended).toHaveBeenCalled();
+  });
+
+  it("MTX event emitter", async () => {
+    cds.env.requires.multitenancy = true;
+    clearCache();
+    let response = await util.callRead(request, "/v2/main/$metadata", {
+      accept: "application/xml",
+      Authorization: authorization,
+    });
+    expect(response.body).toBeDefined();
+    expect(response.text).toEqual(edmx);
+    expect(cds.mtx.getCsn).toHaveBeenCalled();
+    expect(cds.mtx.getEdmx).toHaveBeenCalled();
+    expect(cds.mtx.isExtended).toHaveBeenCalled();
+
+    clearCache();
+    cds.mtx.getCsn.mockClear();
+    cds.mtx.getEdmx.mockClear();
+    cds.mtx.isExtended.mockClear();
+
     response = await util.callRead(request, "/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,

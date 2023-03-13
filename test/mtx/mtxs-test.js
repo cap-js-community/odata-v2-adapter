@@ -27,6 +27,12 @@ const authorization = `Basic ${Buffer.from(
   `${cds.requires.auth.users.alice.id}:${cds.requires.auth.users.alice.password}`
 ).toString("base64")}`;
 
+function clearCache() {
+  return cds.emit("cds.xt.TENANT_UPDATED", {
+    tenant: "tenant",
+  });
+}
+
 cds.services["cds.xt.ModelProviderService"] = {
   getCsn: jest.fn(async () => {
     return csn;
@@ -39,13 +45,13 @@ cds.services["cds.xt.ModelProviderService"] = {
   }),
 };
 
-describe("mtx", () => {
+describe("mtxs", () => {
   beforeAll(async () => {
     await global._init;
-    request = supertest(cds.app);
+    request = supertest(cds.app.server);
   });
 
-  it("MTX $metadata (streamlined)", async () => {
+  it("MTXS $metadata", async () => {
     cds.env.requires.multitenancy = true;
     cds.env.requires["cds.xt.ModelProviderService"] = true;
     const response = await util.callRead(request, "/v2/main/$metadata", {
@@ -59,8 +65,33 @@ describe("mtx", () => {
     expect(cds.services["cds.xt.ModelProviderService"].isExtended).toHaveBeenCalled();
   });
 
-  it("MTX event emitter", async () => {
-    // TODO: not yet available
-    expect(true).toEqual(true);
+  it("MTXS event emitter", async () => {
+    cds.env.requires.multitenancy = true;
+    cds.env.requires["cds.xt.ModelProviderService"] = true;
+    clearCache();
+    let response = await util.callRead(request, "/v2/main/$metadata", {
+      accept: "application/xml",
+      Authorization: authorization,
+    });
+    expect(response.body).toBeDefined();
+    expect(response.text).toEqual(edmx);
+    expect(cds.services["cds.xt.ModelProviderService"].getCsn).toHaveBeenCalled();
+    expect(cds.services["cds.xt.ModelProviderService"].getEdmx).toHaveBeenCalled();
+    expect(cds.services["cds.xt.ModelProviderService"].isExtended).toHaveBeenCalled();
+
+    clearCache();
+    cds.services["cds.xt.ModelProviderService"].getCsn.mockClear();
+    cds.services["cds.xt.ModelProviderService"].getEdmx.mockClear();
+    cds.services["cds.xt.ModelProviderService"].isExtended.mockClear();
+
+    response = await util.callRead(request, "/v2/main/$metadata", {
+      accept: "application/xml",
+      Authorization: authorization,
+    });
+    expect(response.body).toBeDefined();
+    expect(response.text).toEqual(edmx);
+    expect(cds.services["cds.xt.ModelProviderService"].getCsn).toHaveBeenCalled();
+    expect(cds.services["cds.xt.ModelProviderService"].getEdmx).toHaveBeenCalled();
+    expect(cds.services["cds.xt.ModelProviderService"].isExtended).toHaveBeenCalled();
   });
 });

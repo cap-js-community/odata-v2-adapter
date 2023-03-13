@@ -14,7 +14,7 @@ let request;
 describe("main", () => {
   beforeAll(async () => {
     await global._init;
-    request = supertest(cds.app);
+    request = supertest(cds.app.server);
   });
 
   it("Index page including V2 links", async () => {

@@ -30,7 +30,6 @@
     "start:hana": "npm start --prefix=./test-integration/_env",
     "start:hana:debug": "CDS_LOG_LEVELS_COV2AP=debug npm run start:hana",
     "test": "jest",
-    "test:verbose": "jest --verbose",
     "test:update": "npm test -- -u",
     "test:debug": "CDS_LOG_LEVELS_COV2AP=debug npm run test",
     "test:unit": "jest --testPathPattern='/test/'",
@@ -60,10 +59,10 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "@sap/cds": "^6.6.0",
+    "@sap/cds": "^6.6.1",
     "@types/express": "^4.17.17",
     "compression": "^1.7.4",
-    "eslint": "^8.35.0",
+    "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.7.0",
     "eslint-plugin-jest": "^27.2.1",
     "hdb": "^0.19.5",
