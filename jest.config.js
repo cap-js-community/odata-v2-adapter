@@ -24,5 +24,6 @@ module.exports = {
   testMatch: ["**/test/**/*-test.js", "**/test-integration/**/*-test.js"],
   testPathIgnorePatterns: ["/node_modules/"],
   verbose: true,
+  maxWorkers: 2,
   setupFilesAfterEnv: ["./jest.setup.js"],
 };
