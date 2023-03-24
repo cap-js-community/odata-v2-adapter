@@ -84,8 +84,8 @@ Logging is based on [cds.log](https://cap.cloud.sap/docs/node.js/cds-log), there
 
 #### Logging Modules
 
-| Component            | Module Name(s) |
-| -------------------- | -------------- |
+| Component                | Module Name(s) |
+| ------------------------ | -------------- |
 | OData V2 adapter for CDS | cov2ap         |
 
 #### Kibana Logging
