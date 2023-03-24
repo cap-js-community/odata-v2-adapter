@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.10.0 - 2023-03-24
+## Version 1.10.0 - 2023-03-27
 
 ### Added
 
-- Transition to open source code repository
+- Transition to open source code
 
 ## Version 1.9.21 - 2023-03-24
 
