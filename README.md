@@ -4,7 +4,7 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/cap-js-community/odata-v2-adapter)](https://api.reuse.software/info/github.com/cap-js-community/odata-v2-adapter)
 ![CI Main](https://github.com/cap-js-community/odata-v2-adapter/actions/workflows/ci-main.yml/badge.svg)
 
-### [CDS OData V2 Adapter](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter) for [CDS OData V4 Services](https://cap.cloud.sap/docs/).
+### [OData V2 adapter for CDS](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter) for [CDS OData V4 services](https://cap.cloud.sap/docs/).
 
 > Exposes a full-fledged OData V2 service, converting OData V2 requests to CDS OData V4 service calls and responses back.
 > Runs in context of the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
@@ -27,7 +27,7 @@
 
 ## Options
 
-The CDS OData V2 Adapter instantiates an Express router. The following options are available:
+The OData V2 adapter for CDS instantiates an Express router. The following options are available:
 
 - **base:** Base path under which the service is reachable. Default is `''`.
 - **path:** Path under which the service is reachable. Default is `'v2'`.
@@ -62,7 +62,7 @@ The CDS OData V2 Adapter instantiates an Express router. The following options a
 - **defaultFormat**: Specifies the default entity response format (json, atom). Default is `'json'`.
 - **processForwardedHeaders** Specifies if the `x-forwarded` headers are processed. Default is `true`.
 
-> All CDS OData V2 Adapter options can also be specified as part of CDS project-specific configuration
+> All OData V2 adapter for CDS options can also be specified as part of CDS project-specific configuration
 > under section `cds.cov2ap` and accessed during runtime via `cds.env.cov2ap`.
 
 > Options can also be passed as command line environment variable, by converting the camel-cased option name to snake-case.
@@ -86,7 +86,7 @@ Logging is based on [cds.log](https://cap.cloud.sap/docs/node.js/cds-log), there
 
 | Component            | Module Name(s) |
 | -------------------- | -------------- |
-| CDS OData V2 Adapter | cov2ap         |
+| OData V2 adapter for CDS | cov2ap         |
 
 #### Kibana Logging
 
@@ -96,7 +96,7 @@ feature toggle `cds.features.kibana_formatter: true` needs to be set.
 #### Debug Mode
 
 Debug mode can be activated to log requests and responses processed (V2) and initiated (V4)
-by CDS OData V2 Adapter. The following information can be retrieved for analysis:
+by OData V2 adapter for CDS. The following information can be retrieved for analysis:
 
 - **Request:** url, headers, body
 - **Response:** status code/message, headers, body
@@ -156,7 +156,7 @@ Logging can be configured to respect the following log levels:
 
 ### CDS Annotations
 
-The following CDS OData V2 Adapter specific annotations are supported:
+The following OData V2 adapter for CDS specific annotations are supported:
 
 **Entity Level**:
 
@@ -184,8 +184,8 @@ CDS supports modelling features that are not compatible with OData V2 standard:
 - **Arrayed Types:** Usages of `array of` or `many` in entity element definitions lead to CDS compilation error: `Element must not be an "array of" for OData V2`
 - **Managed Compositions:** The usage of managed composition (currently) produces Format Exception in Fiori Elements V2 for Date/Time data types
 
-To provide an OData V2 service based on the CDS OData V2 Adapter, those CDS modelling features must not be used.
-In general any CDS OData API flavor must not be used in combination with CDS OData V2 Adapter.
+To provide an OData V2 service based on the OData V2 adapter for CDS, those CDS modelling features must not be used.
+In general any CDS OData API flavor must not be used in combination with OData V2 adapter for CDS.
 
 Per default, those modelling incompatibilities are reported as `Warning` and will not stop the compilation.
 The resulting EDMX V2 may be invalid and not processable by an OData V2 client. To prevent this situation and fail
@@ -208,18 +208,18 @@ by setting the following environment variables:
 
 ### Cloud Foundry Deployment
 
-When deploying the CDS OData V2 Adapter to Cloud Foundry, make sure that it has access to the whole CDS model.
+When deploying the OData V2 adapter for CDS to Cloud Foundry, make sure that it has access to the whole CDS model.
 Especially, it’s the case, that normally the Node.js server is only based on folder `srv` and folder `db` is then missing on Cloud Foundry.
 
 To come around this situation, trigger a `cds build` during development time, that generates a `csn.json` at location `gen/srv/srv/csn.json`.
-Point your Cloud Foundry deployment of the CDS OData V2 Adapter to the folder `gen/srv` (using manifest.json or MTA), so that
+Point your Cloud Foundry deployment of the OData V2 adapter for CDS to the folder `gen/srv` (using manifest.json or MTA), so that
 the CDS models can be found via file `srv/csn.json`, during runtime execution on Cloud Foundry.
 
 Make sure, that all i18n property files reside next to the `csn.json` in a `i18n` or `_i18n` folder, to be detected by localization.
 
 ### Multitenancy, Feature Toggles and Extensibility (MTX)
 
-CDS OData V2 Adapter supports multitenant scenarios. Basic extensibility is already supported in combination with the
+OData V2 adapter for CDS supports multitenant scenarios. Basic extensibility is already supported in combination with the
 [CDS MTX](https://www.npmjs.com/package/@sap/cds-mtx) module. More advanced extensibility scenarios and feature toggles
 are supported in combination with the [CDS Streamlined MTX services](https://www.npmjs.com/package/@sap/cds-mtxs).
 
@@ -239,7 +239,7 @@ cds.on("bootstrap", (app) =>
 
 ### SAP Fiori Elements V2
 
-The OData V2 service provided by the CDS OData V2 Adapter can be used to serve an SAP Fiori Elements V2 UI.
+The OData V2 service provided by the OData V2 adapter for CDS can be used to serve an SAP Fiori Elements V2 UI.
 
 SAP Fiori Elements V2 examples:
 
@@ -260,8 +260,6 @@ Running examples can be tested as follows:
   - SQLite based: `npm start`
   - HANA based: `npm run start:hana`
 - Open Fiori Launchpad: http://localhost:4004/fiori.html
-
-> Code repository is only available SAP internal.
 
 ### Compression Support
 
@@ -371,7 +369,7 @@ const port = process.env.PORT || 4004;
 
 #### Additional Considerations
 
-- A deployed version of CDS OData V2 Adapter shall have option `target` set to the deployed OData V4 backend URL.
+- A deployed version of OData V2 adapter for CDS shall have option `target` set to the deployed OData V4 backend URL.
   This can be retrieved from the Cloud Foundry environment using `process.env`, for example,
   from the `destinations` environment variable. Locally e.g. http://localhost:8080 can be used.
 - In option `services`, every OData V4 service URL path needs to mapped to
@@ -388,8 +386,6 @@ const port = process.env.PORT || 4004;
   possibly available under a target different from OData v4 backend URL. If not specified absolutely, `target` is prepended to `mtxEndpoint`.
 
 ## Contributions
-
-> Code repository is only available SAP internal.
 
 - Clone repository
 - Unit Tests: `npm test`

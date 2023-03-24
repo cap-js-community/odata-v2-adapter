@@ -11,7 +11,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Transition to public source code repository
+- Transition to open source code repository
+
+## Version 1.9.21 - 2023-03-24
+
+### Added
+
+- Deprecation of inner source library
 
 ## Version 1.9.20 - 2023-03-09
 

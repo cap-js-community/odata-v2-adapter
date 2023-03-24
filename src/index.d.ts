@@ -1,14 +1,14 @@
 import {RequestHandler} from "express";
 
 /**
- * CDS OData V2 Adapter
- * @param {Options} options CDS OData V2 Adapter options
- * @return {RequestHandler} CDS OData V2 Adapter Express RequestHandler
+ * OData V2 adapter for CDS
+ * @param {Options} options OData V2 adapter for CDS options
+ * @return {RequestHandler} OData V2 adapter for CDS Express RequestHandler
  */
 export default function cov2ap(options?: Options): RequestHandler;
 
 /**
- * CDS OData V2 Adapter options
+ * OData V2 adapter for CDS options
  */
 type Options = {
 

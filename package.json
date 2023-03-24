@@ -1,7 +1,7 @@
 {
   "name": "@cap-js-community/odata-v2-adapter",
   "version": "1.9.20",
-  "description": "CDS OData V2 Adapter for CDS OData V4 Services",
+  "description": "OData V2 adapter for CDS",
   "homepage": "https://cap.cloud.sap/",
   "engines": {
     "node": ">=16"
@@ -59,16 +59,16 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "@sap/cds": "^6.6.1",
+    "@sap/cds": "^6.6.2",
     "@types/express": "^4.17.17",
     "compression": "^1.7.4",
     "eslint": "^8.36.0",
-    "eslint-config-prettier": "^8.7.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-jest": "^27.2.1",
     "hdb": "^0.19.5",
     "jest": "^29.5.0",
     "passport": "^0.6.0",
-    "prettier": "^2.8.4",
+    "prettier": "^2.8.6",
     "sqlite3": "5.1.6",
     "supertest": "^6.3.3"
   },
