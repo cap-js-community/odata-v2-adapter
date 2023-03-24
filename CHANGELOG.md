@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.10.0 - 2023-04-xx
+## Version 1.10.0 - 2023-03-24
 
 ### Added
 
@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Version 1.9.21 - 2023-03-24
 
-### Added
+### Removed
 
 - Deprecation of inner source library
 
