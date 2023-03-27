@@ -1,10 +1,11 @@
 # @cap-js-community/odata-v2-adapter (cov2ap)
 
-[![npm version](https://badge.fury.io/js/@cap-js-community%2Fodata-v2-adapter.svg)](https://badge.fury.io/js/@cap-js-community%2Fodata-v2-adapter)
+[![npm version](https://img.shields.io/npm/v/@cap-js-community/odata-v2-adapter)](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter)
+[![monthly downloads](https://img.shields.io/npm/dm/@cap-js-community/odata-v2-adapter)](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter)
 [![REUSE status](https://api.reuse.software/badge/github.com/cap-js-community/odata-v2-adapter)](https://api.reuse.software/info/github.com/cap-js-community/odata-v2-adapter)
-![CI Main](https://github.com/cap-js-community/odata-v2-adapter/actions/workflows/ci-main.yml/badge.svg)
+[![CI Main](https://github.com/cap-js-community/odata-v2-adapter/actions/workflows/ci-main.yml/badge.svg)](https://github.com/cap-js-community/odata-v2-adapter/commits/main)
 
-### [OData V2 adapter for CDS](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter) for [CDS OData V4 services](https://cap.cloud.sap/docs/).
+### [OData V2 adapter for CDS](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter)
 
 > Exposes a full-fledged OData V2 service, converting OData V2 requests to CDS OData V4 service calls and responses back.
 > Runs in context of the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
@@ -237,6 +238,20 @@ cds.on("bootstrap", (app) =>
 );
 ```
 
+### Unit-Tests
+
+This repository comes with a suite of unit-tests covering the complete proxy implementation.
+The tests can be executed as follows:
+
+- All:
+  - `npm test`
+- SQLite based:
+  - `npm run test:unit` ([source](test))
+- HANA based (HANA credentials necessary)
+  - `npm run test:integration` ([source](test-integration))
+
+All tests are executed as part of the GitHub Actions Continuous Integration (CI) pipeline.
+
 ### SAP Fiori Elements V2
 
 The OData V2 service provided by the OData V2 adapter for CDS can be used to serve an SAP Fiori Elements V2 UI.
@@ -244,22 +259,21 @@ The OData V2 service provided by the OData V2 adapter for CDS can be used to ser
 SAP Fiori Elements V2 examples:
 
 - SQLite based:
-  - **Analytics**: Analytical List Page app
-  - **Basic Edit**: Basic editing app
-  - **Draft Edit**: Draft supported editing app
-  - **Hierarchy**: Hierarchical display of data in tree table
-  - **Overview**: Overview Page app
-  - **XML**: Basic app (Atom format)
+  - **Analytics**: Analytical List Page app ([source](test/_env/app/analytics))
+  - **Basic Edit**: Basic editing app ([source](test/_env/app/basic))
+  - **Draft Edit**: Draft supported editing app ([source](test/_env/app/draft))
+  - **Hierarchy**: Hierarchical display of data in tree table ([source](test/_env/app/hierarchy))
+  - **Overview**: Overview Page app ([source](test/_env/app/overview))
+  - **XML**: Basic app (Atom format) ([source](test/_env/app/xml))
 - HANA based:
-  - **Parameters**: Parameterized Entity app
+  - **Parameters**: Parameterized Entity app ([source](test-integration/_env/app/parameters))
 
-Running examples can be tested as follows:
+Examples can be tested as follows:
 
-- Clone repository
 - Start server:
   - SQLite based: `npm start`
   - HANA based: `npm run start:hana`
-- Open Fiori Launchpad: http://localhost:4004/fiori.html
+- Open Fiori Launchpad: http://localhost:4004/flp.html
 
 ### Compression Support
 
@@ -387,7 +401,6 @@ const port = process.env.PORT || 4004;
 
 ## Contributions
 
-- Clone repository
 - Unit Tests: `npm test`
 - Test Server: `npm start`
   - Service: `http://localhost:4004/v2/main`
