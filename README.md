@@ -22,7 +22,7 @@
   cds.on("bootstrap", (app) => app.use(cov2ap()));
   module.exports = cds.server;
   ```
-- Execute `cds run` from the project root to start the server:
+- Execute `cds-serve` from the project root to start the server:
   - OData V2 service will be available at http://localhost:4004/v2/<service-path>
   - OData V4 service will be available at http://localhost:4004/<service-path>
 

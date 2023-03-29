@@ -613,7 +613,7 @@ describe("todo", () => {
     );
     expect(response.body).toMatchObject({
       d: {
-        boundFunction: JSON.stringify({
+        PlannedTasks_boundFunction: JSON.stringify({
           key: {
             task_ID: 1,
             person_ID: 1,

@@ -2042,7 +2042,7 @@ describe("main", () => {
     response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${id}'&num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
-        boundFunction: {
+        Header_boundFunction: {
           age: 1,
           code: "TEST",
           name: "abc",
@@ -2055,7 +2055,7 @@ describe("main", () => {
     response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${id}'&num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
-        boundFunction: {
+        Header_boundFunction: {
           age: 1,
           code: "TEST",
           name: "a b/c",
@@ -2107,7 +2107,7 @@ describe("main", () => {
     response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitive?ID=guid'${id}'&num=1`);
     expect(response.body).toMatchObject({
       d: {
-        boundFunctionPrimitive: 1,
+        Header_boundFunctionPrimitive: 1,
       },
     });
     response = await util.callRead(
@@ -2130,7 +2130,7 @@ describe("main", () => {
     response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitiveString?ID=guid'${id}'&text=abc`);
     expect(response.body).toMatchObject({
       d: {
-        boundFunctionPrimitiveString: "abc",
+        Header_boundFunctionPrimitiveString: "abc",
       },
     });
     response = response = await util.callRead(
@@ -2139,7 +2139,7 @@ describe("main", () => {
     );
     expect(response.body).toMatchObject({
       d: {
-        boundFunctionPrimitiveLargeString: "abc",
+        Header_boundFunctionPrimitiveLargeString: "abc",
       },
     });
   });
@@ -2242,7 +2242,7 @@ describe("main", () => {
     response = await util.callRead(request, `/v2/main/Header_boundWarningFunction?ID=guid'${id}'`);
     expect(response.body).toMatchObject({
       d: {
-        boundWarningFunction: {
+        Header_boundWarningFunction: {
           age: 1,
           code: "TEST",
           name: "Test",
@@ -2538,7 +2538,7 @@ describe("main", () => {
     response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${id}'&num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
-        boundAction: {
+        Header_boundAction: {
           age: 1,
           code: "TEST",
           name: "abc",
@@ -2551,7 +2551,7 @@ describe("main", () => {
     response = await util.callWrite(request, `/v2/main/Header_boundActionInline?ID=guid'${id}'&num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
-        boundActionInline: {
+        Header_boundActionInline: {
           age: 1,
           code: "TEST",
           name: "abc",
@@ -2564,7 +2564,7 @@ describe("main", () => {
     response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${id}'&num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
-        boundAction: {
+        Header_boundAction: {
           age: 1,
           code: "TEST",
           name: "a b/c",
@@ -2585,7 +2585,7 @@ describe("main", () => {
     response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitive?ID=guid'${id}'&num=1`);
     expect(response.body).toMatchObject({
       d: {
-        boundActionPrimitive: 1,
+        Header_boundActionPrimitive: 1,
       },
     });
     response = await util.callWrite(
@@ -2608,13 +2608,13 @@ describe("main", () => {
     response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveString?ID=guid'${id}'&text=abc`);
     expect(response.body).toMatchObject({
       d: {
-        boundActionPrimitiveString: "abc",
+        Header_boundActionPrimitiveString: "abc",
       },
     });
     response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveLargeString?ID=guid'${id}'&text=abc`);
     expect(response.body).toMatchObject({
       d: {
-        boundActionPrimitiveLargeString: "abc",
+        Header_boundActionPrimitiveLargeString: "abc",
       },
     });
   });
@@ -2984,7 +2984,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
-        boundFunction: {
+        Header_boundFunction: {
           age: 1,
           code: "TEST",
           name: "abc",

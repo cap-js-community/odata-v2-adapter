@@ -2960,12 +2960,15 @@ function cov2ap(options = {}) {
     }
 
     if (req.context.operation) {
-      const localOperationName = localName(req.context.operation, req);
+      let operationLocalName = localName(req.context.operation, req);
+      if (req.context.boundDefinition) {
+        operationLocalName = `${localName(req.context.boundDefinition, req)}_${operationLocalName}`;
+      }
       const isArrayResult = Array.isArray(body.d.results) || Array.isArray(body.d);
       if (req.context.definition.kind === "type") {
         if (returnComplexNested && !isArrayResult) {
           body.d = {
-            [localOperationName]: body.d,
+            [operationLocalName]: body.d,
           };
           req.context.operationNested = true;
         }
@@ -2980,7 +2983,7 @@ function cov2ap(options = {}) {
             };
           } else {
             body.d = {
-              [localOperationName]: body.d,
+              [operationLocalName]: body.d,
             };
             req.context.operationNested = true;
           }

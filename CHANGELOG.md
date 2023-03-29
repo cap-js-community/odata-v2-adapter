@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.10.0 - 2023-03-27
+## Version 1.10.0 - 2023-03-xx
 
 ### Added
 
 - Transition to open source code
+
+### Fixed
+
+- Bound entity operation result is correctly nested with entity name prefix
 
 ## Version 1.9.21 - 2023-03-24
 
