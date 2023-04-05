@@ -243,12 +243,28 @@ cds.on("bootstrap", (app) =>
 This repository comes with a suite of unit-tests covering the complete proxy implementation.
 The tests can be executed as follows:
 
-- All:
-  - `npm test`
 - SQLite based:
   - `npm run test:unit` ([source](test))
-- HANA based (HANA credentials necessary)
-  - `npm run test:integration` ([source](test-integration))
+- HANA based:
+  - Place HANA credentials at `test-integration/_env/db/default-services.json` in format:
+    ```
+    {
+      "hana": [
+        {
+          "credentials": {
+             // ...
+          }
+        }
+      ]
+    }
+    ```
+  - Deploy HANA test schema
+    - Switch dir: `cd test-integration/_env`
+    - Build model: `npm run build`
+    - Deploy model: `npm run deploy`
+  - Run tests (root dir): `npm run test:integration` ([source](test-integration))
+- All:
+  - `npm test`
 
 All tests are executed as part of the GitHub Actions Continuous Integration (CI) pipeline.
 
