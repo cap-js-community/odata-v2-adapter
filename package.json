@@ -17,6 +17,7 @@
   ],
   "files": [
     "src",
+    "cds-plugin.js",
     "CHANGELOG.md"
   ],
   "main": "src/index.js",
