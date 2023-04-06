@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Version 1.10.1 - 2023-05-xx
 
-### Fixed
+### Added
+
+- Bootstrapping via CDS plugin
 
 ## Version 1.10.0 - 2023-04-05
 
