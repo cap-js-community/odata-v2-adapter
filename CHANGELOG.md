@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
+## Version 1.10.2 - 2023-05-xx
+
+### Fixed
+
 ## Version 1.10.1 - 2023-04-12
 
 ### Added
 
-- Bootstrapping via CDS plugin
+- Bootstrapping via CDS plugin (`cds.cov2ap.plugin: true`)
 
 ### Fixed
 
