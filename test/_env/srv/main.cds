@@ -99,6 +99,20 @@ entity HeaderTemporal: cuid, temporal {
     value: String;
 }
 
+entity HeaderStructure: cuid {
+    date: DateTime;
+    step: {
+        quantity: Integer;
+        startDate: DateTime;
+        endDate: DateTime;
+    };
+    phases: array of {
+        quantity: Integer;
+        startDate: DateTime;
+        endDate: DateTime;
+    };
+}
+
 @cov2ap.deltaResponse: 'timestamp'
 entity HeaderDelta: cuid, managed {
     name: String;
@@ -224,6 +238,7 @@ service MainService {
     entity HeaderBinary as projection on test.HeaderBinary;
     entity HeaderAssocKey as projection on test.HeaderAssocKey;
     entity HeaderTemporal as projection on test.HeaderTemporal;
+    entity HeaderStructure as projection on test.HeaderStructure;
     entity HeaderDelta as projection on test.HeaderDelta;
     entity HeaderItemDelta as projection on test.HeaderItemDelta;
     entity HeaderLargeString as projection on test.HeaderLargeString;

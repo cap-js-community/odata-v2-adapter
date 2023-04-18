@@ -2260,6 +2260,13 @@ function cov2ap(options = {}) {
       Object.keys(data).forEach((key) => {
         const element = elements[key];
         const type = elementType(element, req);
+        if (!type) {
+          if (element.items) {
+            convertRequestData(data[key], headers, element.items, req);
+          } else if (element.elements) {
+            convertRequestData(data[key], headers, element, req);
+          }
+        }
         if (element && (type === "cds.Composition" || type === "cds.Association")) {
           if (data[key] && data[key].__deferred) {
             delete data[key];
@@ -3076,13 +3083,17 @@ function cov2ap(options = {}) {
           return;
         }
         const type = elementType(element, req);
+        if (!type) {
+          if (element.items) {
+            const subSelects = determineSubSelects(element, selects);
+            convertResponseData(data[key], headers, element.items, proxyBody, req, subSelects);
+          } else if (element.elements) {
+            const subSelects = determineSubSelects(element, selects);
+            convertResponseData(data[key], headers, element, proxyBody, req, subSelects);
+          }
+        }
         if (type === "cds.Composition" || type === "cds.Association") {
-          const subSelects = selects.reduce((results, select) => {
-            if (select.startsWith(`${element.name}/`)) {
-              results.push(select.substring(element.name.length + 1));
-            }
-            return results;
-          }, []);
+          const subSelects = determineSubSelects(element, selects);
           convertResponseData(data[key], headers, element._target, proxyBody, req, subSelects);
         }
       });
@@ -3113,6 +3124,15 @@ function cov2ap(options = {}) {
     }
     // Modify Payload
     convertDataTypesToV2(data, headers, definition, elements, proxyBody, req);
+  }
+
+  function determineSubSelects(element, selects) {
+    return selects.reduce((results, select) => {
+      if (select.startsWith(`${element.name}/`)) {
+        results.push(select.substring(element.name.length + 1));
+      }
+      return results;
+    }, []);
   }
 
   function contextNameFromBody(body) {

@@ -381,6 +381,7 @@ exports[`main GET $metadata 1`] = `
         <EntitySet Name="HeaderBinary" EntityType="test.MainService.HeaderBinary"/>
         <EntitySet Name="HeaderAssocKey" EntityType="test.MainService.HeaderAssocKey"/>
         <EntitySet Name="HeaderTemporal" EntityType="test.MainService.HeaderTemporal"/>
+        <EntitySet Name="HeaderStructure" EntityType="test.MainService.HeaderStructure"/>
         <EntitySet Name="HeaderDelta" EntityType="test.MainService.HeaderDelta"/>
         <EntitySet Name="HeaderItemDelta" EntityType="test.MainService.HeaderItemDelta"/>
         <EntitySet Name="HeaderLargeString" EntityType="test.MainService.HeaderLargeString"/>
@@ -704,6 +705,17 @@ exports[`main GET $metadata 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="value" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="HeaderStructure">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="date" Type="Edm.DateTimeOffset"/>
+        <Property Name="step_quantity" Type="Edm.Int32"/>
+        <Property Name="step_startDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="step_endDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="phases" Type="Collection(test.MainService.HeaderStructure_phases)" Nullable="false"/>
+      </EntityType>
       <EntityType Name="HeaderDelta">
         <Key>
           <PropertyRef Name="ID"/>
@@ -884,6 +896,11 @@ exports[`main GET $metadata 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="code" Type="Edm.String"/>
         <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="HeaderStructure_phases">
+        <Property Name="quantity" Type="Edm.Int32"/>
+        <Property Name="startDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="endDate" Type="Edm.DateTimeOffset"/>
       </ComplexType>
       <ComplexType Name="return_test_MainService_unboundActionInline">
         <Property Name="name" Type="Edm.String"/>
@@ -1660,6 +1677,7 @@ exports[`main GET $metadata localized 1`] = `
         <EntitySet Name="HeaderBinary" EntityType="test.MainService.HeaderBinary"/>
         <EntitySet Name="HeaderAssocKey" EntityType="test.MainService.HeaderAssocKey"/>
         <EntitySet Name="HeaderTemporal" EntityType="test.MainService.HeaderTemporal"/>
+        <EntitySet Name="HeaderStructure" EntityType="test.MainService.HeaderStructure"/>
         <EntitySet Name="HeaderDelta" EntityType="test.MainService.HeaderDelta"/>
         <EntitySet Name="HeaderItemDelta" EntityType="test.MainService.HeaderItemDelta"/>
         <EntitySet Name="HeaderLargeString" EntityType="test.MainService.HeaderLargeString"/>
@@ -1983,6 +2001,17 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="value" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="HeaderStructure">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="date" Type="Edm.DateTimeOffset"/>
+        <Property Name="step_quantity" Type="Edm.Int32"/>
+        <Property Name="step_startDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="step_endDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="phases" Type="Collection(test.MainService.HeaderStructure_phases)" Nullable="false"/>
+      </EntityType>
       <EntityType Name="HeaderDelta">
         <Key>
           <PropertyRef Name="ID"/>
@@ -2163,6 +2192,11 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="code" Type="Edm.String"/>
         <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="HeaderStructure_phases">
+        <Property Name="quantity" Type="Edm.Int32"/>
+        <Property Name="startDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="endDate" Type="Edm.DateTimeOffset"/>
       </ComplexType>
       <ComplexType Name="return_test_MainService_unboundActionInline">
         <Property Name="name" Type="Edm.String"/>
@@ -2939,6 +2973,7 @@ exports[`main GET $metadata localized 2`] = `
         <EntitySet Name="HeaderBinary" EntityType="test.MainService.HeaderBinary"/>
         <EntitySet Name="HeaderAssocKey" EntityType="test.MainService.HeaderAssocKey"/>
         <EntitySet Name="HeaderTemporal" EntityType="test.MainService.HeaderTemporal"/>
+        <EntitySet Name="HeaderStructure" EntityType="test.MainService.HeaderStructure"/>
         <EntitySet Name="HeaderDelta" EntityType="test.MainService.HeaderDelta"/>
         <EntitySet Name="HeaderItemDelta" EntityType="test.MainService.HeaderItemDelta"/>
         <EntitySet Name="HeaderLargeString" EntityType="test.MainService.HeaderLargeString"/>
@@ -3262,6 +3297,17 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="value" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="HeaderStructure">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="date" Type="Edm.DateTimeOffset"/>
+        <Property Name="step_quantity" Type="Edm.Int32"/>
+        <Property Name="step_startDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="step_endDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="phases" Type="Collection(test.MainService.HeaderStructure_phases)" Nullable="false"/>
+      </EntityType>
       <EntityType Name="HeaderDelta">
         <Key>
           <PropertyRef Name="ID"/>
@@ -3442,6 +3488,11 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="code" Type="Edm.String"/>
         <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="HeaderStructure_phases">
+        <Property Name="quantity" Type="Edm.Int32"/>
+        <Property Name="startDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="endDate" Type="Edm.DateTimeOffset"/>
       </ComplexType>
       <ComplexType Name="return_test_MainService_unboundActionInline">
         <Property Name="name" Type="Edm.String"/>
@@ -4218,6 +4269,7 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <EntitySet Name="HeaderBinary" EntityType="test.MainService.HeaderBinary"/>
         <EntitySet Name="HeaderAssocKey" EntityType="test.MainService.HeaderAssocKey"/>
         <EntitySet Name="HeaderTemporal" EntityType="test.MainService.HeaderTemporal"/>
+        <EntitySet Name="HeaderStructure" EntityType="test.MainService.HeaderStructure"/>
         <EntitySet Name="HeaderDelta" EntityType="test.MainService.HeaderDelta"/>
         <EntitySet Name="HeaderItemDelta" EntityType="test.MainService.HeaderItemDelta"/>
         <EntitySet Name="HeaderLargeString" EntityType="test.MainService.HeaderLargeString"/>
@@ -4541,6 +4593,17 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="value" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="HeaderStructure">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="date" Type="Edm.DateTimeOffset"/>
+        <Property Name="step_quantity" Type="Edm.Int32"/>
+        <Property Name="step_startDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="step_endDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="phases" Type="Collection(test.MainService.HeaderStructure_phases)" Nullable="false"/>
+      </EntityType>
       <EntityType Name="HeaderDelta">
         <Key>
           <PropertyRef Name="ID"/>
@@ -4721,6 +4784,11 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="code" Type="Edm.String"/>
         <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="HeaderStructure_phases">
+        <Property Name="quantity" Type="Edm.Int32"/>
+        <Property Name="startDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="endDate" Type="Edm.DateTimeOffset"/>
       </ComplexType>
       <ComplexType Name="return_test_MainService_unboundActionInline">
         <Property Name="name" Type="Edm.String"/>
@@ -5497,6 +5565,7 @@ exports[`main GET $metadata with query options 1`] = `
         <EntitySet Name="HeaderBinary" EntityType="test.MainService.HeaderBinary"/>
         <EntitySet Name="HeaderAssocKey" EntityType="test.MainService.HeaderAssocKey"/>
         <EntitySet Name="HeaderTemporal" EntityType="test.MainService.HeaderTemporal"/>
+        <EntitySet Name="HeaderStructure" EntityType="test.MainService.HeaderStructure"/>
         <EntitySet Name="HeaderDelta" EntityType="test.MainService.HeaderDelta"/>
         <EntitySet Name="HeaderItemDelta" EntityType="test.MainService.HeaderItemDelta"/>
         <EntitySet Name="HeaderLargeString" EntityType="test.MainService.HeaderLargeString"/>
@@ -5820,6 +5889,17 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="value" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="HeaderStructure">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="date" Type="Edm.DateTimeOffset"/>
+        <Property Name="step_quantity" Type="Edm.Int32"/>
+        <Property Name="step_startDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="step_endDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="phases" Type="Collection(test.MainService.HeaderStructure_phases)" Nullable="false"/>
+      </EntityType>
       <EntityType Name="HeaderDelta">
         <Key>
           <PropertyRef Name="ID"/>
@@ -6000,6 +6080,11 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="code" Type="Edm.String"/>
         <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="HeaderStructure_phases">
+        <Property Name="quantity" Type="Edm.Int32"/>
+        <Property Name="startDate" Type="Edm.DateTimeOffset"/>
+        <Property Name="endDate" Type="Edm.DateTimeOffset"/>
       </ComplexType>
       <ComplexType Name="return_test_MainService_unboundActionInline">
         <Property Name="name" Type="Edm.String"/>
@@ -6669,6 +6754,7 @@ exports[`main GET service JSON format 1`] = `
   "HeaderStream",
   "HeaderStreamAttachment",
   "HeaderStreamDecode",
+  "HeaderStructure",
   "HeaderTemporal",
   "HeaderUrlStream",
   "LocalizedEntity",
@@ -6701,6 +6787,7 @@ exports[`main GET service JSON format 2`] = `
   "HeaderStream",
   "HeaderStreamAttachment",
   "HeaderStreamDecode",
+  "HeaderStructure",
   "HeaderTemporal",
   "HeaderUrlStream",
   "LocalizedEntity",
@@ -6733,6 +6820,7 @@ exports[`main GET service JSON format 3`] = `
   "HeaderStream",
   "HeaderStreamAttachment",
   "HeaderStreamDecode",
+  "HeaderStructure",
   "HeaderTemporal",
   "HeaderUrlStream",
   "LocalizedEntity",
