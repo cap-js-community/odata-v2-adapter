@@ -2259,6 +2259,9 @@ function cov2ap(options = {}) {
     data.forEach((data) => {
       Object.keys(data).forEach((key) => {
         const element = elements[key];
+        if (!element) {
+          return;
+        }
         const type = elementType(element, req);
         if (!type) {
           if (element.items) {

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
+## Version 1.10.3 - 2023-04-19
+
+### Fixed
+
+- Fix access to `undefined` element during data conversion
+
 ## Version 1.10.2 - 2023-04-18
 
 ### Fixed
@@ -21,7 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Update xml2js dependency to fix security vulnerability
+- Update `xml2js` dependency to fix security vulnerability
 
 ## Version 1.10.0 - 2023-04-05
 
