@@ -225,6 +225,22 @@ describe("integration-main", () => {
     response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${id}' and endswith(name,'XX')`);
     expect(response.body.d.results).toHaveLength(0);
   });
+
+  it("GET request with next link responses", async () => {
+    let response = await util.callWrite(request, "/v2/main/HeaderLimited", {
+      name: "Test",
+    });
+    expect(response.statusCode).toEqual(201);
+    response = await util.callRead(request, "/v2/main/HeaderLimited");
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results).toBeDefined();
+    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/HeaderLimited\?\$skiptoken=1/);
+    const nextUrl = response.body.d.__next.match(/http:\/\/localhost:\d*(.*)/)[1];
+    response = await util.callRead(request, nextUrl);
+    expect(response.body.d.results).toBeDefined();
+    expect(response.body.d.results).toHaveLength(1);
+    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/HeaderLimited\?\$skiptoken=2/);
+  });
 });
 
 function clean(responseBody) {

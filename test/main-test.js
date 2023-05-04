@@ -525,7 +525,6 @@ describe("main", () => {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
-    const id = response.body.d.ID;
     response = await util.callRead(request, "/v2/main/Header?$skiptoken=1");
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();

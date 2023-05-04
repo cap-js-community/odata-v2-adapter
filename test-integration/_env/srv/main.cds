@@ -6,6 +6,8 @@ using { test as testModel } from '../db/model';
 service MainService {
 
     entity Header as projection on test.Header;
+    @cds.query.limit.max: 1
+    entity HeaderLimited as projection on test.Header;
 
     define entity HeaderParameters (
         STOCK: Integer,
