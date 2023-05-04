@@ -249,6 +249,8 @@ service MainService {
     entity context.Name_space.v2 as projection on test.Namespace;
     entity LocalizedEntity as projection on test.LocalizedEntity;
     entity context.LocalizedEntity as projection on test.LocalizedEntity;
+    @cds.query.limit.max: 1
+    entity FavoriteLimited as projection on test.Favorite;
 
     entity Node as projection on test.Node;
     entity Book as projection on test.Book actions {

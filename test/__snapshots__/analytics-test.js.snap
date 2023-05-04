@@ -78,7 +78,7 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="ID__" Type="Edm.String" Nullable="false" sap:sortable="false" sap:filterable="false"/>
         <Property Name="ID" Type="Edm.Guid"/>
         <Property Name="description" Type="Edm.String" sap:label="Description"/>
-        <Property Name="country" Type="Edm.String" sap:aggregation-role="dimension" sap:label="Country"/>
+        <Property Name="country" Type="Edm.String" sap:aggregation-role="dimension" sap:label="Country/Region"/>
         <Property Name="currency" Type="Edm.String" sap:aggregation-role="dimension" sap:label="Currency"/>
         <Property Name="stock" Type="Edm.Int32" sap:aggregation-role="measure" sap:label="Stock"/>
         <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12" sap:aggregation-role="measure" sap:label="Price"/>
@@ -145,6 +145,7 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
         <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+        <Property Name="minorUnit" Type="Edm.Int16"/>
         <NavigationProperty Name="texts" Relationship="test.AnalyticsService.Currency_texts_1" FromRole="Currency" ToRole="Currency_texts"/>
         <NavigationProperty Name="localized" Relationship="test.AnalyticsService.Currency_localized" FromRole="Currency" ToRole="Currency_texts"/>
       </EntityType>
@@ -365,7 +366,7 @@ exports[`analytics GET $metadata 1`] = `
               <PropertyValue Property="Value" Path="description"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Label" String="Country"/>
+              <PropertyValue Property="Label" String="Country/Region"/>
               <PropertyValue Property="Value" Path="country"/>
             </Record>
             <Record Type="UI.DataField">
@@ -505,7 +506,7 @@ exports[`analytics GET $metadata 1`] = `
         <Annotation Term="Common.ValueList">
           <Record Type="Common.ValueListType">
             <PropertyValue Property="CollectionPath" String="Country"/>
-            <PropertyValue Property="Label" String="Country"/>
+            <PropertyValue Property="Label" String="Country/Region"/>
             <PropertyValue Property="SearchSupported" Bool="true"/>
             <PropertyValue Property="Parameters">
               <Collection>
@@ -520,14 +521,14 @@ exports[`analytics GET $metadata 1`] = `
             </PropertyValue>
           </Record>
         </Annotation>
-        <Annotation Term="Common.Label" String="Country"/>
+        <Annotation Term="Common.Label" String="Country/Region"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.Header/currency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Analytics.Dimension" Bool="true"/>
         <Annotation Term="Common.ValueList" Qualifier="Price">
           <Record Type="Common.ValueListType">
             <PropertyValue Property="CollectionPath" String="Header"/>
-            <PropertyValue Property="Label" String="Country"/>
+            <PropertyValue Property="Label" String="Country/Region"/>
             <PropertyValue Property="SearchSupported" Bool="true"/>
             <PropertyValue Property="PresentationVariantQualifier" String="Price"/>
             <PropertyValue Property="Parameters">
@@ -544,7 +545,7 @@ exports[`analytics GET $metadata 1`] = `
         <Annotation Term="Common.ValueList">
           <Record Type="Common.ValueListType">
             <PropertyValue Property="CollectionPath" String="Currency"/>
-            <PropertyValue Property="Label" String="Country"/>
+            <PropertyValue Property="Label" String="Country/Region"/>
             <PropertyValue Property="SearchSupported" Bool="true"/>
             <PropertyValue Property="Parameters">
               <Collection>
@@ -672,7 +673,7 @@ exports[`analytics GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.AnalyticsService.Country/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Country Code"/>
+        <Annotation Term="Common.Label" String="Country/Region Code"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.Currency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Identification">
@@ -695,6 +696,9 @@ exports[`analytics GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.AnalyticsService.Currency/symbol" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Currency Symbol"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.Currency/minorUnit" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency Minor Unit Fractions"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.Book" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Aggregation.ApplySupported">
@@ -736,7 +740,7 @@ exports[`analytics GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.AnalyticsService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Country Code"/>
+        <Annotation Term="Common.Label" String="Country/Region Code"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Language Code"/>

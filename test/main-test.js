@@ -529,8 +529,18 @@ describe("main", () => {
     response = await util.callRead(request, "/v2/main/Header?$skiptoken=1");
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
-    expect(response.body.d.__next).toBeUndefined();
-    // expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/Header\?\$skiptoken=2/);
+    expect(response.body.d.__next).toBeUndefined(); // Limit (1000) larger than result size
+
+    response = await util.callRead(request, "/v2/main/FavoriteLimited");
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results).toBeDefined();
+    expect(response.body.d.results).toHaveLength(1);
+    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/FavoriteLimited\?\$skiptoken=1/);
+    const nextUrl = response.body.d.__next.match(/http:\/\/localhost:\d*(.*)/)[1];
+    response = await util.callRead(request, nextUrl);
+    expect(response.body.d.results).toBeDefined();
+    expect(response.body.d.results).toHaveLength(1);
+    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/FavoriteLimited\?\$skiptoken=2/);
   });
 
   it("GET request with stream", async () => {
