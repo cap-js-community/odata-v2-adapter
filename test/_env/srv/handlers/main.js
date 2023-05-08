@@ -1,4 +1,5 @@
 "use strict";
+const cds = require('@sap/cds');
 
 module.exports = (srv) => {
   const { Header, HeaderStream, Book } = srv.entities("test.MainService");
@@ -454,11 +455,11 @@ module.exports = (srv) => {
   });
 
   srv.on("unboundNavigationFunction", async (req) => {
-    return req.run(SELECT.from("test.MainService.Header").where({ ID: req.data.text }));
+    return cds.run(SELECT.from("test.MainService.Header").where({ ID: req.data.text }));
   });
 
   srv.on("unboundNavigationsFunction", async (req) => {
-    return req.run(SELECT.from("test.MainService.Header"));
+    return cds.run(SELECT.from("test.MainService.Header"));
   });
 
   srv.on("unbound.Function", async (req) => {
