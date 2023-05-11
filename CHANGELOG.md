@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!-- New version information is automatically added after line 8 -->
 
-## Version 1.10.5 - 2023-05-xx
+## Version 1.10.5 - 2023-05-09
 
 ### Fixed
+
+- Replace deprecated usage of `req.run` with `cds.run`
+- Update of `node-fetch`
+- Remove soon deprecated `req.getUriInfo`
 
 ## Version 1.10.4 - 2023-04-24
 
