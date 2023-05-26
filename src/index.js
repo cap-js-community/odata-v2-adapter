@@ -3188,9 +3188,10 @@ function cov2ap(options = {}) {
           ? "Type"
           : "Parameters"
         : "";
-    data.__metadata = {
-      type: definition.name + typeSuffix,
-    };
+    data.__metadata = {};
+    if (definition.name) {
+      data.__metadata.type = qualifiedODataName(definition.name, req) + typeSuffix;
+    }
     if (definition.kind === "entity") {
       data.__metadata.uri = entityUri(data, definition, elements, req);
       if (data["@odata.etag"] || data["@etag"]) {

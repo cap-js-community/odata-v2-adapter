@@ -403,12 +403,14 @@ exports[`main GET $metadata 1`] = `
           <Parameter Name="author" Type="Edm.String" Mode="In" Nullable="true"/>
           <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
         </FunctionImport>
+        <EntitySet Name="Orders" EntityType="test.MainService.Orders"/>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
+        <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
         <FunctionImport Name="unboundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST">
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
           <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
@@ -572,6 +574,10 @@ exports[`main GET $metadata 1`] = `
         <AssociationSet Name="context_LocalizedEntity_localized" Association="test.MainService.context_LocalizedEntity_localized">
           <End Role="context_LocalizedEntity" EntitySet="context_LocalizedEntity"/>
           <End Role="context_LocalizedEntity_texts" EntitySet="context_LocalizedEntity_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Orders_Items_up_" Association="test.MainService.Orders_Items_up_">
+          <End Role="Orders_Items" EntitySet="Orders_Items"/>
+          <End Role="Orders" EntitySet="Orders"/>
         </AssociationSet>
       </EntityContainer>
       <EntityType Name="Country">
@@ -819,6 +825,13 @@ exports[`main GET $metadata 1`] = `
         <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
         <Property Name="description" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="Orders">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <NavigationProperty Name="Items" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders" ToRole="Orders_Items"/>
+      </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
           <PropertyRef Name="ID"/>
@@ -880,6 +893,17 @@ exports[`main GET $metadata 1`] = `
         <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="Orders_Items">
+        <Key>
+          <PropertyRef Name="up__ID"/>
+          <PropertyRef Name="pos"/>
+        </Key>
+        <NavigationProperty Name="up_" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders_Items" ToRole="Orders"/>
+        <Property Name="up__ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="pos" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="product" Type="Edm.String"/>
+        <Property Name="quantity" Type="Edm.Int32"/>
       </EntityType>
       <ComplexType Name="Result">
         <Property Name="name" Type="Edm.String"/>
@@ -1076,6 +1100,20 @@ exports[`main GET $metadata 1`] = `
       <Association Name="context_LocalizedEntity_localized">
         <End Role="context_LocalizedEntity" Type="test.MainService.context_LocalizedEntity" Multiplicity="*"/>
         <End Role="context_LocalizedEntity_texts" Type="test.MainService.context_LocalizedEntity_texts" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Orders_Items_up_">
+        <End Role="Orders_Items" Type="test.MainService.Orders_Items" Multiplicity="*"/>
+        <End Role="Orders" Type="test.MainService.Orders" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="Orders">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="Orders_Items">
+            <PropertyRef Name="up__ID"/>
+          </Dependent>
+        </ReferentialConstraint>
       </Association>
       <Annotations Target="test.MainService.Country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Identification">
@@ -1711,12 +1749,14 @@ exports[`main GET $metadata localized 1`] = `
           <Parameter Name="author" Type="Edm.String" Mode="In" Nullable="true"/>
           <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
         </FunctionImport>
+        <EntitySet Name="Orders" EntityType="test.MainService.Orders"/>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
+        <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
         <FunctionImport Name="unboundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST">
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
           <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
@@ -1880,6 +1920,10 @@ exports[`main GET $metadata localized 1`] = `
         <AssociationSet Name="context_LocalizedEntity_localized" Association="test.MainService.context_LocalizedEntity_localized">
           <End Role="context_LocalizedEntity" EntitySet="context_LocalizedEntity"/>
           <End Role="context_LocalizedEntity_texts" EntitySet="context_LocalizedEntity_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Orders_Items_up_" Association="test.MainService.Orders_Items_up_">
+          <End Role="Orders_Items" EntitySet="Orders_Items"/>
+          <End Role="Orders" EntitySet="Orders"/>
         </AssociationSet>
       </EntityContainer>
       <EntityType Name="Country">
@@ -2127,6 +2171,13 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
         <Property Name="description" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="Orders">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <NavigationProperty Name="Items" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders" ToRole="Orders_Items"/>
+      </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
           <PropertyRef Name="ID"/>
@@ -2188,6 +2239,17 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="Orders_Items">
+        <Key>
+          <PropertyRef Name="up__ID"/>
+          <PropertyRef Name="pos"/>
+        </Key>
+        <NavigationProperty Name="up_" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders_Items" ToRole="Orders"/>
+        <Property Name="up__ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="pos" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="product" Type="Edm.String"/>
+        <Property Name="quantity" Type="Edm.Int32"/>
       </EntityType>
       <ComplexType Name="Result">
         <Property Name="name" Type="Edm.String"/>
@@ -2384,6 +2446,20 @@ exports[`main GET $metadata localized 1`] = `
       <Association Name="context_LocalizedEntity_localized">
         <End Role="context_LocalizedEntity" Type="test.MainService.context_LocalizedEntity" Multiplicity="*"/>
         <End Role="context_LocalizedEntity_texts" Type="test.MainService.context_LocalizedEntity_texts" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Orders_Items_up_">
+        <End Role="Orders_Items" Type="test.MainService.Orders_Items" Multiplicity="*"/>
+        <End Role="Orders" Type="test.MainService.Orders" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="Orders">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="Orders_Items">
+            <PropertyRef Name="up__ID"/>
+          </Dependent>
+        </ReferentialConstraint>
       </Association>
       <Annotations Target="test.MainService.Country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Identification">
@@ -3019,12 +3095,14 @@ exports[`main GET $metadata localized 2`] = `
           <Parameter Name="author" Type="Edm.String" Mode="In" Nullable="true"/>
           <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
         </FunctionImport>
+        <EntitySet Name="Orders" EntityType="test.MainService.Orders"/>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
+        <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
         <FunctionImport Name="unboundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST">
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
           <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
@@ -3188,6 +3266,10 @@ exports[`main GET $metadata localized 2`] = `
         <AssociationSet Name="context_LocalizedEntity_localized" Association="test.MainService.context_LocalizedEntity_localized">
           <End Role="context_LocalizedEntity" EntitySet="context_LocalizedEntity"/>
           <End Role="context_LocalizedEntity_texts" EntitySet="context_LocalizedEntity_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Orders_Items_up_" Association="test.MainService.Orders_Items_up_">
+          <End Role="Orders_Items" EntitySet="Orders_Items"/>
+          <End Role="Orders" EntitySet="Orders"/>
         </AssociationSet>
       </EntityContainer>
       <EntityType Name="Country">
@@ -3435,6 +3517,13 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
         <Property Name="description" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="Orders">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <NavigationProperty Name="Items" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders" ToRole="Orders_Items"/>
+      </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
           <PropertyRef Name="ID"/>
@@ -3496,6 +3585,17 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="Orders_Items">
+        <Key>
+          <PropertyRef Name="up__ID"/>
+          <PropertyRef Name="pos"/>
+        </Key>
+        <NavigationProperty Name="up_" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders_Items" ToRole="Orders"/>
+        <Property Name="up__ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="pos" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="product" Type="Edm.String"/>
+        <Property Name="quantity" Type="Edm.Int32"/>
       </EntityType>
       <ComplexType Name="Result">
         <Property Name="name" Type="Edm.String"/>
@@ -3692,6 +3792,20 @@ exports[`main GET $metadata localized 2`] = `
       <Association Name="context_LocalizedEntity_localized">
         <End Role="context_LocalizedEntity" Type="test.MainService.context_LocalizedEntity" Multiplicity="*"/>
         <End Role="context_LocalizedEntity_texts" Type="test.MainService.context_LocalizedEntity_texts" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Orders_Items_up_">
+        <End Role="Orders_Items" Type="test.MainService.Orders_Items" Multiplicity="*"/>
+        <End Role="Orders" Type="test.MainService.Orders" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="Orders">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="Orders_Items">
+            <PropertyRef Name="up__ID"/>
+          </Dependent>
+        </ReferentialConstraint>
       </Association>
       <Annotations Target="test.MainService.Country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Identification">
@@ -4327,12 +4441,14 @@ exports[`main GET $metadata with propagated headers 1`] = `
           <Parameter Name="author" Type="Edm.String" Mode="In" Nullable="true"/>
           <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
         </FunctionImport>
+        <EntitySet Name="Orders" EntityType="test.MainService.Orders"/>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
+        <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
         <FunctionImport Name="unboundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST">
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
           <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
@@ -4496,6 +4612,10 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <AssociationSet Name="context_LocalizedEntity_localized" Association="test.MainService.context_LocalizedEntity_localized">
           <End Role="context_LocalizedEntity" EntitySet="context_LocalizedEntity"/>
           <End Role="context_LocalizedEntity_texts" EntitySet="context_LocalizedEntity_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Orders_Items_up_" Association="test.MainService.Orders_Items_up_">
+          <End Role="Orders_Items" EntitySet="Orders_Items"/>
+          <End Role="Orders" EntitySet="Orders"/>
         </AssociationSet>
       </EntityContainer>
       <EntityType Name="Country">
@@ -4743,6 +4863,13 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
         <Property Name="description" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="Orders">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <NavigationProperty Name="Items" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders" ToRole="Orders_Items"/>
+      </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
           <PropertyRef Name="ID"/>
@@ -4804,6 +4931,17 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="Orders_Items">
+        <Key>
+          <PropertyRef Name="up__ID"/>
+          <PropertyRef Name="pos"/>
+        </Key>
+        <NavigationProperty Name="up_" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders_Items" ToRole="Orders"/>
+        <Property Name="up__ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="pos" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="product" Type="Edm.String"/>
+        <Property Name="quantity" Type="Edm.Int32"/>
       </EntityType>
       <ComplexType Name="Result">
         <Property Name="name" Type="Edm.String"/>
@@ -5000,6 +5138,20 @@ exports[`main GET $metadata with propagated headers 1`] = `
       <Association Name="context_LocalizedEntity_localized">
         <End Role="context_LocalizedEntity" Type="test.MainService.context_LocalizedEntity" Multiplicity="*"/>
         <End Role="context_LocalizedEntity_texts" Type="test.MainService.context_LocalizedEntity_texts" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Orders_Items_up_">
+        <End Role="Orders_Items" Type="test.MainService.Orders_Items" Multiplicity="*"/>
+        <End Role="Orders" Type="test.MainService.Orders" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="Orders">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="Orders_Items">
+            <PropertyRef Name="up__ID"/>
+          </Dependent>
+        </ReferentialConstraint>
       </Association>
       <Annotations Target="test.MainService.Country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Identification">
@@ -5635,12 +5787,14 @@ exports[`main GET $metadata with query options 1`] = `
           <Parameter Name="author" Type="Edm.String" Mode="In" Nullable="true"/>
           <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
         </FunctionImport>
+        <EntitySet Name="Orders" EntityType="test.MainService.Orders"/>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
+        <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
         <FunctionImport Name="unboundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST">
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
           <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
@@ -5804,6 +5958,10 @@ exports[`main GET $metadata with query options 1`] = `
         <AssociationSet Name="context_LocalizedEntity_localized" Association="test.MainService.context_LocalizedEntity_localized">
           <End Role="context_LocalizedEntity" EntitySet="context_LocalizedEntity"/>
           <End Role="context_LocalizedEntity_texts" EntitySet="context_LocalizedEntity_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Orders_Items_up_" Association="test.MainService.Orders_Items_up_">
+          <End Role="Orders_Items" EntitySet="Orders_Items"/>
+          <End Role="Orders" EntitySet="Orders"/>
         </AssociationSet>
       </EntityContainer>
       <EntityType Name="Country">
@@ -6051,6 +6209,13 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="price" Type="Edm.Decimal" sap:variable-scale="true"/>
         <Property Name="description" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="Orders">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <NavigationProperty Name="Items" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders" ToRole="Orders_Items"/>
+      </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
           <PropertyRef Name="ID"/>
@@ -6112,6 +6277,17 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="Orders_Items">
+        <Key>
+          <PropertyRef Name="up__ID"/>
+          <PropertyRef Name="pos"/>
+        </Key>
+        <NavigationProperty Name="up_" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders_Items" ToRole="Orders"/>
+        <Property Name="up__ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="pos" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="product" Type="Edm.String"/>
+        <Property Name="quantity" Type="Edm.Int32"/>
       </EntityType>
       <ComplexType Name="Result">
         <Property Name="name" Type="Edm.String"/>
@@ -6308,6 +6484,20 @@ exports[`main GET $metadata with query options 1`] = `
       <Association Name="context_LocalizedEntity_localized">
         <End Role="context_LocalizedEntity" Type="test.MainService.context_LocalizedEntity" Multiplicity="*"/>
         <End Role="context_LocalizedEntity_texts" Type="test.MainService.context_LocalizedEntity_texts" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Orders_Items_up_">
+        <End Role="Orders_Items" Type="test.MainService.Orders_Items" Multiplicity="*"/>
+        <End Role="Orders" Type="test.MainService.Orders" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="Orders">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="Orders_Items">
+            <PropertyRef Name="up__ID"/>
+          </Dependent>
+        </ReferentialConstraint>
       </Association>
       <Annotations Target="test.MainService.Country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Identification">
@@ -6821,6 +7011,8 @@ exports[`main GET service JSON format 1`] = `
   "LocalizedEntity",
   "LocalizedEntity_texts",
   "Node",
+  "Orders",
+  "Orders_Items",
   "StringUUID",
   "context_LocalizedEntity",
   "context_LocalizedEntity_texts",
@@ -6855,6 +7047,8 @@ exports[`main GET service JSON format 2`] = `
   "LocalizedEntity",
   "LocalizedEntity_texts",
   "Node",
+  "Orders",
+  "Orders_Items",
   "StringUUID",
   "context_LocalizedEntity",
   "context_LocalizedEntity_texts",
@@ -6889,6 +7083,8 @@ exports[`main GET service JSON format 3`] = `
   "LocalizedEntity",
   "LocalizedEntity_texts",
   "Node",
+  "Orders",
+  "Orders_Items",
   "StringUUID",
   "context_LocalizedEntity",
   "context_LocalizedEntity_texts",

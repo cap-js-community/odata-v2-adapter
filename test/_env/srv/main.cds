@@ -176,6 +176,15 @@ entity Book {
     description: String;
 }
 
+entity Orders {
+  key ID: Integer;
+  Items : Composition of many {
+    key pos : Integer;
+    product : String;
+    quantity : Integer;
+  }
+}
+
 service MainService {
 
     type Result {
@@ -257,6 +266,7 @@ service MainService {
         action order(number: Integer) returns Book;
         action order2(author: String, number: Integer) returns Book;
     };
+    entity Orders as projection on test.Orders;
 
     action unboundAction(num: Integer, text: String) returns Result;
     action unboundMassAction(ids: array of String) returns array of Result;

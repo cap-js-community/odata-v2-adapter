@@ -3487,7 +3487,7 @@ describe("main", () => {
             ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
             name: "Test",
             __metadata: {
-              type: "test.MainService.context.Name_space.v2",
+              type: "test.MainService.context_Name_space_v2",
               uri: `http://${ response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
@@ -3506,7 +3506,7 @@ describe("main", () => {
         ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
         name: "Test",
         __metadata: {
-          type: "test.MainService.context.Name_space.v2",
+          type: "test.MainService.context_Name_space_v2",
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
@@ -3658,7 +3658,7 @@ describe("main", () => {
               },
             },
             __metadata: {
-              type: "test.MainService.context.LocalizedEntity",
+              type: "test.MainService.context_LocalizedEntity",
               uri: `http://${ response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
@@ -3691,7 +3691,7 @@ describe("main", () => {
           },
         },
         __metadata: {
-          type: "test.MainService.context.LocalizedEntity",
+          type: "test.MainService.context_LocalizedEntity",
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
@@ -3708,7 +3708,7 @@ describe("main", () => {
             ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
             name: "Test-DE",
             __metadata: {
-              type: "test.MainService.context.LocalizedEntity.texts",
+              type: "test.MainService.context_LocalizedEntity_texts",
               uri: `http://${ response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
@@ -3728,7 +3728,7 @@ describe("main", () => {
         ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
         name: "Test-DE",
         __metadata: {
-          type: "test.MainService.context.LocalizedEntity.texts",
+          type: "test.MainService.context_LocalizedEntity_texts",
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
@@ -3909,5 +3909,49 @@ describe("main", () => {
         }
       }
     );
+  });
+
+  it("Entity with managed compositions", async () => {
+    const response = await util.callRead(request, `/v2/main/Orders(1)?$expand=Items`);
+    expect(response.body.d).toMatchObject({
+      ID: 1,
+      Items: {
+        results: [
+          {
+            up__ID: 1,
+            pos: 1,
+            product: "Cola",
+            quantity: 11,
+            __metadata: {
+              type: "test.MainService.Orders_Items",
+              uri: `http://${ response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              ) }/v2/main/Orders_Items(up__ID=1,pos=1)`
+            }
+          },
+          {
+            up__ID: 1,
+            pos: 2,
+            product: "Fanta",
+            quantity: 12,
+            __metadata: {
+              type: "test.MainService.Orders_Items",
+              uri: `http://${ response.request.host.replace(
+                "127.0.0.1",
+                "localhost"
+              ) }/v2/main/Orders_Items(up__ID=1,pos=2)`
+            }
+          }
+        ]
+      },
+      __metadata: {
+        type: "test.MainService.Orders",
+        uri: `http://${ response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        ) }/v2/main/Orders(1)`
+      }
+    });
   });
 });
