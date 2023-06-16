@@ -10,5 +10,6 @@ using from './incidents';
 using from './main';
 using from './navigate';
 using from './passenger';
+using from './path';
 using from './rest';
 using from './todo';
