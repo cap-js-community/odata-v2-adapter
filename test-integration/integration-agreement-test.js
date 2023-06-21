@@ -155,22 +155,22 @@ describe("integration-agreement", () => {
 });
 
 function clean(responseBody) {
-  function replacePort(text) {
+  function replaceUri(text) {
     return text.replace(/localhost:([0-9]*)/g, "localhost:00000");
   }
 
   function replaceAll(entry) {
     if (entry.__next) {
-      entry.__next = replacePort(entry.__next);
+      entry.__next = replaceUri(entry.__next);
     }
     if (entry.__metadata) {
-      entry.__metadata.uri = replacePort(entry.__metadata.uri);
+      entry.__metadata.uri = replaceUri(entry.__metadata.uri);
     }
     if (entry.Set) {
-      entry.Set.__deferred.uri = replacePort(entry.Set.__deferred.uri);
+      entry.Set.__deferred.uri = replaceUri(entry.Set.__deferred.uri);
     }
     if (entry.Parameters) {
-      entry.Parameters.__deferred.uri = replacePort(entry.Parameters.__deferred.uri);
+      entry.Parameters.__deferred.uri = replaceUri(entry.Parameters.__deferred.uri);
     }
   }
 

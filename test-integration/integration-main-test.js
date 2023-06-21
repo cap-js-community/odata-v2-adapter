@@ -104,7 +104,7 @@ describe("integration-main", () => {
     const ID = response.body.d.results[0].ID;
     expect(ID).toBeDefined();
     response.body.d.results = response.body.d.results.slice(0, 1);
-    expect(clean(response.body)).toMatchSnapshot();
+    expect(clean(response.body, ID)).toMatchSnapshot();
 
     // Single Entry
     response = await util.callRead(
@@ -112,7 +112,7 @@ describe("integration-main", () => {
       `/v2/main/HeaderParametersSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')`
     );
     expect(response.body).toBeDefined();
-    expect(clean(response.body)).toMatchSnapshot();
+    expect(clean(response.body, ID)).toMatchSnapshot();
 
     // Entry Parameters
     response = await util.callRead(
@@ -120,7 +120,7 @@ describe("integration-main", () => {
       `/v2/main/HeaderParametersSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`
     );
     expect(response.body).toBeDefined();
-    expect(clean(response.body)).toMatchSnapshot();
+    expect(clean(response.body, ID)).toMatchSnapshot();
   });
 
   it("GET with parameters (header - full circle) - set", async () => {
@@ -168,12 +168,12 @@ describe("integration-main", () => {
     const ID = response.body.d.results[0].ID;
     expect(ID).toBeDefined();
     response.body.d.results = response.body.d.results.slice(0, 1);
-    expect(clean(response.body)).toMatchSnapshot();
+    expect(clean(response.body, ID)).toMatchSnapshot();
 
     // Single Entry
     response = await util.callRead(request, `/v2/main/HeaderSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')`);
     expect(response.body).toBeDefined();
-    expect(clean(response.body)).toMatchSnapshot();
+    expect(clean(response.body, ID)).toMatchSnapshot();
 
     // Entry Parameters
     response = await util.callRead(
@@ -181,7 +181,7 @@ describe("integration-main", () => {
       `/v2/main/HeaderSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`
     );
     expect(response.body).toBeDefined();
-    expect(clean(response.body)).toMatchSnapshot();
+    expect(clean(response.body, ID)).toMatchSnapshot();
   });
 
   it("GET request with function 'substringof'", async () => {
@@ -243,23 +243,28 @@ describe("integration-main", () => {
   });
 });
 
-function clean(responseBody) {
-  function replacePort(text) {
-    return text.replace(/localhost:([0-9]*)/g, "localhost:00000");
+function clean(responseBody, ID) {
+  function replaceUri(text) {
+    return text
+      .replace(/localhost:([0-9]*)/g, "localhost:00000")
+      .replace(ID, "<ID>")
   }
 
   function replaceAll(entry) {
+    delete entry.ID;
+    delete entry.createdAt;
+    delete entry.modifiedAt;
     if (entry.__next) {
-      entry.__next = replacePort(entry.__next);
+      entry.__next = replaceUri(entry.__next);
     }
     if (entry.__metadata) {
-      entry.__metadata.uri = replacePort(entry.__metadata.uri);
+      entry.__metadata.uri = replaceUri(entry.__metadata.uri);
     }
     if (entry.Set) {
-      entry.Set.__deferred.uri = replacePort(entry.Set.__deferred.uri);
+      entry.Set.__deferred.uri = replaceUri(entry.Set.__deferred.uri);
     }
     if (entry.Parameters) {
-      entry.Parameters.__deferred.uri = replacePort(entry.Parameters.__deferred.uri);
+      entry.Parameters.__deferred.uri = replaceUri(entry.Parameters.__deferred.uri);
     }
   }
 
