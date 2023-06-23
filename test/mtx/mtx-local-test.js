@@ -79,7 +79,7 @@ describe("mtx", () => {
 
   it("MTX $metadata (local)", async () => {
     cds.env.requires.multitenancy = true;
-    const response = await util.callRead(request, "/v2/main/$metadata", {
+    const response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
@@ -97,7 +97,7 @@ describe("mtx", () => {
 
     clearCache();
     errorExtended = true;
-    let response = await util.callRead(request, "/v2/main/$metadata", {
+    let response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
@@ -113,7 +113,7 @@ describe("mtx", () => {
     clearCache();
     errorExtended = false;
     errorCsn = true;
-    response = await util.callRead(request, "/v2/main/$metadata", {
+    response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
@@ -129,7 +129,7 @@ describe("mtx", () => {
     clearCache();
     errorCsn = false;
     errorEdmx = true;
-    response = await util.callRead(request, "/v2/main/$metadata", {
+    response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
@@ -144,7 +144,7 @@ describe("mtx", () => {
 
     clearCache();
     errorEdmx = false;
-    response = await util.callRead(request, "/v2/main/$metadata", {
+    response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
@@ -158,7 +158,7 @@ describe("mtx", () => {
   it("MTX event emitter", async () => {
     cds.env.requires.multitenancy = true;
     clearCache();
-    let response = await util.callRead(request, "/v2/main/$metadata", {
+    let response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
@@ -173,7 +173,7 @@ describe("mtx", () => {
     cds.mtx.getEdmx.mockClear();
     cds.mtx.isExtended.mockClear();
 
-    response = await util.callRead(request, "/v2/main/$metadata", {
+    response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });

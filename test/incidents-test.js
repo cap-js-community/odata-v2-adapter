@@ -16,7 +16,7 @@ describe("incidents", () => {
   });
 
   it("GET incidents service", async () => {
-    const response = await util.callRead(request, "/v2/incidents", {
+    const response = await util.callRead(request, "/odata/v2/incidents", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
@@ -24,7 +24,7 @@ describe("incidents", () => {
   });
 
   it("GET incidents service data", async () => {
-    const response = await util.callRead(request, "/v2/incidents/Incidents", {
+    const response = await util.callRead(request, "/odata/v2/incidents/Incidents", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();

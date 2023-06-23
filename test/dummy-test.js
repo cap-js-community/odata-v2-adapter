@@ -16,7 +16,7 @@ describe("dummy", () => {
   });
 
   it("GET service", async () => {
-    const response = await util.callRead(request, "/v2/dummy", {
+    const response = await util.callRead(request, "/odata/v2/dummy", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
@@ -28,7 +28,7 @@ describe("dummy", () => {
   });
 
   it("GET service data", async () => {
-    const response = await util.callRead(request, "/v2/dummy/Header", {
+    const response = await util.callRead(request, "/odata/v2/dummy/Header", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
@@ -36,7 +36,7 @@ describe("dummy", () => {
   });
 
   it("GET service case sensitive", async () => {
-    const response = await util.callRead(request, "/v2/Dummy/Header", {
+    const response = await util.callRead(request, "/odata/v2/Dummy/Header", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();

@@ -18,7 +18,7 @@ describe("draft", () => {
   });
 
   it("GET service", async () => {
-    const response = await util.callRead(request, "/v2/draft/", {
+    const response = await util.callRead(request, "/odata/v2/draft/", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
@@ -30,7 +30,7 @@ describe("draft", () => {
   });
 
   it("GET $metadata", async () => {
-    const response = await util.callRead(request, "/v2/draft/$metadata", {
+    const response = await util.callRead(request, "/odata/v2/draft/$metadata", {
       accept: "application/xml",
     });
     expect(response.body).toBeDefined();
@@ -38,31 +38,31 @@ describe("draft", () => {
   });
 
   it("GET request", async () => {
-    let response = await util.callRead(request, "/v2/draft/Header");
+    let response = await util.callRead(request, "/odata/v2/draft/Header");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(7);
-    response = await util.callRead(request, "/v2/draft/Header?$inlinecount=allpages");
+    response = await util.callRead(request, "/odata/v2/draft/Header?$inlinecount=allpages");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(7);
     expect(response.body.d.__count).toEqual("7");
   });
 
   it("GET request with parameters", async () => {
-    let response = await util.callWrite(request, "/v2/draft/Header", {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
     const etag = response.body.d.__metadata.etag;
     expect(typeof etag).toEqual("string");
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.body).toBeDefined();
     expect(response.body.d).toMatchObject({
       __metadata: {
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+        )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
         type: "test.DraftService.Header",
         etag: etag,
       },
@@ -79,7 +79,7 @@ describe("draft", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
         },
       },
       SiblingEntity: {
@@ -87,7 +87,7 @@ describe("draft", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
+          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
         },
       },
       DraftAdministrativeData: {
@@ -95,13 +95,13 @@ describe("draft", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
+          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
         },
       },
     });
     response = await util.callRead(
       request,
-      `/v2/draft/Header?$filter=ID eq guid'${id}' and IsActiveEntity eq false&$select=ID,name&$expand=Items&$skip=0&$top=1&$orderby=name asc`
+      `/odata/v2/draft/Header?$filter=ID eq guid'${id}' and IsActiveEntity eq false&$select=ID,name&$expand=Items&$skip=0&$top=1&$orderby=name asc`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
@@ -109,7 +109,7 @@ describe("draft", () => {
   });
 
   it("POST request", async () => {
-    let response = await util.callWrite(request, "/v2/draft/Header", {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
       name: "Test Create",
     });
     expect(response.statusCode).toEqual(201);
@@ -124,7 +124,7 @@ describe("draft", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
           type: "test.DraftService.Header",
           etag: etag,
         },
@@ -141,7 +141,7 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
           },
         },
         SiblingEntity: {
@@ -149,7 +149,7 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
           },
         },
         DraftAdministrativeData: {
@@ -157,22 +157,22 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
           },
         },
       },
     });
-    response = await util.callRead(request, "/v2/draft/Header?$filter=name eq 'Test Create'");
+    response = await util.callRead(request, "/odata/v2/draft/Header?$filter=name eq 'Test Create'");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(0); // No Active
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
           type: "test.DraftService.Header",
           etag: etag,
         },
@@ -189,7 +189,7 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
           },
         },
         SiblingEntity: {
@@ -197,7 +197,7 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
           },
         },
         DraftAdministrativeData: {
@@ -205,15 +205,15 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
           },
         },
       },
     });
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(0);
-    response = await util.callWrite(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`, {
+    response = await util.callWrite(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`, {
       name: "Test Update",
     });
     expect(response.statusCode).toEqual(201);
@@ -229,7 +229,7 @@ describe("draft", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
+          )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -245,7 +245,7 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
           },
         },
         SiblingEntity: {
@@ -253,7 +253,7 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
           },
         },
         DraftAdministrativeData: {
@@ -261,14 +261,14 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
           },
         },
       },
     });
     response = await util.callRead(
       request,
-      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items(ID=guid'${itemId}',IsActiveEntity=false)`
+      `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items(ID=guid'${itemId}',IsActiveEntity=false)`
     );
     expect(response.body).toBeDefined();
     expect(response.body).toMatchObject({
@@ -278,7 +278,7 @@ describe("draft", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
+          )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -294,7 +294,7 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
           },
         },
         SiblingEntity: {
@@ -302,7 +302,7 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
           },
         },
         DraftAdministrativeData: {
@@ -310,7 +310,7 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
           },
         },
       },
@@ -318,7 +318,7 @@ describe("draft", () => {
   });
 
   it("PUT request", async () => {
-    let response = await util.callWrite(request, "/v2/draft/Header", {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
@@ -330,7 +330,7 @@ describe("draft", () => {
     const id = response.body.d.ID;
     response = await util.callWrite(
       request,
-      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+      `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
       {
         name: "Test2",
       },
@@ -341,7 +341,7 @@ describe("draft", () => {
     // 1st Patch OK
     response = await util.callWrite(
       request,
-      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+      `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
       {
         name: "Test2",
       },
@@ -356,7 +356,7 @@ describe("draft", () => {
     // 2nd Patch OK
     response = await util.callWrite(
       request,
-      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+      `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
       {
         name: "Test3",
       },
@@ -373,7 +373,7 @@ describe("draft", () => {
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ETAG}}/g, etag);
-    response = await util.callMultipart(request, "/v2/draft/$batch", payload);
+    response = await util.callMultipart(request, "/odata/v2/draft/$batch", payload);
     expect(response.statusCode).toEqual(202);
     let responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
@@ -387,7 +387,7 @@ describe("draft", () => {
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ETAG}}/g, etag);
-    response = await util.callMultipart(request, "/v2/draft/$batch", payload);
+    response = await util.callMultipart(request, "/odata/v2/draft/$batch", payload);
     expect(response.statusCode).toEqual(202);
     responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
@@ -397,7 +397,7 @@ describe("draft", () => {
     expect(response.body.d.__metadata.etag).toEqual(etag);
 
     // Read OK
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.__metadata.etag).toEqual(etag);
     expect(response.body).toMatchObject({
@@ -406,7 +406,7 @@ describe("draft", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
           type: "test.DraftService.Header",
         },
         createdBy: "anonymous",
@@ -418,7 +418,7 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
           },
         },
       },
@@ -427,7 +427,7 @@ describe("draft", () => {
     // Update collection not allowed
     response = await util.callWrite(
       request,
-      "/v2/draft/Header",
+      "/odata/v2/draft/Header",
       {
         name: "Test",
       },
@@ -457,19 +457,19 @@ describe("draft", () => {
   });
 
   it("DELETE request", async () => {
-    let response = await util.callWrite(request, "/v2/draft/Header", {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
     const etag = response.body.d.__metadata.etag;
-    response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+    response = await util.callDelete(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
       "If-Match": etag,
     });
     expect(response.statusCode).toEqual(204);
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
-    response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+    response = await util.callDelete(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
       "If-Match": "*",
     });
     expect(response.statusCode).toEqual(404);
@@ -497,7 +497,7 @@ describe("draft", () => {
   });
 
   it("POST activate request", async () => {
-    let response = await util.callWrite(request, "/v2/draft/Header", {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
       name: "Test Create",
     });
     expect(response.statusCode).toEqual(201);
@@ -505,14 +505,14 @@ describe("draft", () => {
     expect(response.body.d).toBeDefined();
     const id = response.body.d.ID;
     let etag = response.body.d.__metadata.etag;
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.body).toBeDefined();
     expect(response.body.d.ID).toEqual(id);
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
     expect(response.statusCode).toEqual(404);
     response = await util.callWrite(
       request,
-      `/v2/draft/Header_draftPrepare?ID=guid'${id}'&IsActiveEntity=false`,
+      `/odata/v2/draft/Header_draftPrepare?ID=guid'${id}'&IsActiveEntity=false`,
       {},
       false,
       {
@@ -522,7 +522,7 @@ describe("draft", () => {
     expect(response.statusCode).toEqual(200);
     response = await util.callWrite(
       request,
-      `/v2/draft/Header_draftActivate?ID=guid'${id}'&IsActiveEntity=false`,
+      `/odata/v2/draft/Header_draftActivate?ID=guid'${id}'&IsActiveEntity=false`,
       {},
       false,
       {
@@ -532,15 +532,15 @@ describe("draft", () => {
     expect(response.statusCode).toEqual(201);
     etag = response.body.d.__metadata.etag;
     expect(etag).toBeDefined();
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.ID).toEqual(id);
     etag = response.body.d.__metadata.etag;
     response = await util.callWrite(
       request,
-      `/v2/draft/Header_draftEdit?ID=guid'${id}'&IsActiveEntity=true`,
+      `/odata/v2/draft/Header_draftEdit?ID=guid'${id}'&IsActiveEntity=true`,
       {},
       false,
       {
@@ -548,46 +548,46 @@ describe("draft", () => {
       }
     );
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.ID).toEqual(id);
   });
 
   it("DELETE draft request", async () => {
-    let response = await util.callWrite(request, "/v2/draft/Header", {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
       name: "Test Create",
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.body).toBeDefined();
     expect(response.body.d.ID).toEqual(id);
-    response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+    response = await util.callDelete(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
       "If-Match": "*",
     });
     expect(response.statusCode).toEqual(204);
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
   });
 
   it("DELETE draft for active entity", async () => {
-    let response = await util.callWrite(request, "/v2/draft/Header", {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
       name: "Test Create",
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.body).toBeDefined();
     expect(response.body.d.ID).toEqual(id);
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
     expect(response.statusCode).toEqual(404);
     response = await util.callWrite(
       request,
-      `/v2/draft/Header_draftPrepare?ID=guid'${id}'&IsActiveEntity=false`,
+      `/odata/v2/draft/Header_draftPrepare?ID=guid'${id}'&IsActiveEntity=false`,
       {},
       false,
       {
@@ -597,7 +597,7 @@ describe("draft", () => {
     expect(response.statusCode).toEqual(200);
     response = await util.callWrite(
       request,
-      `/v2/draft/Header_draftActivate?ID=guid'${id}'&IsActiveEntity=false`,
+      `/odata/v2/draft/Header_draftActivate?ID=guid'${id}'&IsActiveEntity=false`,
       {},
       false,
       {
@@ -605,14 +605,14 @@ describe("draft", () => {
       }
     );
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.ID).toEqual(id);
     response = await util.callWrite(
       request,
-      `/v2/draft/Header_draftEdit?ID=guid'${id}'&IsActiveEntity=true`,
+      `/odata/v2/draft/Header_draftEdit?ID=guid'${id}'&IsActiveEntity=true`,
       {},
       false,
       {
@@ -620,19 +620,19 @@ describe("draft", () => {
       }
     );
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(200);
-    response = await util.callDelete(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+    response = await util.callDelete(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
       "If-Match": "*",
     });
     expect(response.statusCode).toEqual(204);
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
-    response = await util.callRead(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
     expect(response.statusCode).toEqual(200);
     response = await util.callRead(
       request,
-      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)?$expand=DraftAdministrativeData%2CSiblingEntity`
+      `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)?$expand=DraftAdministrativeData%2CSiblingEntity`
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.ID).toEqual(id);
@@ -640,14 +640,14 @@ describe("draft", () => {
   });
 
   it("tests unsupported draft requests", async () => {
-    let response = await util.callWrite(request, "/v2/draft/Header", {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
       name: "Test Header",
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`, {
+    response = await util.callWrite(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`, {
       name: "Test Item",
       description: "ABC",
     });
@@ -656,7 +656,7 @@ describe("draft", () => {
     expect(response.body.d).toBeDefined();
     response = await util.callRead(
       request,
-      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=(IsActiveEntity eq true and substringof('Item',name)) or (IsActiveEntity eq false and (substringof('Item',name) or HasActiveEntity eq false))`
+      `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=(IsActiveEntity eq true and substringof('Item',name)) or (IsActiveEntity eq false and (substringof('Item',name) or HasActiveEntity eq false))`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
@@ -678,7 +678,7 @@ describe("draft", () => {
     });
     response = await util.callRead(
       request,
-      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=(IsActiveEntity eq true and (substringof('_',name) or substringof('ABC',description))) or (IsActiveEntity eq false and ((substringof('_',name) or substringof('ABC',description)) or HasActiveEntity eq false))`
+      `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=(IsActiveEntity eq true and (substringof('_',name) or substringof('ABC',description))) or (IsActiveEntity eq false and ((substringof('_',name) or substringof('ABC',description)) or HasActiveEntity eq false))`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
@@ -700,7 +700,7 @@ describe("draft", () => {
     });
     response = await util.callRead(
       request,
-      `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=((IsActiveEntity eq true and substringof('Item2',name)) or (IsActiveEntity eq false and (substringof('Item2',name) or HasActiveEntity eq false))) or description eq 'ABC'`
+      `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=((IsActiveEntity eq true and substringof('Item2',name)) or (IsActiveEntity eq false and (substringof('Item2',name) or HasActiveEntity eq false))) or description eq 'ABC'`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
@@ -723,7 +723,7 @@ describe("draft", () => {
     response = await util.callRead(
       request,
       decodeURIComponent(
-        `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=((IsActiveEntity eq true and substringof('Item2',name)) or (IsActiveEntity eq false and (substringof('Item2',name) or HasActiveEntity eq false))) or description eq 'ABC'`
+        `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=((IsActiveEntity eq true and substringof('Item2',name)) or (IsActiveEntity eq false and (substringof('Item2',name) or HasActiveEntity eq false))) or description eq 'ABC'`
       )
     );
     expect(response.body).toBeDefined();
@@ -747,7 +747,7 @@ describe("draft", () => {
     response = await util.callRead(
       request,
       decodeURIComponent(
-        `/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=(IsActiveEntity eq true and name eq 'Test Item') or (IsActiveEntity eq false and (name eq 'Test Item' or HasActiveEntity eq false))`
+        `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items?$filter=(IsActiveEntity eq true and name eq 'Test Item') or (IsActiveEntity eq false and (name eq 'Test Item' or HasActiveEntity eq false))`
       )
     );
     expect(response.body).toBeDefined();

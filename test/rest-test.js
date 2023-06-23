@@ -16,7 +16,7 @@ describe("rest", () => {
   });
 
   it("GET rest", async () => {
-    const response = await util.callRead(request, "/rest/Header", {
+    const response = await util.callRead(request, "/rest/rest/Header", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
@@ -24,16 +24,28 @@ describe("rest", () => {
   });
 
   it("GET reject rest for V2", async () => {
-    let response = await util.callRead(request, "/v2/rest/$metadata", {
+    let response = await util.callRead(request, "/odata/v2/rest/rest/$metadata", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
     expect(response.text).toEqual("Invalid service protocol. Only OData services supported");
 
-    response = await util.callRead(request, "/v2/rest/Header", {
+    response = await util.callRead(request, "/odata/v2/rest/rest/Header", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
     expect(response.text).toEqual("Invalid service protocol. Only OData services supported");
+  });
+
+  it("GET not found for unknown", async () => {
+    let response = await util.callRead(request, "/odata/v2/rest/$metadata", {
+      accept: "application/json",
+    });
+    expect(response.status).toEqual(404);
+
+    response = await util.callRead(request, "/odata/v2/rest/Header", {
+      accept: "application/json",
+    });
+    expect(response.status).toEqual(404);
   });
 });

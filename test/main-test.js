@@ -22,46 +22,46 @@ describe("main", () => {
     const provider = cds.services["test.MainService"].$linkProviders[0];
     const link = provider("Header");
     expect(link).toEqual({
-      href: "/v2/main/Header",
+      href: "/odata/v2/main/Header",
       name: "Header (V2)",
       title: "OData V2",
     });
   });
 
   it("HEAD service", async () => {
-    let response = await util.callHead(request, "/v2/main");
+    let response = await util.callHead(request, "/odata/v2/main");
     expect(response.status).toEqual(200);
     expect(response.text).not.toBeDefined();
     expect(response.headers).toMatchObject({
       "content-type": "application/json",
       dataserviceversion: "2.0",
     });
-    response = await util.callHead(request, "/v2/main/Header");
+    response = await util.callHead(request, "/odata/v2/main/Header");
     expect(response.status).toEqual(405);
-    response = await util.callHead(request, "/v2/main/Header", {
+    response = await util.callHead(request, "/odata/v2/main/Header", {
       "content-type": "application/json",
     });
     expect(response.status).toEqual(405);
   });
 
   it("GET service JSON format", async () => {
-    let response = await util.callRead(request, "/v2/main", {
+    let response = await util.callRead(request, "/odata/v2/main", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
     expect(response.body.d.EntitySets.sort()).toMatchSnapshot();
-    response = await util.callRead(request, "/v2/main/", {
+    response = await util.callRead(request, "/odata/v2/main/", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
     expect(response.body.d.EntitySets.sort()).toMatchSnapshot();
-    response = await util.callRead(request, "/v2/main/?$format=json");
+    response = await util.callRead(request, "/odata/v2/main/?$format=json");
     expect(response.body).toBeDefined();
     expect(response.body.d.EntitySets.sort()).toMatchSnapshot();
   });
 
   it("HEAD $metadata", async () => {
-    const response = await util.callHead(request, "/v2/main/$metadata");
+    const response = await util.callHead(request, "/odata/v2/main/$metadata");
     expect(response.status).toEqual(200);
     expect(response.body).toBeDefined();
     expect(response.headers).toMatchObject({
@@ -72,7 +72,7 @@ describe("main", () => {
   });
 
   it("GET $metadata", async () => {
-    const response = await util.callRead(request, "/v2/main/$metadata", {
+    const response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
     });
     expect(response.body).toBeDefined();
@@ -80,7 +80,7 @@ describe("main", () => {
   });
 
   it("GET $metadata with query options", async () => {
-    const response = await util.callRead(request, "/v2/main/$metadata?sap-value-list=none&sap-language=EN", {
+    const response = await util.callRead(request, "/odata/v2/main/$metadata?sap-value-list=none&sap-language=EN", {
       accept: "application/xml",
     });
     expect(response.body).toBeDefined();
@@ -88,7 +88,7 @@ describe("main", () => {
   });
 
   it("GET $metadata localized", async () => {
-    let response = await util.callRead(request, "/v2/main/$metadata", {
+    let response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       "accept-language": "de",
     });
@@ -96,7 +96,7 @@ describe("main", () => {
     expect(response.text).toMatchSnapshot();
     expect(response.text).toMatch(/Angelegt am/);
 
-    response = await util.callRead(request, "/v2/main/$metadata", {
+    response = await util.callRead(request, "/odata/v2/main/$metadata", {
       "accept-language": "de-DE",
     });
     expect(response.body).toBeDefined();
@@ -104,7 +104,7 @@ describe("main", () => {
   });
 
   it("GET $metadata with propagated headers", async () => {
-    const response = await util.callRead(request, "/v2/main/$metadata", {
+    const response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       dwc_header: "on",
     });
@@ -113,22 +113,22 @@ describe("main", () => {
   });
 
   it("GET request", async () => {
-    let response = await util.callRead(request, "/v2/main/Header");
+    let response = await util.callRead(request, "/odata/v2/main/Header");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(7);
-    response = await util.callRead(request, "/v2/main/Header?$inlinecount=allpages");
+    response = await util.callRead(request, "/odata/v2/main/Header?$inlinecount=allpages");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(7);
     expect(response.body.d.__count).toEqual("7");
     const id = response.body.d.results[0].ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')`);
     expect(response.body.d.__metadata).toEqual({
       type: "test.MainService.Header",
-      uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+      uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
       media_src: undefined,
       content_type: undefined,
     });
-    response = await util.callRead(request, `/v2/main/HeaderAssocKey(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/HeaderAssocKey(guid'${ id }')`);
     expect(response.body).toBeDefined();
     expect(response.status).toEqual(404);
     expect(response.body.error).toEqual({
@@ -156,45 +156,45 @@ describe("main", () => {
   });
 
   it("GET request with non-json accept", async () => {
-    let response = await util.callRead(request, "/v2/main/Header", {
+    let response = await util.callRead(request, "/odata/v2/main/Header", {
       accept: "application/xml",
     });
     expect(response.text).toBeDefined();
-    response = await util.callRead(request, "/v2/main/Header?$format=atom");
+    response = await util.callRead(request, "/odata/v2/main/Header?$format=atom");
     expect(response.text).toBeDefined();
-    response = await util.callWrite(request, "/v2/main/Header", "<xml/>", false, {
+    response = await util.callWrite(request, "/odata/v2/main/Header", "<xml/>", false, {
       "content-type": "application/atom+xml",
     });
     expect(response.text).toBeDefined();
   });
 
   it("GET request with sap-language", async () => {
-    let response = await util.callRead(request, "/v2/main/Header?sap-language=de");
+    let response = await util.callRead(request, "/odata/v2/main/Header?sap-language=de");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(8);
   });
 
   it("GET request with navigation", async () => {
-    let response = await util.callRead(request, "/v2/main/Header?$filter=country eq 'Germany'");
+    let response = await util.callRead(request, "/odata/v2/main/Header?$filter=country eq 'Germany'");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
     const ID = response.body.d.results[0].ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ ID }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ ID }')`);
     expect(response.body.d).toBeDefined();
     expect(response.body.d.ID).toEqual(ID);
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ ID }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(ID=guid'${ ID }')`);
     expect(response.body.d).toBeDefined();
     expect(response.body.d.ID).toEqual(ID);
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ ID }')/Items`);
+    response = await util.callRead(request, `/odata/v2/main/Header(ID=guid'${ ID }')/Items`);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results.length).toEqual(2);
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ ID }')/$links/Items`);
+    response = await util.callRead(request, `/odata/v2/main/Header(ID=guid'${ ID }')/$links/Items`);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results.length).toEqual(2);
   });
 
   it("GET request with $-options", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
       Items: [
         {
@@ -206,14 +206,14 @@ describe("main", () => {
     const id = response.body.d.ID;
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }'&$select=ID,name&$expand=FirstItem,Items&$skip=0&$top=1&$orderby=name asc&createdAt=datetime'123456'`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }'&$select=ID,name&$expand=FirstItem,Items&$skip=0&$top=1&$orderby=name asc&createdAt=datetime'123456'`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toMatchObject([
       {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
         },
         ID: id,
         FirstItem: null,
@@ -240,7 +240,7 @@ describe("main", () => {
   });
 
   it("GET request with deep $expand/$select", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
       Items: [
         {
@@ -252,12 +252,12 @@ describe("main", () => {
     const id = response.body.d.ID;
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items,Items/header,Items/header/Items&$select=ID,name,Items/ID,Items/name,Items/header/ID,Items/header/name`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items,Items/header,Items/header/Items&$select=ID,name,Items/ID,Items/name,Items/header/ID,Items/header/name`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
-        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -271,7 +271,7 @@ describe("main", () => {
             name: "TestItem",
             header: {
               __metadata: {
-                uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+                uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
                 type: "test.MainService.Header",
               },
               ID: id,
@@ -300,12 +300,12 @@ describe("main", () => {
     });
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items&$select=Items/name`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items&$select=Items/name`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
-        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -332,7 +332,7 @@ describe("main", () => {
   });
 
   it("GET request with $select on deferreds", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
       Items: [
         {
@@ -343,62 +343,62 @@ describe("main", () => {
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
     const itemId = response.body.d.Items.results[0].ID;
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }'&$select=ID,name`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${ id }'&$select=ID,name`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toEqual([
       {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
         },
         ID: id,
         name: "Test",
       },
     ]);
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }'&$select=ID,name,Items`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${ id }'&$select=ID,name,Items`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toEqual([
       {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
         },
         ID: id,
         name: "Test",
         Items: {
           __deferred: {
-            uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')/Items`,
+            uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')/Items`,
           },
         },
       },
     ]);
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }'&$select=ID,name,Items/ID`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${ id }'&$select=ID,name,Items/ID`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toEqual([
       {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
         },
         ID: id,
         name: "Test",
         Items: {
           __deferred: {
-            uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')/Items`,
+            uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')/Items`,
           },
         },
       },
     ]);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }'&$select=ID,name,Items/ID&$expand=Items`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }'&$select=ID,name,Items/ID&$expand=Items`
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toEqual([
       {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
         },
         ID: id,
         name: "Test",
@@ -411,7 +411,7 @@ describe("main", () => {
                 uri: `http://${ response.request.host.replace(
                   "127.0.0.1",
                   "localhost"
-                ) }/v2/main/HeaderItem(guid'${ itemId }')`,
+                ) }/odata/v2/main/HeaderItem(guid'${ itemId }')`,
               },
             },
           ],
@@ -421,130 +421,130 @@ describe("main", () => {
   });
 
   it("GET request with search", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callWrite(request, "/v2/main/Header", {
+    response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Search Instance_Test",
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callWrite(request, "/v2/main/Header", {
+    response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: 'Search"Quote"',
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header?search=Search%20Instance`);
+    response = await util.callRead(request, `/odata/v2/main/Header?search=Search%20Instance`);
     expect(response.body.d.results.length).toEqual(1);
-    response = await util.callRead(request, `/v2/main/Header?$search=Search%20Instance`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$search=Search%20Instance`);
     expect(response.body.d.results.length).toEqual(1);
-    response = await util.callRead(request, `/v2/main/Header/$count?search=Search%20Instance`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=Search%20Instance`);
     expect(response.text).toEqual("1");
-    response = await util.callRead(request, `/v2/main/Header/$count?$search=Search%20Instance`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?$search=Search%20Instance`);
     expect(response.text).toEqual("1");
-    response = await util.callRead(request, `/v2/main/Header/$count?$search="Search%20Instance"`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?$search="Search%20Instance"`);
     expect(response.text).toEqual("1");
-    response = await util.callRead(request, `/v2/main/Header/$count?search="`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search="`);
     expect(response.text).toEqual("2");
-    response = await util.callRead(request, `/v2/main/Header/$count?search=""`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=""`);
     expect(response.text).toEqual("0");
-    response = await util.callRead(request, `/v2/main/Header/$count?search=`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=`);
     expect(response.text).toEqual("14");
-    response = await util.callRead(request, `/v2/main/Header/$count?search="""`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search="""`);
     expect(response.text).toEqual("0");
-    response = await util.callRead(request, `/v2/main/Header/$count?search=Search"Quote"`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=Search"Quote"`);
     expect(response.text).toEqual("1");
-    response = await util.callRead(request, `/v2/main/Header/$count?$search="Search\\"Quote\\""`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?$search="Search\\"Quote\\""`);
     expect(response.text).toEqual("1");
-    response = await util.callRead(request, `/v2/main/Header/$count?$search="\\"\\""`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?$search="\\"\\""`);
     expect(response.text).toEqual("0");
 
-    response = await util.callWrite(request, "/v2/main/Header", {
+    response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: '"',
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, `/v2/main/Header/$count?search="`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search="`);
     expect(response.text).toEqual("3");
-    response = await util.callRead(request, `/v2/main/Header/$count?search=%22`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=%22`);
     expect(response.text).toEqual("3");
-    response = await util.callRead(request, `/v2/main/Header/$count?search=%22%22%22`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=%22%22%22`);
     expect(response.text).toEqual("0");
   });
 
   it("GET request with $count", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header/$count?$filter=ID eq guid'${ id }'`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?$filter=ID eq guid'${ id }'`);
     expect(response.text).toEqual("1");
   });
 
   it("GET request with $value", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')/ID`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')/ID`);
     expect(response.body).toEqual({
       d: {
         ID: id,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')/ID/$value`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')/ID/$value`);
     expect(response.headers["content-type"]).toEqual("text/plain");
     expect(response.text).toEqual(id);
   });
 
   it("GET request with delta responses", async () => {
-    let response = await util.callWrite(request, "/v2/main/HeaderDelta", {
+    let response = await util.callWrite(request, "/odata/v2/main/HeaderDelta", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/HeaderDelta?!deltatoken='${ new Date().getTime() }'`);
+    response = await util.callRead(request, `/odata/v2/main/HeaderDelta?!deltatoken='${ new Date().getTime() }'`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
-    expect(response.body.d.__delta).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/HeaderDelta\?!deltatoken='(\d*)'/);
-    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${ id }')`);
+    expect(response.body.d.__delta).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/HeaderDelta\?!deltatoken='(\d*)'/);
+    response = await util.callRead(request, `/odata/v2/main/HeaderDelta(guid'${ id }')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeUndefined();
 
-    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${ id }')/Items?$filter=name eq 'a /'`);
+    response = await util.callRead(request, `/odata/v2/main/HeaderDelta(guid'${ id }')/Items?$filter=name eq 'a /'`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.__delta).toMatch(
-      /http:\/\/localhost:(\d*)\/v2\/main\/HeaderDelta\(guid'.*?'\)\/Items\?\$filter=name eq 'a \/'&!deltatoken='(\d*)'/
+      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/HeaderDelta\(guid'.*?'\)\/Items\?\$filter=name eq 'a \/'&!deltatoken='(\d*)'/
     );
   });
 
   it("GET request with next link responses", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, "/v2/main/Header?$skiptoken=1");
+    response = await util.callRead(request, "/odata/v2/main/Header?$skiptoken=1");
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.__next).toBeUndefined(); // Limit (1000) larger than result size
 
-    response = await util.callRead(request, "/v2/main/FavoriteLimited");
+    response = await util.callRead(request, "/odata/v2/main/FavoriteLimited");
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/FavoriteLimited\?\$skiptoken=1/);
+    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?\$skiptoken=1/);
     const nextUrl = response.body.d.__next.match(/http:\/\/localhost:\d*(.*)/)[1];
     response = await util.callRead(request, nextUrl);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/v2\/main\/FavoriteLimited\?\$skiptoken=2/);
+    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?\$skiptoken=2/);
   });
 
   it("GET request with stream", async () => {
     const id = "f8a7a4f7-1901-4032-a237-3fba1d1b2343";
-    let response = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    let response = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(response.body.d).toEqual({
       ID: id,
       __metadata: {
@@ -552,9 +552,9 @@ describe("main", () => {
         media_src: `http://${ response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        ) }/v2/main/HeaderStream(guid'${ id }')/$value`,
+        ) }/odata/v2/main/HeaderStream(guid'${ id }')/$value`,
         type: "test.MainService.HeaderStream",
-        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/HeaderStream(guid'${ id }')`,
+        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/HeaderStream(guid'${ id }')`,
       },
       custom: null,
       filename: "file.png",
@@ -562,14 +562,14 @@ describe("main", () => {
       mediaType: "image/png",
       totalAmount: null,
     });
-    const mediaSrc = response.body.d.__metadata.media_src.substr(response.body.d.__metadata.media_src.indexOf("/v2"));
+    const mediaSrc = response.body.d.__metadata.media_src.substr(response.body.d.__metadata.media_src.indexOf("/odata/v2"));
     response = await util.callRead(request, mediaSrc);
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
-    response = await util.callRead(request, "/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data");
+    response = await util.callRead(request, "/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data");
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
@@ -577,14 +577,14 @@ describe("main", () => {
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
-      "/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data/$value"
+      "/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/data/$value"
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
-    response = await util.callRead(request, `/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`);
+    response = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
@@ -592,7 +592,7 @@ describe("main", () => {
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
-      "/v2/main/HeaderStreamAttachment(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
+      "/odata/v2/main/HeaderStreamAttachment(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -604,7 +604,7 @@ describe("main", () => {
   it("GET request with url stream", async () => {
     let response = await util.callRead(
       request,
-      "/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link",
+      "/odata/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link",
       {
         accept: "image/png",
       }
@@ -612,7 +612,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     response = await util.callRead(
       request,
-      "/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link"
+      "/odata/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link"
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -622,7 +622,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     response = await util.callRead(
       request,
-      "/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link/$value"
+      "/odata/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link/$value"
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -631,7 +631,7 @@ describe("main", () => {
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
-      "/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
+      "/odata/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
     );
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toBe(17686);
@@ -640,7 +640,7 @@ describe("main", () => {
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
     response = await util.callRead(
       request,
-      "/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
+      "/odata/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
     );
     expect(response.statusCode).toEqual(500);
     expect(response.body).toMatchObject({
@@ -671,7 +671,7 @@ describe("main", () => {
     });
     response = await util.callRead(
       request,
-      "/v2/main/HeaderUrlStream(guid'a8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value",
+      "/odata/v2/main/HeaderUrlStream(guid'a8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value",
       {
         accept: "image/png",
       }
@@ -706,7 +706,7 @@ describe("main", () => {
   it("PUT request with stream", async () => {
     const error = await new Promise((done) => {
       util
-        .callWrite(request, "/v2/main/HeaderStream", {
+        .callWrite(request, "/odata/v2/main/HeaderStream", {
           mediaType: "image/png",
           filename: "test.png",
         })
@@ -714,24 +714,24 @@ describe("main", () => {
           expect(createResponse.statusCode).toEqual(201);
           const id = createResponse.body.d.ID;
           const stream = fs.createReadStream(__dirname + "/_env/srv/init/assets/file.png");
-          const req = util.callStream(request, `/v2/main/HeaderStream(guid'${ id }')/data`, true, {
+          const req = util.callStream(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`, true, {
             "content-type": "image/png",
           });
           req.expect(204);
           stream.on("end", async () => {
             req.end(async (err) => {
               if (!err) {
-                let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+                let readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
                 expect(readResponse.statusCode).toEqual(200);
                 expect(readResponse.headers["content-type"]).toEqual("image/png");
                 expect(readResponse.body.length).toEqual(17686);
-                let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+                let deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
                 expect(deleteResponse.statusCode).toEqual(204);
-                readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+                readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
                 expect(readResponse.statusCode).toEqual(204);
-                deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+                deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
                 expect(deleteResponse.statusCode).toEqual(204);
-                readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+                readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
                 expect(readResponse.statusCode).toEqual(404);
               }
               done(err);
@@ -745,34 +745,34 @@ describe("main", () => {
 
   it("PUT request with binary", async () => {
     const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png");
-    const createResponse = await util.callWrite(request, "/v2/main/HeaderStream", {
+    const createResponse = await util.callWrite(request, "/odata/v2/main/HeaderStream", {
       mediaType: "image/png",
       filename: "test.png",
     });
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
-    const dataResponse = await util.callBinary(request, `/v2/main/HeaderStream(guid'${ id }')/data`, file, true, {
+    const dataResponse = await util.callBinary(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`, file, true, {
       "content-type": "image/png",
     });
     expect(dataResponse.statusCode).toEqual(204);
-    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    let readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
     expect(readResponse.body.length).toEqual(17686);
-    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    let deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(readResponse.statusCode).toEqual(204);
-    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(readResponse.statusCode).toEqual(404);
   });
 
   it("POST request with stream", async () => {
     const error = await new Promise((done) => {
       const stream = fs.createReadStream(__dirname + "/_env/srv/init/assets/file.png");
-      const req = util.callStream(request, "/v2/main/HeaderStream", false, {
+      const req = util.callStream(request, "/odata/v2/main/HeaderStream", false, {
         "content-type": "image/png",
         slug: "file.png",
         custom: "test123",
@@ -784,7 +784,7 @@ describe("main", () => {
         req.end(async (err, createResponse) => {
           if (!err) {
             const id = createResponse.body.d.ID;
-            let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+            let readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
             expect(readResponse.statusCode).toEqual(200);
             expect(readResponse.body.d).toMatchObject({
               ID: id,
@@ -794,17 +794,17 @@ describe("main", () => {
               totalAmount: 11,
               isBlocked: true,
             });
-            readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+            readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
             expect(readResponse.statusCode).toEqual(200);
             expect(readResponse.headers["content-type"]).toEqual("image/png");
             expect(readResponse.body.length).toEqual(17686);
-            let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+            let deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
             expect(deleteResponse.statusCode).toEqual(204);
-            readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+            readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
             expect(readResponse.statusCode).toEqual(204);
-            deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+            deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
             expect(deleteResponse.statusCode).toEqual(204);
-            readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+            readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
             expect(readResponse.statusCode).toEqual(404);
           }
           done(err);
@@ -817,7 +817,7 @@ describe("main", () => {
 
   it("POST request with binary", async () => {
     const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png");
-    const createResponse = await util.callBinary(request, "/v2/main/HeaderStream", file, false, {
+    const createResponse = await util.callBinary(request, "/odata/v2/main/HeaderStream", file, false, {
       "content-type": "image/png",
       slug: "file.png",
       custom: "test123",
@@ -826,7 +826,7 @@ describe("main", () => {
     });
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
-    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    let readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.body.d).toMatchObject({
       ID: id,
@@ -836,23 +836,23 @@ describe("main", () => {
       totalAmount: 11,
       isBlocked: false,
     });
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
     expect(readResponse.body.length).toEqual(17686);
-    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    let deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(readResponse.statusCode).toEqual(204);
-    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(readResponse.statusCode).toEqual(404);
   });
 
   it("POST request with binary with header decode", async () => {
     const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png");
-    const createResponse = await util.callBinary(request, "/v2/main/HeaderStreamDecode", file, false, {
+    const createResponse = await util.callBinary(request, "/odata/v2/main/HeaderStreamDecode", file, false, {
       "content-type": "image/png",
       slug: new Buffer(encodeURIComponent("test/file?&.png")).toString("base64"),
       custom: "test123",
@@ -861,7 +861,7 @@ describe("main", () => {
     });
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
-    let readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${ id }')`);
+    let readResponse = await util.callRead(request, `/odata/v2/main/HeaderStreamDecode(guid'${ id }')`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.body.d).toMatchObject({
       ID: id,
@@ -871,17 +871,17 @@ describe("main", () => {
       totalAmount: 11,
       isBlocked: false,
     });
-    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStreamDecode(guid'${ id }')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
     expect(readResponse.body.length).toEqual(17686);
-    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStreamDecode(guid'${ id }')/data`);
+    let deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStreamDecode(guid'${ id }')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStreamDecode(guid'${ id }')/data`);
     expect(readResponse.statusCode).toEqual(204);
-    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStreamDecode(guid'${ id }')`);
+    deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStreamDecode(guid'${ id }')`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStreamDecode(guid'${ id }')`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStreamDecode(guid'${ id }')`);
     expect(readResponse.statusCode).toEqual(404);
   });
 
@@ -889,7 +889,7 @@ describe("main", () => {
     const stream = fs.createReadStream(__dirname + "/_env/srv/init/assets/file.png");
     const createResponse = await util.callAttach(
       request,
-      "/v2/main/HeaderStream",
+      "/odata/v2/main/HeaderStream",
       stream,
       false,
       {
@@ -905,7 +905,7 @@ describe("main", () => {
     );
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
-    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    let readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.body.d).toMatchObject({
       ID: id,
@@ -915,24 +915,24 @@ describe("main", () => {
       totalAmount: 11,
       isBlocked: true,
     });
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
     expect(readResponse.body.length).toEqual(17686);
-    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    let deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(readResponse.statusCode).toEqual(204);
-    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(readResponse.statusCode).toEqual(404);
   });
 
   it("POST request with multipart form-data binary", async () => {
     const createResponse = await util.callAttach(
       request,
-      "/v2/main/HeaderStream",
+      "/odata/v2/main/HeaderStream",
       __dirname + "/_env/srv/init/assets/file.png",
       false,
       {
@@ -946,7 +946,7 @@ describe("main", () => {
     );
     expect(createResponse.statusCode).toEqual(201);
     const id = createResponse.body.d.ID;
-    let readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    let readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.body.d).toMatchObject({
       ID: id,
@@ -956,23 +956,23 @@ describe("main", () => {
       totalAmount: 11,
       isBlocked: false,
     });
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
     expect(readResponse.body.length).toEqual(17686);
-    let deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    let deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')/data`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')/data`);
     expect(readResponse.statusCode).toEqual(204);
-    deleteResponse = await util.callDelete(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    deleteResponse = await util.callDelete(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(deleteResponse.statusCode).toEqual(204);
-    readResponse = await util.callRead(request, `/v2/main/HeaderStream(guid'${ id }')`);
+    readResponse = await util.callRead(request, `/odata/v2/main/HeaderStream(guid'${ id }')`);
     expect(readResponse.statusCode).toEqual(404);
   });
 
   it("POST request with binary returning error", async () => {
     const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png");
-    const response = await util.callBinary(request, "/v2/main/HeaderStream", file, false, {
+    const response = await util.callBinary(request, "/odata/v2/main/HeaderStream", file, false, {
       Authorization: "Basic ABC123",
       "content-type": "image/png",
       slug: "file_error.png",
@@ -1009,7 +1009,7 @@ describe("main", () => {
 
   it("POST request with binary without media type annotations fails", async () => {
     const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png");
-    const createResponse = await util.callBinary(request, "/v2/main/HeaderBinary", file, false, {
+    const createResponse = await util.callBinary(request, "/odata/v2/main/HeaderBinary", file, false, {
       "content-type": "image/png",
       name: "test",
     });
@@ -1039,7 +1039,7 @@ describe("main", () => {
   });
 
   it("POST request with deep data containing metadata", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
       Items: [
         {
@@ -1049,12 +1049,12 @@ describe("main", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items`);
     expect(response.body).toBeDefined();
     let data = response.body.d.results[0];
     expect(data).toMatchObject({
       __metadata: {
-        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -1072,14 +1072,14 @@ describe("main", () => {
     });
     data.name = "Test2";
     data.Items.results[0].name = "TestItem2";
-    response = await util.callWrite(request, `/v2/main/Header(guid'${ id }')`, data, true);
+    response = await util.callWrite(request, `/odata/v2/main/Header(guid'${ id }')`, data, true);
     expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${ id }'&$expand=Items`);
     expect(response.body).toBeDefined();
     data = response.body.d.results[0];
     expect(data).toMatchObject({
       __metadata: {
-        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+        uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
         type: "test.MainService.Header",
       },
       ID: id,
@@ -1098,124 +1098,124 @@ describe("main", () => {
   });
 
   it("GET request with function 'substringof'", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('ES',name)`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('ES',name)`);
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name))`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name))`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name)) or name eq 'ABC'`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name)) or name eq 'ABC'`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name))%20or%20name%20eq 'ABC'`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name))%20or%20name%20eq 'ABC'`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name)) or substringof(')es , ''''and (t) substringof(''es'',tolower(name))',tolower(name))`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es',tolower(name)) or substringof(')es , ''''and (t) substringof(''es'',tolower(name))',tolower(name))`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=(ID eq guid'${ id }' and (substringof('es',tolower(name)) or (substringof(')es , ''''and (t) substringof(''es'',tolower(name))',tolower(name)))))`
+      `/odata/v2/main/Header?$filter=(ID eq guid'${ id }' and (substringof('es',tolower(name)) or (substringof(')es , ''''and (t) substringof(''es'',tolower(name))',tolower(name)))))`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof(tolower('ES'),tolower(name))`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof(tolower('ES'),tolower(name))`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof(tolower(tolower('ES')),tolower(tolower(name)))`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof(tolower(tolower('ES')),tolower(tolower(name)))`
     );
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es', name)`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('es', name)`);
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof( 'es',name)`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof( 'es',name)`);
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof( tolower('es'), tolower(name))`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof( tolower('es'), tolower(name))`
     );
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callWrite(request, "/v2/main/Header", {
+    response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "substringof('es',name)",
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, `/v2/main/Header?$filter=substringof('substringof(''es'',name)',name)`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=substringof('substringof(''es'',name)',name)`);
     expect(response.body.d.results).toHaveLength(1);
   });
 
   it("GET request with function 'substringof' incl. $", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test$",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('st$',name)`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('st$',name)`);
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('$',name)`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('$',name)`);
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callRead(request, `/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('$$',name)`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and substringof('$$',name)`);
     expect(response.body.d.results).toHaveLength(0);
   });
 
   it("GET request with function 'substringof' and 'startswith'", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' or substringof('er',createdBy) or startswith(createdBy,'By')&$select=ID,name,createdBy`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }' or substringof('er',createdBy) or startswith(createdBy,'By')&$select=ID,name,createdBy`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and startswith(createdBy,'ANO')&$select=ID,name,createdBy`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and startswith(createdBy,'ANO')&$select=ID,name,createdBy`
     );
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      `/v2/main/Header?$filter=ID eq guid'${ id }' and endswith(createdBy,'MOUS')&$select=ID,name,createdBy`
+      `/odata/v2/main/Header?$filter=ID eq guid'${ id }' and endswith(createdBy,'MOUS')&$select=ID,name,createdBy`
     );
     expect(response.body.d.results).toHaveLength(1);
   });
 
   it('GET request with many "or" filters on same field', async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
       country: "US",
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callWrite(request, "/v2/main/Header", {
+    response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
       country: "DE",
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, "/v2/main/Header?$filter=country eq 'X' or country eq 'A'");
+    response = await util.callRead(request, "/odata/v2/main/Header?$filter=country eq 'X' or country eq 'A'");
     expect(response.body.d.results).toHaveLength(0);
   });
 
   it("GET request with filter and data type conversion", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
       stock: 999,
       country: "US",
     });
-    response = await util.callRead(request, "/v2/main/Header?$filter=stock eq 999");
+    response = await util.callRead(request, "/odata/v2/main/Header?$filter=stock eq 999");
     expect(response.body.d.results).toHaveLength(1);
   });
 
@@ -1240,7 +1240,7 @@ describe("main", () => {
       },
     };
 
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
       stock: 1001,
       country: "US",
@@ -1251,14 +1251,14 @@ describe("main", () => {
         },
       ],
     });
-    response = await util.callRead(request, "/v2/main/Header?$expand=Items&$filter=stock eq 1001");
+    response = await util.callRead(request, "/odata/v2/main/Header?$expand=Items&$filter=stock eq 1001");
     expect(response.body.d.results).toHaveLength(1);
     const ID = response.body.d.results[0].ID;
     expect(response.body.d.results[0].Items.results).toHaveLength(1);
     const itemID = response.body.d.results[0].Items.results[0].ID;
     response = await util.callWrite(
       request,
-      `/v2/main/Header(${ ID })`,
+      `/odata/v2/main/Header(${ ID })`,
       {
         ID,
         FirstItem_ID: itemID,
@@ -1268,43 +1268,43 @@ describe("main", () => {
     expect(response.statusCode).toBe(200);
     response = await util.callRead(
       request,
-      "/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/assoc/num eq 12.01d"
+      "/odata/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/assoc/num eq 12.01d"
     );
     // expect(response.body.d.results).toHaveLength(1);
     expect(response.body).toEqual(sqliteError);
     response = await util.callRead(
       request,
-      "/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'"
+      "/odata/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'"
     );
     // expect(response.body.d.results).toHaveLength(1);
     expect(response.body).toEqual(sqliteError);
     response = await util.callRead(
       request,
-      "/v2/main/Header?$expand=FirstItem&$filter=FirstItem/name eq 'TestItem1001'"
+      "/odata/v2/main/Header?$expand=FirstItem&$filter=FirstItem/name eq 'TestItem1001'"
     );
     // expect(response.body.d.results).toHaveLength(1);
     expect(response.body).toEqual(sqliteError);
   });
 
   it("GET request with uri escape character", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test %22",
       country: "US",
     });
     expect(response.statusCode).toEqual(201);
     const ID = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ ID }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ ID }')`);
     expect(response.body.d).toMatchObject({
       ID,
       name: "Test %22",
       country: "US",
     });
-    response = await util.callRead(request, encodeURI("/v2/main/Header?$filter=name eq 'Test %22'"));
+    response = await util.callRead(request, encodeURI("/odata/v2/main/Header?$filter=name eq 'Test %22'"));
     expect(response.body.d.results).toHaveLength(1);
   });
 
   it("POST request", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test Create",
       Items: [
         {
@@ -1318,14 +1318,14 @@ describe("main", () => {
     const id = response.body.d.ID;
     expect(id).toBeDefined();
     expect(response.headers.location).toEqual(
-      `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`
+      `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`
     );
     let itemId = response.body.d.Items.results[0].ID;
     expect(itemId).toBeDefined();
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
           type: "test.MainService.Header",
         },
         ID: id,
@@ -1352,14 +1352,14 @@ describe("main", () => {
     expect(/\/Date\(.+?\+0000\)\//.test(response.body.d.createdAt)).toEqual(true);
     const createdAt = new Date(parseInt(response.body.d.createdAt.substring(6, response.body.d.createdAt.length - 2)));
     expect(createdAt.toString()).not.toEqual("Invalid Date");
-    response = await util.callRead(request, "/v2/main/Header?$filter=name eq 'Test Create'");
+    response = await util.callRead(request, "/odata/v2/main/Header?$filter=name eq 'Test Create'");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')`);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
           type: "test.MainService.Header",
         },
         createdBy: "anonymous",
@@ -1368,15 +1368,15 @@ describe("main", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')/Items`,
+            uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')/Items`,
           },
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')/Items`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')/Items`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callWrite(request, `/v2/main/Header(guid'${ id }')/Items`, {
+    response = await util.callWrite(request, `/odata/v2/main/Header(guid'${ id }')/Items`, {
       name: "Test Update",
     });
     expect(response.statusCode).toEqual(201);
@@ -1386,7 +1386,7 @@ describe("main", () => {
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/HeaderItem(guid'${ itemId }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/HeaderItem(guid'${ itemId }')`,
           type: "test.MainService.HeaderItem",
         },
         name: "Test Update",
@@ -1399,17 +1399,17 @@ describe("main", () => {
             uri: `http://${ response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderItem(guid'${ itemId }')/header`,
+            ) }/odata/v2/main/HeaderItem(guid'${ itemId }')/header`,
           },
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')/Items(guid'${ itemId }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')/Items(guid'${ itemId }')`);
     expect(response.body).toBeDefined();
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/HeaderItem(guid'${ itemId }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/HeaderItem(guid'${ itemId }')`,
           type: "test.MainService.HeaderItem",
         },
         name: "Test Update",
@@ -1422,7 +1422,7 @@ describe("main", () => {
             uri: `http://${ response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderItem(guid'${ itemId }')/header`,
+            ) }/odata/v2/main/HeaderItem(guid'${ itemId }')/header`,
           },
         },
       },
@@ -1430,7 +1430,7 @@ describe("main", () => {
   });
 
   it("POST request with artificial structures", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       d: {
         __metadata: {
           type: "test.MainService.Header",
@@ -1454,14 +1454,14 @@ describe("main", () => {
     const id = response.body.d.ID;
     expect(id).toBeDefined();
     expect(response.headers.location).toEqual(
-      `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`
+      `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`
     );
     let itemId = response.body.d.Items.results[0].ID;
     expect(itemId).toBeDefined();
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
           type: "test.MainService.Header",
         },
         ID: id,
@@ -1488,25 +1488,25 @@ describe("main", () => {
   });
 
   it("PUT request", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
     response = await util.callWrite(
       request,
-      `/v2/main/Header(guid'${ id }')`,
+      `/odata/v2/main/Header(guid'${ id }')`,
       {
         name: "Test2",
       },
       true
     );
     expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')`);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
           type: "test.MainService.Header",
         },
         createdBy: "anonymous",
@@ -1515,14 +1515,14 @@ describe("main", () => {
         description: null,
         Items: {
           __deferred: {
-            uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')/Items`,
+            uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')/Items`,
           },
         },
       },
     });
     response = await util.callWrite(
       request,
-      "/v2/main/Header",
+      "/odata/v2/main/Header",
       {
         name: "Test",
       },
@@ -1553,7 +1553,7 @@ describe("main", () => {
   });
 
   it("POST request with encoding", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test: èèòàù",
     });
     expect(response.statusCode).toEqual(201);
@@ -1562,14 +1562,14 @@ describe("main", () => {
     let id = response.body.d.ID;
     expect(id).toBeDefined();
     expect(response.body.d.name).toEqual("Test: èèòàù");
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.name).toEqual("Test: èèòàù");
     expect(response.headers["content-type"]).toEqual("application/json");
 
     response = await util.callWrite(
       request,
-      "/v2/main/Header",
+      "/odata/v2/main/Header",
       {
         name: "Test: èèòàù",
       },
@@ -1584,21 +1584,21 @@ describe("main", () => {
     id = response.body.d.ID;
     expect(id).toBeDefined();
     expect(response.body.d.name).toEqual("Test: èèòàù");
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.name).toEqual("Test: èèòàù");
     expect(response.headers["content-type"]).toEqual("application/json");
   });
 
   it("POST request with x-http-method", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
     response = await util.callWrite(
       request,
-      `/v2/main/Header(guid'${ id }')`,
+      `/odata/v2/main/Header(guid'${ id }')`,
       {
         name: "Test2",
       },
@@ -1612,39 +1612,39 @@ describe("main", () => {
   });
 
   it("PUT request after GET", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     let body = response.body;
     const id = body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')`);
     body = response.body;
     body.d.name = "Test2";
-    response = await util.callWrite(request, `/v2/main/Header(guid'${ id }')`, body.d, true);
+    response = await util.callWrite(request, `/odata/v2/main/Header(guid'${ id }')`, body.d, true);
     expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')`);
     expect(response.body.d.name).toEqual("Test2");
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')?$expand=Items,FirstItem`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')?$expand=Items,FirstItem`);
     body = response.body;
     body.d.name = "Test3";
-    response = await util.callWrite(request, `/v2/main/Header(guid'${ id }')`, body.d, true);
+    response = await util.callWrite(request, `/odata/v2/main/Header(guid'${ id }')`, body.d, true);
     expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')`);
     expect(response.body.d.name).toEqual("Test3");
   });
 
   it("DELETE request", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callDelete(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callDelete(request, `/odata/v2/main/Header(guid'${ id }')`);
     expect(response.statusCode).toEqual(204);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')`);
     expect(response.statusCode).toEqual(404);
-    response = await util.callDelete(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callDelete(request, `/odata/v2/main/Header(guid'${ id }')`);
     expect(response.statusCode).toEqual(404);
     expect(response.body).toMatchObject({
       error: {
@@ -1671,7 +1671,7 @@ describe("main", () => {
   });
 
   it("GET unbound function", async () => {
-    let response = await util.callRead(request, "/v2/main/unboundFunction?num=1&text=abc");
+    let response = await util.callRead(request, "/odata/v2/main/unboundFunction?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundFunction: {
@@ -1684,7 +1684,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callRead(request, "/v2/main/unboundFunctionInline?num=1&text=abc");
+    response = await util.callRead(request, "/odata/v2/main/unboundFunctionInline?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundFunctionInline: {
@@ -1697,7 +1697,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callRead(request, "/v2/main/unboundFunction?num=1&text=a%20b%2Fc");
+    response = await util.callRead(request, "/odata/v2/main/unboundFunction?num=1&text=a%20b%2Fc");
     expect(response.body).toMatchObject({
       d: {
         unboundFunction: {
@@ -1710,7 +1710,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callRead(request, "/v2/main/unboundFunction?num=1&text=%27a%20b%2Fc%27");
+    response = await util.callRead(request, "/odata/v2/main/unboundFunction?num=1&text=%27a%20b%2Fc%27");
     expect(response.body).toMatchObject({
       d: {
         unboundFunction: {
@@ -1723,7 +1723,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callRead(request, "/v2/main/unboundFunction?num=1&text='abc'");
+    response = await util.callRead(request, "/odata/v2/main/unboundFunction?num=1&text='abc'");
     expect(response.body).toMatchObject({
       d: {
         unboundFunction: {
@@ -1737,7 +1737,7 @@ describe("main", () => {
       },
     });
 
-    const _request = util.callRead(request, "/v2/main/unboundFunction?num=1&text=abc");
+    const _request = util.callRead(request, "/odata/v2/main/unboundFunction?num=1&text=abc");
     // Set wrong body for GET
     _request.set("content-type", "application/json").send({ code: "TEST" });
     response = await _request;
@@ -1756,7 +1756,7 @@ describe("main", () => {
   });
 
   it("GET unbound mass function", async () => {
-    let response = await util.callRead(request, "/v2/main/unboundMassFunction?ids=TEST1");
+    let response = await util.callRead(request, "/odata/v2/main/unboundMassFunction?ids=TEST1");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -1771,7 +1771,7 @@ describe("main", () => {
         ],
       },
     });
-    response = await util.callRead(request, "/v2/main/unboundMassFunction?ids=TEST1&ids='TEST2'");
+    response = await util.callRead(request, "/odata/v2/main/unboundMassFunction?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -1794,7 +1794,7 @@ describe("main", () => {
         ],
       },
     });
-    response = await util.callRead(request, "/v2/main/unboundMassFunctionInline?ids=TEST1&ids='TEST2'");
+    response = await util.callRead(request, "/odata/v2/main/unboundMassFunctionInline?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -1820,13 +1820,13 @@ describe("main", () => {
   });
 
   it("GET unbound primitive function", async () => {
-    let response = await util.callRead(request, "/v2/main/unboundFunctionPrimitive?num=1");
+    let response = await util.callRead(request, "/odata/v2/main/unboundFunctionPrimitive?num=1");
     expect(response.body).toMatchObject({
       d: {
         unboundFunctionPrimitive: 1,
       },
     });
-    response = await util.callRead(request, "/v2/main/unboundMassFunctionPrimitive?text1=abc&text2=def");
+    response = await util.callRead(request, "/odata/v2/main/unboundMassFunctionPrimitive?text1=abc&text2=def");
     expect(response.body).toMatchObject({
       d: {
         results: ["abc", "def"],
@@ -1835,13 +1835,13 @@ describe("main", () => {
   });
 
   it("GET unbound primitive string function", async () => {
-    let response = await util.callRead(request, "/v2/main/unboundFunctionPrimitiveString?text=abc");
+    let response = await util.callRead(request, "/odata/v2/main/unboundFunctionPrimitiveString?text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundFunctionPrimitiveString: "abc",
       },
     });
-    response = await util.callRead(request, "/v2/main/unboundFunctionPrimitiveLargeString?text=abc");
+    response = await util.callRead(request, "/odata/v2/main/unboundFunctionPrimitiveLargeString?text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundFunctionPrimitiveLargeString: "abc",
@@ -1850,7 +1850,7 @@ describe("main", () => {
   });
 
   it("GET unbound entity function", async () => {
-    let response = await util.callRead(request, "/v2/main/unboundFunctionEntity?num=1&text=test");
+    let response = await util.callRead(request, "/odata/v2/main/unboundFunctionEntity?num=1&text=test");
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
@@ -1864,7 +1864,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callRead(request, "/v2/main/unboundMassFunctionEntity?ids=TEST1&ids='TEST2'");
+    response = await util.callRead(request, "/odata/v2/main/unboundMassFunctionEntity?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -1896,13 +1896,13 @@ describe("main", () => {
   });
 
   it("GET unbound decimal function", async () => {
-    let response = await util.callRead(request, "/v2/main/unboundDecimalFunction");
+    let response = await util.callRead(request, "/odata/v2/main/unboundDecimalFunction");
     expect(response.body).toMatchObject({
       d: {
         unboundDecimalFunction: "12345.6789",
       },
     });
-    response = await util.callRead(request, "/v2/main/unboundDecimalsFunction");
+    response = await util.callRead(request, "/odata/v2/main/unboundDecimalsFunction");
     expect(response.body).toMatchObject({
       d: {
         results: ["12345.6789", "12345.6789"],
@@ -1911,7 +1911,7 @@ describe("main", () => {
   });
 
   it("GET unbound function error", async () => {
-    let response = await util.callRead(request, "/v2/main/unboundErrorFunction");
+    let response = await util.callRead(request, "/odata/v2/main/unboundErrorFunction");
     expect(response.body).toMatchObject({
       error: {
         code: "ERR01",
@@ -1944,7 +1944,7 @@ describe("main", () => {
   });
 
   it("GET unbound function warning", async () => {
-    let response = await util.callRead(request, "/v2/main/unboundWarningFunction");
+    let response = await util.callRead(request, "/odata/v2/main/unboundWarningFunction");
     expect(response.body).toMatchObject({
       d: {
         unboundWarningFunction: {
@@ -1981,7 +1981,7 @@ describe("main", () => {
   });
 
   it("GET unbound function escaped warning", async () => {
-    let response = await util.callRead(request, "/v2/main/unboundEscapedWarningFunction");
+    let response = await util.callRead(request, "/odata/v2/main/unboundEscapedWarningFunction");
     expect(JSON.parse(response.headers["sap-message"])).toEqual({
       code: "WARN01",
       details: [],
@@ -1992,7 +1992,7 @@ describe("main", () => {
   });
 
   it("GET unbound function with navigation", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
       Items: [
         {
@@ -2002,12 +2002,12 @@ describe("main", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/unboundNavigationFunction?num=1&text=${ id }`);
+    response = await util.callRead(request, `/odata/v2/main/unboundNavigationFunction?num=1&text=${ id }`);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
           type: "test.MainService.Header",
-          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/v2/main/Header(guid'${ id }')`,
+          uri: `http://${ response.request.host.replace("127.0.0.1", "localhost") }/odata/v2/main/Header(guid'${ id }')`,
         },
         createdBy: "anonymous",
         modifiedBy: "anonymous",
@@ -2015,9 +2015,9 @@ describe("main", () => {
         description: null,
       },
     });
-    response = await util.callRead(request, "/v2/main/unboundNavigationsFunction?num=1&text=abc");
+    response = await util.callRead(request, "/odata/v2/main/unboundNavigationsFunction?num=1&text=abc");
     expect(response.body.d.results.length > 0).toEqual(true);
-    response = await util.callRead(request, "/v2/main/unboundNavigationFunction/Items?num=1&text=abc");
+    response = await util.callRead(request, "/odata/v2/main/unboundNavigationFunction/Items?num=1&text=abc");
     expect(response.body).toMatchObject({
       error: {
         code: "400",
@@ -2043,12 +2043,12 @@ describe("main", () => {
   });
 
   it("GET bound function", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${ id }'&num=1&text=abc`);
+    response = await util.callRead(request, `/odata/v2/main/Header_boundFunction?ID=guid'${ id }'&num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         Header_boundFunction: {
@@ -2061,7 +2061,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${ id }'&num=1&text=a%20b%2Fc`);
+    response = await util.callRead(request, `/odata/v2/main/Header_boundFunction?ID=guid'${ id }'&num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
         Header_boundFunction: {
@@ -2077,12 +2077,12 @@ describe("main", () => {
   });
 
   it("GET bound mass function", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundMassFunction?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`);
+    response = await util.callRead(request, `/odata/v2/main/Header_boundMassFunction?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`);
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2108,12 +2108,12 @@ describe("main", () => {
   });
 
   it("GET bound primitive function", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitive?ID=guid'${ id }'&num=1`);
+    response = await util.callRead(request, `/odata/v2/main/Header_boundFunctionPrimitive?ID=guid'${ id }'&num=1`);
     expect(response.body).toMatchObject({
       d: {
         Header_boundFunctionPrimitive: 1,
@@ -2121,7 +2121,7 @@ describe("main", () => {
     });
     response = await util.callRead(
       request,
-      `/v2/main/Header_boundMassFunctionPrimitive?ID=guid'${ id }'&text1=abc&text2=def`
+      `/odata/v2/main/Header_boundMassFunctionPrimitive?ID=guid'${ id }'&text1=abc&text2=def`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -2131,12 +2131,12 @@ describe("main", () => {
   });
 
   it("GET bound primitive string function", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundFunctionPrimitiveString?ID=guid'${ id }'&text=abc`);
+    response = await util.callRead(request, `/odata/v2/main/Header_boundFunctionPrimitiveString?ID=guid'${ id }'&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         Header_boundFunctionPrimitiveString: "abc",
@@ -2144,7 +2144,7 @@ describe("main", () => {
     });
     response = response = await util.callRead(
       request,
-      `/v2/main/Header_boundFunctionPrimitiveLargeString?ID=guid'${ id }'&text=abc`
+      `/odata/v2/main/Header_boundFunctionPrimitiveLargeString?ID=guid'${ id }'&text=abc`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -2154,12 +2154,12 @@ describe("main", () => {
   });
 
   it("GET bound entity function", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundFunctionEntity?ID=guid'${ id }'&num=1&text=test`);
+    response = await util.callRead(request, `/odata/v2/main/Header_boundFunctionEntity?ID=guid'${ id }'&num=1&text=test`);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
@@ -2175,7 +2175,7 @@ describe("main", () => {
     });
     response = await util.callRead(
       request,
-      `/v2/main/Header_boundMassFunctionEntity?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`
+      `/odata/v2/main/Header_boundMassFunctionEntity?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -2208,12 +2208,12 @@ describe("main", () => {
   });
 
   it("GET bound function error", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundErrorFunction?ID=guid'${ id }'`);
+    response = await util.callRead(request, `/odata/v2/main/Header_boundErrorFunction?ID=guid'${ id }'`);
     expect(response.body).toMatchObject({
       error: {
         code: "ERR01",
@@ -2243,12 +2243,12 @@ describe("main", () => {
   });
 
   it("GET bound function warning", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header_boundWarningFunction?ID=guid'${ id }'`);
+    response = await util.callRead(request, `/odata/v2/main/Header_boundWarningFunction?ID=guid'${ id }'`);
     expect(response.body).toMatchObject({
       d: {
         Header_boundWarningFunction: {
@@ -2282,7 +2282,7 @@ describe("main", () => {
   });
 
   it("POST unbound action", async () => {
-    let response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text=abc");
+    let response = await util.callWrite(request, "/odata/v2/main/unboundAction?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -2295,7 +2295,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundActionInline?num=1&text=abc");
+    response = await util.callWrite(request, "/odata/v2/main/unboundActionInline?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundActionInline: {
@@ -2308,7 +2308,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text=a%20b%2Fc");
+    response = await util.callWrite(request, "/odata/v2/main/unboundAction?num=1&text=a%20b%2Fc");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -2321,7 +2321,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundAction", {
+    response = await util.callWrite(request, "/odata/v2/main/unboundAction", {
       num: 1,
       text: "abc",
     });
@@ -2337,7 +2337,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundAction?num=1", {
+    response = await util.callWrite(request, "/odata/v2/main/unboundAction?num=1", {
       text: "abc",
     });
     expect(response.body).toMatchObject({
@@ -2355,7 +2355,7 @@ describe("main", () => {
   });
 
   it("POST unbound action request with sap-language", async () => {
-    let response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text=abc&sap-language=de");
+    let response = await util.callWrite(request, "/odata/v2/main/unboundAction?num=1&text=abc&sap-language=de");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -2371,7 +2371,7 @@ describe("main", () => {
   });
 
   it("POST unbound mass action", async () => {
-    let response = await util.callWrite(request, "/v2/main/unboundMassAction?ids=TEST1");
+    let response = await util.callWrite(request, "/odata/v2/main/unboundMassAction?ids=TEST1");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2386,30 +2386,7 @@ describe("main", () => {
         ],
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundMassAction?ids=TEST1&ids='TEST2'");
-    expect(response.body).toMatchObject({
-      d: {
-        results: [
-          {
-            age: 0,
-            code: "TEST1",
-            name: "TEST1",
-            __metadata: {
-              type: "test.MainService.Result",
-            },
-          },
-          {
-            age: 1,
-            code: "TEST2",
-            name: "TEST2",
-            __metadata: {
-              type: "test.MainService.Result",
-            },
-          },
-        ],
-      },
-    });
-    response = await util.callWrite(request, "/v2/main/unboundMassAction", { ids: ["TEST1", "TEST2"] });
+    response = await util.callWrite(request, "/odata/v2/main/unboundMassAction?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2432,7 +2409,30 @@ describe("main", () => {
         ],
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundMassActionInline?ids=TEST1&ids='TEST2'");
+    response = await util.callWrite(request, "/odata/v2/main/unboundMassAction", { ids: ["TEST1", "TEST2"] });
+    expect(response.body).toMatchObject({
+      d: {
+        results: [
+          {
+            age: 0,
+            code: "TEST1",
+            name: "TEST1",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+          {
+            age: 1,
+            code: "TEST2",
+            name: "TEST2",
+            __metadata: {
+              type: "test.MainService.Result",
+            },
+          },
+        ],
+      },
+    });
+    response = await util.callWrite(request, "/odata/v2/main/unboundMassActionInline?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2458,18 +2458,18 @@ describe("main", () => {
   });
 
   it("POST unbound action request with no return", async () => {
-    let response = await util.callWrite(request, "/v2/main/unboundActionNoReturn?num=1&text=abc");
+    let response = await util.callWrite(request, "/odata/v2/main/unboundActionNoReturn?num=1&text=abc");
     expect(response.body).toEqual({});
   });
 
   it("POST unbound primitive action", async () => {
-    let response = await util.callWrite(request, "/v2/main/unboundActionPrimitive?num=1");
+    let response = await util.callWrite(request, "/odata/v2/main/unboundActionPrimitive?num=1");
     expect(response.body).toMatchObject({
       d: {
         unboundActionPrimitive: 1,
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundMassActionPrimitive?text1=abc&text2=def");
+    response = await util.callWrite(request, "/odata/v2/main/unboundMassActionPrimitive?text1=abc&text2=def");
     expect(response.body).toMatchObject({
       d: {
         results: ["abc", "def"],
@@ -2478,13 +2478,13 @@ describe("main", () => {
   });
 
   it("POST unbound primitive string action", async () => {
-    let response = await util.callWrite(request, "/v2/main/unboundActionPrimitiveString?text=abc");
+    let response = await util.callWrite(request, "/odata/v2/main/unboundActionPrimitiveString?text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundActionPrimitiveString: "abc",
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundActionPrimitiveLargeString?text=abc");
+    response = await util.callWrite(request, "/odata/v2/main/unboundActionPrimitiveLargeString?text=abc");
     expect(response.body).toMatchObject({
       d: {
         unboundActionPrimitiveLargeString: "abc",
@@ -2493,7 +2493,7 @@ describe("main", () => {
   });
 
   it("POST unbound entity action", async () => {
-    let response = await util.callWrite(request, "/v2/main/unboundActionEntity?num=1&text=test");
+    let response = await util.callWrite(request, "/odata/v2/main/unboundActionEntity?num=1&text=test");
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
@@ -2507,7 +2507,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundMassActionEntity?ids=TEST1&ids='TEST2'");
+    response = await util.callWrite(request, "/odata/v2/main/unboundMassActionEntity?ids=TEST1&ids='TEST2'");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2539,12 +2539,12 @@ describe("main", () => {
   });
 
   it("POST bound action", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${ id }'&num=1&text=abc`);
+    response = await util.callWrite(request, `/odata/v2/main/Header_boundAction?ID=guid'${ id }'&num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         Header_boundAction: {
@@ -2557,7 +2557,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/Header_boundActionInline?ID=guid'${ id }'&num=1&text=abc`);
+    response = await util.callWrite(request, `/odata/v2/main/Header_boundActionInline?ID=guid'${ id }'&num=1&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         Header_boundActionInline: {
@@ -2570,7 +2570,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/Header_boundAction?ID=guid'${ id }'&num=1&text=a%20b%2Fc`);
+    response = await util.callWrite(request, `/odata/v2/main/Header_boundAction?ID=guid'${ id }'&num=1&text=a%20b%2Fc`);
     expect(response.body).toMatchObject({
       d: {
         Header_boundAction: {
@@ -2586,12 +2586,12 @@ describe("main", () => {
   });
 
   it("POST bound primitive action", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitive?ID=guid'${ id }'&num=1`);
+    response = await util.callWrite(request, `/odata/v2/main/Header_boundActionPrimitive?ID=guid'${ id }'&num=1`);
     expect(response.body).toMatchObject({
       d: {
         Header_boundActionPrimitive: 1,
@@ -2599,7 +2599,7 @@ describe("main", () => {
     });
     response = await util.callWrite(
       request,
-      `/v2/main/Header_boundMassActionPrimitive?ID=guid'${ id }'&text1=abc&text2=def`
+      `/odata/v2/main/Header_boundMassActionPrimitive?ID=guid'${ id }'&text1=abc&text2=def`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -2609,18 +2609,18 @@ describe("main", () => {
   });
 
   it("POST bound primitive string action", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveString?ID=guid'${ id }'&text=abc`);
+    response = await util.callWrite(request, `/odata/v2/main/Header_boundActionPrimitiveString?ID=guid'${ id }'&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         Header_boundActionPrimitiveString: "abc",
       },
     });
-    response = await util.callWrite(request, `/v2/main/Header_boundActionPrimitiveLargeString?ID=guid'${ id }'&text=abc`);
+    response = await util.callWrite(request, `/odata/v2/main/Header_boundActionPrimitiveLargeString?ID=guid'${ id }'&text=abc`);
     expect(response.body).toMatchObject({
       d: {
         Header_boundActionPrimitiveLargeString: "abc",
@@ -2629,12 +2629,12 @@ describe("main", () => {
   });
 
   it("POST bound mass action", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundMassAction?ID=guid'${ id }'&ids=TEST1`);
+    response = await util.callWrite(request, `/odata/v2/main/Header_boundMassAction?ID=guid'${ id }'&ids=TEST1`);
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2649,7 +2649,7 @@ describe("main", () => {
         ],
       },
     });
-    response = await util.callWrite(request, `/v2/main/Header_boundMassAction?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`);
+    response = await util.callWrite(request, `/odata/v2/main/Header_boundMassAction?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`);
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -2674,7 +2674,7 @@ describe("main", () => {
     });
     response = await util.callWrite(
       request,
-      `/v2/main/Header_boundMassActionInline?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`
+      `/odata/v2/main/Header_boundMassActionInline?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -2701,22 +2701,22 @@ describe("main", () => {
   });
 
   it("POST bound action request with no return", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundActionNoReturn?ID=guid'${ id }'&num=1&text=abc`);
+    response = await util.callWrite(request, `/odata/v2/main/Header_boundActionNoReturn?ID=guid'${ id }'&num=1&text=abc`);
     expect(response.body).toEqual({});
   });
 
   it("POST bound entity action", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/v2/main/Header_boundActionEntity?ID=guid'${ id }'&num=1&text=test`);
+    response = await util.callWrite(request, `/odata/v2/main/Header_boundActionEntity?ID=guid'${ id }'&num=1&text=test`);
     expect(response.body).toMatchObject({
       d: {
         __metadata: {
@@ -2732,7 +2732,7 @@ describe("main", () => {
     });
     response = await util.callWrite(
       request,
-      `/v2/main/Header_boundMassActionEntity?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`
+      `/odata/v2/main/Header_boundMassActionEntity?ID=guid'${ id }'&ids=TEST1&ids='TEST2'`
     );
     expect(response.body).toMatchObject({
       d: {
@@ -2766,11 +2766,11 @@ describe("main", () => {
 
   it("GET HANA SYSUUID as ID", async () => {
     const ID = "D99B1B70-3B03-BC1E-1700-05023630F1F7";
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       ID,
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, `/v2/main/Header(guid'${ ID }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ ID }')`);
     expect(response.body && response.body.d).toBeDefined();
     expect(response.body.d).toEqual(
       expect.objectContaining({
@@ -2780,7 +2780,7 @@ describe("main", () => {
   });
 
   it("Entity with key including reserved/escaped uri characters", async () => {
-    let response = await util.callRead(request, "/v2/main/Favorite");
+    let response = await util.callRead(request, "/odata/v2/main/Favorite");
     expect(response.statusCode).toEqual(200);
     expect(response.body && response.body.d && response.body.d.results).toBeDefined();
     response.body.d.results.forEach((result) => {
@@ -2823,7 +2823,7 @@ describe("main", () => {
         value,
       });
 
-      response = await util.callRead(request, `/v2/main/Favorite?$filter=name eq '${ id }'`);
+      response = await util.callRead(request, `/odata/v2/main/Favorite?$filter=name eq '${ id }'`);
       expect(response.statusCode).toEqual(200);
       data = response.body && response.body.d && response.body.d.results && response.body.d.results[0];
       data.__metadata.uri = data.__metadata.uri.substr(
@@ -2841,7 +2841,7 @@ describe("main", () => {
   });
 
   it("Entity with string uuid key", async () => {
-    let response = await util.callRead(request, "/v2/main/StringUUID");
+    let response = await util.callRead(request, "/odata/v2/main/StringUUID");
     expect(response.statusCode).toEqual(200);
     expect(response.body && response.body.d && response.body.d.results).toBeDefined();
     response.body.d.results.forEach((result) => {
@@ -2865,25 +2865,25 @@ describe("main", () => {
   });
 
   it("GET with x-forwarded headers", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     let id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ id }')`, {
+    response = await util.callRead(request, `/odata/v2/main/Header(ID=guid'${ id }')`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/xyz/v2/main/Header(ID=guid'${ id }')`,
+      "x-forwarded-path": `/xyz/odata/v2/main/Header(ID=guid'${ id }')`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       name: "Test",
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/xyz/v2/main/Header(guid'${ id }')`,
+        uri: `https://test:1234/xyz/odata/v2/main/Header(guid'${ id }')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ id }')`, {
+    response = await util.callRead(request, `/odata/v2/main/Header(ID=guid'${ id }')`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": `/abc/v3/Header(ID=guid'${ id }')/toRootHeader`,
@@ -2896,7 +2896,7 @@ describe("main", () => {
         uri: `https://test:1234/abc/v3/Header(guid'${ id }')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ id }')`, {
+    response = await util.callRead(request, `/odata/v2/main/Header(ID=guid'${ id }')`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": `/cockpit/Header(ID=guid'${ id }')`,
@@ -2909,59 +2909,59 @@ describe("main", () => {
         uri: `https://test:1234/cockpit/Header(guid'${ id }')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ id }')`, {
+    response = await util.callRead(request, `/odata/v2/main/Header(ID=guid'${ id }')`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/cockpit/v2/Header(ID=guid'${ id }')`,
+      "x-forwarded-path": `/cockpit/odata/v2/Header(ID=guid'${ id }')`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       name: "Test",
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/v2/Header(guid'${ id }')`,
+        uri: `https://test:1234/cockpit/odata/v2/Header(guid'${ id }')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header(ID=guid'${ id }')`, {
+    response = await util.callRead(request, `/odata/v2/main/Header(ID=guid'${ id }')`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `https://test:1234/cockpit/v2/Header(ID=guid'${ id }')`,
+      "x-forwarded-path": `https://test:1234/cockpit/odata/v2/Header(ID=guid'${ id }')`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       name: "Test",
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/v2/Header(guid'${ id }')`,
+        uri: `https://test:1234/cockpit/odata/v2/Header(guid'${ id }')`,
       },
     });
-    response = await util.callRead(request, "/v2/main/Header", {
+    response = await util.callRead(request, "/odata/v2/main/Header", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/cockpit/v2/Header`,
+      "x-forwarded-path": `/cockpit/odata/v2/Header`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results.length > 0).toEqual(true);
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/v2/Header(guid'${ response.body.d.results[0].ID }')`,
+        uri: `https://test:1234/cockpit/odata/v2/Header(guid'${ response.body.d.results[0].ID }')`,
       },
     });
-    response = await util.callRead(request, "/v2/main/Header?a=b", {
+    response = await util.callRead(request, "/odata/v2/main/Header?a=b", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/cockpit/v2/Header?a=b`,
+      "x-forwarded-path": `/cockpit/odata/v2/Header?a=b`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results.length > 0).toEqual(true);
     expect(response.body.d.results[0]).toMatchObject({
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/v2/Header(guid'${ response.body.d.results[0].ID }')`,
+        uri: `https://test:1234/cockpit/odata/v2/Header(guid'${ response.body.d.results[0].ID }')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundNavigationFunction?num=1&text=${ id }`, {
+    response = await util.callRead(request, `/odata/v2/main/unboundNavigationFunction?num=1&text=${ id }`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": `/cockpit/unboundNavigationFunction?num=1&text=${ id }`,
@@ -2973,22 +2973,22 @@ describe("main", () => {
         uri: `https://test:1234/cockpit/Header(guid'${ response.body.d.ID }')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/unboundNavigationFunction?num=1&text=${ id }`, {
+    response = await util.callRead(request, `/odata/v2/main/unboundNavigationFunction?num=1&text=${ id }`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/cockpit/v2/unboundNavigationFunction?num=1&text=${ id }`,
+      "x-forwarded-path": `/cockpit/odata/v2/unboundNavigationFunction?num=1&text=${ id }`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body.d).toMatchObject({
       __metadata: {
         type: "test.MainService.Header",
-        uri: `https://test:1234/cockpit/v2/Header(guid'${ response.body.d.ID }')`,
+        uri: `https://test:1234/cockpit/odata/v2/Header(guid'${ response.body.d.ID }')`,
       },
     });
-    response = await util.callRead(request, `/v2/main/Header_boundFunction?ID=guid'${ id }'&num=1&text=abc`, {
+    response = await util.callRead(request, `/odata/v2/main/Header_boundFunction?ID=guid'${ id }'&num=1&text=abc`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
-      "x-forwarded-path": `/cockpit/v2/Header_boundFunction?ID=guid'${ id }'&num=1&text=abc`,
+      "x-forwarded-path": `/cockpit/odata/v2/Header_boundFunction?ID=guid'${ id }'&num=1&text=abc`,
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
@@ -3003,12 +3003,12 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/v2/main/HeaderDelta", {
+    response = await util.callWrite(request, "/odata/v2/main/HeaderDelta", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
     id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/HeaderDelta?!deltatoken='${ new Date().getTime() }'`, {
+    response = await util.callRead(request, `/odata/v2/main/HeaderDelta?!deltatoken='${ new Date().getTime() }'`, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": `/cockpit/HeaderDelta?!deltatoken='${ new Date().getTime() }'`,
@@ -3016,16 +3016,16 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.__delta).toMatch(/https:\/\/test:1234\/cockpit\/HeaderDelta\?!deltatoken='(\d*)'/);
-    response = await util.callRead(request, `/v2/main/HeaderDelta(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/HeaderDelta(guid'${ id }')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeUndefined();
-    response = await util.callRead(request, "/v2/main/$metadata", {
+    response = await util.callRead(request, "/odata/v2/main/$metadata", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": "/cockpit",
     });
     expect(response.statusCode).toEqual(200);
-    response = await util.callRead(request, "/v2/main", {
+    response = await util.callRead(request, "/odata/v2/main", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": "/cockpit",
@@ -3033,7 +3033,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.text).toMatch(/https:\/\/test:1234\/cockpit/);
     expect(response.text).not.toMatch(/v2\/main/);
-    response = await util.callRead(request, "/v2/main/", {
+    response = await util.callRead(request, "/odata/v2/main/", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": "/cockpit/",
@@ -3041,7 +3041,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.text).toMatch(/https:\/\/test:1234\/cockpit/);
     expect(response.text).not.toMatch(/v2\/main/);
-    response = await util.callRead(request, "/v2/main/", {
+    response = await util.callRead(request, "/odata/v2/main/", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": "/",
@@ -3049,7 +3049,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.text).toMatch(/https:\/\/test:1234/);
     expect(response.text).not.toMatch(/v2\/main/);
-    response = await util.callRead(request, "/v2/main", {
+    response = await util.callRead(request, "/odata/v2/main", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": "",
@@ -3057,28 +3057,28 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.text).toMatch(/https:\/\/test:1234/);
     expect(response.text).not.toMatch(/v2\/main/);
-    response = await util.callRead(request, "/v2/main/", {
+    response = await util.callRead(request, "/odata/v2/main/", {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
     });
     expect(response.statusCode).toEqual(200);
-    expect(response.text).toMatch(/https:\/\/test:1234\/v2\/main/);
+    expect(response.text).toMatch(/https:\/\/test:1234\/odata\/v2\/main/);
     expect(response.text).not.toMatch(/cockpit/);
   });
 
   it("Entity with umlauts", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Schöne Träume",
     });
     expect(response.body).toBeDefined();
     expect(response.body.d.name).toEqual("Schöne Träume");
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/v2/main/Header(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ id }')`);
     expect(response.body.d.name).toEqual("Schöne Träume");
   });
 
   it("GET request with key of type large string", async () => {
-    let response = await util.callRead(request, "/v2/main/HeaderLargeString");
+    let response = await util.callRead(request, "/odata/v2/main/HeaderLargeString");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(2);
     expect(response.body.d.results).toEqual([
@@ -3088,7 +3088,7 @@ describe("main", () => {
             uri: `http://${ response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderLargeString(name='A',country='DE')/Items`,
+            ) }/odata/v2/main/HeaderLargeString(name='A',country='DE')/Items`,
           },
         },
         __metadata: {
@@ -3096,7 +3096,7 @@ describe("main", () => {
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderLargeString(name='A',country='DE')`,
+          ) }/odata/v2/main/HeaderLargeString(name='A',country='DE')`,
         },
         country: "DE",
         currency: "EUR",
@@ -3109,7 +3109,7 @@ describe("main", () => {
             uri: `http://${ response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderLargeString(name='B',country='US')/Items`,
+            ) }/odata/v2/main/HeaderLargeString(name='B',country='US')/Items`,
           },
         },
         __metadata: {
@@ -3117,7 +3117,7 @@ describe("main", () => {
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderLargeString(name='B',country='US')`,
+          ) }/odata/v2/main/HeaderLargeString(name='B',country='US')`,
         },
         country: "US",
         currency: "USD",
@@ -3125,14 +3125,14 @@ describe("main", () => {
         stock: 11,
       },
     ]);
-    response = await util.callRead(request, "/v2/main/HeaderLargeString(name='A',country='DE')");
+    response = await util.callRead(request, "/odata/v2/main/HeaderLargeString(name='A',country='DE')");
     expect(response.body.d).toEqual({
       Items: {
         __deferred: {
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderLargeString(name='A',country='DE')/Items`,
+          ) }/odata/v2/main/HeaderLargeString(name='A',country='DE')/Items`,
         },
       },
       __metadata: {
@@ -3140,14 +3140,14 @@ describe("main", () => {
         uri: `http://${ response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        ) }/v2/main/HeaderLargeString(name='A',country='DE')`,
+        ) }/odata/v2/main/HeaderLargeString(name='A',country='DE')`,
       },
       country: "DE",
       currency: "EUR",
       name: "A",
       stock: 10,
     });
-    response = await util.callRead(request, "/v2/main/HeaderLargeString(name='A',country='DE')/Items");
+    response = await util.callRead(request, "/odata/v2/main/HeaderLargeString(name='A',country='DE')/Items");
     expect(response.body.d.results).toEqual([
       {
         __metadata: {
@@ -3155,14 +3155,14 @@ describe("main", () => {
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderItemLargeString(name='a',position='1')`,
+          ) }/odata/v2/main/HeaderItemLargeString(name='a',position='1')`,
         },
         header: {
           __deferred: {
             uri: `http://${ response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderItemLargeString(name='a',position='1')/header`,
+            ) }/odata/v2/main/HeaderItemLargeString(name='a',position='1')/header`,
           },
         },
         header_country: "DE",
@@ -3177,14 +3177,14 @@ describe("main", () => {
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderItemLargeString(name='a',position='2')`,
+          ) }/odata/v2/main/HeaderItemLargeString(name='a',position='2')`,
         },
         header: {
           __deferred: {
             uri: `http://${ response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/HeaderItemLargeString(name='a',position='2')/header`,
+            ) }/odata/v2/main/HeaderItemLargeString(name='a',position='2')/header`,
           },
         },
         header_country: "DE",
@@ -3197,23 +3197,23 @@ describe("main", () => {
   });
 
   it("Double quotes in entity data", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "'",
     });
     expect(response.statusCode).toEqual(201);
     let ID = response.body.d.ID;
-    response = await util.callRead(request, "/v2/main/Header?$filter=name eq ''''");
+    response = await util.callRead(request, "/odata/v2/main/Header?$filter=name eq ''''");
     expect(response.body).toBeDefined();
     expect(response.body.d.results[0]).toMatchObject({ ID });
-    response = await util.callWrite(request, "/v2/main/Header", {
+    response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "test'test",
     });
     expect(response.statusCode).toEqual(201);
     ID = response.body.d.ID;
-    response = await util.callRead(request, "/v2/main/Header?$filter=name eq 'test''test'");
+    response = await util.callRead(request, "/odata/v2/main/Header?$filter=name eq 'test''test'");
     expect(response.body).toBeDefined();
     expect(response.body.d.results[0]).toMatchObject({ ID });
-    response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text=abc'def");
+    response = await util.callWrite(request, "/odata/v2/main/unboundAction?num=1&text=abc'def");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -3226,7 +3226,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text='test''test'");
+    response = await util.callWrite(request, "/odata/v2/main/unboundAction?num=1&text='test''test'");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -3239,7 +3239,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundAction?num=1&text=''''");
+    response = await util.callWrite(request, "/odata/v2/main/unboundAction?num=1&text=''''");
     expect(response.body).toMatchObject({
       d: {
         unboundAction: {
@@ -3255,21 +3255,21 @@ describe("main", () => {
   });
 
   it("POST action with linebreak in parameter exceeding max length", async () => {
-    let response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text=0123456789");
+    let response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text=0123456789");
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: "0123456789",
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text='0123456789'");
+    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text='0123456789'");
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: "0123456789",
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text=0123456789a");
+    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text=0123456789a");
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
@@ -3299,7 +3299,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text='0123456789a'");
+    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text='0123456789a'");
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
@@ -3329,21 +3329,21 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text=01234\n5678");
+    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text=01234\n5678");
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: "01234\n5678",
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text='01234\n5678'");
+    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text='01234\n5678'");
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: "01234\n5678",
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text="01234\n5678"`);
+    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text="01234\n5678"`);
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
@@ -3373,7 +3373,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/v2/main/unboundActionMaxLength?&text='01234\n56789'");
+    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text='01234\n56789'");
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
@@ -3403,35 +3403,35 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='"'`);
+    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text='"'`);
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: '"',
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='""""""""""'`);
+    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text='""""""""""'`);
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: '""""""""""',
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text=""""""""""`);
+    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text=""""""""""`);
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: '""""""""""',
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='""""\n"""""'`);
+    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text='""""\n"""""'`);
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: '""""\n"""""',
       },
     });
-    response = await util.callWrite(request, `/v2/main/unboundActionMaxLength?&text='"""""\n"""""'`);
+    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text='"""""\n"""""'`);
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
@@ -3464,13 +3464,13 @@ describe("main", () => {
   });
 
   it("GET calc decimal function", async () => {
-    let response = await util.callRead(request, "/v2/main/calcDecimal?value=1000&percentage=5");
+    let response = await util.callRead(request, "/odata/v2/main/calcDecimal?value=1000&percentage=5");
     expect(response.body).toMatchObject({
       d: {
         calcDecimal: "50",
       },
     });
-    response = await util.callRead(request, "/v2/main/calcDecimal?value=1000&percentage=0");
+    response = await util.callRead(request, "/odata/v2/main/calcDecimal?value=1000&percentage=0");
     expect(response.body).toMatchObject({
       d: {
         calcDecimal: "0",
@@ -3479,7 +3479,7 @@ describe("main", () => {
   });
 
   it("GET service entity with scoped name", async () => {
-    let response = await util.callRead(request, "/v2/main/context_Name_space_v2");
+    let response = await util.callRead(request, "/odata/v2/main/context_Name_space_v2");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -3491,7 +3491,7 @@ describe("main", () => {
               uri: `http://${ response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
-              ) }/v2/main/context_Name_space_v2(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+              ) }/odata/v2/main/context_Name_space_v2(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
             },
           },
         ],
@@ -3499,7 +3499,7 @@ describe("main", () => {
     });
     response = await util.callRead(
       request,
-      "/v2/main/context_Name_space_v2(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')"
+      "/odata/v2/main/context_Name_space_v2(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')"
     );
     expect(response.body).toMatchObject({
       d: {
@@ -3510,14 +3510,14 @@ describe("main", () => {
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/context_Name_space_v2(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+          ) }/odata/v2/main/context_Name_space_v2(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
         },
       },
     });
   });
 
   it("GET localized service entity", async () => {
-    let response = await util.callRead(request, "/v2/main/LocalizedEntity");
+    let response = await util.callRead(request, "/odata/v2/main/LocalizedEntity");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -3529,7 +3529,7 @@ describe("main", () => {
                 uri: `http://${ response.request.host.replace(
                   "127.0.0.1",
                   "localhost"
-                ) }/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
+                ) }/odata/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
               },
             },
             localized: {
@@ -3537,7 +3537,7 @@ describe("main", () => {
                 uri: `http://${ response.request.host.replace(
                   "127.0.0.1",
                   "localhost"
-                ) }/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
+                ) }/odata/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
               },
             },
             __metadata: {
@@ -3545,14 +3545,14 @@ describe("main", () => {
               uri: `http://${ response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
-              ) }/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+              ) }/odata/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
             },
           },
         ],
       },
     });
     const id = response.body.d.results[0].ID;
-    response = await util.callRead(request, `/v2/main/LocalizedEntity(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/LocalizedEntity(guid'${ id }')`);
     expect(response.body).toMatchObject({
       d: {
         ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
@@ -3562,7 +3562,7 @@ describe("main", () => {
             uri: `http://${ response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
+            ) }/odata/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
           },
         },
         localized: {
@@ -3570,7 +3570,7 @@ describe("main", () => {
             uri: `http://${ response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
+            ) }/odata/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
           },
         },
         __metadata: {
@@ -3578,11 +3578,11 @@ describe("main", () => {
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+          ) }/odata/v2/main/LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/LocalizedEntity(guid'${ id }')/texts`);
+    response = await util.callRead(request, `/odata/v2/main/LocalizedEntity(guid'${ id }')/texts`);
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -3595,7 +3595,7 @@ describe("main", () => {
               uri: `http://${ response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
-              ) }/v2/main/LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+              ) }/odata/v2/main/LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
             },
           },
         ],
@@ -3603,7 +3603,7 @@ describe("main", () => {
     });
     response = await util.callRead(
       request,
-      "/v2/main/LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')"
+      "/odata/v2/main/LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')"
     );
     expect(response.statusCode).toEqual(405);
     expect(response.body).toMatchObject({
@@ -3634,7 +3634,7 @@ describe("main", () => {
   });
 
   it("GET localized service entity with scoped name", async () => {
-    let response = await util.callRead(request, "/v2/main/context_LocalizedEntity");
+    let response = await util.callRead(request, "/odata/v2/main/context_LocalizedEntity");
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -3646,7 +3646,7 @@ describe("main", () => {
                 uri: `http://${ response.request.host.replace(
                   "127.0.0.1",
                   "localhost"
-                ) }/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
+                ) }/odata/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
               },
             },
             localized: {
@@ -3654,7 +3654,7 @@ describe("main", () => {
                 uri: `http://${ response.request.host.replace(
                   "127.0.0.1",
                   "localhost"
-                ) }/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
+                ) }/odata/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
               },
             },
             __metadata: {
@@ -3662,14 +3662,14 @@ describe("main", () => {
               uri: `http://${ response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
-              ) }/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+              ) }/odata/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
             },
           },
         ],
       },
     });
     const id = response.body.d.results[0].ID;
-    response = await util.callRead(request, `/v2/main/context_LocalizedEntity(guid'${ id }')`);
+    response = await util.callRead(request, `/odata/v2/main/context_LocalizedEntity(guid'${ id }')`);
     expect(response.body).toMatchObject({
       d: {
         ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
@@ -3679,7 +3679,7 @@ describe("main", () => {
             uri: `http://${ response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
+            ) }/odata/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/texts`,
           },
         },
         localized: {
@@ -3687,7 +3687,7 @@ describe("main", () => {
             uri: `http://${ response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            ) }/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
+            ) }/odata/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')/localized`,
           },
         },
         __metadata: {
@@ -3695,11 +3695,11 @@ describe("main", () => {
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+          ) }/odata/v2/main/context_LocalizedEntity(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
         },
       },
     });
-    response = await util.callRead(request, `/v2/main/context_LocalizedEntity(guid'${ id }')/texts`);
+    response = await util.callRead(request, `/odata/v2/main/context_LocalizedEntity(guid'${ id }')/texts`);
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -3712,7 +3712,7 @@ describe("main", () => {
               uri: `http://${ response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
-              ) }/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+              ) }/odata/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
             },
           },
         ],
@@ -3720,7 +3720,7 @@ describe("main", () => {
     });
     response = await util.callRead(
       request,
-      "/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')"
+      "/odata/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')"
     );
     expect(response.body).toMatchObject({
       d: {
@@ -3732,7 +3732,7 @@ describe("main", () => {
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+          ) }/odata/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
         },
       },
     });
@@ -3740,7 +3740,7 @@ describe("main", () => {
 
   // TODO: Enable Test (https://github.tools.sap/cap/issues/issues/12350)
   it.skip("GET unbound service action with scoped name", async () => {
-    const response = await util.callWrite(request, "/v2/main/unbound_Action?num=1&text=abc");
+    const response = await util.callWrite(request, "/odata/v2/main/unbound_Action?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unbound_Action: {
@@ -3757,7 +3757,7 @@ describe("main", () => {
 
   // TODO: Enable Test (https://github.tools.sap/cap/issues/issues/12350)
   it.skip("GET unbound service function with scoped name", async () => {
-    const response = await util.callRead(request, "/v2/main/unbound_Function?num=1&text=abc");
+    const response = await util.callRead(request, "/odata/v2/main/unbound_Function?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unbound_Function: {
@@ -3773,11 +3773,11 @@ describe("main", () => {
   });
 
   it("POST bound action with composite key", async () => {
-    let response = await util.callRead(request, "/v2/main/Book(author='Catweazle',genre_ID=1)");
+    let response = await util.callRead(request, "/odata/v2/main/Book(author='Catweazle',genre_ID=1)");
     expect(response.body).toBeDefined();
     expect(response.body.d.author).toEqual("Catweazle");
     expect(response.body.d.genre_ID).toEqual(1);
-    response = await util.callWrite(request, `/v2/main/Book_order?author='Catweazle'&genre_ID=1&number=5`);
+    response = await util.callWrite(request, `/odata/v2/main/Book_order?author='Catweazle'&genre_ID=1&number=5`);
     expect(response.body.d).toMatchObject({
       author: "Catweazle",
       genre_ID: 1,
@@ -3787,10 +3787,10 @@ describe("main", () => {
         uri: `http://${ response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        ) }/v2/main/Book(author='Catweazle',genre_ID=1)`,
+        ) }/odata/v2/main/Book(author='Catweazle',genre_ID=1)`,
       },
     });
-    response = await util.callWrite(request, `/v2/main/Book_order2?author='Catweazle'&genre_ID=1&number=5`);
+    response = await util.callWrite(request, `/odata/v2/main/Book_order2?author='Catweazle'&genre_ID=1&number=5`);
     expect(response.body.d).toMatchObject({
       author: "Catweazle|Catweazle",
       genre_ID: 1,
@@ -3800,13 +3800,13 @@ describe("main", () => {
         uri: `http://${ response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        ) }/v2/main/Book(author='Catweazle%7CCatweazle',genre_ID=1)`,
+        ) }/odata/v2/main/Book(author='Catweazle%7CCatweazle',genre_ID=1)`,
       },
     });
   });
 
   it("POST bound action with whitespace entity key", async () => {
-    let response = await util.callWrite(request, `/v2/main/Book_order?author='Cat weazle'&genre_ID=1&number=5`);
+    let response = await util.callWrite(request, `/odata/v2/main/Book_order?author='Cat weazle'&genre_ID=1&number=5`);
     expect(response.body.d).toMatchObject({
       author: "Cat weazle",
       genre_ID: 1,
@@ -3816,13 +3816,13 @@ describe("main", () => {
         uri: `http://${ response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        ) }/v2/main/Book(author='Cat%20weazle',genre_ID=1)`,
+        ) }/odata/v2/main/Book(author='Cat%20weazle',genre_ID=1)`,
       },
     });
   });
 
   it("GET entity with array structures", async () => {
-    let response = await util.callRead(request, `/v2/main/HeaderStructure`);
+    let response = await util.callRead(request, `/odata/v2/main/HeaderStructure`);
     expect(response.body.d.results).toMatchObject([
       {
         ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
@@ -3849,14 +3849,14 @@ describe("main", () => {
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderStructure(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`
+          ) }/odata/v2/main/HeaderStructure(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`
         }
       }
     ]);
   });
 
   it("POST entity with array structures", async () => {
-    let response = await util.callWrite(request, `/v2/main/HeaderStructure`, {
+    let response = await util.callWrite(request, `/odata/v2/main/HeaderStructure`, {
       ID: "26a0b287-eae5-46f7-80a8-f3eb2f9bb328",
       date: "/Date(1681819200000)/",
       // cds.odata.structs: false
@@ -3878,7 +3878,7 @@ describe("main", () => {
       ]
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callRead(request, `/v2/main/HeaderStructure(guid'26a0b287-eae5-46f7-80a8-f3eb2f9bb328')`);
+    response = await util.callRead(request, `/odata/v2/main/HeaderStructure(guid'26a0b287-eae5-46f7-80a8-f3eb2f9bb328')`);
     expect(response.body.d).toMatchObject(
       {
         ID: "26a0b287-eae5-46f7-80a8-f3eb2f9bb328",
@@ -3905,14 +3905,14 @@ describe("main", () => {
           uri: `http://${ response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          ) }/v2/main/HeaderStructure(guid'26a0b287-eae5-46f7-80a8-f3eb2f9bb328')`
+          ) }/odata/v2/main/HeaderStructure(guid'26a0b287-eae5-46f7-80a8-f3eb2f9bb328')`
         }
       }
     );
   });
 
   it("Entity with managed compositions", async () => {
-    const response = await util.callRead(request, `/v2/main/Orders(1)?$expand=Items`);
+    const response = await util.callRead(request, `/odata/v2/main/Orders(1)?$expand=Items`);
     expect(response.body.d).toMatchObject({
       ID: 1,
       Items: {
@@ -3927,7 +3927,7 @@ describe("main", () => {
               uri: `http://${ response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
-              ) }/v2/main/Orders_Items(up__ID=1,pos=1)`
+              ) }/odata/v2/main/Orders_Items(up__ID=1,pos=1)`
             }
           },
           {
@@ -3940,7 +3940,7 @@ describe("main", () => {
               uri: `http://${ response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
-              ) }/v2/main/Orders_Items(up__ID=1,pos=2)`
+              ) }/odata/v2/main/Orders_Items(up__ID=1,pos=2)`
             }
           }
         ]
@@ -3950,7 +3950,7 @@ describe("main", () => {
         uri: `http://${ response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        ) }/v2/main/Orders(1)`
+        ) }/odata/v2/main/Orders(1)`
       }
     });
   });

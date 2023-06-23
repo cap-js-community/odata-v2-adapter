@@ -16,7 +16,7 @@ describe("emissions", () => {
   });
 
   it("GET emissions", async () => {
-    const response = await util.callRead(request, "/v2/emissions-calculator/UserPreferences", {
+    const response = await util.callRead(request, "/odata/v2/emissions-calculator/UserPreferences", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
@@ -33,7 +33,7 @@ describe("emissions", () => {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
-              )}/v2/emissions-calculator/UserPreferences()`,
+              )}/odata/v2/emissions-calculator/UserPreferences()`,
             },
           },
           {
@@ -46,7 +46,7 @@ describe("emissions", () => {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
-              )}/v2/emissions-calculator/UserPreferences()`,
+              )}/odata/v2/emissions-calculator/UserPreferences()`,
             },
           },
         ],

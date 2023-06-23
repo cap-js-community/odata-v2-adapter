@@ -198,12 +198,22 @@ function cov2ap(options = {}) {
     return fallback;
   };
 
+  let oDataPath = "";
+  if (cds.env.requires.middlewares && !cds.env.features.serve_on_root && cds.env.protocols) {
+    if (cds.env.protocols.odata) {
+      oDataPath = cds.env.protocols.odata.path;
+    } else if (cds.env.protocols["odata-v4"]) {
+      oDataPath = cds.env.protocols["odata-v4"].path;
+    }
+  }
+  const oDataRelativePath = oDataPath.replace(/^\//, "");
+
   const proxyCache = {};
   const router = express.Router();
   const base = optionWithFallback("base", "");
-  const path = optionWithFallback("path", "v2");
+  const path = optionWithFallback("path", cds.version >= "7" ? "odata/v2" : "v2");
   const sourcePath = `${base ? "/" + base : ""}/${path}`;
-  const targetPath = optionWithFallback("targetPath", "");
+  const targetPath = optionWithFallback("targetPath", cds.version >= "7" ? oDataRelativePath : "");
   const rewritePath = `${base ? "/" + base : ""}${targetPath ? "/" : ""}${targetPath}`;
   const pathRewrite = { [`^${sourcePath}`]: rewritePath };
   let port = optionWithFallback("port", process.env.PORT || DefaultPort);
@@ -262,7 +272,7 @@ function cov2ap(options = {}) {
       return;
     }
     const provider = (entity) => {
-      const href = `${sourcePath}${service.path}/${entity || "$metadata"}`;
+      const href = `${sourcePath}${sourceServicePath(service.path)}/${entity || "$metadata"}`;
       return { href, name: `${entity || "$metadata"} (V2)`, title: "OData V2" };
     };
     service.$linkProviders = service.$linkProviders || [];
@@ -442,6 +452,7 @@ function cov2ap(options = {}) {
         req.base = base;
         req.service = service.name;
         req.servicePath = service.path;
+        req.serviceAbsolute = service.absolute;
         req.context = {};
         req.contexts = [];
         req.contentId = {};
@@ -661,7 +672,9 @@ function cov2ap(options = {}) {
   function serviceFromRequest(req) {
     let serviceName;
     let serviceValid = true;
-    let servicePath = normalizeSlashes(req.params["0"]);
+    let serviceAbsolute = false;
+    const urlServicePath = normalizeSlashes(req.params["0"]);
+    let servicePath = targetPath ? `/${targetPath}${urlServicePath}` : urlServicePath;
     Object.keys(services).find((path) => {
       if (servicePath.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
         serviceName = services[path];
@@ -685,7 +698,19 @@ function cov2ap(options = {}) {
     if (!serviceName) {
       serviceName = Object.keys(cds.services).find((service) => {
         const path = cds.services[service].path;
-        return path === "/";
+        if (path) {
+          if (urlServicePath.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
+            servicePath = stripSlashes(path);
+            serviceAbsolute = true;
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+    if (!serviceName) {
+      serviceName = Object.keys(cds.services).find((service) => {
+        return cds.services[service].path === "/";
       });
       if (serviceName) {
         servicePath = "";
@@ -698,12 +723,7 @@ function cov2ap(options = {}) {
       });
       serviceValid = false;
     }
-    if (
-      serviceName &&
-      req.csn.definitions[serviceName] &&
-      req.csn.definitions[serviceName]["@protocol"] &&
-      !req.csn.definitions[serviceName]["@protocol"].startsWith("odata")
-    ) {
+    if (serviceName && req.csn.definitions[serviceName] && !isServedViaOData(req.csn.definitions[serviceName])) {
       logWarn(req, "Service", "Invalid service protocol", {
         name: serviceName,
         path: servicePath,
@@ -716,7 +736,23 @@ function cov2ap(options = {}) {
       name: serviceName,
       path: servicePath,
       valid: serviceValid,
+      absolute: serviceAbsolute,
     };
+  }
+
+  function isServedViaOData(service) {
+    let protocols = service["@protocol"];
+    if (protocols) {
+      protocols = !Array.isArray(protocols) ? [protocols] : protocols;
+      return protocols.some((protocol) => {
+        return (typeof protocol === "string" ? protocol : protocol.kind).startsWith("odata");
+      });
+    }
+    const protocolDirect = Object.keys(cds.env.protocols || {}).find((protocol) => service["@" + protocol]);
+    if (protocolDirect) {
+      return protocolDirect.startsWith("odata");
+    }
+    return true;
   }
 
   async function getMetadata(req, service) {
@@ -1224,6 +1260,9 @@ function cov2ap(options = {}) {
   function parseUrl(urlPath, req) {
     const url = URL.parse(urlPath, true);
     url.pathname = (url.pathname && url.pathname.replace(/%27/g, "'")) || "";
+    if (req.serviceAbsolute && url.pathname.startsWith(`/${targetPath}`)) {
+      url.pathname = url.pathname.substring(targetPath.length + 1);
+    }
     url.originalUrl = { ...url, query: { ...url.query } };
     url.basePath = "";
     url.servicePath = "";
@@ -3538,7 +3577,7 @@ function cov2ap(options = {}) {
         serviceUri += `/${parts.join("/")}`;
       }
     } else {
-      serviceUri += `${sourcePath}/${req.servicePath}`;
+      serviceUri += `${sourcePath}/${sourceServicePath(req.servicePath)}`;
     }
     req.context.serviceUri = serviceUri.endsWith("/") ? serviceUri : `${serviceUri}/`;
     return req.context.serviceUri;
@@ -3651,6 +3690,19 @@ function cov2ap(options = {}) {
         })
       )
     );
+  }
+
+  function sourceServicePath(servicePath) {
+    if (!targetPath) {
+      return servicePath;
+    }
+    if (servicePath.startsWith(`/${targetPath}`)) {
+      return servicePath.substring(targetPath.length + 1);
+    }
+    if (servicePath.startsWith(`${targetPath}/`)) {
+      return servicePath.substring(targetPath.length + 1);
+    }
+    return servicePath;
   }
 
   function respond(req, res, statusCode, headers, body) {

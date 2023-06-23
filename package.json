@@ -1,6 +1,6 @@
 {
   "name": "@cap-js-community/odata-v2-adapter",
-  "version": "1.10.7",
+  "version": "1.11.0",
   "description": "OData V2 adapter for CDS",
   "homepage": "https://cap.cloud.sap/",
   "engines": {
@@ -60,7 +60,7 @@
     "xml2js": "^0.6.0"
   },
   "devDependencies": {
-    "@sap/cds": "^6.8.4",
+    "@sap/cds": "^7.0.0",
     "@types/express": "^4.17.17",
     "compression": "^1.7.4",
     "eslint": "^8.43.0",

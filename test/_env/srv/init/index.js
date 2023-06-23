@@ -8,19 +8,15 @@ const util = require("../../util/request");
 const Headers = require("./Header");
 
 module.exports = async (context) => {
-  let mainPath = cds.services["test.MainService"].path;
-  if (mainPath === "/") {
-    mainPath = "";
-  }
-  await initBinary(context, mainPath);
-  await initData(context, mainPath);
+  await initBinary(context);
+  await initData(context);
 };
 
-async function initData({ app }, mainPath) {
+async function initData({ app }) {
   const request = supertest(app);
   const responses = await Promise.all(
     Headers.map(async (header) => {
-      return await util.callWrite(request, `${mainPath}/Header`, header, false, {
+      return await util.callWrite(request, `/odata/v4/main/Header`, header, false, {
         "content-type": "application/json;IEEE754Compatible=true",
       });
     })
@@ -33,7 +29,7 @@ async function initData({ app }, mainPath) {
   );
 }
 
-async function initBinary({ port }, mainPath) {
+async function initBinary({ port }) {
   const file = fs.readFileSync(__dirname + "/assets/file.png");
   await cds.connect.to("db");
   await cds.run(
@@ -56,19 +52,19 @@ async function initBinary({ port }, mainPath) {
     INSERT.into("test.HeaderUrlStream").entries([
       {
         ID: "f8a7a4f7-1901-4032-a237-3fba1d1b2343",
-        link: `http://localhost:${port}/v2${mainPath}/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
+        link: `http://localhost:${port}/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
         mediaType: "image/png",
         filename: "file.png",
       },
       {
         ID: "e8a7a4f7-1901-4032-a237-3fba1d1b2343",
-        link: `http://localhost:8888/v2${mainPath}/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
+        link: `http://localhost:8888/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
         mediaType: "image/png",
         filename: "file.png",
       },
       {
         ID: "a8a7a4f7-1901-4032-a237-3fba1d1b2343",
-        link: `http://localhost:${port}/v2${mainPath}/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value2`,
+        link: `http://localhost:${port}/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value2`,
         mediaType: "image/png",
         filename: "file.png",
       },

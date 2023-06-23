@@ -18,14 +18,14 @@ describe("batch", () => {
   });
 
   it("HEAD service", async () => {
-    let response = await util.callHead(request, "/v2/main/");
+    let response = await util.callHead(request, "/odata/v2/main/");
     expect(response.status).toEqual(200);
     expect(response.body).toEqual({});
     expect(response.headers).toMatchObject({
       "content-type": "application/json",
       dataserviceversion: "2.0",
     });
-    response = await util.callMultipartHead(request, "/v2/main/$batch", undefined, {
+    response = await util.callMultipartHead(request, "/odata/v2/main/$batch", undefined, {
       "x-csrf-token": "Fetch",
     });
     expect(response.statusCode).toEqual(405);
@@ -35,7 +35,7 @@ describe("batch", () => {
   });
 
   it("GET request", async () => {
-    let response = await util.callRead(request, "/v2/main/Header?$top=1");
+    let response = await util.callRead(request, "/odata/v2/main/Header?$top=1");
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
     const ID = response.body.d.results[0].ID;
@@ -43,7 +43,7 @@ describe("batch", () => {
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-GET.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, ID);
-    response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(3);
@@ -59,14 +59,14 @@ describe("batch", () => {
   });
 
   it("GET request with uri escape character", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test %22",
       country: "US",
     });
     expect(response.statusCode).toEqual(201);
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-GET-Escaped.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
-    response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
@@ -77,14 +77,14 @@ describe("batch", () => {
   });
 
   it("GET request with charset after boundary in content-type", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test %22",
       country: "US",
     });
     expect(response.statusCode).toEqual(201);
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-GET.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
-    response = await util.callMultipart(request, "/v2/main/$batch", payload, "boundary;charset=utf-8");
+    response = await util.callMultipart(request, "/odata/v2/main/$batch", payload, "boundary;charset=utf-8");
     expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(3);
@@ -101,7 +101,7 @@ describe("batch", () => {
   it("POST request", async () => {
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-POST.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
-    let response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    let response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(202);
 
     const responses = util.splitMultipartResponse(response.body);
@@ -120,11 +120,11 @@ describe("batch", () => {
 
     const id = first.body.d.ID;
     expect(id).toBeDefined();
-    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')`);
     expect(response.body.d).toMatchObject({
       __metadata: {
         type: "test.MainService.Header",
-        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
       },
       ID: id,
       createdBy: "anonymous",
@@ -133,7 +133,7 @@ describe("batch", () => {
       name: "Test – ABC",
       Items: {
         __deferred: {
-          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/main/Header(guid'${id}')/Items`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')/Items`,
         },
       },
     });
@@ -143,7 +143,7 @@ describe("batch", () => {
     const requestBoundary = "batch_f992-3b90-6e9f";
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-POST-Changeset.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
-    let response = await util.callMultipart(request, "/v2/main/$batch", payload, requestBoundary);
+    let response = await util.callMultipart(request, "/odata/v2/main/$batch", payload, requestBoundary);
     expect(response.statusCode).toEqual(202);
 
     const responseBoundary = response.headers["content-type"].split("boundary=")[1];
@@ -159,7 +159,7 @@ describe("batch", () => {
   it("POST request with encoding", async () => {
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-POST-Charset.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
-    let response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    let response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(202);
 
     const responses = util.splitMultipartResponse(response.body);
@@ -170,7 +170,7 @@ describe("batch", () => {
     expect(first.body.d.name).toEqual("Test: èèòàù");
     const id = first.body.d.ID;
     expect(id).toBeDefined();
-    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.name).toEqual("Test: èèòàù");
     expect(response.headers["content-type"]).toEqual("application/json");
@@ -180,7 +180,7 @@ describe("batch", () => {
     const requestBoundary = "batch_f992-3b90-6e9f";
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-POST-ContentId.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
-    let response = await util.callMultipart(request, "/v2/main/$batch", payload, requestBoundary);
+    let response = await util.callMultipart(request, "/odata/v2/main/$batch", payload, requestBoundary);
     expect(response.statusCode).toEqual(202);
 
     const responseBoundary = response.headers["content-type"].split("boundary=")[1];
@@ -194,7 +194,7 @@ describe("batch", () => {
   });
 
   it("POST request changeset with content-id on navigation property", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
@@ -204,7 +204,7 @@ describe("batch", () => {
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-POST-Navigation.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
-    response = await util.callMultipart(request, "/v2/main/$batch", payload, requestBoundary);
+    response = await util.callMultipart(request, "/odata/v2/main/$batch", payload, requestBoundary);
     expect(response.statusCode).toEqual(202);
 
     const responseBoundary = response.headers["content-type"].split("boundary=")[1];
@@ -215,7 +215,7 @@ describe("batch", () => {
       expect(part.statusCode).toEqual(201);
       expect(part.contentTransferEncoding).toEqual("binary");
     });
-    response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items,Items/Lines`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')?$expand=Items,Items/Lines`);
     expect(response.body.d).toMatchObject({
       FirstItem_ID: null,
       ID: id,
@@ -238,7 +238,7 @@ describe("batch", () => {
   });
 
   it("PUT request", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
@@ -247,7 +247,7 @@ describe("batch", () => {
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-PUT.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
-    response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(202);
 
     const responses = util.splitMultipartResponse(response.body);
@@ -255,12 +255,12 @@ describe("batch", () => {
     const [first] = responses;
     expect(first.statusCode).toEqual(200);
     expect(first.contentTransferEncoding).toEqual("binary");
-    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')`);
     expect(response.body.d.name).toEqual("Test Update");
   });
 
   it("PATCH request", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
       Items: [
         {
@@ -277,7 +277,7 @@ describe("batch", () => {
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ItemID}}/g, itemId);
-    response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
@@ -290,13 +290,13 @@ describe("batch", () => {
     expect(second.contentId).toBeUndefined();
     expect(second.contentTransferEncoding).toEqual("binary");
     expect(second.headers["content-id"]).toBeUndefined();
-    response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')?$expand=Items`);
     expect(response.body.d.name).toEqual("Test Update Changeset");
     expect(response.body.d.Items.results[0].name).toEqual("Test Item Update Changeset");
   });
 
   it("PATCH request with misplaced content-id", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
       Items: [
         {
@@ -313,7 +313,7 @@ describe("batch", () => {
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ItemID}}/g, itemId);
-    response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
@@ -324,13 +324,13 @@ describe("batch", () => {
     expect(second.statusCode).toEqual(200);
     expect(parseInt(second.contentId)).toEqual(expect.any(Number));
     expect(second.contentTransferEncoding).toEqual("binary");
-    response = await util.callRead(request, `/v2/main/Header(guid'${id}')?$expand=Items`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')?$expand=Items`);
     expect(response.body.d.name).toEqual("Test Update Changeset");
     expect(response.body.d.Items.results[0].name).toEqual("Test Item Update Changeset");
   });
 
   it("DELETE request", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",
     });
     expect(response.statusCode).toEqual(201);
@@ -339,21 +339,21 @@ describe("batch", () => {
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-DELETE.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
-    response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
     const [first] = responses;
     expect(first.statusCode).toEqual(204);
     expect(first.contentTransferEncoding).toEqual("binary");
-    response = await util.callRead(request, `/v2/main/Header(guid'${id}')`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(404);
   });
 
   it("POST action request", async () => {
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-Action.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
-    let response = await util.callMultipart(request, "/v2/main/$batch", payload);
+    let response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(2);
@@ -392,14 +392,14 @@ describe("batch", () => {
   });
 
   it("GET with x-forwarded headers", async () => {
-    let response = await util.callWrite(request, "/v2/main/Header", {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test %22",
       country: "US",
     });
     expect(response.statusCode).toEqual(201);
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-GET-Escaped.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
-    response = await util.callMultipart(request, "/v2/main/$batch", payload, undefined, {
+    response = await util.callMultipart(request, "/odata/v2/main/$batch", payload, undefined, {
       "x-forwarded-proto": "https",
       "x-forwarded-host": "test:1234",
       "x-forwarded-path": `/cockpit/$batch`,
@@ -415,7 +415,7 @@ describe("batch", () => {
   });
 
   it("Send malformed batch request", async () => {
-    const response = await util.callMultipart(request, "/v2/main/$batch", null);
+    const response = await util.callMultipart(request, "/odata/v2/main/$batch", null);
     expect(response.statusCode).toEqual(400);
     expect(response.body).toEqual("Invalid multipart body");
   });

@@ -16,7 +16,7 @@ describe("path", () => {
   });
 
   it("GET service", async () => {
-    const response = await util.callRead(request, "/v2/a/b-c/d/", {
+    const response = await util.callRead(request, "/odata/v2/a/b-c/d/", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
@@ -28,7 +28,7 @@ describe("path", () => {
   });
 
   it("GET service data", async () => {
-    const response = await util.callRead(request, "/v2/a/b-c/d/Header", {
+    const response = await util.callRead(request, "/odata/v2/a/b-c/d/Header", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
@@ -36,7 +36,7 @@ describe("path", () => {
   });
 
   it("GET service case sensitive", async () => {
-    const response = await util.callRead(request, "/v2/A/B-C/D/Header", {
+    const response = await util.callRead(request, "/odata/v2/A/B-C/D/Header", {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();

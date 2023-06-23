@@ -250,12 +250,12 @@ exports[`integration-main GET with parameters (header - full circle) - parameter
     "STOCK_PARAM": 1,
     "Set": {
       "__deferred": {
-        "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')/Set",
+        "uri": "http://localhost:00000/odata/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')/Set",
       },
     },
     "__metadata": {
       "type": "test.MainService.HeaderParametersParameters",
-      "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')",
+      "uri": "http://localhost:00000/odata/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')",
     },
   },
 }
@@ -269,13 +269,13 @@ exports[`integration-main GET with parameters (header - full circle) - parameter
         "CURRENCY_PARAM": "EUR",
         "Parameters": {
           "__deferred": {
-            "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')/Parameters",
+            "uri": "http://localhost:00000/odata/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')/Parameters",
           },
         },
         "STOCK_PARAM": 1,
         "__metadata": {
           "type": "test.MainService.HeaderParametersType",
-          "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')",
+          "uri": "http://localhost:00000/odata/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')",
         },
         "country": null,
         "createdBy": "anonymous",
@@ -297,13 +297,13 @@ exports[`integration-main GET with parameters (header - full circle) - parameter
     "CURRENCY_PARAM": "EUR",
     "Parameters": {
       "__deferred": {
-        "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')/Parameters",
+        "uri": "http://localhost:00000/odata/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')/Parameters",
       },
     },
     "STOCK_PARAM": 1,
     "__metadata": {
       "type": "test.MainService.HeaderParametersType",
-      "uri": "http://localhost:00000/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')",
+      "uri": "http://localhost:00000/odata/v2/main/HeaderParametersSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')",
     },
     "country": null,
     "createdBy": "anonymous",
@@ -324,12 +324,12 @@ exports[`integration-main GET with parameters (header - full circle) - parameter
     "STOCK_PARAM": 1,
     "Set": {
       "__deferred": {
-        "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')/Set",
+        "uri": "http://localhost:00000/odata/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')/Set",
       },
     },
     "__metadata": {
       "type": "test.MainService.HeaderParametersParameters",
-      "uri": "http://localhost:00000/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')",
+      "uri": "http://localhost:00000/odata/v2/main/HeaderParameters(STOCK=1,CURRENCY='EUR')",
     },
   },
 }
@@ -342,12 +342,12 @@ exports[`integration-main GET with parameters (header - full circle) - set 1`] =
     "STOCK_PARAM": 1,
     "Set": {
       "__deferred": {
-        "uri": "http://localhost:00000/v2/main/HeaderSet(STOCK=1,CURRENCY='EUR')/Set",
+        "uri": "http://localhost:00000/odata/v2/main/HeaderSet(STOCK=1,CURRENCY='EUR')/Set",
       },
     },
     "__metadata": {
       "type": "test.MainService.HeaderSetParameters",
-      "uri": "http://localhost:00000/v2/main/HeaderSet(STOCK=1,CURRENCY='EUR')",
+      "uri": "http://localhost:00000/odata/v2/main/HeaderSet(STOCK=1,CURRENCY='EUR')",
     },
   },
 }
@@ -361,13 +361,13 @@ exports[`integration-main GET with parameters (header - full circle) - set 2`] =
         "CURRENCY_PARAM": "EUR",
         "Parameters": {
           "__deferred": {
-            "uri": "http://localhost:00000/v2/main/HeaderSetSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')/Parameters",
+            "uri": "http://localhost:00000/odata/v2/main/HeaderSetSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')/Parameters",
           },
         },
         "STOCK_PARAM": 1,
         "__metadata": {
           "type": "test.MainService.HeaderSetType",
-          "uri": "http://localhost:00000/v2/main/HeaderSetSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')",
+          "uri": "http://localhost:00000/odata/v2/main/HeaderSetSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')",
         },
         "country": null,
         "createdBy": "anonymous",
@@ -389,13 +389,13 @@ exports[`integration-main GET with parameters (header - full circle) - set 3`] =
     "CURRENCY_PARAM": "EUR",
     "Parameters": {
       "__deferred": {
-        "uri": "http://localhost:00000/v2/main/HeaderSetSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')/Parameters",
+        "uri": "http://localhost:00000/odata/v2/main/HeaderSetSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')/Parameters",
       },
     },
     "STOCK_PARAM": 1,
     "__metadata": {
       "type": "test.MainService.HeaderSetType",
-      "uri": "http://localhost:00000/v2/main/HeaderSetSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')",
+      "uri": "http://localhost:00000/odata/v2/main/HeaderSetSet(STOCK=1,CURRENCY='EUR',ID=guid'<ID>')",
     },
     "country": null,
     "createdBy": "anonymous",
@@ -416,12 +416,12 @@ exports[`integration-main GET with parameters (header - full circle) - set 4`] =
     "STOCK_PARAM": 1,
     "Set": {
       "__deferred": {
-        "uri": "http://localhost:00000/v2/main/HeaderSet(STOCK=1,CURRENCY='EUR')/Set",
+        "uri": "http://localhost:00000/odata/v2/main/HeaderSet(STOCK=1,CURRENCY='EUR')/Set",
       },
     },
     "__metadata": {
       "type": "test.MainService.HeaderSetParameters",
-      "uri": "http://localhost:00000/v2/main/HeaderSet(STOCK=1,CURRENCY='EUR')",
+      "uri": "http://localhost:00000/odata/v2/main/HeaderSet(STOCK=1,CURRENCY='EUR')",
     },
   },
 }

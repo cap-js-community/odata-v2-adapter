@@ -39,7 +39,7 @@
     "resources": "resources.json",
     "dataSources": {
       "analyticsService": {
-        "uri": "/v2/analytics",
+        "uri": "/odata/v2/analytics",
         "type": "OData"
       }
     },

@@ -24,25 +24,25 @@ describe("auth", () => {
   });
 
   it("GET $metadata auth", async () => {
-    let response = await util.callRead(request, "/v2/auth/$metadata", {
+    let response = await util.callRead(request, "/odata/v2/auth/$metadata", {
       accept: "application/xml",
     });
     expect(response.status).toEqual(401);
     expect(response.headers["www-authenticate"]).toEqual('Basic realm="Users"');
 
-    response = await util.callRead(request, "/v2/auth/$metadata", {
+    response = await util.callRead(request, "/odata/v2/auth/$metadata", {
       accept: "application/xml",
       Authorization: invalidAuth,
     });
     expect(response.status).toEqual(403);
 
-    response = await util.callRead(request, "/v2/auth/$metadata", {
+    response = await util.callRead(request, "/odata/v2/auth/$metadata", {
       accept: "application/xml",
       Authorization: validAuth,
     });
     expect(response.status).toEqual(200);
 
-    response = await util.callRead(request, "/v2/auth/$metadata", {
+    response = await util.callRead(request, "/odata/v2/auth/$metadata", {
       accept: "application/xml",
       Authorization:
         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
@@ -52,7 +52,7 @@ describe("auth", () => {
 
   it("GET $metadata invalid auth", async () => {
     const consoleSpy = jest.spyOn(console, "error");
-    let response = await util.callRead(request, "/v2/auth/$metadata", {
+    let response = await util.callRead(request, "/odata/v2/auth/$metadata", {
       accept: "application/xml",
       Authorization: "Bearer xyz",
     });
@@ -62,7 +62,7 @@ describe("auth", () => {
       "Authorization:",
       expect.objectContaining(new Error("Invalid JWT token"))
     );
-    response = await util.callRead(request, "/v2/auth/$metadata", {
+    response = await util.callRead(request, "/odata/v2/auth/$metadata", {
       accept: "application/xml",
       Authorization: validAuth,
     });
@@ -71,7 +71,7 @@ describe("auth", () => {
 
   it("GET service root invalid auth", async () => {
     const consoleSpy = jest.spyOn(console, "error");
-    let response = await util.callRead(request, "/v2/auth/", {
+    let response = await util.callRead(request, "/odata/v2/auth/", {
       accept: "application/xml",
       Authorization: "Bearer xyz",
     });
@@ -81,7 +81,7 @@ describe("auth", () => {
       "Authorization:",
       expect.objectContaining(new Error("Invalid JWT token"))
     );
-    response = await util.callRead(request, "/v2/auth/", {
+    response = await util.callRead(request, "/odata/v2/auth/", {
       accept: "application/xml",
       Authorization: validAuth,
     });
@@ -89,7 +89,7 @@ describe("auth", () => {
   });
 
   it("GET $metadata check response correlation", async () => {
-    const response = await util.callRead(request, "/v2/auth/$metadata", {
+    const response = await util.callRead(request, "/odata/v2/auth/$metadata", {
       accept: "application/xml",
       Authorization: validAuth,
     });

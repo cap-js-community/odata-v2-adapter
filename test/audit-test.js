@@ -18,7 +18,7 @@ describe("auth", () => {
   });
 
   it("POST audit", async () => {
-    let response = await util.callWrite(request, "/v2/audit/Audits", {
+    let response = await util.callWrite(request, "/odata/v2/audit/Audits", {
       audit_type_ID: 1,
       work_activity_ID: 1,
     });
@@ -41,7 +41,7 @@ describe("auth", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/audit/Audits(guid'${id}')/audit_type`,
+          )}/odata/v2/audit/Audits(guid'${id}')/audit_type`,
         },
       },
       work_activity: {
@@ -49,11 +49,11 @@ describe("auth", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/audit/Audits(guid'${id}')/work_activity`,
+          )}/odata/v2/audit/Audits(guid'${id}')/work_activity`,
         },
       },
       __metadata: {
-        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/audit/Audits(guid'${id}')`,
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/audit/Audits(guid'${id}')`,
         type: "audit.AuditService.Audits",
       },
     });
@@ -63,7 +63,7 @@ describe("auth", () => {
     const requestBoundary = "batch_709b8b9352ac4342a0efb1e012d_1";
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-POST-Audit.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
-    let response = await util.callMultipart(request, "/v2/audit/$batch", payload, requestBoundary);
+    let response = await util.callMultipart(request, "/odata/v2/audit/$batch", payload, requestBoundary);
     expect(response.statusCode).toEqual(202);
 
     const responseBoundary = response.headers["content-type"].split("boundary=")[1];
@@ -91,7 +91,7 @@ describe("auth", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/audit/Audits(guid'${id}')/audit_type`,
+            )}/odata/v2/audit/Audits(guid'${id}')/audit_type`,
           },
         },
         work_activity: {
@@ -99,11 +99,11 @@ describe("auth", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/audit/Audits(guid'${id}')/work_activity`,
+            )}/odata/v2/audit/Audits(guid'${id}')/work_activity`,
           },
         },
         __metadata: {
-          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/v2/audit/Audits(guid'${id}')`,
+          uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/audit/Audits(guid'${id}')`,
           type: "audit.AuditService.Audits",
         },
       });

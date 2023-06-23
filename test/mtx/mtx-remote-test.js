@@ -60,7 +60,7 @@ describe("mtx", () => {
         headers: new Map(),
       };
     });
-    const response = await util.callRead(request, "/v2/main/$metadata", {
+    const response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });

@@ -348,6 +348,83 @@ exports[`integration-agreement GET $metadata 1`] = `
       <Annotations Target="AgreementService.AgreementStatus_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Description"/>
       </Annotations>
+      <Annotations Target="AgreementService.AgreementItemPricingForKeyDateParameters" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="Transformations">
+              <Collection>
+                <String>aggregate</String>
+                <String>groupby</String>
+                <String>filter</String>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Rollup" EnumMember="None"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="AgreementService.EntityContainer/AgreementItemPricingForKeyDate" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="Transformations">
+              <Collection>
+                <String>aggregate</String>
+                <String>groupby</String>
+                <String>filter</String>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Rollup" EnumMember="None"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.FilterRestrictions">
+          <Record Type="Capabilities.FilterRestrictionsType">
+            <PropertyValue Property="NonFilterableProperties">
+              <Collection>
+                <PropertyPath>keyDate</PropertyPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.NavigationRestrictions">
+          <Record Type="Capabilities.NavigationRestrictionsType">
+            <PropertyValue Property="RestrictedProperties">
+              <Collection>
+                <Record Type="Capabilities.NavigationPropertyRestriction">
+                  <PropertyValue Property="NavigationProperty" NavigationPropertyPath="Parameters"/>
+                  <PropertyValue Property="FilterRestrictions">
+                    <Record Type="Capabilities.FilterRestrictionsType">
+                      <PropertyValue Property="Filterable" Bool="false"/>
+                    </Record>
+                  </PropertyValue>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.SortRestrictions">
+          <Record Type="Capabilities.SortRestrictionsType">
+            <PropertyValue Property="NonSortableProperties">
+              <Collection>
+                <PropertyPath>keyDate</PropertyPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
       <Annotations Target="AgreementService.AgreementItemPricingForKeyDateType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Aggregation.ApplySupported">
           <Record Type="Aggregation.ApplySupportedType">
@@ -521,12 +598,12 @@ exports[`integration-agreement GET with parameters (agreement pricing for key da
   "d": {
     "Set": {
       "__deferred": {
-        "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')/Set",
+        "uri": "http://localhost:00000/odata/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')/Set",
       },
     },
     "__metadata": {
       "type": "AgreementService.AgreementItemPricingForKeyDateParameters",
-      "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')",
+      "uri": "http://localhost:00000/odata/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')",
     },
     "keyDate": "/Date(1655683200000)/",
   },
@@ -542,12 +619,12 @@ exports[`integration-agreement GET with parameters (agreement pricing for key da
         "Item": "87b1f64f-2cc0-47df-aefd-11d93ae3c15d",
         "Parameters": {
           "__deferred": {
-            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+            "uri": "http://localhost:00000/odata/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
           },
         },
         "__metadata": {
           "type": "AgreementService.AgreementItemPricingForKeyDateType",
-          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')",
+          "uri": "http://localhost:00000/odata/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'e8420eac-a36b-49af-b91c-6559b8f7627e')",
         },
         "keyDate": "/Date(1655683200000)/",
         "validFrom": "/Date(1641081600000)/",
@@ -558,12 +635,12 @@ exports[`integration-agreement GET with parameters (agreement pricing for key da
         "Item": "77b1f64f-2cc0-47df-aefd-11d93ae3c15d",
         "Parameters": {
           "__deferred": {
-            "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+            "uri": "http://localhost:00000/odata/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
           },
         },
         "__metadata": {
           "type": "AgreementService.AgreementItemPricingForKeyDateType",
-          "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
+          "uri": "http://localhost:00000/odata/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
         },
         "keyDate": "/Date(1655683200000)/",
         "validFrom": "/Date(1640995200000)/",
@@ -581,12 +658,12 @@ exports[`integration-agreement GET with parameters (agreement pricing for key da
     "Item": "77b1f64f-2cc0-47df-aefd-11d93ae3c15d",
     "Parameters": {
       "__deferred": {
-        "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
+        "uri": "http://localhost:00000/odata/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
       },
     },
     "__metadata": {
       "type": "AgreementService.AgreementItemPricingForKeyDateType",
-      "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
+      "uri": "http://localhost:00000/odata/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
     },
     "keyDate": "/Date(1655683200000)/",
     "validFrom": "/Date(1640995200000)/",
@@ -600,12 +677,12 @@ exports[`integration-agreement GET with parameters (agreement pricing for key da
   "d": {
     "Set": {
       "__deferred": {
-        "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')/Set",
+        "uri": "http://localhost:00000/odata/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')/Set",
       },
     },
     "__metadata": {
       "type": "AgreementService.AgreementItemPricingForKeyDateParameters",
-      "uri": "http://localhost:00000/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')",
+      "uri": "http://localhost:00000/odata/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')",
     },
     "keyDate": "/Date(1655683200000)/",
   },

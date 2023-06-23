@@ -54,7 +54,7 @@ describe("mtxs", () => {
   it("MTXS $metadata", async () => {
     cds.env.requires.multitenancy = true;
     cds.env.requires["cds.xt.ModelProviderService"] = true;
-    const response = await util.callRead(request, "/v2/main/$metadata", {
+    const response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
@@ -69,7 +69,7 @@ describe("mtxs", () => {
     cds.env.requires.multitenancy = true;
     cds.env.requires["cds.xt.ModelProviderService"] = true;
     clearCache();
-    let response = await util.callRead(request, "/v2/main/$metadata", {
+    let response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });
@@ -84,7 +84,7 @@ describe("mtxs", () => {
     cds.services["cds.xt.ModelProviderService"].getEdmx.mockClear();
     cds.services["cds.xt.ModelProviderService"].isExtended.mockClear();
 
-    response = await util.callRead(request, "/v2/main/$metadata", {
+    response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
     });

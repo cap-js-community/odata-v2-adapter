@@ -18,7 +18,7 @@ describe("attachment", () => {
   });
 
   it("POST attachment to attachment folder", async () => {
-    let response = await util.callWrite(request, "/v2/attachment/AttachmentFolder", {
+    let response = await util.callWrite(request, "/odata/v2/attachment/AttachmentFolder", {
       name: "Folder1",
     });
     expect(response.statusCode).toEqual(201);
@@ -28,7 +28,7 @@ describe("attachment", () => {
     const file = fs.readFileSync(__dirname + "/_env/srv/init/assets/file.png");
     response = await util.callBinary(
       request,
-      `/v2/attachment/AttachmentFolder(guid'${folderId}')/attachments`,
+      `/odata/v2/attachment/AttachmentFolder(guid'${folderId}')/attachments`,
       file,
       false,
       {
@@ -48,7 +48,7 @@ describe("attachment", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/v2/attachment/Attachment(guid'${attachmentId}')/folder`,
+          )}/odata/v2/attachment/Attachment(guid'${attachmentId}')/folder`,
         },
       },
       __metadata: {
@@ -56,15 +56,15 @@ describe("attachment", () => {
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        )}/v2/attachment/Attachment(guid'${attachmentId}')`,
+        )}/odata/v2/attachment/Attachment(guid'${attachmentId}')`,
         media_src: `http://${response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        )}/v2/attachment/Attachment(guid'${attachmentId}')/$value`,
+        )}/odata/v2/attachment/Attachment(guid'${attachmentId}')/$value`,
         content_type: "image/png",
       },
     });
-    response = await util.callRead(request, `/v2/attachment/AttachmentFolder(guid'${folderId}')/attachments`);
+    response = await util.callRead(request, `/odata/v2/attachment/AttachmentFolder(guid'${folderId}')/attachments`);
     expect(response.statusCode).toEqual(200);
     expect(response.body).toBeDefined();
     expect(response.body.d).toEqual({
@@ -76,19 +76,19 @@ describe("attachment", () => {
             media_src: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/attachment/Attachment(guid'${attachmentId}')/$value`,
+            )}/odata/v2/attachment/Attachment(guid'${attachmentId}')/$value`,
             type: "attachment.AttachmentService.Attachment",
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/v2/attachment/Attachment(guid'${attachmentId}')`,
+            )}/odata/v2/attachment/Attachment(guid'${attachmentId}')`,
           },
           folder: {
             __deferred: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
                 "localhost"
-              )}/v2/attachment/Attachment(guid'${attachmentId}')/folder`,
+              )}/odata/v2/attachment/Attachment(guid'${attachmentId}')/folder`,
             },
           },
           folder_ID: folderId,
@@ -96,7 +96,7 @@ describe("attachment", () => {
         },
       ],
     });
-    const readResponse = await util.callRead(request, `/v2/attachment/Attachment(guid'${attachmentId}')/file`);
+    const readResponse = await util.callRead(request, `/odata/v2/attachment/Attachment(guid'${attachmentId}')/file`);
     expect(readResponse.statusCode).toEqual(200);
     expect(readResponse.headers["content-type"]).toEqual("image/png");
     expect(readResponse.body.length).toEqual(17686);
