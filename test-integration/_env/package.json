@@ -21,6 +21,9 @@
     "requires": {
       "db": {
         "kind": "hana"
+      },
+      "auth": {
+        "kind": "mocked-auth"
       }
     },
     "hana": {
