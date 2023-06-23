@@ -18,8 +18,8 @@
 - Activate CDS plugin by setting CDS env `cds.cov2ap.plugin: true`
   - Available since CDS 6.7, otherwise custom server is needed
 - Execute `cds-serve` to start server
-  - OData V2 service is available at http://localhost:4004/v2/<service-path>
-  - OData V4 service is available at http://localhost:4004/<service-path>
+  - OData V2 service is available at http://localhost:4004/odata/v2/<service-path>
+  - OData V4 service is available at http://localhost:4004/odata/v4/<service-path>
 
 ## Custom Server
 
@@ -36,11 +36,11 @@
 The OData V2 adapter for CDS instantiates an Express router. The following options are available:
 
 - **base:** Base path under which the service is reachable. Default is `''`.
-- **path:** Path under which the service is reachable. Default is `'v2'`.
+- **path:** Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated or `serve_on_root` activated
 - **model:** CDS service model (path(s) or CSN). Default is `'all'`.
 - **port:** Target port which points to OData V4 backend port. Default is process.env.PORT or `4004`.
 - **target:** Target which points to OData V4 backend host:port. Use `'auto'` to infer the target from server url after listening. Default is e.g. `'http://localhost:4004'`.
-- **targetPath:** Target path to which is redirected. Default is `''`.
+- **targetPath:** Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated or `serve_on_root` activated
 - **services:** Service mapping object from url path name to service name. Default is `{}`.
 - **mtxRemote:** CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is `false`.
 - **mtxEndpoint:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is `'/mtx/v1'`.
@@ -80,7 +80,7 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 > - quoteSearch => quote_search => CDS_COV2AP_QUOTE\_\_SEARCH=false
 
 > Option `cds.odata.v2proxy.urlpath` is available to specify an OData V2 proxy url path
-> different from default `/v2` for CDS core.
+> different from default `/odata/v2` for CDS core.
 
 ## Advanced
 
@@ -360,8 +360,8 @@ const port = process.env.PORT || 4004;
 ```
 
 - Run `node srv/index` from the project root to start the server:
-  - OData V2 service will be available at http://localhost:4004/v2/<service-path>
-  - OData V4 service will be available at http://localhost:4004/<service-path>
+  - OData V2 service will be available at http://localhost:4004/odata/v2/<service-path>
+  - OData V4 service will be available at http://localhost:4004/odata/v4/<service-path>
 
 Note that `@sap/cds` is a peer dependency and needs to be available as module as well.
 
@@ -399,8 +399,8 @@ const port = process.env.PORT || 4004;
 ```
 
 - Run `node srv/index` from the project root to start the server:
-  - OData V2 service will be available at http://localhost:4004/v2/<odata-v4-service-path>
-  - OData V4 service shall be available at http://localhost:8080/<odata-v4-service-path>
+  - OData V2 service will be available at http://localhost:4004/odata/v2/<odata-v4-service-path>
+  - OData V4 service shall be available e.g. at http://localhost:8080/<odata-v4-service-path>
 
 #### Additional Considerations
 
@@ -424,9 +424,9 @@ const port = process.env.PORT || 4004;
 
 - Unit Tests: `npm test`
 - Test Server: `npm start`
-  - Service: `http://localhost:4004/v2/main`
-  - Metadata: `http://localhost:4004/v2/main/$metadata`
-  - Data: `http://localhost:4004/v2/main/Header?$expand=Items`
+  - Service: `http://localhost:4004/odata/v2/main`
+  - Metadata: `http://localhost:4004/odata/v2/main/$metadata`
+  - Data: `http://localhost:4004/odata/v2/main/Header?$expand=Items`
 
 For more details see [CONTRIBUTION](CONTRIBUTING.md) guide.
 
