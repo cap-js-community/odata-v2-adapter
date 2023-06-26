@@ -77,3 +77,15 @@ service AtProtocolObjectListWithAnnotationWithAbsolutePathService {
     entity Header as projection on test.Header;
     entity HeaderItem as projection on test.HeaderItem;
 }
+
+@protocol: [{ kind: 'odata', path: '/custom/odata/path' }]
+service CustomService {
+    entity Header as projection on test.Header;
+    entity HeaderItem as projection on test.HeaderItem;
+}
+
+@protocol: [{ kind: 'odata-v4', path: '/custom2/odata/path' }]
+service Custom2Service {
+    entity Header as projection on test.Header;
+    entity HeaderItem as projection on test.HeaderItem;
+}

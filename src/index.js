@@ -198,22 +198,28 @@ function cov2ap(options = {}) {
     return fallback;
   };
 
-  let oDataPath = "";
+  let oDataV2ProtocolPath = "odata/v2";
+  let oDataV4ProtocolPath = "odata/v4";
   if (cds.env.requires.middlewares && !cds.env.features.serve_on_root && cds.env.protocols) {
+    if (cds.env.protocols["odata-v2"]) {
+      oDataV2ProtocolPath = cds.env.protocols["odata-v2"].path;
+    }
     if (cds.env.protocols.odata) {
-      oDataPath = cds.env.protocols.odata.path;
+      oDataV4ProtocolPath = cds.env.protocols.odata.path;
     } else if (cds.env.protocols["odata-v4"]) {
-      oDataPath = cds.env.protocols["odata-v4"].path;
+      oDataV4ProtocolPath = cds.env.protocols["odata-v4"].path;
     }
   }
-  const oDataRelativePath = oDataPath.replace(/^\//, "");
+  const oDataV2RelativeProtocolPath = oDataV2ProtocolPath.replace(/^\//, "");
+  const oDataV4RelativeProtocolPath = oDataV4ProtocolPath.replace(/^\//, "");
+  const useODataProtocolPath = parseInt(cds.version, 10) >= 7;
 
   const proxyCache = {};
   const router = express.Router();
   const base = optionWithFallback("base", "");
-  const path = optionWithFallback("path", cds.version >= "7" ? "odata/v2" : "v2");
+  const path = optionWithFallback("path", useODataProtocolPath ? oDataV2RelativeProtocolPath : "v2");
   const sourcePath = `${base ? "/" + base : ""}/${path}`;
-  const targetPath = optionWithFallback("targetPath", cds.version >= "7" ? oDataRelativePath : "");
+  const targetPath = optionWithFallback("targetPath", useODataProtocolPath ? oDataV4RelativeProtocolPath : "");
   const rewritePath = `${base ? "/" + base : ""}${targetPath ? "/" : ""}${targetPath}`;
   const pathRewrite = { [`^${sourcePath}`]: rewritePath };
   let port = optionWithFallback("port", process.env.PORT || DefaultPort);
@@ -670,74 +676,124 @@ function cov2ap(options = {}) {
   }
 
   function serviceFromRequest(req) {
-    let serviceName;
-    let serviceValid = true;
-    let serviceAbsolute = false;
-    const urlServicePath = normalizeSlashes(req.params["0"]);
-    let servicePath = targetPath ? `/${targetPath}${urlServicePath}` : urlServicePath;
-    Object.keys(services).find((path) => {
-      if (servicePath.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
-        serviceName = services[path];
-        servicePath = stripSlashes(path);
-        return true;
-      }
-      return false;
-    });
-    if (!serviceName) {
-      serviceName = Object.keys(cds.services).find((service) => {
-        const path = cds.services[service].path;
-        if (path) {
-          if (servicePath.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
-            servicePath = stripSlashes(path);
-            return true;
-          }
-        }
-        return false;
-      });
+    const servicePathUrl = normalizeSlashes(req.params["0"]);
+    const servicePath = targetPath ? `/${targetPath}${servicePathUrl}` : servicePathUrl;
+    const service = {
+      name: "",
+      path: "",
+      valid: true,
+      absolute: false,
+    };
+
+    Object.assign(
+      service,
+      determineMostSelectiveService(
+        Object.keys(services)
+          .map((path) => {
+            if (servicePath.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
+              return {
+                name: services[path],
+                path: stripSlashes(path),
+              };
+            }
+          })
+          .filter((entry) => !!entry)
+      )
+    );
+
+    if (!service.name) {
+      Object.assign(
+        service,
+        determineMostSelectiveService(
+          Object.keys(cds.services)
+            .map((service) => {
+              const path = cds.services[service].path;
+              if (path) {
+                if (servicePath.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
+                  return {
+                    name: service,
+                    path: stripSlashes(path),
+                  };
+                }
+              }
+            })
+            .filter((entry) => !!entry)
+        )
+      );
     }
-    if (!serviceName) {
-      serviceName = Object.keys(cds.services).find((service) => {
-        const path = cds.services[service].path;
-        if (path) {
-          if (urlServicePath.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
-            servicePath = stripSlashes(path);
-            serviceAbsolute = true;
-            return true;
-          }
-        }
-        return false;
-      });
+
+    if (!service.name) {
+      Object.assign(
+        service,
+        determineMostSelectiveService(
+          Object.keys(cds.services)
+            .map((service) => {
+              const path = cds.services[service].path;
+              if (path) {
+                if (servicePathUrl.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
+                  return {
+                    name: service,
+                    path: stripSlashes(path),
+                    absolute: true,
+                  };
+                }
+              }
+            })
+            .filter((entry) => !!entry)
+        )
+      );
     }
-    if (!serviceName) {
-      serviceName = Object.keys(cds.services).find((service) => {
-        return cds.services[service].path === "/";
-      });
-      if (serviceName) {
-        servicePath = "";
-      }
+
+    if (!service.name) {
+      Object.assign(
+        service,
+        determineMostSelectiveService(
+          Object.keys(cds.services)
+            .map((service) => {
+              if (cds.services[service].path === "/") {
+                return {
+                  name: service,
+                  path: "",
+                };
+              }
+            })
+            .filter((entry) => !!entry)
+        )
+      );
     }
-    if (!serviceName || !req.csn.definitions[serviceName] || req.csn.definitions[serviceName].kind !== "service") {
+
+    if (!service.name || !req.csn.definitions[service.name] || req.csn.definitions[service.name].kind !== "service") {
       logWarn(req, "Service", "Invalid service", {
-        name: serviceName,
-        path: servicePath,
+        name: service.name,
+        path: service.path,
       });
-      serviceValid = false;
+      service.valid = false;
     }
-    if (serviceName && req.csn.definitions[serviceName] && !isServedViaOData(req.csn.definitions[serviceName])) {
+    if (service.name && req.csn.definitions[service.name] && !isServedViaOData(req.csn.definitions[service.name])) {
       logWarn(req, "Service", "Invalid service protocol", {
-        name: serviceName,
-        path: servicePath,
+        name: service.name,
+        path: service.path,
       });
       const error = new Error("Invalid service protocol. Only OData services supported");
       error.statusCode = 400;
       throw error;
     }
     return {
-      name: serviceName,
-      path: servicePath,
-      valid: serviceValid,
-      absolute: serviceAbsolute,
+      name: service.name,
+      path: service.path,
+      valid: service.valid,
+      absolute: service.absolute,
     };
+  }
+
+  function determineMostSelectiveService(services) {
+    services.sort((a, b) => {
+      return b.path.length - a.path.length;
+    });
+    if (services.length > 0) {
+      return services[0];
+    }
+    return null;
   }
 
   function isServedViaOData(service) {

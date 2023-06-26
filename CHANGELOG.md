@@ -12,8 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - CDS 7 support
+- Default route with CDS < 7 or option `middlewares` disabled or feature `serve_on_root` enabled stays `v2`
 - Default route with CDS >= 7 is `/odata/v2`
-- Default route with CDS < 7 or option `middlewares` disabled or feature `serve_on_root` enabled is `v2`
 
 ## Version 1.10.6 - 2023-06-05
 

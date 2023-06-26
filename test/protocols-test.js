@@ -77,4 +77,8 @@ describe("CDS protocols", () => {
   it("service annotated with @protocol: [{ kind: 'odata', path: 'relative2' }]", async () => expectGET(request, '/odata/v2/relative2'));
 
   it("service annotated with @protocol: [{ kind: 'odata', path: '/absolute2' }]", async () => expectGET(request, '/odata/v2/absolute2'));
+
+  it("service annotated with @protocol: [{ kind: 'odata', path: '/custom/odata/path' }]", async () => expectGET(request, '/odata/v2/custom/odata/path'));
+
+  it("service annotated with @protocol: [{ kind: 'odata-v4', path: '/custom2/odata/path' }]", async () => expectGET(request, '/odata/v2/custom2/odata/path'));
 });

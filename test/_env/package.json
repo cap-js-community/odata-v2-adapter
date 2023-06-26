@@ -15,6 +15,11 @@
     "typescript": "^4.7.4"
   },
   "cds": {
+    "-protocols": {
+      "odata": "/custom/odata/path",
+      "odata-v4": "/custom/odata/path",
+      "odata-v2": "/my/odata/path"
+    },
     "odata": {
       "-structs": true
     },
