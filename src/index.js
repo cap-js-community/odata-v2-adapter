@@ -198,28 +198,33 @@ function cov2ap(options = {}) {
     return fallback;
   };
 
-  let oDataV2ProtocolPath = "odata/v2";
-  let oDataV4ProtocolPath = "odata/v4";
-  if (cds.env.requires.middlewares && !cds.env.features.serve_on_root && cds.env.protocols) {
-    if (cds.env.protocols["odata-v2"]) {
-      oDataV2ProtocolPath = cds.env.protocols["odata-v2"].path;
-    }
-    if (cds.env.protocols.odata) {
-      oDataV4ProtocolPath = cds.env.protocols.odata.path;
-    } else if (cds.env.protocols["odata-v4"]) {
-      oDataV4ProtocolPath = cds.env.protocols["odata-v4"].path;
+  let oDataV2Path = "v2";
+  let oDataV4Path = "";
+  const oDataProtocolPrefixActive =
+    parseInt(cds.version, 10) >= 7 && cds.env.requires.middlewares && !cds.env.features.serve_on_root;
+  if (oDataProtocolPrefixActive) {
+    oDataV2Path = "odata/v2";
+    oDataV4Path = "odata/v4";
+    if (cds.env.protocols) {
+      if (cds.env.protocols["odata-v2"]) {
+        oDataV2Path = cds.env.protocols["odata-v2"].path;
+      }
+      if (cds.env.protocols.odata) {
+        oDataV4Path = cds.env.protocols.odata.path;
+      } else if (cds.env.protocols["odata-v4"]) {
+        oDataV4Path = cds.env.protocols["odata-v4"].path;
+      }
     }
   }
-  const oDataV2RelativeProtocolPath = oDataV2ProtocolPath.replace(/^\//, "");
-  const oDataV4RelativeProtocolPath = oDataV4ProtocolPath.replace(/^\//, "");
-  const useODataProtocolPath = parseInt(cds.version, 10) >= 7;
+  const oDataV2RelativePath = oDataV2Path.replace(/^\//, "");
+  const oDataV4RelativePath = oDataV4Path.replace(/^\//, "");
 
   const proxyCache = {};
   const router = express.Router();
   const base = optionWithFallback("base", "");
-  const path = optionWithFallback("path", useODataProtocolPath ? oDataV2RelativeProtocolPath : "v2");
+  const path = optionWithFallback("path", oDataV2RelativePath);
   const sourcePath = `${base ? "/" + base : ""}/${path}`;
-  const targetPath = optionWithFallback("targetPath", useODataProtocolPath ? oDataV4RelativeProtocolPath : "");
+  const targetPath = optionWithFallback("targetPath", oDataV4RelativePath);
   const rewritePath = `${base ? "/" + base : ""}${targetPath ? "/" : ""}${targetPath}`;
   const pathRewrite = { [`^${sourcePath}`]: rewritePath };
   let port = optionWithFallback("port", process.env.PORT || DefaultPort);
