@@ -11,6 +11,7 @@ let request;
 
 const expectGET = async (request, path) => {
   await expectGETService(request, path);
+  await expectGETServiceMetadata(request, path);
   await expectGETServiceData(request, `${path}/Header`);
 };
 
@@ -24,6 +25,14 @@ const expectGETService = async (request, path) => {
       EntitySets: ["Header", "HeaderItem", "HeaderLine"],
     },
   });
+};
+
+const expectGETServiceMetadata = async (request, path) => {
+  const response = await util.callRead(request, `${path}/$metadata`, {
+    accept: "application/json",
+  });
+  expect(response.body).toBeDefined();
+  expect(response.statusCode).toBe(200);
 };
 
 const expectGETServiceData = async (request, path) => {

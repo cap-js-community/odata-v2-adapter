@@ -351,10 +351,20 @@ function cov2ap(options = {}) {
     try {
       const urlPath = targetUrl(req);
       const metadataUrl = URL.parse(urlPath, true);
-      const serviceUrl = target + metadataUrl.pathname.substring(0, metadataUrl.pathname.length - 9);
+      let metadataPath = metadataUrl.pathname.substring(0, metadataUrl.pathname.length - 9);
+
+      const { csn } = await getMetadata(req);
+      req.csn = csn;
+      const service = serviceFromRequest(req);
+
+      if (service.absolute && metadataPath.startsWith(`/${targetPath}`)) {
+        metadataPath = metadataPath.substring(targetPath.length + 1);
+      }
+      const serviceUrl = target + metadataPath;
+
       // Trace
       traceRequest(req, "Request", req.method, req.originalUrl, req.headers, req.body);
-      traceRequest(req, "ProxyRequest", req.method, urlPath, req.headers, req.body);
+      traceRequest(req, "ProxyRequest", req.method, metadataPath, req.headers, req.body);
 
       const result = await Promise.all([
         fetch(serviceUrl, {
@@ -365,9 +375,6 @@ function cov2ap(options = {}) {
           },
         }),
         (async () => {
-          const { csn } = await getMetadata(req);
-          req.csn = csn;
-          const service = serviceFromRequest(req);
           if (service && service.name) {
             serviceValid = service.valid;
             const { edmx } = await getMetadata(req, service.name);
