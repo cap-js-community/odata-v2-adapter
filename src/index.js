@@ -719,7 +719,9 @@ function cov2ap(options = {}) {
         determineMostSelectiveService(
           Object.keys(cds.services)
             .map((service) => {
-              const path = cds.services[service].path;
+              const path = oDataProtocolPrefixActive
+                ? cds.services[service].path
+                : cds.services[service].definition?.path;
               if (path) {
                 if (servicePath.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
                   return {
@@ -740,7 +742,9 @@ function cov2ap(options = {}) {
         determineMostSelectiveService(
           Object.keys(cds.services)
             .map((service) => {
-              const path = cds.services[service].path;
+              const path = oDataProtocolPrefixActive
+                ? cds.services[service].path
+                : cds.services[service].definition?.path;
               if (path) {
                 if (servicePathUrl.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
                   return {
@@ -762,7 +766,10 @@ function cov2ap(options = {}) {
         determineMostSelectiveService(
           Object.keys(cds.services)
             .map((service) => {
-              if (cds.services[service].path === "/") {
+              const path = oDataProtocolPrefixActive
+                ? cds.services[service].path
+                : cds.services[service].definition?.path;
+              if (path === "/") {
                 return {
                   name: service,
                   path: "",
