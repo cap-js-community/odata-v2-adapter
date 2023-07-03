@@ -36,11 +36,11 @@
 The OData V2 adapter for CDS instantiates an Express router. The following options are available:
 
 - **base:** Base path under which the service is reachable. Default is `''`.
-- **path:** Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated or `serve_on_root` activated
+- **path:** Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
 - **model:** CDS service model (path(s) or CSN). Default is `'all'`.
 - **port:** Target port which points to OData V4 backend port. Default is process.env.PORT or `4004`.
 - **target:** Target which points to OData V4 backend host:port. Use `'auto'` to infer the target from server url after listening. Default is e.g. `'http://localhost:4004'`.
-- **targetPath:** Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated or `serve_on_root` activated
+- **targetPath:** Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
 - **services:** Service mapping object from url path name to service name. Default is `{}`.
 - **mtxRemote:** CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is `false`.
 - **mtxEndpoint:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is `'/mtx/v1'`.

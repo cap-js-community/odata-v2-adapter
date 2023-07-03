@@ -5,9 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.11.4 - 2023-08-xx
+## Version 1.11.4 - 2023-07-04
 
 ### Fixed
+
+- Remove support for `serve_on_root`. Define path explicitly to `v2` to restore previous behavior
 
 ## Version 1.11.3 - 2023-07-03
 

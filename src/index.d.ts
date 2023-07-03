@@ -18,7 +18,7 @@ type Options = {
     base?: string | "",
 
     /**
-     * Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated or `serve_on_root` activated
+     * Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
      */
     path?: string | "odata/v2",
 
@@ -38,7 +38,7 @@ type Options = {
     target?: string | "http://localhost:4004" | "auto",
 
     /**
-     * Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated or `serve_on_root` activated
+     * Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
      */
     targetPath?: string | "odata/v4",
 
