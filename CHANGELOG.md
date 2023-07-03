@@ -5,9 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.11.3 - 2023-08-xx
+## Version 1.11.3 - 2023-07-03
 
 ### Fixed
+
+- Fix absolute OData V4 paths for `$batch` calls
 
 ## Version 1.11.2 - 2023-07-03
 

@@ -1201,6 +1201,7 @@ function cov2ap(options = {}) {
             ProcessingDirection.Request
           );
         }
+        proxyReq.path = convertUrlAbsolutePath(proxyReq.path, req);
         headers.accept = "multipart/mixed,application/json";
         proxyReq.setHeader("accept", headers.accept);
       } else {
@@ -1325,12 +1326,17 @@ function cov2ap(options = {}) {
     return URL.format(url);
   }
 
+  function convertUrlAbsolutePath(path, req) {
+    if (req.serviceAbsolute && path.startsWith(`/${targetPath}`)) {
+      return path.substring(targetPath.length + 1);
+    }
+    return path;
+  }
+
   function parseUrl(urlPath, req) {
     const url = URL.parse(urlPath, true);
     url.pathname = (url.pathname && url.pathname.replace(/%27/g, "'")) || "";
-    if (req.serviceAbsolute && url.pathname.startsWith(`/${targetPath}`)) {
-      url.pathname = url.pathname.substring(targetPath.length + 1);
-    }
+    url.pathname = convertUrlAbsolutePath(url.pathname, req);
     url.originalUrl = { ...url, query: { ...url.query } };
     url.basePath = "";
     url.servicePath = "";
