@@ -239,7 +239,7 @@ cds.on("bootstrap", (app) =>
   app.use((req, res, next) => {
     req.features = req.features || ["advanced"];
     next();
-  })
+  }),
 );
 ```
 
@@ -390,7 +390,7 @@ const port = process.env.PORT || 4004;
       services: {
         "<odata-v4-service-path>": "<qualified.ServiceName>",
       },
-    })
+    }),
   );
 
   const server = app.listen(port, host, () => console.info(`app is listing at ${host}:${port}`));

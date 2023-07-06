@@ -401,7 +401,7 @@ function cov2ap(options = {}) {
         metadataResponse.status,
         metadataResponse.statusMessage,
         headers,
-        metadataBody
+        metadataBody,
       );
 
       respond(req, res, metadataResponse.status, headers, body);
@@ -546,7 +546,7 @@ function cov2ap(options = {}) {
               definition,
               element,
               element.name,
-              filename
+              filename,
             );
           }
           const postUrl = target + url.pathname;
@@ -609,17 +609,17 @@ function cov2ap(options = {}) {
                 contentDispositionFilename(req.body) ||
                 contentDispositionFilename(headers) ||
                 req.body["name"]),
-            req.body
+            req.body,
           );
         });
       } else {
         await handleMediaEntity(
           headers["content-type"],
           headers["slug"] || headers["filename"] || contentDispositionFilename(headers) || headers["name"],
-          headers
+          headers,
         );
       }
-    }
+    },
   );
 
   // Proxy Middleware
@@ -708,8 +708,8 @@ function cov2ap(options = {}) {
               };
             }
           })
-          .filter((entry) => !!entry)
-      )
+          .filter((entry) => !!entry),
+      ),
     );
 
     if (!service.name) {
@@ -728,8 +728,8 @@ function cov2ap(options = {}) {
                 }
               }
             })
-            .filter((entry) => !!entry)
-        )
+            .filter((entry) => !!entry),
+        ),
       );
     }
 
@@ -750,8 +750,8 @@ function cov2ap(options = {}) {
                 }
               }
             })
-            .filter((entry) => !!entry)
-        )
+            .filter((entry) => !!entry),
+        ),
       );
     }
 
@@ -768,8 +768,8 @@ function cov2ap(options = {}) {
                 };
               }
             })
-            .filter((entry) => !!entry)
-        )
+            .filter((entry) => !!entry),
+        ),
       );
     }
 
@@ -860,7 +860,7 @@ function cov2ap(options = {}) {
           {
             method: "GET",
             headers: propagateHeaders(req),
-          }
+          },
         );
         if (!response.ok) {
           throw new Error(await response.text());
@@ -868,7 +868,7 @@ function cov2ap(options = {}) {
         return response.text();
       },
       service,
-      determineLocale(req)
+      determineLocale(req),
     );
   }
 
@@ -887,7 +887,7 @@ function cov2ap(options = {}) {
           return await cds.mtx.getEdmx(tenant, service, locale, "v2");
         },
         service,
-        determineLocale(req)
+        determineLocale(req),
       );
     }
   }
@@ -921,7 +921,7 @@ function cov2ap(options = {}) {
           });
         },
         service,
-        determineLocale(req)
+        determineLocale(req),
       );
     }
   }
@@ -937,7 +937,7 @@ function cov2ap(options = {}) {
       },
       async () => {},
       service,
-      determineLocale(req)
+      determineLocale(req),
     );
   }
 
@@ -1197,7 +1197,7 @@ function cov2ap(options = {}) {
               return { body, headers };
             },
             req.contentIdOrder,
-            ProcessingDirection.Request
+            ProcessingDirection.Request,
           );
         }
         proxyReq.path = convertUrlAbsolutePath(proxyReq.path, req);
@@ -1569,7 +1569,7 @@ function cov2ap(options = {}) {
                 return "";
               })
               .filter((part) => !!part)
-              .join(",")})`
+              .join(",")})`,
           );
         } else {
           return part;
@@ -1732,7 +1732,7 @@ function cov2ap(options = {}) {
           if (DataTypeMap[type]) {
             const v4Regex = new RegExp(
               `(${namePath})(\\)?\\s+?(?:eq|ne|gt|ge|lt|le)\\s+?)${DataTypeMap[type].v4.source}`,
-              DataTypeMap[type].v4.flags
+              DataTypeMap[type].v4.flags,
             );
             if (v4Regex.test(part.content)) {
               part.content = part.content.replace(v4Regex, (_, name, op, value) => {
@@ -2319,7 +2319,7 @@ function cov2ap(options = {}) {
                   return "";
                 })
                 .filter((part) => !!part)
-                .join(",")})`
+                .join(",")})`,
             );
           } else {
             return part;
@@ -2624,7 +2624,7 @@ function cov2ap(options = {}) {
               return { statusCode, statusCodeText, body, headers };
             },
             resContentIdOrder,
-            ProcessingDirection.Response
+            ProcessingDirection.Response,
           );
           if (
             !(
@@ -2675,7 +2675,7 @@ function cov2ap(options = {}) {
           res,
           proxyRes.statusCode,
           proxyRes.headers,
-          convertResponseError(proxyRes.body, proxyRes.headers, undefined, req)
+          convertResponseError(proxyRes.body, proxyRes.headers, undefined, req),
         );
       } else {
         if (res.writeHead && !res.headersSent) {
@@ -2762,7 +2762,7 @@ function cov2ap(options = {}) {
                 const filename = await response.text();
                 if (filename) {
                   headers["content-disposition"] = `${contentDispositionTypeValue}; filename="${encodeURIComponent(
-                    filename
+                    filename,
                   )}"`;
                 }
               } else {
@@ -2912,7 +2912,7 @@ function cov2ap(options = {}) {
         },
         req,
         undefined,
-        true
+        true,
       )
     ) {
       context = undefined;
@@ -2924,7 +2924,7 @@ function cov2ap(options = {}) {
         },
         req,
         definition,
-        true
+        true,
       )
     ) {
       context = definition;
@@ -3047,7 +3047,7 @@ function cov2ap(options = {}) {
           body.d[definitionElement.name] = convertDataTypeToV2(
             proxyBody.value,
             elementType(definitionElement, req),
-            definition
+            definition,
           );
           convertResponseElementData(body, headers, definition, elements, proxyBody, req);
           if (req.context.$value) {
@@ -3760,7 +3760,7 @@ function cov2ap(options = {}) {
             ...originalUrl.query,
             ...params,
           },
-        })
+        }),
       )
     );
   }
@@ -3831,7 +3831,7 @@ function cov2ap(options = {}) {
   function convertResponseServiceRootToXML(proxyBody, headers, req) {
     let xmlBody = `<?xml version="1.0" encoding="utf-8" standalone="yes"?>`;
     xmlBody += `<service xml:base="${serviceUri(
-      req
+      req,
     )}" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app" xmlns="http://www.w3.org/2007/app">`;
     xmlBody += `<workspace><atom:title>Default</atom:title>`;
     xmlBody += proxyBody.value
@@ -3847,7 +3847,7 @@ function cov2ap(options = {}) {
   function convertResponseBodyToXML(body, req) {
     let xmlBody = `<?xml version="1.0" encoding="utf-8" standalone="yes"?>`;
     const namespace = ` xml:base="${serviceUri(
-      req
+      req,
     )}" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom"`;
     const definition = req.context.definition;
     if (body && body.d && definition) {
@@ -3870,7 +3870,7 @@ function cov2ap(options = {}) {
         xmlBody += `<updated>${req.now.toISOString()}</updated>`;
         xmlBody += `<link rel="self" title="${element || localName(definition, req)}" href="${entityUriCollection(
           definition,
-          req
+          req,
         )}${element ? `/${element}` : ""}" />`;
         data.results.forEach((entry) => {
           if (typeof entry === "object") {
@@ -4288,7 +4288,7 @@ function cov2ap(options = {}) {
     urlProcessor,
     bodyHeadersProcessor,
     contentIdOrder = [],
-    direction
+    direction,
   ) {
     let maxContentId = 1;
 
@@ -4498,7 +4498,7 @@ function cov2ap(options = {}) {
         _headers && "Headers:",
         _headers,
         _body && "Body:",
-        _body
+        _body,
       );
     }
   }
