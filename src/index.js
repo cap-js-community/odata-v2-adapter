@@ -282,7 +282,8 @@ function cov2ap(options = {}) {
       return;
     }
     const provider = (entity) => {
-      const href = `${sourcePath}${sourceServicePath(service.path)}/${entity || "$metadata"}`;
+      const path = serviceODataV4Path(service);
+      const href = `${sourcePath}${sourceServicePath(path)}/${entity || "$metadata"}`;
       return { href, name: `${entity || "$metadata"} (V2)`, title: "OData V2" };
     };
     service.$linkProviders = service.$linkProviders || [];
@@ -718,7 +719,7 @@ function cov2ap(options = {}) {
         determineMostSelectiveService(
           Object.keys(cds.services)
             .map((service) => {
-              const path = cds.services[service].path;
+              const path = serviceODataV4Path(cds.services[service]);
               if (path) {
                 if (servicePath.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
                   return {
@@ -739,7 +740,7 @@ function cov2ap(options = {}) {
         determineMostSelectiveService(
           Object.keys(cds.services)
             .map((service) => {
-              const path = cds.services[service].path;
+              const path = serviceODataV4Path(cds.services[service]);
               if (path) {
                 if (servicePathUrl.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
                   return {
@@ -761,7 +762,8 @@ function cov2ap(options = {}) {
         determineMostSelectiveService(
           Object.keys(cds.services)
             .map((service) => {
-              if (cds.services[service].path === "/") {
+              const path = serviceODataV4Path(cds.services[service]);
+              if (path === "/") {
                 return {
                   name: service,
                   path: "",
@@ -795,6 +797,16 @@ function cov2ap(options = {}) {
       valid: service.valid,
       absolute: service.absolute,
     };
+  }
+
+  function serviceODataV4Path(service) {
+    if (Array.isArray(service.endpoints)) {
+      const odataV4Endpoint = service.endpoints.find((endpoint) => ["odata", "odata-v4"].includes(endpoint.kind));
+      if (odataV4Endpoint) {
+        return odataV4Endpoint.path;
+      }
+    }
+    return service.path;
   }
 
   function determineMostSelectiveService(services) {

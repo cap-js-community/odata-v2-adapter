@@ -2503,7 +2503,7 @@ exports[`main GET $metadata localized 1`] = `
         <Annotation Term="Common.Label" String="Währungssymbol"/>
       </Annotations>
       <Annotations Target="test.MainService.Currency/minorUnit" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Currency Minor Unit Fractions"/>
+        <Annotation Term="Common.Label" String="Bruchteile Währungsuntereinheit"/>
       </Annotations>
       <Annotations Target="test.MainService.Header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Identification">
@@ -3849,7 +3849,7 @@ exports[`main GET $metadata localized 2`] = `
         <Annotation Term="Common.Label" String="Währungssymbol"/>
       </Annotations>
       <Annotations Target="test.MainService.Currency/minorUnit" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Currency Minor Unit Fractions"/>
+        <Annotation Term="Common.Label" String="Bruchteile Währungsuntereinheit"/>
       </Annotations>
       <Annotations Target="test.MainService.Header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Identification">
