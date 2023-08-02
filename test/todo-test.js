@@ -20,7 +20,7 @@ describe("todo", () => {
   it("GET request with datetime key", async () => {
     let response = await util.callRead(
       request,
-      "/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')",
+      "/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')",
       {
         accept: "application/json",
       }
@@ -32,9 +32,9 @@ describe("todo", () => {
       startDate: "2019-08-23T00:00:00Z",
       endDate: "2019-08-23T00:00:00Z",
       keyDate: "/Date(1577750400000)/",
-      keyTime: "PT12H34M56.789S",
+      keyTime: "PT12H34M56S",
       keyDateEdit: "/Date(1577750400000)/",
-      keyTimeEdit: "PT12H34M56.789S",
+      keyTimeEdit: "PT12H34M56S",
       tentative: true,
       task: {
         __deferred: {},
@@ -47,12 +47,12 @@ describe("todo", () => {
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')`,
+        )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')`,
       },
     });
     response = await util.callRead(
       request,
-      "/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetime'2019-08-23T00:00:00Z',endDate=datetime'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')",
+      "/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetime'2019-08-23T00:00:00Z',endDate=datetime'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')",
       {
         accept: "application/json",
       }
@@ -64,9 +64,9 @@ describe("todo", () => {
       startDate: "2019-08-23T00:00:00Z",
       endDate: "2019-08-23T00:00:00Z",
       keyDate: "/Date(1577750400000)/",
-      keyTime: "PT12H34M56.789S",
+      keyTime: "PT12H34M56S",
       keyDateEdit: "/Date(1577750400000)/",
-      keyTimeEdit: "PT12H34M56.789S",
+      keyTimeEdit: "PT12H34M56S",
       tentative: true,
       task: {
         __deferred: {},
@@ -79,12 +79,12 @@ describe("todo", () => {
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')`,
+        )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')`,
       },
     });
     response = await util.callRead(
       request,
-      "/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00%3A00%3A00Z',endDate=datetimeoffset'2019-08-23T00%3A00%3A00Z',keyDate=datetime'2019-12-31T00%3A00%3A00',keyTime=time'PT12H34M56.789S')",
+      "/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00%3A00%3A00Z',endDate=datetimeoffset'2019-08-23T00%3A00%3A00Z',keyDate=datetime'2019-12-31T00%3A00%3A00',keyTime=time'PT12H34M56S')",
       {
         accept: "application/json",
       }
@@ -96,9 +96,9 @@ describe("todo", () => {
       startDate: "2019-08-23T00:00:00Z",
       endDate: "2019-08-23T00:00:00Z",
       keyDate: "/Date(1577750400000)/",
-      keyTime: "PT12H34M56.789S",
+      keyTime: "PT12H34M56S",
       keyDateEdit: "/Date(1577750400000)/",
-      keyTimeEdit: "PT12H34M56.789S",
+      keyTimeEdit: "PT12H34M56S",
       tentative: true,
       task: {
         __deferred: {},
@@ -127,9 +127,9 @@ describe("todo", () => {
       startDate: "2019-08-23T00:00:00Z",
       endDate: "2019-08-23T00:00:00Z",
       keyDate: "/Date(1577750400000)/",
-      keyTime: "PT12H34M56.789S",
+      keyTime: "PT12H34M56S",
       keyDateEdit: "/Date(1577750400000)/",
-      keyTimeEdit: "PT12H34M56.789S",
+      keyTimeEdit: "PT12H34M56S",
       tentative: true,
       task: {
         __deferred: {},
@@ -147,9 +147,9 @@ describe("todo", () => {
       startDate: "2019-08-23T00:00:00Z",
       endDate: "2019-08-23T00:00:00Z",
       keyDate: "/Date(1577750400000)/",
-      keyTime: "PT12H34M56.789S",
+      keyTime: "PT12H34M56S",
       keyDateEdit: "/Date(1577750400000)/",
-      keyTimeEdit: "PT12H34M56.789S",
+      keyTimeEdit: "PT12H34M56S",
       tentative: true,
       task: {
         __deferred: {},
@@ -186,7 +186,7 @@ describe("todo", () => {
                 uri: `http://${response.request.host.replace(
                   "127.0.0.1",
                   "localhost"
-                )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')`,
+                )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')`,
               },
               endDate: "2019-08-23T00:00:00Z",
               person: {
@@ -194,7 +194,7 @@ describe("todo", () => {
                   uri: `http://${response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')/person`,
+                  )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')/person`,
                 },
               },
               person_ID: 1,
@@ -204,7 +204,7 @@ describe("todo", () => {
                   uri: `http://${response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')/task`,
+                  )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')/task`,
                 },
               },
               task_ID: 1,
@@ -243,7 +243,7 @@ describe("todo", () => {
                 uri: `http://${response.request.host.replace(
                   "127.0.0.1",
                   "localhost"
-                )}/odata/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.7S')`,
+                )}/odata/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')`,
               },
               endDate: "2019-08-24T00:00:00Z",
               person: {
@@ -251,7 +251,7 @@ describe("todo", () => {
                   uri: `http://${response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/odata/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.7S')/person`,
+                  )}/odata/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')/person`,
                 },
               },
               person_ID: 3,
@@ -261,7 +261,7 @@ describe("todo", () => {
                   uri: `http://${response.request.host.replace(
                     "127.0.0.1",
                     "localhost"
-                  )}/odata/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.7S')/task`,
+                  )}/odata/v2/todo/PlannedTasks(task_ID=2,person_ID=3,startDate=datetimeoffset'2019-08-24T00:00:00Z',endDate=datetimeoffset'2019-08-24T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')/task`,
                 },
               },
               task_ID: 2,
@@ -289,7 +289,7 @@ describe("todo", () => {
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')`,
+        )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')`,
       },
       endDate: "2019-08-23T00:00:00Z",
       person: {
@@ -297,7 +297,7 @@ describe("todo", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')/person`,
+          )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')/person`,
         },
       },
       person_ID: 1,
@@ -307,13 +307,13 @@ describe("todo", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')/task`,
+          )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')/task`,
         },
       },
       keyDate: "/Date(1577750400000)/",
-      keyTime: "PT12H34M56.789S",
+      keyTime: "PT12H34M56S",
       keyDateEdit: "/Date(1577750400000)/",
-      keyTimeEdit: "PT12H34M56.789S",
+      keyTimeEdit: "PT12H34M56S",
       task_ID: 1,
       tentative: true,
     });
@@ -341,7 +341,7 @@ describe("todo", () => {
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
           "localhost"
-        )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')`,
+        )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')`,
       },
       endDate: "2019-08-23T00:00:00Z",
       person: {
@@ -349,7 +349,7 @@ describe("todo", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')/person`,
+          )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')/person`,
         },
       },
       person_ID: 1,
@@ -359,11 +359,11 @@ describe("todo", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56.789S')/task`,
+          )}/odata/v2/todo/PlannedTasks(task_ID=1,person_ID=1,startDate=datetimeoffset'2019-08-23T00:00:00Z',endDate=datetimeoffset'2019-08-23T00:00:00Z',keyDate=datetime'2019-12-31T00:00:00',keyTime=time'PT12H34M56S')/task`,
         },
       },
       keyDate: "/Date(1577750400000)/",
-      keyTime: "PT12H34M56.789S",
+      keyTime: "PT12H34M56S",
       keyDateEdit: "/Date(1577836800000)/",
       keyTimeEdit: "PT13H35M57.99S",
       task_ID: 1,
@@ -481,7 +481,7 @@ describe("todo", () => {
     expect(response.body.d.results.length).toEqual(1);
     response = await util.callRead(
       request,
-      "/odata/v2/todo/People(3)/plannedTasks?$filter=tentative eq true or keyTime eq time'PT12H34M56.7S'",
+      "/odata/v2/todo/People(3)/plannedTasks?$filter=tentative eq true or keyTime eq time'PT12H34M56S'",
       {
         accept: "application/json",
       }
@@ -586,16 +586,16 @@ describe("todo", () => {
       startDate: "2020-08-23T00:00:00Z",
       endDate: "2020-08-23T00:00:00Z",
       keyDate: "/Date(1577750400000)/",
-      keyTime: "PT12H34M56.789S",
+      keyTime: "PT12H34M56S",
       keyDateEdit: "/Date(1577750400000)/",
-      keyTimeEdit: "PT12H34M56.789S",
+      keyTimeEdit: "PT12H34M56S",
       tentative: true,
     });
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
     response = await util.callWrite(
       request,
-      "/odata/v2/todo/PlannedTasks_boundAction?task_ID=1&person_ID=1&num=1&text=abc&startDate=datetimeoffset'2019-08-23T00:00:00Z'&endDate=datetimeoffset'2019-08-23T00:00:00Z'&keyDate=datetime'2019-12-31T00:00:00'&keyTime=time'PT12H34M56.789S'&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00:00'&keyTime2=time'PT12H34M56.789S'"
+      "/odata/v2/todo/PlannedTasks_boundAction?task_ID=1&person_ID=1&num=1&text=abc&startDate=datetimeoffset'2019-08-23T00:00:00Z'&endDate=datetimeoffset'2019-08-23T00:00:00Z'&keyDate=datetime'2019-12-31T00:00:00'&keyTime=time'PT12H34M56S'&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00:00'&keyTime2=time'PT12H34M56S'"
     );
     expect(response.body).toMatchObject({
       d: {
@@ -604,12 +604,12 @@ describe("todo", () => {
         startDate: "2019-08-23T00:00:00Z",
         endDate: "2019-08-23T00:00:00Z",
         keyDate: "/Date(1577750400000)/",
-        keyTime: "PT12H34M56.789S",
+        keyTime: "PT12H34M56S",
       },
     });
     response = await util.callRead(
       request,
-      "/odata/v2/todo/PlannedTasks_boundFunction?task_ID=1&person_ID=1&num=1&text=abc&startDate=datetimeoffset'2019-08-23T00:00:00Z'&endDate=datetimeoffset'2019-08-23T00:00:00Z'&keyDate=datetime'2019-12-31T00:00:00'&keyTime=time'PT12H34M56.789S'&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00:00'&keyTime2=time'PT12H34M56.789S'"
+      "/odata/v2/todo/PlannedTasks_boundFunction?task_ID=1&person_ID=1&num=1&text=abc&startDate=datetimeoffset'2019-08-23T00:00:00Z'&endDate=datetimeoffset'2019-08-23T00:00:00Z'&keyDate=datetime'2019-12-31T00:00:00'&keyTime=time'PT12H34M56S'&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00:00'&keyTime2=time'PT12H34M56S'"
     );
     expect(response.body).toMatchObject({
       d: {
@@ -620,7 +620,7 @@ describe("todo", () => {
             startDate: "2019-08-23T00:00:00Z",
             endDate: "2019-08-23T00:00:00Z",
             keyDate: "2019-12-31",
-            keyTime: "12:34:56.789",
+            keyTime: "12:34:56",
           },
           data: {
             num: 1,
@@ -628,7 +628,7 @@ describe("todo", () => {
             startDate2: "2019-08-23T00:00:00Z",
             endDate2: "2019-08-23T00:00:00Z",
             keyDate2: "2019-12-31",
-            keyTime2: "12:34:56.789",
+            keyTime2: "12:34:56",
           },
         }),
       },
@@ -642,16 +642,16 @@ describe("todo", () => {
       startDate: "2021-08-23T00:00:00Z",
       endDate: "2021-08-23T00:00:00Z",
       keyDate: "/Date(1577750400000)/",
-      keyTime: "PT12H34M56.789S",
+      keyTime: "PT12H34M56S",
       keyDateEdit: "/Date(1577750400000)/",
-      keyTimeEdit: "PT12H34M56.789S",
+      keyTimeEdit: "PT12H34M56S",
       tentative: true,
     });
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
     response = await util.callWrite(
       request,
-      "/odata/v2/todo/unboundAction?num=1&text=abc&&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00:00'&keyTime2=time'PT12H34M56.789S'"
+      "/odata/v2/todo/unboundAction?num=1&text=abc&&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00:00'&keyTime2=time'PT12H34M56S'"
     );
     expect(response.body).toMatchObject({
       d: {
@@ -660,12 +660,12 @@ describe("todo", () => {
         startDate: "2019-08-23T00:00:00Z",
         endDate: "2019-08-23T00:00:00Z",
         keyDate: "/Date(1577750400000)/",
-        keyTime: "PT12H34M56.789S",
+        keyTime: "PT12H34M56S",
       },
     });
     response = await util.callRead(
       request,
-      "/odata/v2/todo/unboundFunction?num=1&text=abc&&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00:00'&keyTime2=time'PT12H34M56.789S'"
+      "/odata/v2/todo/unboundFunction?num=1&text=abc&&startDate2=datetimeoffset'2019-08-23T00:00:00Z'&endDate2=datetimeoffset'2019-08-23T00:00:00Z'&keyDate2=datetime'2019-12-31T00:00:00'&keyTime2=time'PT12H34M56S'"
     );
     expect(response.body).toMatchObject({
       d: {
@@ -677,7 +677,7 @@ describe("todo", () => {
             startDate2: "2019-08-23T00:00:00Z",
             endDate2: "2019-08-23T00:00:00Z",
             keyDate2: "2019-12-31",
-            keyTime2: "12:34:56.789",
+            keyTime2: "12:34:56",
           },
         }),
       },
