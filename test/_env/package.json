@@ -6,7 +6,7 @@
     "start": "cds-serve --in-memory",
     "start:file": "cds-serve --profile testdb",
     "start:root": "cds-serve --in-memory --service test.MainService --from ./test/_env/srv/model --at /",
-    "test:deploy": "cds deploy srv/index.cds --to sqlite:test.sqlite --no-save",
+    "test:deploy": "cds deploy srv/index.cds --to sqlite:test.sqlite",
     "build": "cds build",
     "tsc": "cd util/typescript && tsc"
   },
