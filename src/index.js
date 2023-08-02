@@ -1404,6 +1404,7 @@ function cov2ap(options = {}) {
     if (!name) {
       return context;
     }
+    name = decodeURIComponent(name);
     if (!context) {
       if (name.startsWith("$") && req.contentId[name]) {
         return contextFromUrl(req.contentId[name], req, undefined, suppressWarning);
@@ -1558,8 +1559,8 @@ function cov2ap(options = {}) {
             return part;
           }
           const keys = decodeURIComponent(keyPart).split(",");
-          return encodeURIComponent(
-            `${part}(${keys
+          return part + encodeURIComponent(
+            `(${keys
               .map((key) => {
                 const [name, value] = key.split("=");
                 let type;
@@ -2306,8 +2307,8 @@ function cov2ap(options = {}) {
           const contextElements = definitionElements(context);
           if (context && keyPart) {
             const keys = decodeURIComponent(keyPart).split(",");
-            return encodeURIComponent(
-              `${part}(${keys
+            return part + encodeURIComponent(
+              `(${keys
                 .map((key) => {
                   const [name, value] = key.split("=");
                   if (name && value) {

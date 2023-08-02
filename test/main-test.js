@@ -3954,4 +3954,31 @@ describe("main", () => {
       }
     });
   });
+
+  it("GET entity with special characters in entity name ", async () => {
+    let response = await util.callRead(request, `/odata/v2/main/Funcionários(1)`);
+    expect(response.body.d).toMatchObject({
+      ID: 1,
+      name: "Toast",
+      __metadata: {
+        type: "test.MainService.Funcionários",
+        uri: `http://${ response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        ) }/odata/v2/main/Funcionários(1)`
+      }
+    });
+    response = await util.callRead(request, `/odata/v2/main/Funcion%C3%A1rios(1)`);
+    expect(response.body.d).toMatchObject({
+      ID: 1,
+      name: "Toast",
+      __metadata: {
+        type: "test.MainService.Funcionários",
+        uri: `http://${ response.request.host.replace(
+          "127.0.0.1",
+          "localhost"
+        ) }/odata/v2/main/Funcionários(1)`
+      }
+    });
+  });
 });

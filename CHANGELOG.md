@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Respect new service endpoints
+- Support entity names with special characters
 
 ## Version 1.11.4 - 2023-07-04
 
