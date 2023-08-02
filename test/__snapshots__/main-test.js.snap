@@ -404,6 +404,7 @@ exports[`main GET $metadata 1`] = `
           <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
         </FunctionImport>
         <EntitySet Name="Orders" EntityType="test.MainService.Orders"/>
+        <EntitySet Name="Funcionários" EntityType="test.MainService.Funcionários"/>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
@@ -831,6 +832,13 @@ exports[`main GET $metadata 1`] = `
         </Key>
         <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
         <NavigationProperty Name="Items" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders" ToRole="Orders_Items"/>
+      </EntityType>
+      <EntityType Name="Funcionários">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -1750,6 +1758,7 @@ exports[`main GET $metadata localized 1`] = `
           <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
         </FunctionImport>
         <EntitySet Name="Orders" EntityType="test.MainService.Orders"/>
+        <EntitySet Name="Funcionários" EntityType="test.MainService.Funcionários"/>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
@@ -2178,6 +2187,13 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
         <NavigationProperty Name="Items" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders" ToRole="Orders_Items"/>
       </EntityType>
+      <EntityType Name="Funcionários">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
           <PropertyRef Name="ID"/>
@@ -2503,7 +2519,7 @@ exports[`main GET $metadata localized 1`] = `
         <Annotation Term="Common.Label" String="Währungssymbol"/>
       </Annotations>
       <Annotations Target="test.MainService.Currency/minorUnit" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Currency Minor Unit Fractions"/>
+        <Annotation Term="Common.Label" String="Bruchteile Währungsuntereinheit"/>
       </Annotations>
       <Annotations Target="test.MainService.Header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Identification">
@@ -3096,6 +3112,7 @@ exports[`main GET $metadata localized 2`] = `
           <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
         </FunctionImport>
         <EntitySet Name="Orders" EntityType="test.MainService.Orders"/>
+        <EntitySet Name="Funcionários" EntityType="test.MainService.Funcionários"/>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
@@ -3524,6 +3541,13 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
         <NavigationProperty Name="Items" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders" ToRole="Orders_Items"/>
       </EntityType>
+      <EntityType Name="Funcionários">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
           <PropertyRef Name="ID"/>
@@ -3849,7 +3873,7 @@ exports[`main GET $metadata localized 2`] = `
         <Annotation Term="Common.Label" String="Währungssymbol"/>
       </Annotations>
       <Annotations Target="test.MainService.Currency/minorUnit" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Currency Minor Unit Fractions"/>
+        <Annotation Term="Common.Label" String="Bruchteile Währungsuntereinheit"/>
       </Annotations>
       <Annotations Target="test.MainService.Header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Identification">
@@ -4442,6 +4466,7 @@ exports[`main GET $metadata with propagated headers 1`] = `
           <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
         </FunctionImport>
         <EntitySet Name="Orders" EntityType="test.MainService.Orders"/>
+        <EntitySet Name="Funcionários" EntityType="test.MainService.Funcionários"/>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
@@ -4869,6 +4894,13 @@ exports[`main GET $metadata with propagated headers 1`] = `
         </Key>
         <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
         <NavigationProperty Name="Items" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders" ToRole="Orders_Items"/>
+      </EntityType>
+      <EntityType Name="Funcionários">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -5788,6 +5820,7 @@ exports[`main GET $metadata with query options 1`] = `
           <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
         </FunctionImport>
         <EntitySet Name="Orders" EntityType="test.MainService.Orders"/>
+        <EntitySet Name="Funcionários" EntityType="test.MainService.Funcionários"/>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
@@ -6215,6 +6248,13 @@ exports[`main GET $metadata with query options 1`] = `
         </Key>
         <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
         <NavigationProperty Name="Items" Relationship="test.MainService.Orders_Items_up_" FromRole="Orders" ToRole="Orders_Items"/>
+      </EntityType>
+      <EntityType Name="Funcionários">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -6993,6 +7033,7 @@ exports[`main GET service JSON format 1`] = `
   "Currency_texts",
   "Favorite",
   "FavoriteLimited",
+  "Funcionários",
   "Header",
   "HeaderAssocKey",
   "HeaderBinary",
@@ -7029,6 +7070,7 @@ exports[`main GET service JSON format 2`] = `
   "Currency_texts",
   "Favorite",
   "FavoriteLimited",
+  "Funcionários",
   "Header",
   "HeaderAssocKey",
   "HeaderBinary",
@@ -7065,6 +7107,7 @@ exports[`main GET service JSON format 3`] = `
   "Currency_texts",
   "Favorite",
   "FavoriteLimited",
+  "Funcionários",
   "Header",
   "HeaderAssocKey",
   "HeaderBinary",

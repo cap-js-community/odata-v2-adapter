@@ -177,12 +177,17 @@ entity Book {
 }
 
 entity Orders {
-  key ID: Integer;
-  Items : Composition of many {
-    key pos : Integer;
-    product : String;
-    quantity : Integer;
-  }
+    key ID: Integer;
+    Items : Composition of many {
+      key pos : Integer;
+      product : String;
+      quantity : Integer;
+    }
+}
+
+entity ![Funcionários] {
+    key ID: Integer;
+    name: String;
 }
 
 service MainService {
@@ -267,6 +272,7 @@ service MainService {
         action order2(author: String, number: Integer) returns Book;
     };
     entity Orders as projection on test.Orders;
+    entity ![Funcionários] as projection on test.![Funcionários];
 
     action unboundAction(num: Integer, text: String) returns Result;
     action unboundMassAction(ids: array of String) returns array of Result;

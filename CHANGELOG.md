@@ -5,7 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-<!-- New version information is automatically added after line 8 -->
+## Version 1.11.5 - 2023-08-02
+
+### Fixed
+
+- Respect new service endpoints
+- Support entity names with special characters
+
+## Version 1.11.4 - 2023-07-04
+
+### Fixed
+
+- Remove support for `serve_on_root`. Define path explicitly to `v2` to restore previous behavior
+
+## Version 1.11.3 - 2023-07-03
+
+### Fixed
+
+- Fix absolute OData V4 paths for `$batch` calls
+
+## Version 1.11.2 - 2023-07-03
+
+### Fixed
+
+- Fix `$metadata` request for absolute OData V4 paths
+
+## Version 1.11.1 - 2023-06-27
+
+### Fixed
+
+- Fix compatibility for option `middlewares` disabled or feature `serve_on_root` enabled
 
 ## Version 1.11.0 - 2023-06-26
 

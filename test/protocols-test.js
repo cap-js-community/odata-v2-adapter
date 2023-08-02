@@ -4,6 +4,7 @@ const cds = require("@sap/cds");
 const supertest = require("supertest");
 
 const util = require("./_env/util/request");
+const fs = require("fs");
 
 cds.test(__dirname + "/_env");
 
@@ -11,6 +12,7 @@ let request;
 
 const expectGET = async (request, path) => {
   await expectGETService(request, path);
+  await expectGETServiceMetadata(request, path);
   await expectGETServiceData(request, `${path}/Header`);
 };
 
@@ -24,6 +26,14 @@ const expectGETService = async (request, path) => {
       EntitySets: ["Header", "HeaderItem", "HeaderLine"],
     },
   });
+};
+
+const expectGETServiceMetadata = async (request, path) => {
+  const response = await util.callRead(request, `${path}/$metadata`, {
+    accept: "application/json",
+  });
+  expect(response.body).toBeDefined();
+  expect(response.statusCode).toBe(200);
 };
 
 const expectGETServiceData = async (request, path) => {
@@ -81,4 +91,27 @@ describe("CDS protocols", () => {
   it("service annotated with @protocol: [{ kind: 'odata', path: '/custom/odata/path' }]", async () => expectGET(request, '/odata/v2/custom/odata/path'));
 
   it("service annotated with @protocol: [{ kind: 'odata-v4', path: '/custom2/odata/path' }]", async () => expectGET(request, '/odata/v2/custom2/odata/path'));
+
+  it("service with absolute path on batch calls", async () => {
+    let response = await util.callRead(request, "/odata/v2/absolute/Header?$top=1");
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toHaveLength(1);
+    const ID = response.body.d.results[0].ID;
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-GET.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, ID);
+    response = await util.callMultipart(request, "/odata/v2/absolute/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(3);
+    expect(responses.filter((response) => response.statusCode === 200).length).toEqual(3);
+    const [first, second, third] = responses;
+    expect(first.body.d.results.length).toEqual(7);
+    expect(first.contentTransferEncoding).toEqual("binary");
+    expect(second.body.d.results.length).toEqual(7);
+    expect(second.contentTransferEncoding).toEqual("binary");
+    expect(third.body.d.hasOwnProperty("results")).toEqual(false);
+    expect(third.body.d.ID).toEqual(ID);
+    expect(third.contentTransferEncoding).toEqual("binary");
+  });
 });

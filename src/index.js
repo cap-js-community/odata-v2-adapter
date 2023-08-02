@@ -146,11 +146,11 @@ function convertToNodeHeaders(webHeaders) {
  * Instantiates a OData V2 adapter for CDS Express Router for a CDS-based OData V4 Server:
  * @param {object} options OData V2 adapter for CDS options object.
  * @param {string} options.base Base path under which the service is reachable. Default is ''.
- * @param {string} options.path Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated or `serve_on_root` activated
+ * @param {string} options.path Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
  * @param {string|string[]|object} options.model CDS service model (path(s) or CSN). Default is 'all'.
  * @param {number} options.port Target port which points to OData V4 backend port. Default is process.env.PORT or 4004.
  * @param {string} options.target Target which points to OData V4 backend host:port. Use 'auto' to infer the target from server url after listening. Default is e.g. 'http://localhost:4004'.
- * @param {string} options.targetPath Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated or `serve_on_root` activated
+ * @param {string} options.targetPath Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
  * @param {object} options.services Service mapping object from url path name to service name. Default is {}.
  * @param {boolean} options.mtxRemote CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is false.
  * @param {string} options.mtxEndpoint Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is '/mtx/v1'.
@@ -198,28 +198,32 @@ function cov2ap(options = {}) {
     return fallback;
   };
 
-  let oDataV2ProtocolPath = "odata/v2";
-  let oDataV4ProtocolPath = "odata/v4";
-  if (cds.env.requires.middlewares && !cds.env.features.serve_on_root && cds.env.protocols) {
-    if (cds.env.protocols["odata-v2"]) {
-      oDataV2ProtocolPath = cds.env.protocols["odata-v2"].path;
-    }
-    if (cds.env.protocols.odata) {
-      oDataV4ProtocolPath = cds.env.protocols.odata.path;
-    } else if (cds.env.protocols["odata-v4"]) {
-      oDataV4ProtocolPath = cds.env.protocols["odata-v4"].path;
+  let oDataV2Path = "v2";
+  let oDataV4Path = "";
+  const oDataProtocolPrefixActive = parseInt(cds.version, 10) >= 7 && cds.env.requires.middlewares;
+  if (oDataProtocolPrefixActive) {
+    oDataV2Path = "odata/v2";
+    oDataV4Path = "odata/v4";
+    if (cds.env.protocols) {
+      if (cds.env.protocols["odata-v2"]) {
+        oDataV2Path = cds.env.protocols["odata-v2"].path;
+      }
+      if (cds.env.protocols.odata) {
+        oDataV4Path = cds.env.protocols.odata.path;
+      } else if (cds.env.protocols["odata-v4"]) {
+        oDataV4Path = cds.env.protocols["odata-v4"].path;
+      }
     }
   }
-  const oDataV2RelativeProtocolPath = oDataV2ProtocolPath.replace(/^\//, "");
-  const oDataV4RelativeProtocolPath = oDataV4ProtocolPath.replace(/^\//, "");
-  const useODataProtocolPath = parseInt(cds.version, 10) >= 7;
+  const oDataV2RelativePath = oDataV2Path.replace(/^\//, "");
+  const oDataV4RelativePath = oDataV4Path.replace(/^\//, "");
 
   const proxyCache = {};
   const router = express.Router();
   const base = optionWithFallback("base", "");
-  const path = optionWithFallback("path", useODataProtocolPath ? oDataV2RelativeProtocolPath : "v2");
+  const path = optionWithFallback("path", oDataV2RelativePath);
   const sourcePath = `${base ? "/" + base : ""}/${path}`;
-  const targetPath = optionWithFallback("targetPath", useODataProtocolPath ? oDataV4RelativeProtocolPath : "");
+  const targetPath = optionWithFallback("targetPath", oDataV4RelativePath);
   const rewritePath = `${base ? "/" + base : ""}${targetPath ? "/" : ""}${targetPath}`;
   const pathRewrite = { [`^${sourcePath}`]: rewritePath };
   let port = optionWithFallback("port", process.env.PORT || DefaultPort);
@@ -278,7 +282,8 @@ function cov2ap(options = {}) {
       return;
     }
     const provider = (entity) => {
-      const href = `${sourcePath}${sourceServicePath(service.path)}/${entity || "$metadata"}`;
+      const path = serviceODataV4Path(service);
+      const href = `${sourcePath}${sourceServicePath(path)}/${entity || "$metadata"}`;
       return { href, name: `${entity || "$metadata"} (V2)`, title: "OData V2" };
     };
     service.$linkProviders = service.$linkProviders || [];
@@ -346,10 +351,20 @@ function cov2ap(options = {}) {
     try {
       const urlPath = targetUrl(req);
       const metadataUrl = URL.parse(urlPath, true);
-      const serviceUrl = target + metadataUrl.pathname.substring(0, metadataUrl.pathname.length - 9);
+      let metadataPath = metadataUrl.pathname.substring(0, metadataUrl.pathname.length - 9);
+
+      const { csn } = await getMetadata(req);
+      req.csn = csn;
+      const service = serviceFromRequest(req);
+
+      if (service.absolute && metadataPath.startsWith(`/${targetPath}`)) {
+        metadataPath = metadataPath.substring(targetPath.length + 1);
+      }
+      const serviceUrl = target + metadataPath;
+
       // Trace
       traceRequest(req, "Request", req.method, req.originalUrl, req.headers, req.body);
-      traceRequest(req, "ProxyRequest", req.method, urlPath, req.headers, req.body);
+      traceRequest(req, "ProxyRequest", req.method, metadataPath, req.headers, req.body);
 
       const result = await Promise.all([
         fetch(serviceUrl, {
@@ -360,9 +375,6 @@ function cov2ap(options = {}) {
           },
         }),
         (async () => {
-          const { csn } = await getMetadata(req);
-          req.csn = csn;
-          const service = serviceFromRequest(req);
           if (service && service.name) {
             serviceValid = service.valid;
             const { edmx } = await getMetadata(req, service.name);
@@ -390,7 +402,7 @@ function cov2ap(options = {}) {
         metadataResponse.status,
         metadataResponse.statusMessage,
         headers,
-        metadataBody
+        metadataBody,
       );
 
       respond(req, res, metadataResponse.status, headers, body);
@@ -535,7 +547,7 @@ function cov2ap(options = {}) {
               definition,
               element,
               element.name,
-              filename
+              filename,
             );
           }
           const postUrl = target + url.pathname;
@@ -598,17 +610,17 @@ function cov2ap(options = {}) {
                 contentDispositionFilename(req.body) ||
                 contentDispositionFilename(headers) ||
                 req.body["name"]),
-            req.body
+            req.body,
           );
         });
       } else {
         await handleMediaEntity(
           headers["content-type"],
           headers["slug"] || headers["filename"] || contentDispositionFilename(headers) || headers["name"],
-          headers
+          headers,
         );
       }
-    }
+    },
   );
 
   // Proxy Middleware
@@ -697,8 +709,8 @@ function cov2ap(options = {}) {
               };
             }
           })
-          .filter((entry) => !!entry)
-      )
+          .filter((entry) => !!entry),
+      ),
     );
 
     if (!service.name) {
@@ -707,7 +719,7 @@ function cov2ap(options = {}) {
         determineMostSelectiveService(
           Object.keys(cds.services)
             .map((service) => {
-              const path = cds.services[service].path;
+              const path = serviceODataV4Path(cds.services[service]);
               if (path) {
                 if (servicePath.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
                   return {
@@ -717,8 +729,8 @@ function cov2ap(options = {}) {
                 }
               }
             })
-            .filter((entry) => !!entry)
-        )
+            .filter((entry) => !!entry),
+        ),
       );
     }
 
@@ -728,7 +740,7 @@ function cov2ap(options = {}) {
         determineMostSelectiveService(
           Object.keys(cds.services)
             .map((service) => {
-              const path = cds.services[service].path;
+              const path = serviceODataV4Path(cds.services[service]);
               if (path) {
                 if (servicePathUrl.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
                   return {
@@ -739,8 +751,8 @@ function cov2ap(options = {}) {
                 }
               }
             })
-            .filter((entry) => !!entry)
-        )
+            .filter((entry) => !!entry),
+        ),
       );
     }
 
@@ -750,15 +762,16 @@ function cov2ap(options = {}) {
         determineMostSelectiveService(
           Object.keys(cds.services)
             .map((service) => {
-              if (cds.services[service].path === "/") {
+              const path = serviceODataV4Path(cds.services[service]);
+              if (path === "/") {
                 return {
                   name: service,
                   path: "",
                 };
               }
             })
-            .filter((entry) => !!entry)
-        )
+            .filter((entry) => !!entry),
+        ),
       );
     }
 
@@ -784,6 +797,16 @@ function cov2ap(options = {}) {
       valid: service.valid,
       absolute: service.absolute,
     };
+  }
+
+  function serviceODataV4Path(service) {
+    if (Array.isArray(service.endpoints)) {
+      const odataV4Endpoint = service.endpoints.find((endpoint) => ["odata", "odata-v4"].includes(endpoint.kind));
+      if (odataV4Endpoint) {
+        return odataV4Endpoint.path;
+      }
+    }
+    return service.path;
   }
 
   function determineMostSelectiveService(services) {
@@ -849,7 +872,7 @@ function cov2ap(options = {}) {
           {
             method: "GET",
             headers: propagateHeaders(req),
-          }
+          },
         );
         if (!response.ok) {
           throw new Error(await response.text());
@@ -857,7 +880,7 @@ function cov2ap(options = {}) {
         return response.text();
       },
       service,
-      determineLocale(req)
+      determineLocale(req),
     );
   }
 
@@ -876,7 +899,7 @@ function cov2ap(options = {}) {
           return await cds.mtx.getEdmx(tenant, service, locale, "v2");
         },
         service,
-        determineLocale(req)
+        determineLocale(req),
       );
     }
   }
@@ -910,7 +933,7 @@ function cov2ap(options = {}) {
           });
         },
         service,
-        determineLocale(req)
+        determineLocale(req),
       );
     }
   }
@@ -926,7 +949,7 @@ function cov2ap(options = {}) {
       },
       async () => {},
       service,
-      determineLocale(req)
+      determineLocale(req),
     );
   }
 
@@ -1186,9 +1209,10 @@ function cov2ap(options = {}) {
               return { body, headers };
             },
             req.contentIdOrder,
-            ProcessingDirection.Request
+            ProcessingDirection.Request,
           );
         }
+        proxyReq.path = convertUrlAbsolutePath(proxyReq.path, req);
         headers.accept = "multipart/mixed,application/json";
         proxyReq.setHeader("accept", headers.accept);
       } else {
@@ -1313,12 +1337,17 @@ function cov2ap(options = {}) {
     return URL.format(url);
   }
 
+  function convertUrlAbsolutePath(path, req) {
+    if (req.serviceAbsolute && path.startsWith(`/${targetPath}`)) {
+      return path.substring(targetPath.length + 1);
+    }
+    return path;
+  }
+
   function parseUrl(urlPath, req) {
     const url = URL.parse(urlPath, true);
     url.pathname = (url.pathname && url.pathname.replace(/%27/g, "'")) || "";
-    if (req.serviceAbsolute && url.pathname.startsWith(`/${targetPath}`)) {
-      url.pathname = url.pathname.substring(targetPath.length + 1);
-    }
+    url.pathname = convertUrlAbsolutePath(url.pathname, req);
     url.originalUrl = { ...url, query: { ...url.query } };
     url.basePath = "";
     url.servicePath = "";
@@ -1375,6 +1404,7 @@ function cov2ap(options = {}) {
     if (!name) {
       return context;
     }
+    name = decodeURIComponent(name);
     if (!context) {
       if (name.startsWith("$") && req.contentId[name]) {
         return contextFromUrl(req.contentId[name], req, undefined, suppressWarning);
@@ -1529,30 +1559,33 @@ function cov2ap(options = {}) {
             return part;
           }
           const keys = decodeURIComponent(keyPart).split(",");
-          return encodeURIComponent(
-            `${part}(${keys
-              .map((key) => {
-                const [name, value] = key.split("=");
-                let type;
-                if (name && value) {
-                  if (context.params && context.params[name]) {
-                    type = context.params[name].type;
+          return (
+            part +
+            encodeURIComponent(
+              `(${keys
+                .map((key) => {
+                  const [name, value] = key.split("=");
+                  let type;
+                  if (name && value) {
+                    if (context.params && context.params[name]) {
+                      type = context.params[name].type;
+                    }
+                    if (!type) {
+                      type = elementType(contextElements[name], req);
+                    }
+                    return `${name}=${replaceConvertDataTypeToV4(value, type)}`;
+                  } else if (name) {
+                    const key = structureKeys(contextKeys).find((key) => {
+                      return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
+                    });
+                    type = key && elementType(contextElements[key], req);
+                    return type && `${replaceConvertDataTypeToV4(name, type)}`;
                   }
-                  if (!type) {
-                    type = elementType(contextElements[name], req);
-                  }
-                  return `${name}=${replaceConvertDataTypeToV4(value, type)}`;
-                } else if (name) {
-                  const key = structureKeys(contextKeys).find((key) => {
-                    return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
-                  });
-                  type = key && elementType(contextElements[key], req);
-                  return type && `${replaceConvertDataTypeToV4(name, type)}`;
-                }
-                return "";
-              })
-              .filter((part) => !!part)
-              .join(",")})`
+                  return "";
+                })
+                .filter((part) => !!part)
+                .join(",")})`,
+            )
           );
         } else {
           return part;
@@ -1715,7 +1748,7 @@ function cov2ap(options = {}) {
           if (DataTypeMap[type]) {
             const v4Regex = new RegExp(
               `(${namePath})(\\)?\\s+?(?:eq|ne|gt|ge|lt|le)\\s+?)${DataTypeMap[type].v4.source}`,
-              DataTypeMap[type].v4.flags
+              DataTypeMap[type].v4.flags,
             );
             if (v4Regex.test(part.content)) {
               part.content = part.content.replace(v4Regex, (_, name, op, value) => {
@@ -2277,32 +2310,35 @@ function cov2ap(options = {}) {
           const contextElements = definitionElements(context);
           if (context && keyPart) {
             const keys = decodeURIComponent(keyPart).split(",");
-            return encodeURIComponent(
-              `${part}(${keys
-                .map((key) => {
-                  const [name, value] = key.split("=");
-                  if (name && value) {
-                    if (context.params[name]) {
-                      req.context.parameters.values[name] = unquoteParameter(context.params[name], value, req);
-                      return `${name}=${value}`;
-                    } else {
-                      req.context.parameters.keys[name] = unquoteParameter(contextElements[name], value, req);
-                    }
-                  } else if (name) {
-                    const param = structureKeys(context.params).find(() => true);
-                    if (param) {
-                      if (context.params[param]) {
-                        req.context.parameters.values[param] = unquoteParameter(context.params[param], name, req);
-                        return `${param}=${name}`;
+            return (
+              part +
+              encodeURIComponent(
+                `(${keys
+                  .map((key) => {
+                    const [name, value] = key.split("=");
+                    if (name && value) {
+                      if (context.params[name]) {
+                        req.context.parameters.values[name] = unquoteParameter(context.params[name], value, req);
+                        return `${name}=${value}`;
                       } else {
-                        req.context.parameters.keys[param] = unquoteParameter(contextElements[param], name, req);
+                        req.context.parameters.keys[name] = unquoteParameter(contextElements[name], value, req);
+                      }
+                    } else if (name) {
+                      const param = structureKeys(context.params).find(() => true);
+                      if (param) {
+                        if (context.params[param]) {
+                          req.context.parameters.values[param] = unquoteParameter(context.params[param], name, req);
+                          return `${param}=${name}`;
+                        } else {
+                          req.context.parameters.keys[param] = unquoteParameter(contextElements[param], name, req);
+                        }
                       }
                     }
-                  }
-                  return "";
-                })
-                .filter((part) => !!part)
-                .join(",")})`
+                    return "";
+                  })
+                  .filter((part) => !!part)
+                  .join(",")})`,
+              )
             );
           } else {
             return part;
@@ -2607,7 +2643,7 @@ function cov2ap(options = {}) {
               return { statusCode, statusCodeText, body, headers };
             },
             resContentIdOrder,
-            ProcessingDirection.Response
+            ProcessingDirection.Response,
           );
           if (
             !(
@@ -2658,7 +2694,7 @@ function cov2ap(options = {}) {
           res,
           proxyRes.statusCode,
           proxyRes.headers,
-          convertResponseError(proxyRes.body, proxyRes.headers, undefined, req)
+          convertResponseError(proxyRes.body, proxyRes.headers, undefined, req),
         );
       } else {
         if (res.writeHead && !res.headersSent) {
@@ -2745,7 +2781,7 @@ function cov2ap(options = {}) {
                 const filename = await response.text();
                 if (filename) {
                   headers["content-disposition"] = `${contentDispositionTypeValue}; filename="${encodeURIComponent(
-                    filename
+                    filename,
                   )}"`;
                 }
               } else {
@@ -2895,7 +2931,7 @@ function cov2ap(options = {}) {
         },
         req,
         undefined,
-        true
+        true,
       )
     ) {
       context = undefined;
@@ -2907,7 +2943,7 @@ function cov2ap(options = {}) {
         },
         req,
         definition,
-        true
+        true,
       )
     ) {
       context = definition;
@@ -3030,7 +3066,7 @@ function cov2ap(options = {}) {
           body.d[definitionElement.name] = convertDataTypeToV2(
             proxyBody.value,
             elementType(definitionElement, req),
-            definition
+            definition,
           );
           convertResponseElementData(body, headers, definition, elements, proxyBody, req);
           if (req.context.$value) {
@@ -3743,7 +3779,7 @@ function cov2ap(options = {}) {
             ...originalUrl.query,
             ...params,
           },
-        })
+        }),
       )
     );
   }
@@ -3814,7 +3850,7 @@ function cov2ap(options = {}) {
   function convertResponseServiceRootToXML(proxyBody, headers, req) {
     let xmlBody = `<?xml version="1.0" encoding="utf-8" standalone="yes"?>`;
     xmlBody += `<service xml:base="${serviceUri(
-      req
+      req,
     )}" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app" xmlns="http://www.w3.org/2007/app">`;
     xmlBody += `<workspace><atom:title>Default</atom:title>`;
     xmlBody += proxyBody.value
@@ -3830,7 +3866,7 @@ function cov2ap(options = {}) {
   function convertResponseBodyToXML(body, req) {
     let xmlBody = `<?xml version="1.0" encoding="utf-8" standalone="yes"?>`;
     const namespace = ` xml:base="${serviceUri(
-      req
+      req,
     )}" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom"`;
     const definition = req.context.definition;
     if (body && body.d && definition) {
@@ -3853,7 +3889,7 @@ function cov2ap(options = {}) {
         xmlBody += `<updated>${req.now.toISOString()}</updated>`;
         xmlBody += `<link rel="self" title="${element || localName(definition, req)}" href="${entityUriCollection(
           definition,
-          req
+          req,
         )}${element ? `/${element}` : ""}" />`;
         data.results.forEach((entry) => {
           if (typeof entry === "object") {
@@ -4271,7 +4307,7 @@ function cov2ap(options = {}) {
     urlProcessor,
     bodyHeadersProcessor,
     contentIdOrder = [],
-    direction
+    direction,
   ) {
     let maxContentId = 1;
 
@@ -4481,7 +4517,7 @@ function cov2ap(options = {}) {
         _headers && "Headers:",
         _headers,
         _body && "Body:",
-        _body
+        _body,
       );
     }
   }
