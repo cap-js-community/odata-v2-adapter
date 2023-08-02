@@ -1559,30 +1559,33 @@ function cov2ap(options = {}) {
             return part;
           }
           const keys = decodeURIComponent(keyPart).split(",");
-          return part + encodeURIComponent(
-            `(${keys
-              .map((key) => {
-                const [name, value] = key.split("=");
-                let type;
-                if (name && value) {
-                  if (context.params && context.params[name]) {
-                    type = context.params[name].type;
+          return (
+            part +
+            encodeURIComponent(
+              `(${keys
+                .map((key) => {
+                  const [name, value] = key.split("=");
+                  let type;
+                  if (name && value) {
+                    if (context.params && context.params[name]) {
+                      type = context.params[name].type;
+                    }
+                    if (!type) {
+                      type = elementType(contextElements[name], req);
+                    }
+                    return `${name}=${replaceConvertDataTypeToV4(value, type)}`;
+                  } else if (name) {
+                    const key = structureKeys(contextKeys).find((key) => {
+                      return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
+                    });
+                    type = key && elementType(contextElements[key], req);
+                    return type && `${replaceConvertDataTypeToV4(name, type)}`;
                   }
-                  if (!type) {
-                    type = elementType(contextElements[name], req);
-                  }
-                  return `${name}=${replaceConvertDataTypeToV4(value, type)}`;
-                } else if (name) {
-                  const key = structureKeys(contextKeys).find((key) => {
-                    return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
-                  });
-                  type = key && elementType(contextElements[key], req);
-                  return type && `${replaceConvertDataTypeToV4(name, type)}`;
-                }
-                return "";
-              })
-              .filter((part) => !!part)
-              .join(",")})`,
+                  return "";
+                })
+                .filter((part) => !!part)
+                .join(",")})`,
+            )
           );
         } else {
           return part;
@@ -2307,32 +2310,35 @@ function cov2ap(options = {}) {
           const contextElements = definitionElements(context);
           if (context && keyPart) {
             const keys = decodeURIComponent(keyPart).split(",");
-            return part + encodeURIComponent(
-              `(${keys
-                .map((key) => {
-                  const [name, value] = key.split("=");
-                  if (name && value) {
-                    if (context.params[name]) {
-                      req.context.parameters.values[name] = unquoteParameter(context.params[name], value, req);
-                      return `${name}=${value}`;
-                    } else {
-                      req.context.parameters.keys[name] = unquoteParameter(contextElements[name], value, req);
-                    }
-                  } else if (name) {
-                    const param = structureKeys(context.params).find(() => true);
-                    if (param) {
-                      if (context.params[param]) {
-                        req.context.parameters.values[param] = unquoteParameter(context.params[param], name, req);
-                        return `${param}=${name}`;
+            return (
+              part +
+              encodeURIComponent(
+                `(${keys
+                  .map((key) => {
+                    const [name, value] = key.split("=");
+                    if (name && value) {
+                      if (context.params[name]) {
+                        req.context.parameters.values[name] = unquoteParameter(context.params[name], value, req);
+                        return `${name}=${value}`;
                       } else {
-                        req.context.parameters.keys[param] = unquoteParameter(contextElements[param], name, req);
+                        req.context.parameters.keys[name] = unquoteParameter(contextElements[name], value, req);
+                      }
+                    } else if (name) {
+                      const param = structureKeys(context.params).find(() => true);
+                      if (param) {
+                        if (context.params[param]) {
+                          req.context.parameters.values[param] = unquoteParameter(context.params[param], name, req);
+                          return `${param}=${name}`;
+                        } else {
+                          req.context.parameters.keys[param] = unquoteParameter(contextElements[param], name, req);
+                        }
                       }
                     }
-                  }
-                  return "";
-                })
-                .filter((part) => !!part)
-                .join(",")})`,
+                    return "";
+                  })
+                  .filter((part) => !!part)
+                  .join(",")})`,
+              )
             );
           } else {
             return part;
