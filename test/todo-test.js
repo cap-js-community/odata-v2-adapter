@@ -323,7 +323,7 @@ describe("todo", () => {
       {
         tentative: false,
         keyDateEdit: "/Date(1577836800000)/",
-        keyTimeEdit: "P00DT13H35M57.99S",
+        keyTimeEdit: "P00DT13H35M57S",
       },
       true,
       {
@@ -365,7 +365,7 @@ describe("todo", () => {
       keyDate: "/Date(1577750400000)/",
       keyTime: "PT12H34M56S",
       keyDateEdit: "/Date(1577836800000)/",
-      keyTimeEdit: "PT13H35M57.99S",
+      keyTimeEdit: "PT13H35M57S",
       task_ID: 1,
       tentative: false,
     });

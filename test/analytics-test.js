@@ -229,7 +229,7 @@ describe("analytics", () => {
             country: "Texas",
             currency: "USD",
             stock: 17,
-            price: "10.165000000000001",
+            price: "10.165",
           },
         ],
       },

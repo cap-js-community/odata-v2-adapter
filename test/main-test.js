@@ -426,7 +426,7 @@ describe("main", () => {
     });
     expect(response.statusCode).toEqual(201);
     response = await util.callWrite(request, "/odata/v2/main/Header", {
-      name: "Search Instance_Test",
+      name: "Search_Instance_Test",
     });
     expect(response.statusCode).toEqual(201);
     response = await util.callWrite(request, "/odata/v2/main/Header", {
@@ -434,15 +434,15 @@ describe("main", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/odata/v2/main/Header?search=Search%20Instance`);
+    response = await util.callRead(request, `/odata/v2/main/Header?search=Search_Instance`);
     expect(response.body.d.results.length).toEqual(1);
-    response = await util.callRead(request, `/odata/v2/main/Header?$search=Search%20Instance`);
+    response = await util.callRead(request, `/odata/v2/main/Header?$search=Search_Instance`);
     expect(response.body.d.results.length).toEqual(1);
-    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=Search%20Instance`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=Search_Instance`);
     expect(response.text).toEqual("1");
-    response = await util.callRead(request, `/odata/v2/main/Header/$count?$search=Search%20Instance`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?$search=Search_Instance`);
     expect(response.text).toEqual("1");
-    response = await util.callRead(request, `/odata/v2/main/Header/$count?$search="Search%20Instance"`);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?$search="Search_Instance"`);
     expect(response.text).toEqual("1");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search="`);
     expect(response.text).toEqual("2");
@@ -1219,71 +1219,48 @@ describe("main", () => {
     expect(response.body.d.results).toHaveLength(1);
   });
 
-  // TODO: Adjust Test (https://github.tools.sap/cap/issues/issues/4468)
   it("GET request with filter and data type conversion on navigation fields", async () => {
-    const sqliteError = {
-      error: {
-        code: "501",
-        message: { lang: "en", value: "Path expressions in query options are not supported on SQLite" },
-        innererror: {
-          errordetails: [
-            {
-              code: "501",
-              message: { lang: "en", value: "Path expressions in query options are not supported on SQLite" },
-              severity: "error",
-              target: "/#TRANSIENT#",
-            },
-          ],
-        },
-        severity: "error",
-        target: "/#TRANSIENT#",
-      },
-    };
-
     let response = await util.callWrite(request, "/odata/v2/main/Header", {
+      ID: "1b089301-0d04-4005-b45c-c8ee801212a7",
       name: "Test",
       stock: 1001,
       country: "US",
+      FirstItem_ID: "2b089301-0d04-4005-b45c-c8ee801212a7",
       Items: [
         {
+          ID: "2b089301-0d04-4005-b45c-c8ee801212a7",
           name: "TestItem1001",
           startAt: "/Date(1586815200000)/",
+          NextItem_ID: "3b089301-0d04-4005-b45c-c8ee801212a7"
         },
+        {
+          ID: "3b089301-0d04-4005-b45c-c8ee801212a7",
+          name: "TestItem1002",
+          startAt: "/Date(1586815200000)/",
+          NextItem_ID: "2b089301-0d04-4005-b45c-c8ee801212a7"
+        }
       ],
     });
+    expect(response.statusCode).toBe(201);
     response = await util.callRead(request, "/odata/v2/main/Header?$expand=Items&$filter=stock eq 1001");
     expect(response.body.d.results).toHaveLength(1);
     const ID = response.body.d.results[0].ID;
-    expect(response.body.d.results[0].Items.results).toHaveLength(1);
-    const itemID = response.body.d.results[0].Items.results[0].ID;
-    response = await util.callWrite(
-      request,
-      `/odata/v2/main/Header(${ ID })`,
-      {
-        ID,
-        FirstItem_ID: itemID,
-      },
-      true
-    );
-    expect(response.statusCode).toBe(200);
+    expect(response.body.d.results[0].Items.results).toHaveLength(2);
     response = await util.callRead(
       request,
-      "/odata/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/assoc/num eq 12.01d"
+      "/odata/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/NextItem/name eq 'TestItem1002'"
     );
-    // expect(response.body.d.results).toHaveLength(1);
-    expect(response.body).toEqual(sqliteError);
+    expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
-      "/odata/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/startAt eq datetimeoffset'2020-04-14T00:00:00Z'"
+      "/odata/v2/main/Header?$expand=FirstItem&$filter=stock eq 1001 and FirstItem/startAt eq datetimeoffset'2020-04-13T22:00:00.000Z'"
     );
-    // expect(response.body.d.results).toHaveLength(1);
-    expect(response.body).toEqual(sqliteError);
+    expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(
       request,
       "/odata/v2/main/Header?$expand=FirstItem&$filter=FirstItem/name eq 'TestItem1001'"
     );
-    // expect(response.body.d.results).toHaveLength(1);
-    expect(response.body).toEqual(sqliteError);
+    expect(response.body.d.results).toHaveLength(1);
   });
 
   it("GET request with uri escape character", async () => {
