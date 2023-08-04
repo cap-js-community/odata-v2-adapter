@@ -1,12 +1,11 @@
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
 # This workflow will protect the main branch by testing and linting new PRs and commits
 
-name: CI Main
+name: Main CI
 
+# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -37,7 +36,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
           cache: "npm"
       - run: npm ci --package-lock
       - run: npm run lint:ci

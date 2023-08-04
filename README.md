@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/@cap-js-community/odata-v2-adapter)](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter)
 [![monthly downloads](https://img.shields.io/npm/dm/@cap-js-community/odata-v2-adapter)](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter)
 [![REUSE status](https://api.reuse.software/badge/github.com/cap-js-community/odata-v2-adapter)](https://api.reuse.software/info/github.com/cap-js-community/odata-v2-adapter)
-[![CI Main](https://github.com/cap-js-community/odata-v2-adapter/actions/workflows/ci-main.yml/badge.svg)](https://github.com/cap-js-community/odata-v2-adapter/commits/main)
+[![Main CI](https://github.com/cap-js-community/odata-v2-adapter/actions/workflows/main-ci.yml/badge.svg)](https://github.com/cap-js-community/odata-v2-adapter/commits/main)
 
 ### [OData V2 adapter for CDS](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter)
 
