@@ -522,7 +522,7 @@ describe("analytics", () => {
               code: "501",
               message: {
                 lang: "en",
-                value: /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
+                value: expect.stringMatching(/Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/),
               },
               severity: "error",
               target: "/#TRANSIENT#",
@@ -531,7 +531,7 @@ describe("analytics", () => {
         },
         message: {
           lang: "en",
-          value: /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
+          value: expect.stringMatching(/Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/),
         },
         severity: "error",
         target: "/#TRANSIENT#",
@@ -554,7 +554,7 @@ describe("analytics", () => {
               code: "501",
               message: {
                 lang: "en",
-                value: /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
+                value: expect.stringMatching(/Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/),
               },
               severity: "error",
               target: "/#TRANSIENT#",
@@ -563,7 +563,7 @@ describe("analytics", () => {
         },
         message: {
           lang: "en",
-          value: /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
+          value: expect.stringMatching(/Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/),
         },
         severity: "error",
         target: "/#TRANSIENT#",
