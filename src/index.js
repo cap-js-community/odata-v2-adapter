@@ -2123,24 +2123,17 @@ function cov2ap(options = {}) {
 
   function convertAnalytics(url, req) {
     const definition = req.context && req.context.definition;
-    if (
-      !(
-        definition &&
-        definition.kind === "entity" &&
-        definition["@cov2ap.analytics"] !== false &&
-        url.query["$select"] &&
-        (definition["@cov2ap.analytics"] === true ||
-          definition["@Analytics"] ||
-          definition["@Analytics.AnalyticalContext"] ||
-          definition["@Analytics.query"] ||
-          definition["@AnalyticalContext"] ||
-          definition["@Aggregation.ApplySupported.PropertyRestrictions"] ||
-          definition["@sap.semantics"] === "aggregate")
-      )
-    ) {
+    if (!(isAnalyticsEntity(definition) && url.query["$select"])) {
       return;
     }
     const elements = req.context.definitionElements;
+    const keyDimensions = [];
+    for (const name of structureKeys(elements)) {
+      const element = elements[name];
+      if (isDimensionElement(element) && element.key) {
+        keyDimensions.push(element);
+      }
+    }
     const measures = [];
     const dimensions = [];
     const selects = url.query["$select"].split(",");
@@ -2154,19 +2147,21 @@ function cov2ap(options = {}) {
     selects.forEach((select) => {
       const element = elements[select];
       if (element) {
-        if (
-          element["@Analytics.AnalyticalContext.Measure"] ||
-          element["@AnalyticalContext.Measure"] ||
-          element["@Analytics.Measure"] ||
-          element["@sap.aggregation.role"] === "measure"
-        ) {
+        if (isMeasureElement(element)) {
           measures.push(element);
         } else {
-          // element["@Analytics.AnalyticalContext.Dimension"] || element["@AnalyticalContext.Dimension"] || element["@Analytics.Dimension"] || element["@sap.aggregation.role"] === "dimension"
+          // isDimensionElement(element)
           dimensions.push(element);
         }
       }
     });
+
+    if (
+      definition["@cov2ap.analytics.skipForKey"] &&
+      keyDimensions.every((keyDimension) => dimensions.includes(keyDimension))
+    ) {
+      return;
+    }
 
     if (dimensions.length > 0 || measures.length > 0) {
       url.query["$apply"] = "";
@@ -2184,8 +2179,7 @@ function cov2ap(options = {}) {
         }
         url.query["$apply"] += `aggregate(${measures
           .map((measure) => {
-            const aggregation =
-              measure["@Aggregation.default"] || measure["@Aggregation.Default"] || measure["@DefaultAggregation"];
+            const aggregation = aggregationDefault(measure);
             const aggregationName = aggregation ? aggregation["#"] || aggregation : DefaultAggregation;
             const aggregationFunction = aggregationName ? AggregationMap[aggregationName.toUpperCase()] : undefined;
             if (!aggregationFunction) {
@@ -2197,12 +2191,7 @@ function cov2ap(options = {}) {
             if (aggregationFunction.startsWith("$")) {
               return `${aggregationFunction} as ${AggregationPrefix}${measure.name}`;
             } else {
-              const referenceElement =
-                measure["@Aggregation.referenceElement"] ||
-                measure["@Aggregation.ReferenceElement"] ||
-                measure["@Aggregation.reference"] ||
-                measure["@Aggregation.Reference"];
-              return `${referenceElement || measure.name} with ${aggregationFunction} as ${AggregationPrefix}${
+              return `${referenceElement(measure) || measure.name} with ${aggregationFunction} as ${AggregationPrefix}${
                 measure.name
               }`;
             }
@@ -2229,13 +2218,7 @@ function cov2ap(options = {}) {
           .map((orderBy) => {
             let [name, order] = orderBy.split(" ");
             const element = elements[name];
-            if (
-              element &&
-              (element["@Analytics.AnalyticalContext.Measure"] ||
-                element["@AnalyticalContext.Measure"] ||
-                element["@Analytics.Measure"] ||
-                element["@sap.aggregation.role"] === "measure")
-            ) {
+            if (element && isMeasureElement(element)) {
               name = `${AggregationPrefix}${element.name}`;
             }
             return name + (order ? ` ${order}` : "");
@@ -2255,6 +2238,53 @@ function cov2ap(options = {}) {
         search: req.context.aggregationKey ? req.context.aggregationSearch : search,
       };
     }
+  }
+
+  function isAnalyticsEntity(entity) {
+    return (
+      entity &&
+      entity.kind === "entity" &&
+      entity["@cov2ap.analytics"] !== false &&
+      (entity["@cov2ap.analytics"] ||
+        entity["@cov2ap.analytics.skipForKey"] ||
+        entity["@Analytics"] ||
+        entity["@Analytics.AnalyticalContext"] ||
+        entity["@Analytics.query"] ||
+        entity["@AnalyticalContext"] ||
+        entity["@Aggregation.ApplySupported.PropertyRestrictions"] ||
+        entity["@sap.semantics"] === "aggregate")
+    );
+  }
+
+  function isDimensionElement(element) {
+    return (
+      element["@Analytics.AnalyticalContext.Dimension"] ||
+      element["@AnalyticalContext.Dimension"] ||
+      element["@Analytics.Dimension"] ||
+      element["@sap.aggregation.role"] === "dimension"
+    );
+  }
+
+  function isMeasureElement(element) {
+    return (
+      element["@Analytics.AnalyticalContext.Measure"] ||
+      element["@AnalyticalContext.Measure"] ||
+      element["@Analytics.Measure"] ||
+      element["@sap.aggregation.role"] === "measure"
+    );
+  }
+
+  function aggregationDefault(element) {
+    return element["@Aggregation.default"] || element["@Aggregation.Default"] || element["@DefaultAggregation"];
+  }
+
+  function referenceElement(element) {
+    return (
+      element["@Aggregation.referenceElement"] ||
+      element["@Aggregation.ReferenceElement"] ||
+      element["@Aggregation.reference"] ||
+      element["@Aggregation.Reference"]
+    );
   }
 
   function convertValue(url, req) {

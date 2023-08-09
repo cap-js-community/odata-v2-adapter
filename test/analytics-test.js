@@ -949,4 +949,34 @@ describe("analytics", () => {
       },
     });
   });
+
+  it("Skip analytics if all dimension key elements are requested", async () => {
+    let response = await util.callRead(request, "/odata/v2/analytics/HeaderSkipKey?$select=country,currency,stock");
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d.results).toBeDefined();
+    // no aggregation should have happened
+    expect(response.body.d.results.length).toEqual(7);
+
+    response = await util.callRead(request, "/odata/v2/analytics/HeaderSkipKey?$select=currency,stock");
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d.results).toBeDefined();
+    // aggregation should have happened
+    expect(response.body.d.results.length).toEqual(5);
+
+    response = await util.callRead(request, "/odata/v2/analytics/HeaderSkipKey?$select=ID,country,currency,stock");
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d.results).toBeDefined();
+    // no aggregation should have happened
+    expect(response.body.d.results.length).toEqual(7);
+
+    response = await util.callRead(request, "/odata/v2/analytics/HeaderSkipKey?$select=stock");
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    expect(response.body.d.results).toBeDefined();
+    // aggregation should have happened
+    expect(response.body.d.results.length).toEqual(1);
+  });
 });

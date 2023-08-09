@@ -167,6 +167,7 @@ The following OData V2 adapter for CDS specific annotations are supported:
 **Entity Level**:
 
 - `@cov2ap.analytics: false`: Suppress analytics conversion for the annotated entity, if set to `false`.
+- `@cov2ap.analytics.skipForKey`: Suppress analytical conversion for the annotated entity, if all dimension key elements are requested
 - `@cov2ap.deltaResponse: 'timestamp'`: Delta response '\_\_delta' is added to response data of annotated entity with current timestamp information.
 - `@cov2ap.isoTime`: Values of type cds.Time (Edm.Time) are represented in ISO 8601 format for annotated entity.
 - `@cov2ap.isoDate`: Values of type cds.Date (Edm.DateTime) are represented in ISO 8601 format for annotated entity.

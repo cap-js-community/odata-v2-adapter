@@ -35,6 +35,7 @@ exports[`analytics GET $metadata 1`] = `
           <Parameter Name="ID__" Type="Edm.String" Nullable="false" Mode="In" sap:sortable="false" sap:filterable="false"/>
           <Parameter Name="number" Type="Edm.Int32" Mode="In" Nullable="true"/>
         </FunctionImport>
+        <EntitySet Name="HeaderSkipKey" EntityType="test.AnalyticsService.HeaderSkipKey"/>
         <EntitySet Name="HeaderLine" EntityType="test.AnalyticsService.HeaderLine"/>
         <EntitySet Name="Country_texts" EntityType="test.AnalyticsService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.AnalyticsService.Currency_texts"/>
@@ -159,6 +160,19 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="stock" Type="Edm.Int32" sap:aggregation-role="measure"/>
         <Property Name="price" Type="Edm.Decimal" sap:aggregation-role="measure" sap:variable-scale="true"/>
         <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="HeaderSkipKey">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="country"/>
+          <PropertyRef Name="currency"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="country" Type="Edm.String" Nullable="false"/>
+        <Property Name="currency" Type="Edm.String" Nullable="false"/>
+        <Property Name="stock" Type="Edm.Int32"/>
+        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
       </EntityType>
       <EntityType Name="HeaderLine">
         <Key>
@@ -727,6 +741,18 @@ exports[`analytics GET $metadata 1`] = `
         <Annotation Term="Analytics.Measure" Bool="true"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.Book/price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderSkipKey/country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Dimension" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderSkipKey/currency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Dimension" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderSkipKey/stock" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Analytics.Measure" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderSkipKey/price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Analytics.Measure" Bool="true"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">

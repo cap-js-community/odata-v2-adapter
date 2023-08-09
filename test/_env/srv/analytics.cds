@@ -91,4 +91,19 @@ service AnalyticsService {
     } actions {
         action order(number: Integer) returns Book;
     };
+
+    @cov2ap.analytics.skipForKey
+    entity HeaderSkipKey as projection on test.Header {
+        key ID,
+        description,
+        @Analytics.Dimension
+        key country,
+        @Analytics.Dimension
+        key currency,
+        @Analytics.Measure
+        stock,
+        @Analytics.Measure
+        @Aggregation.default : #AVG
+        price,
+    };
 }
