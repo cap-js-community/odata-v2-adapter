@@ -450,14 +450,10 @@ describe("main", () => {
     expect(response.text).toEqual("1");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search="`);
     expect(response.text).toEqual("2");
-    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=hall%5Cooo`);
-    expect(response.text).toEqual("1");
-    response = await util.callRead(request, `/odata/v2/main/Header/$count?$search="Search_Instance"`);
-    expect(response.text).toEqual("1");
-    response = await util.callRead(request, `/odata/v2/main/Header/$count?search="`);
-    expect(response.text).toEqual("2");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search=""`);
     expect(response.text).toEqual("0");
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=hall%5Cooo`);
+    expect(response.text).toEqual("1");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search=`);
     expect(response.text).toEqual("15");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search="""`);
