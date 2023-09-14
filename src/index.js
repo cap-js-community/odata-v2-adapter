@@ -2110,10 +2110,10 @@ function cov2ap(options = {}) {
     if (url.query.search) {
       let search = url.query.search;
       if (quoteSearch) {
-        search = `"${search.replace(/"/g, `\\"`)}"`;
+        search = `"${search.replace(/\\/g, "\\\\").replace(/"/g, `\\"`)}"`;
       } else {
         if (!/^".*"$/s.test(search) && search.includes('"')) {
-          search = `"${search.replace(/"/g, `\\"`)}"`;
+          search = `"${search.replace(/\\/g, "\\\\").replace(/"/g, `\\"`)}"`;
         }
       }
       url.query["$search"] = search;

@@ -430,6 +430,10 @@ describe("main", () => {
     });
     expect(response.statusCode).toEqual(201);
     response = await util.callWrite(request, "/odata/v2/main/Header", {
+      name: 'hall\\ooo',
+    });
+    expect(response.statusCode).toEqual(201);
+    response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: 'Search"Quote"',
     });
     expect(response.statusCode).toEqual(201);
@@ -446,10 +450,16 @@ describe("main", () => {
     expect(response.text).toEqual("1");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search="`);
     expect(response.text).toEqual("2");
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=hall%5Cooo`);
+    expect(response.text).toEqual("1");
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?$search="Search_Instance"`);
+    expect(response.text).toEqual("1");
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search="`);
+    expect(response.text).toEqual("2");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search=""`);
     expect(response.text).toEqual("0");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search=`);
-    expect(response.text).toEqual("14");
+    expect(response.text).toEqual("15");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search="""`);
     expect(response.text).toEqual("0");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search=Search"Quote"`);
