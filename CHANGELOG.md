@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Fix escaping of backslashes in search phrases 
+- Fix escaping of backslashes in search phrases
 
 ## Version 1.11.6 - 2023-08-10
 
