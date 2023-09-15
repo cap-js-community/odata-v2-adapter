@@ -2113,7 +2113,7 @@ function cov2ap(options = {}) {
         search = `"${search.replace(/\\/g, "\\\\").replace(/"/g, `\\"`)}"`;
       } else {
         if (!/^".*"$/s.test(search) && search.includes('"')) {
-          search = `"${search.replace(/\\/g, "\\\\").replace(/"/g, `\\"`)}"`;
+          search = `"${search.replace(/"/g, `\\"`)}"`;
         }
       }
       url.query["$search"] = search;
