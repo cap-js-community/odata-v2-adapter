@@ -399,7 +399,7 @@ exports[`analytics GET $metadata 1`] = `
         </Annotation>
         <Annotation Term="UI.DataPoint">
           <Collection>
-            <Record>
+            <Record Type="UI.DataPointType">
               <PropertyValue Property="Title" String="Price"/>
               <PropertyValue Property="Value" Path="price"/>
             </Record>

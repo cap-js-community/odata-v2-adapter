@@ -92,6 +92,12 @@ describe("CDS protocols", () => {
 
   it("service annotated with @protocol: [{ kind: 'odata-v4', path: '/custom2/odata/path' }]", async () => expectGET(request, '/odata/v2/custom2/odata/path'));
 
+  it("service annotated with @protocol: [{ kind: 'odata-v4', path: '/odata' }]", async () => expectGET(request, '/odata/v2/odata'));
+
+  it("service annotated with @protocol: [{ kind: 'odata-v4', path: 'odata' }]", async () => expectGET(request, '/odata/v2/odata'));
+
+  it("service annotated with @protocol: [{ kind: 'odata-v4', path: '/odata/v4/odata' }]", async () => expectGET(request, '/odata/v2/odata'));
+
   it("service with absolute path on batch calls", async () => {
     let response = await util.callRead(request, "/odata/v2/absolute/Header?$top=1");
     expect(response.body).toBeDefined();

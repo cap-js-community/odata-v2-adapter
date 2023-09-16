@@ -721,10 +721,18 @@ function cov2ap(options = {}) {
             .map((service) => {
               const path = serviceODataV4Path(cds.services[service]);
               if (path) {
-                if (servicePath.toLowerCase().startsWith(normalizeSlashes(path).toLowerCase())) {
+                const absolute = !normalizeSlashes(path)
+                  .toLowerCase()
+                  .startsWith(normalizeSlashes(targetPath).toLowerCase());
+                if (
+                  convertUrlAbsolutePath(absolute, servicePath)
+                    .toLowerCase()
+                    .startsWith(normalizeSlashes(path).toLowerCase())
+                ) {
                   return {
                     name: service,
                     path: stripSlashes(path),
+                    absolute,
                   };
                 }
               }
@@ -1212,7 +1220,7 @@ function cov2ap(options = {}) {
             ProcessingDirection.Request,
           );
         }
-        proxyReq.path = convertUrlAbsolutePath(proxyReq.path, req);
+        proxyReq.path = convertUrlAbsolutePath(req.serviceAbsolute, proxyReq.path);
         headers.accept = "multipart/mixed,application/json";
         proxyReq.setHeader("accept", headers.accept);
       } else {
@@ -1337,8 +1345,8 @@ function cov2ap(options = {}) {
     return URL.format(url);
   }
 
-  function convertUrlAbsolutePath(path, req) {
-    if (req.serviceAbsolute && path.startsWith(`/${targetPath}`)) {
+  function convertUrlAbsolutePath(absolute, path) {
+    if (absolute && path.startsWith(`/${targetPath}`)) {
       return path.substring(targetPath.length + 1);
     }
     return path;
@@ -1347,7 +1355,7 @@ function cov2ap(options = {}) {
   function parseUrl(urlPath, req) {
     const url = URL.parse(urlPath, true);
     url.pathname = (url.pathname && url.pathname.replace(/%27/g, "'")) || "";
-    url.pathname = convertUrlAbsolutePath(url.pathname, req);
+    url.pathname = convertUrlAbsolutePath(req.serviceAbsolute, url.pathname);
     url.originalUrl = { ...url, query: { ...url.query } };
     url.basePath = "";
     url.servicePath = "";
