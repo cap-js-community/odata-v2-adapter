@@ -256,6 +256,13 @@ function cov2ap(options = {}) {
   const defaultFormat = optionWithFallback("defaultFormat", "json");
   const processForwardedHeaders = optionWithFallback("processForwardedHeaders", true);
 
+  if (cds.env.protocols) {
+    cds.env.protocols["odata-v2"] = {
+      path: sourcePath,
+      impl: __filename,
+    };
+  }
+
   if (caseInsensitive) {
     Object.assign(FilterFunctions, FilterFunctionsCaseInsensitive);
   }
@@ -2117,12 +2124,8 @@ function cov2ap(options = {}) {
   function convertSearch(url, req) {
     if (url.query.search) {
       let search = url.query.search;
-      if (quoteSearch) {
-        search = `"${search.replace(/"/g, `\\"`)}"`;
-      } else {
-        if (!/^".*"$/s.test(search) && search.includes('"')) {
-          search = `"${search.replace(/"/g, `\\"`)}"`;
-        }
+      if (quoteSearch || (!/^".*"$/s.test(search) && search.includes('"'))) {
+        search = `"${search.replace(/\\/g, "\\\\").replace(/"/g, `\\"`)}"`;
       }
       url.query["$search"] = search;
       delete url.query.search;
