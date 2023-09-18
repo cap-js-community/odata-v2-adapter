@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Version 1.11.7 - 2023-09-29
 
-### Added 
+### Added
 
 - Set CDS OData V2 protocol
 
