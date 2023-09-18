@@ -256,10 +256,12 @@ function cov2ap(options = {}) {
   const defaultFormat = optionWithFallback("defaultFormat", "json");
   const processForwardedHeaders = optionWithFallback("processForwardedHeaders", true);
 
-  cds.env.protocols["odata-v2"] = {
-    path: sourcePath,
-    impl: __filename,
-  };
+  if (cds.env.protocols) {
+    cds.env.protocols["odata-v2"] = {
+      path: sourcePath,
+      impl: __filename,
+    };
+  }
 
   if (caseInsensitive) {
     Object.assign(FilterFunctions, FilterFunctionsCaseInsensitive);
