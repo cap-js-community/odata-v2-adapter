@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Version 1.11.7 - 2023-09-29
 
+### Added 
+
+- Set CDS OData V2 protocol
+
 ### Fixed
 
 - Fix absolute service path starting with target path parts e.g. `/odata`
