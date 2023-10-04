@@ -9,7 +9,7 @@ exports[`main Entity with key including reserved/escaped uri characters 1`] = `
         "uri": "/odata/v2/main/Favorite('WE%20DE-SFSNRF')",
       },
       "name": "WE DE-SFSNRF",
-      "value": "",
+      "value": " ",
     },
     {
       "__metadata": {
