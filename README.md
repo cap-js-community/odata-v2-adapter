@@ -16,20 +16,10 @@
 
 - Run `npm add @cap-js-community/odata-v2-adapter` in `@sap/cds` project
 - Activate CDS plugin by setting CDS env `cds.cov2ap.plugin: true`
-  - Available since CDS 6.7, otherwise custom server is needed
+  - Available since CDS 6.7, otherwise custom server is needed (see advanced section)
 - Execute `cds-serve` to start server
   - OData V2 service is available at http://localhost:4004/odata/v2/<service-path>
   - OData V4 service is available at http://localhost:4004/odata/v4/<service-path>
-
-## Custom Server
-
-- Enhance or create `./srv/server.js`:
-  ```js
-  const cds = require("@sap/cds");
-  const cov2ap = require("@cap-js-community/odata-v2-adapter");
-  cds.on("bootstrap", (app) => app.use(cov2ap()));
-  module.exports = cds.server;
-  ```
 
 ## Options
 
@@ -83,6 +73,16 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 > different from default `/odata/v2` for CDS core.
 
 ## Advanced
+
+### Custom Server
+
+- Enhance or create `./srv/server.js`:
+  ```js
+  const cds = require("@sap/cds");
+  const cov2ap = require("@cap-js-community/odata-v2-adapter");
+  cds.on("bootstrap", (app) => app.use(cov2ap()));
+  module.exports = cds.server;
+  ```
 
 ### Logging
 

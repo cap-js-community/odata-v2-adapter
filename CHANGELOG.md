@@ -5,11 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.11.8 - 2023-10-xx
+## Version 1.11.8 - 2023-10-24
 
 ### Fixed
 
-- tbd
+- Automatically activate plugin, if mentioned explicitly in `cds.plugins`
+- Move custom server section in README under advanced section, as plugin is the preferred way to bootstrap adapter
 
 ## Version 1.11.7 - 2023-09-29
 
