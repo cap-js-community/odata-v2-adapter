@@ -184,6 +184,67 @@ describe("integration-main", () => {
     expect(clean(response.body, ID)).toMatchSnapshot();
   });
 
+  it("GET with parameters (union header - full circle) - set", async () => {
+    const stock = 1;
+    // Empty Parameters
+    let response = await util.callRead(request, `/odata/v2/main/HeaderUnionSet(STOCK=${stock},CURRENCY='XXX')`);
+    expect(response.statusCode).toEqual(404);
+    expect(response.body).toBeDefined();
+    expect(response.body.error).toEqual({
+      code: "404",
+      innererror: {
+        errordetails: [
+          {
+            code: "404",
+            message: {
+              lang: "en",
+              value: "Not Found",
+            },
+            severity: "error",
+            target: "/#TRANSIENT#",
+          },
+        ],
+      },
+      message: {
+        lang: "en",
+        value: "Not Found",
+      },
+      severity: "error",
+      target: "/#TRANSIENT#",
+    });
+
+    // Empty Set
+    response = await util.callRead(request, `/odata/v2/main/HeaderUnionSet(STOCK=${stock},CURRENCY='XXX')/Set`);
+    expect(response.body.d.results).toEqual([]);
+
+    // Parameters
+    response = await util.callRead(request, `/odata/v2/main/HeaderUnionSet(STOCK=${stock},CURRENCY='EUR')`);
+    expect(response.body).toBeDefined();
+    expect(clean(response.body)).toMatchSnapshot();
+
+    // Result Set
+    response = await util.callRead(request, `/odata/v2/main/HeaderUnionSet(STOCK=${stock},CURRENCY='EUR')/Set`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results).toBeDefined();
+    const ID = response.body.d.results[0].ID;
+    expect(ID).toBeDefined();
+    response.body.d.results = response.body.d.results.slice(0, 1);
+    expect(clean(response.body, ID)).toMatchSnapshot();
+
+    // Single Entry
+    response = await util.callRead(request, `/odata/v2/main/HeaderUnionSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')`);
+    expect(response.body).toBeDefined();
+    expect(clean(response.body, ID)).toMatchSnapshot();
+
+    // Entry Parameters
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/HeaderUnionSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`
+    );
+    expect(response.body).toBeDefined();
+    expect(clean(response.body, ID)).toMatchSnapshot();
+  });
+
   it("GET request with function 'substringof'", async () => {
     let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",

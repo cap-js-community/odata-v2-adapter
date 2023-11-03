@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Support union queries as parameterized views
 
 ## Version 1.11.8 - 2023-10-24
 

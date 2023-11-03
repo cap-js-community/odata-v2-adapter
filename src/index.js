@@ -3511,7 +3511,7 @@ function cov2ap(options = {}) {
       req.context.parameters &&
       req.context.parameters.kind === "Parameters"
     ) {
-      const columns = definition.query.SELECT.columns || [];
+      const columns = definitionQueryColumns(definition);
       Object.keys(elements).forEach((name) => {
         const param = columns.find((column) => column.as === name);
         const paramName = (param ? param.ref.join("_") : "") || name;
@@ -3769,7 +3769,7 @@ function cov2ap(options = {}) {
       Object.keys(req.context.parameters.keys).forEach((key) => {
         keyElements.push(keys[key]);
       });
-      const columns = entity.query.SELECT.columns || [];
+      const columns = definitionQueryColumns(entity);
       Object.keys(keys).forEach((key) => {
         const param = columns.find((column) => column.as === key);
         const paramName = (param ? param.ref.join("_") : "") || key;
@@ -3796,6 +3796,23 @@ function cov2ap(options = {}) {
         }
       })
       .join(",");
+  }
+
+  function definitionQueryColumns(definition) {
+    if (definition.query) {
+      if (definition.query.SELECT && definition.query.SELECT.columns) {
+        return definition.query.SELECT.columns;
+      } else if (
+        definition.query.SET &&
+        definition.query.SET.args &&
+        definition.query.SET.args[0] &&
+        definition.query.SET.args[0].SELECT &&
+        definition.query.SET.args[0].SELECT.columns
+      ) {
+        return definition.query.SET.args[0].SELECT.columns;
+      }
+    }
+    return [];
   }
 
   function linkUri(req, params) {
