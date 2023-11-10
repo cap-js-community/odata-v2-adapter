@@ -30,9 +30,26 @@ jobs:
         env:
           HANA_DB_CREDENTIALS: ${{secrets.HANA_DB_CREDENTIALS}}
 
+  test-external:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name != github.repository
+    strategy:
+      matrix:
+        node-version: [16, 18]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    name: test - node.js ${{ matrix.node-version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci --package-lock
+      - run: npm run test:external
+
   lint:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
