@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix plugin project root
 - Failsafe plugin detection
 - Add pull request target workflow
+- cli to convert fiori v2 uis to v4
 
 ## Version 1.11.8 - 2023-10-24
 
