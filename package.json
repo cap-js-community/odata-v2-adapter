@@ -34,7 +34,7 @@
     "test:update": "npm test -- -u",
     "test:debug": "CDS_LOG_LEVELS_COV2AP=debug npm run test",
     "test:unit": "jest --testPathPattern='/test/'",
-    "test:unit:target": "npm run test:unit -- --config=jest.target.config.js",
+    "test:external": "npm run test:unit -- --config=jest.external.config.js",
     "test:unit:file": "CDS_ENV=testdb npm run test:unit",
     "test:unit:deploy": "cd ./test/_env && npm run test:deploy",
     "test:integration": "jest --testPathPattern='/test-integration/'",
