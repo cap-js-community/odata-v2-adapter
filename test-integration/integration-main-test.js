@@ -9,12 +9,31 @@ cds.test(__dirname + "/_env");
 
 let request;
 
+let stock;
+let headerID1;
+let headerID2;
+
 describe("integration-main", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     request = supertest(cds.app);
+
+    stock = Math.round(new Date().getTime() / 1000);
+    const response1 = await util.callWrite(request, "/odata/v2/main/Header", {
+      stock: stock,
+      currency: "USD",
+    });
+    headerID1 = response1.body.d.ID;
+    const response2 = await util.callWrite(request, "/odata/v2/main/Header", {
+      stock: 1,
+      currency: "EUR",
+    });
+    headerID2 = response2.body.d.ID;
   });
 
   afterAll(async () => {
+    await util.callDelete(request, `/odata/v2/main/Header(guid'${headerID1}')`);
+    await util.callDelete(request, `/odata/v2/main/Header(guid'${headerID2}')`);
+
     await cds.disconnect();
     await cds.shutdown();
   });
@@ -28,15 +47,6 @@ describe("integration-main", () => {
   });
 
   it("GET with parameters", async () => {
-    const stock = Math.round(new Date().getTime() / 1000);
-    await util.callWrite(request, "/odata/v2/main/Header", {
-      stock: stock,
-      currency: "USD",
-    });
-    await util.callWrite(request, "/odata/v2/main/Header", {
-      stock: 1,
-      currency: "EUR",
-    });
     const response = await util.callRead(request, `/odata/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='USD')/Set`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
@@ -257,6 +267,7 @@ describe("integration-main", () => {
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}' and substringof('XX',name)`);
     expect(response.body.d.results).toHaveLength(0);
+    await util.callDelete(request, `/odata/v2/main/Header(guid'${id}')`);
   });
 
   it("GET request with function 'startswith'", async () => {
@@ -271,6 +282,7 @@ describe("integration-main", () => {
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}' and startswith(name,'XX')`);
     expect(response.body.d.results).toHaveLength(0);
+    await util.callDelete(request, `/odata/v2/main/Header(guid'${id}')`);
   });
 
   it("GET request with function 'endswith'", async () => {
@@ -285,12 +297,14 @@ describe("integration-main", () => {
     expect(response.body.d.results).toHaveLength(1);
     response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}' and endswith(name,'XX')`);
     expect(response.body.d.results).toHaveLength(0);
+    await util.callDelete(request, `/odata/v2/main/Header(guid'${id}')`);
   });
 
   it("GET request with next link responses", async () => {
     let response = await util.callWrite(request, "/odata/v2/main/HeaderLimited", {
       name: "Test",
     });
+    const id = response.body.d.ID;
     expect(response.statusCode).toEqual(201);
     response = await util.callRead(request, "/odata/v2/main/HeaderLimited");
     expect(response.statusCode).toEqual(200);
@@ -301,6 +315,7 @@ describe("integration-main", () => {
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
     expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/HeaderLimited\?\$skiptoken=2/);
+    await util.callDelete(request, `/odata/v2/main/Header(guid'${id}')`);
   });
 });
 
