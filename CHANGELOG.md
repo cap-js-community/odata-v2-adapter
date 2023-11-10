@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Automatically activate plugin, if mentioned explicitly in `cds.plugins`
+- Automatically activate plugin, if mentioned explicitly in `cds.plugins` test
 - Move custom server section in README under advanced section, as plugin is the preferred way to bootstrap adapter
 
 ## Version 1.11.7 - 2023-09-29
