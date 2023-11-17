@@ -10,9 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Support union queries as parameterized views
-- Fix plugin project root
-- Failsafe plugin detection
-- Add pull request target workflow
+- Add pull request for external contributions
+- Simplify plugin detection again
 
 ## Version 1.11.8 - 2023-10-24
 
