@@ -17,7 +17,14 @@ const csn = {
     },
     "test.MainService.Header": {
       kind: "entity",
-      elements: [],
+      elements: {
+        ID: {
+          type: "cds.UUID"
+        },
+        name: {
+          type: "cds.String"
+        }
+      }
     },
   },
 };
@@ -158,6 +165,10 @@ describe("mtx", () => {
   it("MTX event emitter", async () => {
     cds.env.requires.multitenancy = true;
     clearCache();
+    await util.callRead(request, "/odata/v2/main/Header", {
+      accept: "application/xml",
+      Authorization: authorization,
+    });
     let response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
