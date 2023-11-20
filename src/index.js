@@ -218,7 +218,7 @@ function cov2ap(options = {}) {
   const oDataV2RelativePath = oDataV2Path.replace(/^\//, "");
   const oDataV4RelativePath = oDataV4Path.replace(/^\//, "");
 
-  const proxyCache = {};
+  const metadataCache = {};
   const router = express.Router();
   const base = optionWithFallback("base", "");
   const path = optionWithFallback("path", oDataV2RelativePath);
@@ -283,6 +283,22 @@ function cov2ap(options = {}) {
   }
   model = cds.resolve(model);
 
+  async function clearMetadataCache(tenant) {
+    if (metadataCache[tenant]) {
+      const tenantCache = metadataCache[tenant];
+      delete metadataCache[tenant];
+      const csn = await callCached(tenantCache, "csn");
+      if (csn) {
+        for (const name in csn.definitions) {
+          const definition = csn.definitions[name];
+          if (definition.elements) {
+            delete definition.__elements__;
+          }
+        }
+      }
+    }
+  }
+
   cds.on("serving", (service) => {
     const isOData = Object.keys(service._adapters).find((adapter) => adapter.startsWith("odata"));
     if (!isOData) {
@@ -298,12 +314,20 @@ function cov2ap(options = {}) {
   });
 
   if (cds.mtx && cds.mtx.eventEmitter) {
-    cds.mtx.eventEmitter.on(cds.mtx.events.TENANT_UPDATED, (tenant) => {
-      delete proxyCache[tenant];
+    cds.mtx.eventEmitter.on(cds.mtx.events.TENANT_UPDATED, async (tenant) => {
+      try {
+        await clearMetadataCache(tenant);
+      } catch (err) {
+        logError({ tenant }, "Cache", err);
+      }
     });
   }
-  cds.on("cds.xt.TENANT_UPDATED", ({ tenant }) => {
-    delete proxyCache[tenant];
+  cds.on("cds.xt.TENANT_UPDATED", async ({ tenant }) => {
+    try {
+      await clearMetadataCache(tenant);
+    } catch (err) {
+      logError({ tenant }, "Cache", err);
+    }
   });
 
   router.use(`/${path}/*`, async (req, res, next) => {
@@ -527,7 +551,7 @@ function cov2ap(options = {}) {
           contentType = contentType || "application/octet-stream";
           const body = {};
           // Custom body
-          const caseInsensitiveElements = structureKeys(elements).reduce((result, name) => {
+          const caseInsensitiveElements = Object.keys(elements).reduce((result, name) => {
             result[name.toLowerCase()] = elements[name];
             return result;
           }, {});
@@ -900,8 +924,8 @@ function cov2ap(options = {}) {
   }
 
   async function getTenantMetadataLocal(req, service) {
-    proxyCache[req.tenant] = proxyCache[req.tenant] || {};
-    const isExtended = await callCached(proxyCache[req.tenant], "isExtended", () => {
+    metadataCache[req.tenant] = metadataCache[req.tenant] || {};
+    const isExtended = await callCached(metadataCache[req.tenant], "isExtended", () => {
       return cds.mtx.isExtended(req.tenant);
     });
     if (isExtended) {
@@ -921,8 +945,8 @@ function cov2ap(options = {}) {
 
   async function getTenantMetadataStreamlined(req, service) {
     const { "cds.xt.ModelProviderService": mps } = cds.services;
-    proxyCache[req.tenant] = proxyCache[req.tenant] || {};
-    const isExtended = await callCached(proxyCache[req.tenant], "isExtended", () => {
+    metadataCache[req.tenant] = metadataCache[req.tenant] || {};
+    const isExtended = await callCached(metadataCache[req.tenant], "isExtended", () => {
       return mps.isExtended({
         tenant: req.tenant,
       });
@@ -969,16 +993,16 @@ function cov2ap(options = {}) {
   }
 
   async function prepareMetadata(tenant, loadCsn, loadEdmx, service, locale) {
-    proxyCache[tenant] = proxyCache[tenant] || {};
-    const csn = await callCached(proxyCache[tenant], "csn", () => {
+    metadataCache[tenant] = metadataCache[tenant] || {};
+    const csn = await callCached(metadataCache[tenant], "csn", () => {
       return prepareCSN(tenant, loadCsn);
     });
     if (!service) {
       return { csn };
     }
-    proxyCache[tenant].edmx = proxyCache[tenant].edmx || {};
-    proxyCache[tenant].edmx[service] = proxyCache[tenant].edmx[service] || {};
-    const edmx = await callCached(proxyCache[tenant].edmx[service], locale, () => {
+    metadataCache[tenant].edmx = metadataCache[tenant].edmx || {};
+    metadataCache[tenant].edmx[service] = metadataCache[tenant].edmx[service] || {};
+    const edmx = await callCached(metadataCache[tenant].edmx[service], locale, () => {
       return prepareEdmx(tenant, csn, loadEdmx, service, locale);
     });
     return { csn, edmx };
@@ -1016,7 +1040,7 @@ function cov2ap(options = {}) {
   }
 
   async function callCached(cache, field, call) {
-    if (!cache[field]) {
+    if (call && !cache[field]) {
       cache[field] = call();
     }
     try {
@@ -1076,28 +1100,27 @@ function cov2ap(options = {}) {
   }
 
   function lookupBoundDefinition(name, req) {
-    let boundAction = undefined;
-    structureKeys(req.csn.definitions).find((definitionName) => {
+    for (const definitionName in req.csn.definitions) {
       const definition = req.csn.definitions[definitionName];
-      return structureKeys(definition.actions).find((actionName) => {
-        if (name.endsWith(`_${actionName}`)) {
-          const entityName = name.substr(0, name.length - `_${actionName}`.length);
-          const entityDefinition = lookupDefinition(entityName, req);
-          if (entityDefinition === definition) {
-            boundAction = definition.actions[actionName];
-            req.lookupContext.boundDefinition = definition;
-            req.lookupContext.operation = boundAction;
-            const returnDefinition = lookupReturnDefinition(boundAction.returns, req);
-            if (returnDefinition) {
-              req.lookupContext.returnDefinition = returnDefinition;
+      if (definition.actions) {
+        for (const actionName in definition.actions) {
+          if (name.endsWith(`_${actionName}`)) {
+            const entityName = name.substr(0, name.length - `_${actionName}`.length);
+            const entityDefinition = lookupDefinition(entityName, req);
+            if (entityDefinition === definition) {
+              const boundAction = definition.actions[actionName];
+              req.lookupContext.boundDefinition = definition;
+              req.lookupContext.operation = boundAction;
+              const returnDefinition = lookupReturnDefinition(boundAction.returns, req);
+              if (returnDefinition) {
+                req.lookupContext.returnDefinition = returnDefinition;
+              }
+              return boundAction;
             }
-            return true;
           }
         }
-        return false;
-      });
-    });
-    return boundAction;
+      }
+    }
   }
 
   function lookupParametersDefinition(name, req) {
@@ -1590,7 +1613,7 @@ function cov2ap(options = {}) {
                     }
                     return `${name}=${replaceConvertDataTypeToV4(value, type)}`;
                   } else if (name) {
-                    const key = structureKeys(contextKeys).find((key) => {
+                    const key = Object.keys(contextKeys).find((key) => {
                       return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
                     });
                     type = key && elementType(contextElements[key], req);
@@ -1754,7 +1777,7 @@ function cov2ap(options = {}) {
 
   function convertUrlDataTypesForFilterElements(part, entity, req, path = "", depth = 0) {
     const elements = definitionElements(entity);
-    for (const name of structureKeys(elements)) {
+    for (const name of Object.keys(elements)) {
       const namePath = (path ? `${path}/` : "") + name;
       if (part.content.includes(namePath)) {
         const element = elements[name];
@@ -1831,7 +1854,7 @@ function cov2ap(options = {}) {
     // Key Parameters
     if (definition.parent && definition.parent.kind === "entity") {
       url.contextPath = localName(definition.parent, req);
-      url.contextPath += `(${structureKeys(definitionKeys(definition.parent))
+      url.contextPath += `(${Object.keys(definitionKeys(definition.parent))
         .reduce((result, name) => {
           const parentElements = definitionElements(definition.parent);
           const element = parentElements[name];
@@ -2139,7 +2162,7 @@ function cov2ap(options = {}) {
     }
     const elements = req.context.definitionElements;
     const keyDimensions = [];
-    for (const name of structureKeys(elements)) {
+    for (const name of Object.keys(elements)) {
       const element = elements[name];
       if (isDimensionElement(element) && element.key) {
         keyDimensions.push(element);
@@ -2365,7 +2388,7 @@ function cov2ap(options = {}) {
                         req.context.parameters.keys[name] = unquoteParameter(contextElements[name], value, req);
                       }
                     } else if (name) {
-                      const param = structureKeys(context.params).find(() => true);
+                      const param = Object.keys(context.params).find(() => true);
                       if (param) {
                         if (context.params[param]) {
                           req.context.parameters.values[param] = unquoteParameter(context.params[param], name, req);
@@ -2418,7 +2441,7 @@ function cov2ap(options = {}) {
       return convertRequestData([data], headers, definition, req);
     }
     const elements = definitionElements(definition);
-    if (structureKeys(elements).length === 0) {
+    if (Object.keys(elements).length === 0) {
       return;
     }
     // Modify Payload
@@ -3024,7 +3047,7 @@ function cov2ap(options = {}) {
                 }
                 return `${name}=${replaceConvertDataTypeToV2(value, type, context)}`;
               } else if (name) {
-                const key = structureKeys(contextKeys).find((key) => {
+                const key = Object.keys(contextKeys).find((key) => {
                   return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
                 });
                 type = key && elementType(contextElements[key], req);
@@ -3627,7 +3650,7 @@ function cov2ap(options = {}) {
       return select.split("/")[0];
     });
     const _entityUri = entityUri(data, definition, elements, req);
-    for (const key of structureKeys(elements)) {
+    for (const key of Object.keys(elements)) {
       const element = elements[key];
       const type = elementType(element, req);
       if (element && (type === "cds.Composition" || type === "cds.Association")) {
@@ -3732,7 +3755,7 @@ function cov2ap(options = {}) {
     if (entity.kind === "entity" && entity.params && req.context.parameters) {
       return entityKeyParameters(data, entity, elements, req);
     }
-    const keyElements = structureKeys(definitionKeys(entity)).reduce((keys, key) => {
+    const keyElements = Object.keys(definitionKeys(entity)).reduce((keys, key) => {
       const element = elements[key];
       const type = elementType(element, req);
       if (!(type === "cds.Composition" || type === "cds.Association")) {
@@ -4178,17 +4201,17 @@ function cov2ap(options = {}) {
     return odataType;
   }
 
-  function structureKeys(structure) {
-    const keys = [];
-    for (const key in structure || {}) {
-      keys.push(key);
-    }
-    return keys;
-  }
-
   function definitionElements(definition) {
     if (definition && definition.elements) {
-      return structureKeys(definition.elements).reduce((elements, key) => {
+      if (definition.__elements__) {
+        return definition.__elements__;
+      }
+      // Collect keys of prototype hierarchy
+      const keys = [];
+      for (const key in definition.elements || {}) {
+        keys.push(key);
+      }
+      definition.__elements__ = keys.reduce((elements, key) => {
         const element = definition.elements[key];
         if (element["@cds.api.ignore"]) {
           return elements;
@@ -4215,13 +4238,14 @@ function cov2ap(options = {}) {
         }
         return elements;
       }, {});
+      return definition.__elements__;
     }
     return {};
   }
 
   function definitionKeys(definition) {
     const elements = definitionElements(definition);
-    return structureKeys(elements).reduce((keys, key) => {
+    return Object.keys(elements).reduce((keys, key) => {
       if (elements[key].key) {
         keys[key] = elements[key];
       }
@@ -4255,7 +4279,7 @@ function cov2ap(options = {}) {
   }
 
   function findElementByType(elements, type, req) {
-    return structureKeys(elements)
+    return Object.keys(elements)
       .filter((key) => {
         return !(elements[key].type === "cds.Composition" && elements[key].type === "cds.Association");
       })
@@ -4266,7 +4290,7 @@ function cov2ap(options = {}) {
   }
 
   function findElementByAnnotation(elements, annotation) {
-    return structureKeys(elements)
+    return Object.keys(elements)
       .filter((key) => {
         return !(elements[key].type === "cds.Composition" && elements[key].type === "cds.Association");
       })
@@ -4288,7 +4312,7 @@ function cov2ap(options = {}) {
   }
 
   function findEndingElementName(elements, url) {
-    return structureKeys(elements)
+    return Object.keys(elements)
       .filter((key) => {
         return !(elements[key].type === "cds.Composition" && elements[key].type === "cds.Association");
       })

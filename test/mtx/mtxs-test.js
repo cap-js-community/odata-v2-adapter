@@ -14,6 +14,17 @@ const csn = {
     "test.MainService": {
       kind: "service",
     },
+    "test.MainService.Header": {
+      kind: "entity",
+      elements: {
+        ID: {
+          type: "cds.UUID"
+        },
+        name: {
+          type: "cds.String"
+        }
+      }
+    },
   },
 };
 const edmx = `<?xml version="1.0" encoding="utf-8"?>
@@ -69,6 +80,10 @@ describe("mtxs", () => {
     cds.env.requires.multitenancy = true;
     cds.env.requires["cds.xt.ModelProviderService"] = true;
     clearCache();
+    await util.callRead(request, "/odata/v2/main/Header", {
+      accept: "application/xml",
+      Authorization: authorization,
+    });
     let response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,

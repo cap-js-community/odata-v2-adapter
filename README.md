@@ -130,6 +130,7 @@ Logging can be configured to respect the following log levels:
 ##### cds.log.levels.cov2ap: "error"
 
 - `[cov2ap] - Proxy:` Proxy processing error
+- `[cov2ap] - Cache:` Metadata cache error
 - `[cov2ap] - Authorization:` Authorization header parsing error
 - `[cov2ap] - MetadataRequest:` Metadata request processing error
 - `[cov2ap] - Request:` Request processing error
