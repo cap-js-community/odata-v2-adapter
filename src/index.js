@@ -6,7 +6,6 @@ const URL = require("url");
 const { pipeline } = require("stream");
 const express = require("express");
 const expressFileUpload = require("express-fileupload");
-const fetch = require("node-fetch");
 const cds = require("@sap/cds");
 const { promisify } = require("util");
 const { createProxyMiddleware } = require("http-proxy-middleware");
@@ -591,10 +590,12 @@ function cov2ap(options = {}) {
           // Trace
           traceRequest(req, "ProxyRequest", "POST", postUrl, postHeaders, body);
 
+          const postBody = JSON.stringify(body);
+          postHeaders["content-length"] = postBody.length;
           const response = await fetch(postUrl, {
             method: "POST",
             headers: postHeaders,
-            body: JSON.stringify(body),
+            body: postBody,
           });
           const responseBody = await response.json();
           const responseHeaders = convertToNodeHeaders(response.headers);

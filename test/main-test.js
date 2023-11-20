@@ -650,30 +650,32 @@ describe("main", () => {
     );
     expect(response.statusCode).toEqual(500);
     expect(response.body).toMatchObject({
-      error: {
-        code: "ECONNREFUSED",
-        errno: "ECONNREFUSED",
-        innererror: {
-          errordetails: [
+      "error": {
+        "cause": {
+          "errno": -61,
+          "code": "ECONNREFUSED",
+          "syscall": "connect",
+          "address": "::1",
+          "port": 8888
+        },
+        "severity": "error",
+        "target": "/#TRANSIENT#",
+        "innererror": {
+          "errordetails": [
             {
-              code: "ECONNREFUSED",
-              errno: "ECONNREFUSED",
-              message: {
-                lang: "en",
+              "cause": {
+                "errno": -61,
+                "code": "ECONNREFUSED",
+                "syscall": "connect",
+                "address": "::1",
+                "port": 8888
               },
-              severity: "error",
-              target: "/#TRANSIENT#",
-              type: "system",
-            },
-          ],
-        },
-        message: {
-          lang: "en",
-        },
-        severity: "error",
-        target: "/#TRANSIENT#",
-        type: "system",
-      },
+              "severity": "error",
+              "target": "/#TRANSIENT#"
+            }
+          ]
+        }
+      }
     });
     response = await util.callRead(
       request,
