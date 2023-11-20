@@ -650,28 +650,26 @@ describe("main", () => {
     );
     expect(response.statusCode).toEqual(500);
     expect(response.body).toMatchObject({
-      "error": {
-        "cause": {
-          "errno": -61,
-          "code": "ECONNREFUSED",
-          "syscall": "connect",
-          "address": "::1",
-          "port": 8888
+      error: {
+        cause: {
+          code: "ECONNREFUSED",
+          syscall: "connect",
+          address: "::1",
+          port: 8888
         },
-        "severity": "error",
-        "target": "/#TRANSIENT#",
-        "innererror": {
-          "errordetails": [
+        severity: "error",
+        target: "/#TRANSIENT#",
+        innererror: {
+          errordetails: [
             {
-              "cause": {
-                "errno": -61,
-                "code": "ECONNREFUSED",
-                "syscall": "connect",
-                "address": "::1",
-                "port": 8888
+              cause: {
+                code: "ECONNREFUSED",
+                syscall: "connect",
+                address: "::1",
+                port: 8888
               },
-              "severity": "error",
-              "target": "/#TRANSIENT#"
+              severity: "error",
+              target: "/#TRANSIENT#"
             }
           ]
         }
