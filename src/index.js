@@ -2987,6 +2987,7 @@ function cov2ap(options = {}) {
     }
     let context;
     definition = definition && definition.kind === "entity" ? definition : undefined;
+    definition = definition || req.context.returnDefinition || req.lookupContext.returnDefinition;
     if (
       contextFromUrl(
         {

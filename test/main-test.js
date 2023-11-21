@@ -2521,6 +2521,22 @@ describe("main", () => {
     });
   });
 
+  it("POST unbound action error", async () => {
+    const response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=test");
+    expect(response.body).toMatchObject({
+      error: {
+        code: "ERR01",
+        message: {
+          lang: "en",
+          value: "An error occurred",
+        },
+        target: "name",
+        severity: "error",
+        ContentID: "1"
+      }
+    });
+  });
+
   it("POST bound action", async () => {
     let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test",

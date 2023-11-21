@@ -305,6 +305,17 @@ module.exports = (srv) => {
     ];
   });
 
+  srv.on("unboundErrorAction", async (req) => {
+    const error = new Error("An error occurred");
+    error.code = "ERR01";
+    error.target = "name";
+    error.message = "An error occurred";
+    error.severity = 4;
+    error["@Common.numericSeverity"] = 4;
+    error["@Core.ContentID"] = "1";
+    req.error(error);
+  });
+
   /* Unbound Function */
 
   srv.on("unboundFunction", async (req) => {
