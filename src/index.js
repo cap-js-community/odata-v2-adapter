@@ -2986,8 +2986,15 @@ function cov2ap(options = {}) {
       }
     }
     let context;
-    definition = definition && definition.kind === "entity" ? definition : undefined;
-    definition = definition || req.context.returnDefinition || req.lookupContext.returnDefinition;
+    if (definition && definition.kind === "entity") {
+      context = definition;
+    }
+    if (!context && req.context.returnDefinition && req.context.returnDefinition.kind === "entity") {
+      context = req.context.returnDefinition;
+    }
+    if (!context && req.lookupContext.returnDefinition && req.lookupContext.returnDefinition.kind === "entity") {
+      context = req.lookupContext.returnDefinition;
+    }
     if (
       contextFromUrl(
         {
@@ -2999,6 +3006,7 @@ function cov2ap(options = {}) {
         true,
       )
     ) {
+      // Absolute target (no context)
       context = undefined;
     } else if (
       contextFromUrl(
@@ -3007,11 +3015,14 @@ function cov2ap(options = {}) {
           query: {},
         },
         req,
-        definition,
+        context,
         true,
       )
     ) {
-      context = definition;
+      // Relative target (valid context)
+    } else {
+      // Relative target (invalid context)
+      context = undefined;
     }
     let stop = false;
     return messageTarget
