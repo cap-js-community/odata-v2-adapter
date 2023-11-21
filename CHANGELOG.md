@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Respect return type for unbound actions/functions for message target resolution 
+- Respect return type for unbound actions/functions for message target resolution
 
 ## Version 1.11.9 - 2023-11-20
 
