@@ -2522,7 +2522,7 @@ describe("main", () => {
   });
 
   it("POST unbound action error", async () => {
-    const response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=test");
+    let response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=local");
     expect(response.body).toMatchObject({
       error: {
         code: "ERR01",
@@ -2531,6 +2531,58 @@ describe("main", () => {
           value: "An error occurred",
         },
         target: "name",
+        severity: "error",
+        ContentID: "1"
+      }
+    });
+    response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=relative");
+    expect(response.body).toMatchObject({
+      error: {
+        code: "ERR01",
+        message: {
+          lang: "en",
+          value: "An error occurred",
+        },
+        target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+        severity: "error",
+        ContentID: "1"
+      }
+    });
+    response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=guid");
+    expect(response.body).toMatchObject({
+      error: {
+        code: "ERR01",
+        message: {
+          lang: "en",
+          value: "An error occurred",
+        },
+        target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+        severity: "error",
+        ContentID: "1"
+      }
+    });
+    response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=absolute");
+    expect(response.body).toMatchObject({
+      error: {
+        code: "ERR01",
+        message: {
+          lang: "en",
+          value: "An error occurred",
+        },
+        target: "/Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+        severity: "error",
+        ContentID: "1"
+      }
+    });
+    response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=transient");
+    expect(response.body).toMatchObject({
+      error: {
+        code: "ERR01",
+        message: {
+          lang: "en",
+          value: "An error occurred",
+        },
+        target: "/#TRANSIENT#/Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
         severity: "error",
         ContentID: "1"
       }

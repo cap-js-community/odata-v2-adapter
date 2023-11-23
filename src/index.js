@@ -2,6 +2,7 @@
 
 // OData V2/V4 Delta: http://docs.oasis-open.org/odata/new-in-odata/v4.0/cn01/new-in-odata-v4.0-cn01.html
 
+const fs = require("fs");
 const URL = require("url");
 const { pipeline } = require("stream");
 const express = require("express");
@@ -134,6 +135,8 @@ const DefaultPort = 4004;
 const DefaultTenant = "00000000-0000-0000-0000-000000000000";
 const AggregationPrefix = "__AGGREGATION__";
 const IEEE754Compatible = "IEEE754Compatible=true";
+const MessageTargetTransient = "/#TRANSIENT#";
+const MessageTargetTransientPrefix = `${MessageTargetTransient}/`;
 
 function convertToNodeHeaders(webHeaders) {
   return Array.from(webHeaders.entries()).reduce((result, [key, value]) => {
@@ -245,7 +248,7 @@ function cov2ap(options = {}) {
   const returnComplexNested = optionWithFallback("returnComplexNested", true);
   const returnPrimitiveNested = optionWithFallback("returnPrimitiveNested", true);
   const returnPrimitivePlain = optionWithFallback("returnPrimitivePlain", true);
-  const messageTargetDefault = optionWithFallback("messageTargetDefault", "/#TRANSIENT#");
+  const messageTargetDefault = optionWithFallback("messageTargetDefault", MessageTargetTransient);
   const caseInsensitive = optionWithFallback("caseInsensitive", false);
   const propagateMessageToDetails = optionWithFallback("propagateMessageToDetails", false);
   const contentDisposition = optionWithFallback("contentDisposition", "attachment");
@@ -1030,13 +1033,30 @@ function cov2ap(options = {}) {
       edmx = await loadEdmx(tenant, service, locale);
     }
     if (!edmx) {
-      edmx = await cds.compile.to.edmx(csn, {
-        service,
-        version: "v2",
-      });
+      edmx = await edmxFromFile(tenant, service);
+      if (!edmx) {
+        edmx = await cds.compile.to.edmx(csn, {
+          service,
+          version: "v2",
+        });
+      }
       edmx = cds.localize(csn, locale, edmx);
     }
     return edmx;
+  }
+
+  async function edmxFromFile(tenant, service) {
+    const filePath = cds.root + `/srv/odata/v2/${service}.xml`;
+    let exists;
+    try {
+      exists = !(await fs.promises.access(filePath, fs.constants.F_OK));
+    } catch (e) {
+      logDebug({ tenant }, "Metadata", `No metadata file found for service ${service} at ${filePath}`);
+    }
+    if (exists) {
+      const file = await fs.promises.readFile(filePath);
+      return file.toString();
+    }
   }
 
   async function callCached(cache, field, call) {
@@ -1423,7 +1443,7 @@ function cov2ap(options = {}) {
   function contextFromUrl(url, req, context, suppressWarning) {
     let stop = false;
     return url.contextPath.split("/").reduce((context, part) => {
-      if (stop) {
+      if (stop || !part) {
         return context;
       }
       const keyStart = part.indexOf("(");
@@ -1575,7 +1595,7 @@ function cov2ap(options = {}) {
     url.contextPath = url.contextPath
       .split("/")
       .map((part) => {
-        if (stop) {
+        if (stop || !part) {
           return part;
         }
         let keyPart = "";
@@ -2354,7 +2374,7 @@ function cov2ap(options = {}) {
           } else if (part === "$count") {
             req.context.parameters.count = true;
           }
-          if (stop) {
+          if (stop || !part) {
             return "";
           }
           let keyPart = "";
@@ -2995,6 +3015,11 @@ function cov2ap(options = {}) {
     if (!context && req.lookupContext.returnDefinition && req.lookupContext.returnDefinition.kind === "entity") {
       context = req.lookupContext.returnDefinition;
     }
+    let transientTarget = false;
+    if (messageTarget.startsWith(MessageTargetTransientPrefix)) {
+      messageTarget = messageTarget.substring(MessageTargetTransientPrefix.length);
+      transientTarget = true;
+    }
     if (
       contextFromUrl(
         {
@@ -3025,10 +3050,10 @@ function cov2ap(options = {}) {
       context = undefined;
     }
     let stop = false;
-    return messageTarget
+    messageTarget = messageTarget
       .split("/")
       .map((part) => {
-        if (stop) {
+        if (stop || !part) {
           return part;
         }
         let keyPart = "";
@@ -3074,6 +3099,7 @@ function cov2ap(options = {}) {
         }
       })
       .join("/");
+    return (transientTarget ? MessageTargetTransientPrefix : "") + messageTarget;
   }
 
   function convertResponseError(body, headers, definition, req) {

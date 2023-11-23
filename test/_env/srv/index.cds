@@ -3,6 +3,7 @@ using from './analytics';
 using from './attachment';
 using from './audit';
 using from './auth';
+using from './cache';
 using from './draft';
 using from './dummy';
 using from './emissions';
