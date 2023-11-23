@@ -29,7 +29,10 @@ module.exports = class COV2APBuildPlugin extends cds.build.BuildPlugin {
         });
         this.write(result).to(path.join(destMainSrv, "odata/v2", `${service.name}.xml`));
       } catch (err) {
-        this._logger.info(`EDMX compilation failed. Service '${service.name}' is (probably) not compatible with OData V2`, err);
+        this._logger.info(
+          `EDMX V2 compilation failed. Service '${service.name}' is (probably) not compatible with OData V2`,
+          err,
+        );
       }
     }
   }
