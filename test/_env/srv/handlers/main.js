@@ -309,9 +309,12 @@ module.exports = (srv) => {
     const error = new Error("An error occurred");
     error.code = "ERR01";
     switch (req.data.text) {
-      case "local":
+      case "default":
       default:
         error.target = "name";
+        break;
+      case "unchecked":
+        error.target = "_xXx123";
         break;
       case "relative":
         error.target = "Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name";
@@ -324,6 +327,9 @@ module.exports = (srv) => {
         break;
       case "transient":
         error.target = "/#TRANSIENT#/Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name";
+        break;
+      case "invalid":
+        error.target = "Header2(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name2";
         break;
     }
     error.message = "An error occurred";

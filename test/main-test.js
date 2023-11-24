@@ -2522,7 +2522,7 @@ describe("main", () => {
   });
 
   it("POST unbound action error", async () => {
-    let response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=local");
+    let response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=default");
     expect(response.body).toMatchObject({
       error: {
         code: "ERR01",
@@ -2531,6 +2531,19 @@ describe("main", () => {
           value: "An error occurred",
         },
         target: "name",
+        severity: "error",
+        ContentID: "1"
+      }
+    });
+    response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=unchecked");
+    expect(response.body).toMatchObject({
+      error: {
+        code: "ERR01",
+        message: {
+          lang: "en",
+          value: "An error occurred",
+        },
+        target: "_xXx123",
         severity: "error",
         ContentID: "1"
       }
@@ -2583,6 +2596,19 @@ describe("main", () => {
           value: "An error occurred",
         },
         target: "/#TRANSIENT#/Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+        severity: "error",
+        ContentID: "1"
+      }
+    });
+    response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=invalid");
+    expect(response.body).toMatchObject({
+      error: {
+        code: "ERR01",
+        message: {
+          lang: "en",
+          value: "An error occurred",
+        },
+        target: "Header2(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name2",
         severity: "error",
         ContentID: "1"
       }
