@@ -2939,7 +2939,7 @@ function cov2ap(options = {}) {
 
   function convertToUnicode(string) {
     return string.replace(/[\u007F-\uFFFF]/g, (chr) => {
-      const unicode = ("0000" + chr.charCodeAt(0).toString(16));
+      const unicode = "0000" + chr.charCodeAt(0).toString(16);
       return "\\u" + unicode.substring(unicode.length - 4);
     });
   }
