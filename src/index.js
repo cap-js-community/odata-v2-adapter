@@ -2,6 +2,7 @@
 
 // OData V2/V4 Delta: http://docs.oasis-open.org/odata/new-in-odata/v4.0/cn01/new-in-odata-v4.0-cn01.html
 
+const fs = require("fs");
 const URL = require("url");
 const { pipeline } = require("stream");
 const express = require("express");
@@ -133,6 +134,8 @@ const DefaultPort = 4004;
 const DefaultTenant = "00000000-0000-0000-0000-000000000000";
 const AggregationPrefix = "__AGGREGATION__";
 const IEEE754Compatible = "IEEE754Compatible=true";
+const MessageTargetTransient = "/#TRANSIENT#";
+const MessageTargetTransientPrefix = `${MessageTargetTransient}/`;
 
 function convertToNodeHeaders(webHeaders) {
   return Array.from(webHeaders.entries()).reduce((result, [key, value]) => {
@@ -244,7 +247,7 @@ function cov2ap(options = {}) {
   const returnComplexNested = optionWithFallback("returnComplexNested", true);
   const returnPrimitiveNested = optionWithFallback("returnPrimitiveNested", true);
   const returnPrimitivePlain = optionWithFallback("returnPrimitivePlain", true);
-  const messageTargetDefault = optionWithFallback("messageTargetDefault", "/#TRANSIENT#");
+  const messageTargetDefault = optionWithFallback("messageTargetDefault", MessageTargetTransient);
   const caseInsensitive = optionWithFallback("caseInsensitive", false);
   const propagateMessageToDetails = optionWithFallback("propagateMessageToDetails", false);
   const contentDisposition = optionWithFallback("contentDisposition", "attachment");
@@ -1031,13 +1034,30 @@ function cov2ap(options = {}) {
       edmx = await loadEdmx(tenant, service, locale);
     }
     if (!edmx) {
-      edmx = await cds.compile.to.edmx(csn, {
-        service,
-        version: "v2",
-      });
+      edmx = await edmxFromFile(tenant, service);
+      if (!edmx) {
+        edmx = await cds.compile.to.edmx(csn, {
+          service,
+          version: "v2",
+        });
+      }
       edmx = cds.localize(csn, locale, edmx);
     }
     return edmx;
+  }
+
+  async function edmxFromFile(tenant, service) {
+    const filePath = cds.root + `/srv/odata/v2/${service}.xml`;
+    let exists;
+    try {
+      exists = !(await fs.promises.access(filePath, fs.constants.F_OK));
+    } catch (e) {
+      logDebug({ tenant }, "Metadata", `No metadata file found for service ${service} at ${filePath}`);
+    }
+    if (exists) {
+      const file = await fs.promises.readFile(filePath);
+      return file.toString();
+    }
   }
 
   async function callCached(cache, field, call) {
@@ -1106,7 +1126,7 @@ function cov2ap(options = {}) {
       if (definition.actions) {
         for (const actionName in definition.actions) {
           if (name.endsWith(`_${actionName}`)) {
-            const entityName = name.substr(0, name.length - `_${actionName}`.length);
+            const entityName = name.substring(0, name.length - `_${actionName}`.length);
             const entityDefinition = lookupDefinition(entityName, req);
             if (entityDefinition === definition) {
               const boundAction = definition.actions[actionName];
@@ -1393,15 +1413,15 @@ function cov2ap(options = {}) {
     url.contextPath = url.pathname;
     if (req.base && url.contextPath.startsWith(`/${req.base}`)) {
       url.basePath = `/${req.base}`;
-      url.contextPath = url.contextPath.substr(url.basePath.length);
+      url.contextPath = url.contextPath.substring(url.basePath.length);
     }
     if (url.contextPath.startsWith(`/${req.servicePath}`)) {
       url.servicePath = `/${req.servicePath}`;
-      url.contextPath = url.contextPath.substr(url.servicePath.length);
+      url.contextPath = url.contextPath.substring(url.servicePath.length);
     }
     if (url.contextPath.startsWith("/")) {
       url.servicePath += "/";
-      url.contextPath = url.contextPath.substr(1);
+      url.contextPath = url.contextPath.substring(1);
     }
     url.originalUrl.servicePath = url.servicePath;
     url.originalUrl.contextPath = url.contextPath;
@@ -1424,12 +1444,12 @@ function cov2ap(options = {}) {
   function contextFromUrl(url, req, context, suppressWarning) {
     let stop = false;
     return url.contextPath.split("/").reduce((context, part) => {
-      if (stop) {
+      if (stop || !part) {
         return context;
       }
       const keyStart = part.indexOf("(");
       if (keyStart !== -1) {
-        part = part.substr(0, keyStart);
+        part = part.substring(0, keyStart);
       }
       context = lookupContext(part, context, req, suppressWarning, url.contextPath);
       if (!context) {
@@ -1576,30 +1596,31 @@ function cov2ap(options = {}) {
     url.contextPath = url.contextPath
       .split("/")
       .map((part) => {
-        if (stop) {
+        if (stop || !part) {
           return part;
         }
+        let name = part;
         let keyPart = "";
         const keyStart = part.indexOf("(");
         const keyEnd = part.lastIndexOf(")");
         if (keyStart !== -1 && keyEnd === part.length - 1) {
+          name = part.substring(0, keyStart);
           keyPart = part.substring(keyStart + 1, keyEnd);
-          part = part.substr(0, keyStart);
         }
-        context = lookupContext(part, context, req, false, url.contextPath);
+        context = lookupContext(name, context, req, false, url.contextPath);
         if (!context) {
           stop = true;
         }
         const contextElements = definitionElements(context);
         const contextKeys = definitionKeys(context);
         if (context && keyPart) {
-          const isAggregation = convertAggregationKey(part, keyPart, url, req);
+          const isAggregation = convertAggregationKey(keyPart, url, req);
           if (isAggregation) {
-            return part;
+            return name;
           }
           const keys = decodeURIComponent(keyPart).split(",");
           return (
-            part +
+            name +
             encodeURIComponent(
               `(${keys
                 .map((key) => {
@@ -1682,7 +1703,7 @@ function cov2ap(options = {}) {
             quoteEscape = false;
             return;
           }
-          const nextChar = input.substr(index + 1, 1);
+          const nextChar = input.substring(index + 1, index + 2);
           if (nextChar === "'") {
             quoteEscape = true;
             return;
@@ -1716,7 +1737,7 @@ function cov2ap(options = {}) {
     return parts;
   }
 
-  function convertAggregationKey(part, keyPart, url, req) {
+  function convertAggregationKey(keyPart, url, req) {
     const aggregationMatch =
       keyPart.match(/^aggregation'(.*)'$/is) ||
       keyPart.match(/^'aggregation'(.*)''$/is) ||
@@ -1752,12 +1773,11 @@ function cov2ap(options = {}) {
           req.context.aggregationSearch = aggregation.search;
         }
         req.context.aggregationKey = true;
-        return true;
       } catch (err) {
         // Error
         logError(req, "AggregationKey", err);
-        return true;
       }
+      return true;
     }
     return false;
   }
@@ -1831,8 +1851,8 @@ function cov2ap(options = {}) {
     const operationLocalName = localName(definition, req);
     let reqContextPathSuffix = "";
     if (url.contextPath.startsWith(operationLocalName)) {
-      reqContextPathSuffix = url.contextPath.substr(operationLocalName.length);
-      url.contextPath = url.contextPath.substr(0, operationLocalName.length);
+      reqContextPathSuffix = url.contextPath.substring(operationLocalName.length);
+      url.contextPath = url.contextPath.substring(0, operationLocalName.length);
     }
     let queryOptions = { ...url.query };
 
@@ -2324,7 +2344,7 @@ function cov2ap(options = {}) {
 
   function convertValue(url, req) {
     if (url.contextPath.endsWith("/$value")) {
-      url.contextPath = url.contextPath.substr(0, url.contextPath.length - "/$value".length);
+      url.contextPath = url.contextPath.substring(0, url.contextPath.length - "/$value".length);
       const mediaDataElementName =
         req.context &&
         req.context.definition &&
@@ -2355,20 +2375,21 @@ function cov2ap(options = {}) {
           } else if (part === "$count") {
             req.context.parameters.count = true;
           }
-          if (stop) {
+          if (stop || !part) {
             return "";
           }
+          let name = part;
           let keyPart = "";
           const keyStart = part.indexOf("(");
           const keyEnd = part.lastIndexOf(")");
           if (keyStart !== -1 && keyEnd === part.length - 1) {
+            name = part.substring(0, keyStart);
             keyPart = part.substring(keyStart + 1, keyEnd);
-            part = part.substr(0, keyStart);
           }
-          if (part === req.context.parameters.type) {
-            part = req.context.parameters.entity;
+          if (name === req.context.parameters.type) {
+            name = req.context.parameters.entity;
           }
-          context = lookupContext(part, context, req, false, url.contextPath);
+          context = lookupContext(name, context, req, false, url.contextPath);
           if (!context) {
             stop = true;
           }
@@ -2376,7 +2397,7 @@ function cov2ap(options = {}) {
           if (context && keyPart) {
             const keys = decodeURIComponent(keyPart).split(",");
             return (
-              part +
+              name +
               encodeURIComponent(
                 `(${keys
                   .map((key) => {
@@ -2406,7 +2427,7 @@ function cov2ap(options = {}) {
               )
             );
           } else {
-            return part;
+            return name;
           }
         })
         .filter((part) => !!part)
@@ -2919,7 +2940,8 @@ function cov2ap(options = {}) {
 
   function convertToUnicode(string) {
     return string.replace(/[\u007F-\uFFFF]/g, (chr) => {
-      return "\\u" + ("0000" + chr.charCodeAt(0).toString(16)).substr(-4);
+      const unicode = ("0000" + chr.charCodeAt(0).toString(16));
+      return "\\u" + unicode.substring(unicode.length - 4);
     });
   }
 
@@ -2983,86 +3005,107 @@ function cov2ap(options = {}) {
     if (req.context.operation && req.context.boundDefinition) {
       const bindingParameterName = req.context.operation["@cds.odata.bindingparameter.name"] || "in";
       if (messageTarget.startsWith(`${bindingParameterName}/`)) {
-        messageTarget = messageTarget.substr(bindingParameterName.length + 1);
+        messageTarget = messageTarget.substring(bindingParameterName.length + 1);
       }
     }
-    let context;
-    definition = definition && definition.kind === "entity" ? definition : undefined;
-    if (
-      contextFromUrl(
-        {
-          contextPath: messageTarget,
-          query: {},
-        },
-        req,
-        undefined,
-        true,
-      )
-    ) {
-      context = undefined;
-    } else if (
-      contextFromUrl(
-        {
-          contextPath: messageTarget,
-          query: {},
-        },
-        req,
-        definition,
-        true,
-      )
-    ) {
-      context = definition;
+    let transientTarget = false;
+    if (messageTarget.startsWith(MessageTargetTransientPrefix)) {
+      messageTarget = messageTarget.substring(MessageTargetTransientPrefix.length);
+      transientTarget = true;
     }
-    let stop = false;
-    return messageTarget
-      .split("/")
-      .map((part) => {
-        if (stop) {
-          return part;
-        }
-        let keyPart = "";
-        const keyStart = part.indexOf("(");
-        const keyEnd = part.lastIndexOf(")");
-        if (keyStart !== -1 && keyEnd === part.length - 1) {
-          keyPart = part.substring(keyStart + 1, keyEnd);
-          part = part.substr(0, keyStart);
-        }
-        context = lookupContext(part, context, req, false, messageTarget);
-        if (!context) {
-          stop = true;
-        }
-        const contextElements = definitionElements(context);
-        const contextKeys = definitionKeys(context);
-        if (context && keyPart) {
-          const keys = keyPart.split(",");
-          return `${part}(${keys
-            .map((key) => {
-              const [name, value] = key.split("=");
-              let type;
-              if (name && value) {
-                if (context.params && context.params[name]) {
-                  type = context.params[name].type;
+    if (!/^[_a-z-0-9]*$/i.test(messageTarget)) {
+      let context;
+      if (definition && definition.kind === "entity") {
+        context = definition;
+      }
+      if (!context && req.context.returnDefinition && req.context.returnDefinition.kind === "entity") {
+        context = req.context.returnDefinition;
+      }
+      if (!context && req.lookupContext.returnDefinition && req.lookupContext.returnDefinition.kind === "entity") {
+        context = req.lookupContext.returnDefinition;
+      }
+      if (
+        contextFromUrl(
+          {
+            contextPath: messageTarget,
+            query: {},
+          },
+          req,
+          undefined,
+          true,
+        )
+      ) {
+        // Absolute target (no context)
+        context = undefined;
+      } else if (
+        contextFromUrl(
+          {
+            contextPath: messageTarget,
+            query: {},
+          },
+          req,
+          context,
+          true,
+        )
+      ) {
+        // Relative target (valid context)
+      } else {
+        // Relative target (invalid context)
+        context = undefined;
+      }
+      let stop = false;
+      messageTarget = messageTarget
+        .split("/")
+        .map((part) => {
+          if (stop || !part) {
+            return part;
+          }
+          let name = part;
+          let keyPart = "";
+          const keyStart = part.indexOf("(");
+          const keyEnd = part.lastIndexOf(")");
+          if (keyStart !== -1 && keyEnd === part.length - 1) {
+            name = part.substring(0, keyStart);
+            keyPart = part.substring(keyStart + 1, keyEnd);
+          }
+          context = lookupContext(name, context, req, false, messageTarget);
+          if (!context) {
+            stop = true;
+          }
+          const contextElements = definitionElements(context);
+          const contextKeys = definitionKeys(context);
+          if (context && keyPart) {
+            const keys = keyPart.split(",");
+            return `${name}(${keys
+              .map((key) => {
+                const [name, value] = key.split("=");
+                let type;
+                if (name && value) {
+                  if (context.params && context.params[name]) {
+                    type = context.params[name].type;
+                  }
+                  if (!type) {
+                    type = elementType(contextElements[name], req);
+                  }
+                  return `${name}=${replaceConvertDataTypeToV2(value, type, context)}`;
+                } else if (name) {
+                  const key = Object.keys(contextKeys).find((key) => {
+                    return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
+                  });
+                  type = key && elementType(contextElements[key], req);
+                  return type && `${replaceConvertDataTypeToV2(name, type, context)}`;
                 }
-                if (!type) {
-                  type = elementType(contextElements[name], req);
-                }
-                return `${name}=${replaceConvertDataTypeToV2(value, type, context)}`;
-              } else if (name) {
-                const key = Object.keys(contextKeys).find((key) => {
-                  return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
-                });
-                type = key && elementType(contextElements[key], req);
-                return type && `${replaceConvertDataTypeToV2(name, type, context)}`;
-              }
-              return "";
-            })
-            .filter((part) => !!part)
-            .join(",")})`;
-        } else {
-          return part;
-        }
-      })
-      .join("/");
+                return "";
+              })
+              .filter((part) => !!part)
+              .join(",")})`;
+          } else {
+            return part;
+          }
+        })
+        .join("/");
+    }
+    return (transientTarget ? MessageTargetTransientPrefix : "") + messageTarget;
   }
 
   function convertResponseError(body, headers, definition, req) {
@@ -3339,16 +3382,16 @@ function cov2ap(options = {}) {
     if (!context) {
       return;
     }
-    context = context.substr(context.indexOf("#") + 1);
+    context = context.substring(context.indexOf("#") + 1);
     if (context.startsWith("Collection(")) {
       context = context.substring("Collection(".length, context.indexOf(")"));
     } else {
       if (context.indexOf("(") !== -1) {
-        context = context.substr(0, context.indexOf("("));
+        context = context.substring(0, context.indexOf("("));
       }
     }
     if (context.indexOf("/") !== -1) {
-      context = context.substr(0, context.indexOf("/"));
+      context = context.substring(0, context.indexOf("/"));
     }
     return context;
   }
@@ -3367,7 +3410,7 @@ function cov2ap(options = {}) {
       return null;
     }
     if (context.lastIndexOf("/") !== -1) {
-      const name = context.substr(context.lastIndexOf("/") + 1);
+      const name = context.substring(context.lastIndexOf("/") + 1);
       if (name && !name.startsWith("$")) {
         const element = definitionElements(definition)[name];
         if (element) {
@@ -3446,7 +3489,7 @@ function cov2ap(options = {}) {
       let value = data[key];
       if (key.startsWith(AggregationPrefix)) {
         if (!(key.endsWith("@odata.type") || key.endsWith("@type"))) {
-          const name = key.substr(AggregationPrefix.length);
+          const name = key.substring(AggregationPrefix.length);
           let aggregationType = (data[`${key}@odata.type`] || data[`${key}@type`] || "#Decimal").replace("#", "");
           if (DataTypeOData[aggregationType]) {
             aggregationType = DataTypeOData[aggregationType];
@@ -4197,7 +4240,7 @@ function cov2ap(options = {}) {
       return DataTypeOData[key] === type;
     });
     if (odataType && odataType.startsWith("_")) {
-      return odataType.substr(1);
+      return odataType.substring(1);
     }
     return odataType;
   }
@@ -4336,7 +4379,7 @@ function cov2ap(options = {}) {
       }
     }
     if (locale && locale.length >= 2) {
-      locale = locale.substr(0, 2).toLowerCase() + locale.slice(2);
+      locale = locale.substring(0, 2).toLowerCase() + locale.slice(2);
     }
     return locale || "en";
   }
@@ -4549,7 +4592,7 @@ function cov2ap(options = {}) {
         if (partIsContentId) {
           const colonIndex = part.indexOf(":");
           if (colonIndex !== -1) {
-            contentId = part.substr(colonIndex + 1).trim();
+            contentId = part.substring(colonIndex + 1).trim();
             contentIdMisplaced = !!bodyAfterBlank;
           }
         }
@@ -4557,7 +4600,7 @@ function cov2ap(options = {}) {
         if (partContentTransferEncoding && !bodyAfterBlank) {
           const colonIndex = part.indexOf(":");
           if (colonIndex !== -1) {
-            contentTransferEncoding = part.substr(colonIndex + 1).trim();
+            contentTransferEncoding = part.substring(colonIndex + 1).trim();
           }
         }
         if (!bodyAfterBlank) {
@@ -4567,7 +4610,7 @@ function cov2ap(options = {}) {
         } else {
           let colonIndex = part.indexOf(":");
           if (colonIndex !== -1) {
-            headers[part.substr(0, colonIndex).toLowerCase()] = part.substr(colonIndex + 1).trim();
+            headers[part.substring(0, colonIndex).toLowerCase()] = part.substring(colonIndex + 1).trim();
           }
         }
       } else {

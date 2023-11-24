@@ -22,7 +22,7 @@ rules:
   no-unused-vars: [off]
   require-atomic-updates: [off]
   jest/no-conditional-expect: [off]
-  no-restricted-modules: [error, child_process, fs] # security
+  no-restricted-modules: [error, child_process] # security
   no-eval: [error] # security
   no-implied-eval: [error] # security
   no-console: [error] # ops

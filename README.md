@@ -25,6 +25,8 @@
 
 The OData V2 adapter for CDS instantiates an Express router. The following options are available:
 
+- **plugin:** OData V2 adapter is instantiated as part of CDS plugin. Default is `false`.
+- **build:** In case of plugin scenario, a build step is registered to prepare the OData V2 metadata. Default is `false`.
 - **base:** Base path under which the service is reachable. Default is `''`.
 - **path:** Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
 - **model:** CDS service model (path(s) or CSN). Default is `'all'`.

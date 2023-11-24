@@ -295,6 +295,7 @@ service MainService {
     action unboundMassActionEntity(ids: array of String) returns array of Header;
     action unboundActionMaxLength(text: String(10)) returns String(10);
     action unbound.Action(num: Integer, text: String) returns Result;
+    action unboundErrorAction(num: Integer, text: String) returns Header;
 
     function unboundFunction(num: Integer, text: String) returns Result;
     function unboundMassFunction(ids: array of String) returns array of Result;

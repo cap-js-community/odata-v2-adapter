@@ -453,6 +453,10 @@ exports[`main GET $metadata 1`] = `
         <FunctionImport Name="unboundActionMaxLength" ReturnType="Edm.String" m:HttpMethod="POST">
           <Parameter Name="text" Type="Edm.String" MaxLength="10" Mode="In" Nullable="true"/>
         </FunctionImport>
+        <FunctionImport Name="unboundErrorAction" EntitySet="Header" ReturnType="test.MainService.Header" m:HttpMethod="POST">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="unboundFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET">
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
           <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
@@ -1806,6 +1810,10 @@ exports[`main GET $metadata localized 1`] = `
         </FunctionImport>
         <FunctionImport Name="unboundActionMaxLength" ReturnType="Edm.String" m:HttpMethod="POST">
           <Parameter Name="text" Type="Edm.String" MaxLength="10" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundErrorAction" EntitySet="Header" ReturnType="test.MainService.Header" m:HttpMethod="POST">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
         </FunctionImport>
         <FunctionImport Name="unboundFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET">
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
@@ -3161,6 +3169,10 @@ exports[`main GET $metadata localized 2`] = `
         <FunctionImport Name="unboundActionMaxLength" ReturnType="Edm.String" m:HttpMethod="POST">
           <Parameter Name="text" Type="Edm.String" MaxLength="10" Mode="In" Nullable="true"/>
         </FunctionImport>
+        <FunctionImport Name="unboundErrorAction" EntitySet="Header" ReturnType="test.MainService.Header" m:HttpMethod="POST">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="unboundFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET">
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
           <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
@@ -4515,6 +4527,10 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <FunctionImport Name="unboundActionMaxLength" ReturnType="Edm.String" m:HttpMethod="POST">
           <Parameter Name="text" Type="Edm.String" MaxLength="10" Mode="In" Nullable="true"/>
         </FunctionImport>
+        <FunctionImport Name="unboundErrorAction" EntitySet="Header" ReturnType="test.MainService.Header" m:HttpMethod="POST">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="unboundFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET">
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
           <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
@@ -5868,6 +5884,10 @@ exports[`main GET $metadata with query options 1`] = `
         </FunctionImport>
         <FunctionImport Name="unboundActionMaxLength" ReturnType="Edm.String" m:HttpMethod="POST">
           <Parameter Name="text" Type="Edm.String" MaxLength="10" Mode="In" Nullable="true"/>
+        </FunctionImport>
+        <FunctionImport Name="unboundErrorAction" EntitySet="Header" ReturnType="test.MainService.Header" m:HttpMethod="POST">
+          <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
         </FunctionImport>
         <FunctionImport Name="unboundFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET">
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>

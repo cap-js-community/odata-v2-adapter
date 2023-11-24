@@ -5,11 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.12.0 - tbd
+## Version 1.12.0 - 2024-01-xx
 
 ### Fixed
 
 - Replace `node-fetch` by `fetch`
+
+## Version 1.11.10 - 2023-12-xx
+
+### Fixed
+
+- Respect return type for unbound actions/functions for message target resolution
+- Convert transient and absolute message targets correctly
+- Access prepared EDMX files if existing, otherwise compile like before
+- Register build plugin to prepare V2 metadata (enabled via adapter option `build: true`)
+- Skip conversion for element name only message targets
+- Replace deprecated `substr` usages
 
 ## Version 1.11.9 - 2023-11-20
 
