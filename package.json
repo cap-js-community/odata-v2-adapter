@@ -4,7 +4,7 @@
   "description": "OData V2 adapter for CDS",
   "homepage": "https://cap.cloud.sap/",
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "author": "Oliver Klemenz <oklemenz@gmail.com>, Richard Lindner <rlindner81@gmail.com>",
   "keywords": [

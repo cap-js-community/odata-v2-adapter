@@ -15,7 +15,7 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == github.repository
     strategy:
       matrix:
-        node-version: [16, 18]
+        node-version: [18, 20]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     name: test - node.js ${{ matrix.node-version }}
@@ -35,7 +35,7 @@ jobs:
     if: github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       matrix:
-        node-version: [16, 18]
+        node-version: [18, 20]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     name: test - node.js ${{ matrix.node-version }}
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: "npm"
       - run: npm ci --package-lock
       - run: npm run lint:ci
