@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.12.0 - 2024-01-xx
+## Version 1.12.0 - 2024-xx-xx
 
 ### Fixed
 
-- Replace `node-fetch` by `fetch`
+- Support Node.js 20 (as new active)
+- Drop Node.js 16 support (as out of maintenance)
+- Replace `node-fetch` by standard `fetch`
+- Activate CDS plugin per default (can be disabled with option `plugin: false`)
+- Protect against double instantiation, when loaded via CDS plugin
 
 ## Version 1.11.10 - 2023-12-xx
 
