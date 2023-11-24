@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Access prepared EDMX files if existing, otherwise compile like before
 - Register build plugin to prepare V2 metadata (enabled via adapter option `build: true`)
 - Skip conversion for element name only message targets
+- Replace deprecated `substr` usages
 
 ## Version 1.11.9 - 2023-11-20
 

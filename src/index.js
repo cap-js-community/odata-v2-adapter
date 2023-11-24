@@ -1125,7 +1125,7 @@ function cov2ap(options = {}) {
       if (definition.actions) {
         for (const actionName in definition.actions) {
           if (name.endsWith(`_${actionName}`)) {
-            const entityName = name.substr(0, name.length - `_${actionName}`.length);
+            const entityName = name.substring(0, name.length - `_${actionName}`.length);
             const entityDefinition = lookupDefinition(entityName, req);
             if (entityDefinition === definition) {
               const boundAction = definition.actions[actionName];
@@ -1412,15 +1412,15 @@ function cov2ap(options = {}) {
     url.contextPath = url.pathname;
     if (req.base && url.contextPath.startsWith(`/${req.base}`)) {
       url.basePath = `/${req.base}`;
-      url.contextPath = url.contextPath.substr(url.basePath.length);
+      url.contextPath = url.contextPath.substring(url.basePath.length);
     }
     if (url.contextPath.startsWith(`/${req.servicePath}`)) {
       url.servicePath = `/${req.servicePath}`;
-      url.contextPath = url.contextPath.substr(url.servicePath.length);
+      url.contextPath = url.contextPath.substring(url.servicePath.length);
     }
     if (url.contextPath.startsWith("/")) {
       url.servicePath += "/";
-      url.contextPath = url.contextPath.substr(1);
+      url.contextPath = url.contextPath.substring(1);
     }
     url.originalUrl.servicePath = url.servicePath;
     url.originalUrl.contextPath = url.contextPath;
@@ -1448,7 +1448,7 @@ function cov2ap(options = {}) {
       }
       const keyStart = part.indexOf("(");
       if (keyStart !== -1) {
-        part = part.substr(0, keyStart);
+        part = part.substring(0, keyStart);
       }
       context = lookupContext(part, context, req, suppressWarning, url.contextPath);
       if (!context) {
@@ -1603,7 +1603,7 @@ function cov2ap(options = {}) {
         const keyStart = part.indexOf("(");
         const keyEnd = part.lastIndexOf(")");
         if (keyStart !== -1 && keyEnd === part.length - 1) {
-          name = part.substr(0, keyStart);
+          name = part.substring(0, keyStart);
           keyPart = part.substring(keyStart + 1, keyEnd);
         }
         context = lookupContext(name, context, req, false, url.contextPath);
@@ -1702,7 +1702,7 @@ function cov2ap(options = {}) {
             quoteEscape = false;
             return;
           }
-          const nextChar = input.substr(index + 1, 1);
+          const nextChar = input.substring(index + 1, index + 2);
           if (nextChar === "'") {
             quoteEscape = true;
             return;
@@ -1850,8 +1850,8 @@ function cov2ap(options = {}) {
     const operationLocalName = localName(definition, req);
     let reqContextPathSuffix = "";
     if (url.contextPath.startsWith(operationLocalName)) {
-      reqContextPathSuffix = url.contextPath.substr(operationLocalName.length);
-      url.contextPath = url.contextPath.substr(0, operationLocalName.length);
+      reqContextPathSuffix = url.contextPath.substring(operationLocalName.length);
+      url.contextPath = url.contextPath.substring(0, operationLocalName.length);
     }
     let queryOptions = { ...url.query };
 
@@ -2343,7 +2343,7 @@ function cov2ap(options = {}) {
 
   function convertValue(url, req) {
     if (url.contextPath.endsWith("/$value")) {
-      url.contextPath = url.contextPath.substr(0, url.contextPath.length - "/$value".length);
+      url.contextPath = url.contextPath.substring(0, url.contextPath.length - "/$value".length);
       const mediaDataElementName =
         req.context &&
         req.context.definition &&
@@ -2382,7 +2382,7 @@ function cov2ap(options = {}) {
           const keyStart = part.indexOf("(");
           const keyEnd = part.lastIndexOf(")");
           if (keyStart !== -1 && keyEnd === part.length - 1) {
-            name = part.substr(0, keyStart);
+            name = part.substring(0, keyStart);
             keyPart = part.substring(keyStart + 1, keyEnd);
           }
           if (name === req.context.parameters.type) {
@@ -2939,7 +2939,8 @@ function cov2ap(options = {}) {
 
   function convertToUnicode(string) {
     return string.replace(/[\u007F-\uFFFF]/g, (chr) => {
-      return "\\u" + ("0000" + chr.charCodeAt(0).toString(16)).substr(-4);
+      const unicode = ("0000" + chr.charCodeAt(0).toString(16));
+      return "\\u" + unicode.substring(unicode.length - 4);
     });
   }
 
@@ -3003,7 +3004,7 @@ function cov2ap(options = {}) {
     if (req.context.operation && req.context.boundDefinition) {
       const bindingParameterName = req.context.operation["@cds.odata.bindingparameter.name"] || "in";
       if (messageTarget.startsWith(`${bindingParameterName}/`)) {
-        messageTarget = messageTarget.substr(bindingParameterName.length + 1);
+        messageTarget = messageTarget.substring(bindingParameterName.length + 1);
       }
     }
     let transientTarget = false;
@@ -3063,7 +3064,7 @@ function cov2ap(options = {}) {
           const keyStart = part.indexOf("(");
           const keyEnd = part.lastIndexOf(")");
           if (keyStart !== -1 && keyEnd === part.length - 1) {
-            name = part.substr(0, keyStart);
+            name = part.substring(0, keyStart);
             keyPart = part.substring(keyStart + 1, keyEnd);
           }
           context = lookupContext(name, context, req, false, messageTarget);
@@ -3380,16 +3381,16 @@ function cov2ap(options = {}) {
     if (!context) {
       return;
     }
-    context = context.substr(context.indexOf("#") + 1);
+    context = context.substring(context.indexOf("#") + 1);
     if (context.startsWith("Collection(")) {
       context = context.substring("Collection(".length, context.indexOf(")"));
     } else {
       if (context.indexOf("(") !== -1) {
-        context = context.substr(0, context.indexOf("("));
+        context = context.substring(0, context.indexOf("("));
       }
     }
     if (context.indexOf("/") !== -1) {
-      context = context.substr(0, context.indexOf("/"));
+      context = context.substring(0, context.indexOf("/"));
     }
     return context;
   }
@@ -3408,7 +3409,7 @@ function cov2ap(options = {}) {
       return null;
     }
     if (context.lastIndexOf("/") !== -1) {
-      const name = context.substr(context.lastIndexOf("/") + 1);
+      const name = context.substring(context.lastIndexOf("/") + 1);
       if (name && !name.startsWith("$")) {
         const element = definitionElements(definition)[name];
         if (element) {
@@ -3487,7 +3488,7 @@ function cov2ap(options = {}) {
       let value = data[key];
       if (key.startsWith(AggregationPrefix)) {
         if (!(key.endsWith("@odata.type") || key.endsWith("@type"))) {
-          const name = key.substr(AggregationPrefix.length);
+          const name = key.substring(AggregationPrefix.length);
           let aggregationType = (data[`${key}@odata.type`] || data[`${key}@type`] || "#Decimal").replace("#", "");
           if (DataTypeOData[aggregationType]) {
             aggregationType = DataTypeOData[aggregationType];
@@ -4238,7 +4239,7 @@ function cov2ap(options = {}) {
       return DataTypeOData[key] === type;
     });
     if (odataType && odataType.startsWith("_")) {
-      return odataType.substr(1);
+      return odataType.substring(1);
     }
     return odataType;
   }
@@ -4377,7 +4378,7 @@ function cov2ap(options = {}) {
       }
     }
     if (locale && locale.length >= 2) {
-      locale = locale.substr(0, 2).toLowerCase() + locale.slice(2);
+      locale = locale.substring(0, 2).toLowerCase() + locale.slice(2);
     }
     return locale || "en";
   }
@@ -4590,7 +4591,7 @@ function cov2ap(options = {}) {
         if (partIsContentId) {
           const colonIndex = part.indexOf(":");
           if (colonIndex !== -1) {
-            contentId = part.substr(colonIndex + 1).trim();
+            contentId = part.substring(colonIndex + 1).trim();
             contentIdMisplaced = !!bodyAfterBlank;
           }
         }
@@ -4598,7 +4599,7 @@ function cov2ap(options = {}) {
         if (partContentTransferEncoding && !bodyAfterBlank) {
           const colonIndex = part.indexOf(":");
           if (colonIndex !== -1) {
-            contentTransferEncoding = part.substr(colonIndex + 1).trim();
+            contentTransferEncoding = part.substring(colonIndex + 1).trim();
           }
         }
         if (!bodyAfterBlank) {
@@ -4608,7 +4609,7 @@ function cov2ap(options = {}) {
         } else {
           let colonIndex = part.indexOf(":");
           if (colonIndex !== -1) {
-            headers[part.substr(0, colonIndex).toLowerCase()] = part.substr(colonIndex + 1).trim();
+            headers[part.substring(0, colonIndex).toLowerCase()] = part.substring(colonIndex + 1).trim();
           }
         }
       } else {
