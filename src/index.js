@@ -182,6 +182,10 @@ function convertToNodeHeaders(webHeaders) {
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
+  const router = express.Router();
+  if (cov2ap._pluginActive) {
+    return router;
+  }
   const optionWithFallback = (name, fallback) => {
     if (options && Object.prototype.hasOwnProperty.call(options, name)) {
       return options[name];
@@ -221,7 +225,6 @@ function cov2ap(options = {}) {
   const oDataV4RelativePath = oDataV4Path.replace(/^\//, "");
 
   const metadataCache = {};
-  const router = express.Router();
   const base = optionWithFallback("base", "");
   const path = optionWithFallback("path", oDataV2RelativePath);
   const sourcePath = `${base ? "/" + base : ""}/${path}`;
