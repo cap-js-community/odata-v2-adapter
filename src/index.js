@@ -4254,7 +4254,7 @@ function cov2ap(options = {}) {
       for (const key in definition.elements || {}) {
         keys.push(key);
       }
-      definition.__elements__ = keys.reduce((elements, key) => {
+      const apiElements = keys.reduce((elements, key) => {
         const element = definition.elements[key];
         if (element["@cds.api.ignore"]) {
           return elements;
@@ -4281,6 +4281,7 @@ function cov2ap(options = {}) {
         }
         return elements;
       }, {});
+      Object.defineProperty(definition, "__elements__", { value: apiElements, writable: true, configurable: true });
       return definition.__elements__;
     }
     return {};
