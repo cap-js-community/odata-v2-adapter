@@ -951,36 +951,38 @@ function cov2ap(options = {}) {
   }
 
   async function getTenantMetadataStreamlined(req, service) {
-    const { "cds.xt.ModelProviderService": mps } = cds.services;
     metadataCache[req.tenant] = metadataCache[req.tenant] || {};
-    const isExtended = await callCached(metadataCache[req.tenant], "isExtended", () => {
-      return mps.isExtended({
-        tenant: req.tenant,
+    const { "cds.xt.ModelProviderService": mps } = cds.services;
+    if (mps) {
+      const isExtended = await callCached(metadataCache[req.tenant], "isExtended", () => {
+        return mps.isExtended({
+          tenant: req.tenant,
+        });
       });
-    });
-    if (isExtended) {
-      return await prepareMetadata(
-        req.tenant,
-        async (tenant) => {
-          return await mps.getCsn({
-            tenant,
-            toggles: ensureArray(req.features),
-            for: "nodejs",
-          });
-        },
-        async (tenant, service, locale) => {
-          return await mps.getEdmx({
-            tenant,
-            toggles: ensureArray(req.features),
-            service,
-            locale,
-            flavor: "v2",
-            for: "nodejs",
-          });
-        },
-        service,
-        determineLocale(req),
-      );
+      if (isExtended) {
+        return await prepareMetadata(
+          req.tenant,
+          async (tenant) => {
+            return await mps.getCsn({
+              tenant,
+              toggles: ensureArray(req.features),
+              for: "nodejs",
+            });
+          },
+          async (tenant, service, locale) => {
+            return await mps.getEdmx({
+              tenant,
+              toggles: ensureArray(req.features),
+              service,
+              locale,
+              flavor: "v2",
+              for: "nodejs",
+            });
+          },
+          service,
+          determineLocale(req),
+        );
+      }
     }
   }
 

@@ -12,6 +12,7 @@ globals:
   DELETE: false
   CREATE: false
   DROP: false
+  STREAM: false
 plugins:
   - jest
 extends:

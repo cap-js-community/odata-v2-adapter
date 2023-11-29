@@ -13,14 +13,14 @@ module.exports = async (context) => {
 };
 
 async function initData({ app }) {
-  const request = supertest(app);
-  const responses = await Promise.all(
-    Headers.map(async (header) => {
-      return await util.callWrite(request, `/odata/v4/main/Header`, header, false, {
-        "content-type": "application/json;IEEE754Compatible=true",
-      });
-    })
-  );
+  const responses = [];
+  for (const header of Headers) {
+    const request = supertest(app);
+    const response = await util.callWrite(request, `/odata/v4/main/Header`, header, false, {
+      "content-type": "application/json;IEEE754Compatible=true",
+    });
+    responses.push(response);
+  }
   console.log(
     "Test Instances: " +
       responses.filter((entry) => {

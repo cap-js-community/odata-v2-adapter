@@ -9,8 +9,7 @@ test-integration/
 .npmignore
 .prettierignore
 .prettierrc.yml
-.xmake.cfg
 CONTRIBUTING.md
 jest.config.js
+jest.external.config.js
 jest.setup.js
-jest-xmake.config.js

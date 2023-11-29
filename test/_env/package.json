@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "cds-serve --in-memory",
+    "start": "cds-serve",
     "start:file": "cds-serve --profile testdb",
-    "start:root": "cds-serve --in-memory --service test.MainService --from ./test/_env/srv/model --at /",
+    "start:root": "cds-serve --service test.MainService --from ./test/_env/srv/model --at /",
     "test:deploy": "cds deploy srv/index.cds --to sqlite:test.sqlite",
     "build": "cds build",
     "tsc": "cd util/typescript && tsc"
