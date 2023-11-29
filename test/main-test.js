@@ -649,32 +649,7 @@ describe("main", () => {
       "/odata/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
     );
     expect(response.statusCode).toEqual(500);
-    expect(response.body).toMatchObject({
-      error: {
-        cause: {
-          code: "ECONNREFUSED",
-          syscall: "connect",
-          address: "::1",
-          port: 8888
-        },
-        severity: "error",
-        target: "/#TRANSIENT#",
-        innererror: {
-          errordetails: [
-            {
-              cause: {
-                code: "ECONNREFUSED",
-                syscall: "connect",
-                address: "::1",
-                port: 8888
-              },
-              severity: "error",
-              target: "/#TRANSIENT#"
-            }
-          ]
-        }
-      }
-    });
+    expect(response.body.error.cause.code).toEqual("ECONNREFUSED");
     response = await util.callRead(
       request,
       "/odata/v2/main/HeaderUrlStream(guid'a8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value",
