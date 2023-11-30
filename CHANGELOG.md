@@ -32,11 +32,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Access prepared EDMX files if existing, otherwise compile like before
 - Register build plugin to prepare V2 metadata (enabled via adapter option `build: true`)
 - Skip conversion for element name only message targets
-- Replace deprecated `substr` usages
 - Check ModelProviderService before access
 - Service annotation `@cov2ap.ignore` to exclude service from OData V2 adapter
-- Log error with statusCode 400 as warning (before it was error)
-
+- Log error with status code 400 as warning (before it was error)
+- Replace deprecated `substr` usages
+- 
 ## Version 1.11.9 - 2023-11-20
 
 ### Fixed
