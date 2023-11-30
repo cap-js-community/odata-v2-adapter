@@ -10,7 +10,9 @@
     "build": "cds build",
     "tsc": "cd util/typescript && tsc"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@cap-js-community/odata-v2-adapter": "../../"
+  },
   "devDependencies": {
     "typescript": "^4.7.4"
   },

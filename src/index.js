@@ -151,7 +151,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} options.path Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
  * @param {string|string[]|object} options.model CDS service model (path(s) or CSN). Default is 'all'.
  * @param {number} options.port Target port which points to OData V4 backend port. Default is process.env.PORT or 4004.
- * @param {string} options.target Target which points to OData V4 backend host:port. Use 'auto' to infer the target from server url after listening. Default is e.g. 'http://localhost:4004'.
+ * @param {string} options.target Target which points to OData V4 backend host:port. Use 'auto' to infer the target from server url after listening. Default is e.g. 'auto'.
  * @param {string} options.targetPath Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
  * @param {object} options.services Service mapping object from url path name to service name. Default is {}.
  * @param {boolean} options.mtxRemote CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is false.
@@ -233,7 +233,7 @@ function cov2ap(options = {}) {
   const pathRewrite = { [`^${sourcePath}`]: rewritePath };
   let port = optionWithFallback("port", process.env.PORT || DefaultPort);
   let defaultTarget = `http://${DefaultHost}:${port}`;
-  let target = optionWithFallback("target", defaultTarget);
+  let target = optionWithFallback("target", "auto");
   const services = optionWithFallback("services", {});
   const mtxRemote = optionWithFallback("mtxRemote", false);
   const mtxEndpoint = optionWithFallback("mtxEndpoint", "/mtx/v1");

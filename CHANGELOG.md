@@ -7,12 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Version 1.12.0 - 2024-xx-xx
 
-### Fixed
+### Removed
 
-- Support Node.js 20 (as new active)
 - Drop Node.js 16 support (as out of maintenance)
 - Replace `node-fetch` by standard `fetch`
+
+### Added
+
+- Support Node.js 20 (as new active)
+- Default of target changed to `auto`
 - Activate CDS plugin per default (can be disabled with option `plugin: false`)
+- Start OData V2 adapter as CDS plugin in test setup
+
+### Fixed
+
 - Protect against double instantiation, when loaded via CDS plugin
 
 ## Version 1.11.10 - 2023-12-01

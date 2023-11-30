@@ -33,9 +33,9 @@ type Options = {
     port?: number | 4004,
 
     /**
-     * Target which points to OData V4 backend host:port. Use 'auto' to infer the target from server url after listening. Default is e.g. 'http://localhost:4004'.
+     * Target which points to OData V4 backend host:port. Use 'auto' to infer the target from server url after listening. Default is e.g. 'auto'.
      */
-    target?: string | "http://localhost:4004" | "auto",
+    target?: string | "auto" | "http://localhost:4004",
 
     /**
      * Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
