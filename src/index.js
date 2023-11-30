@@ -443,7 +443,11 @@ function cov2ap(options = {}) {
     } catch (err) {
       if (serviceValid) {
         // Error
-        logError(req, "MetadataRequest", err);
+        if (err.statusCode === 400) {
+          logWarn(req, "MetadataRequest", err);
+        } else {
+          logError(req, "MetadataRequest", err);
+        }
         // Trace
         logWarn(req, "MetadataRequest", "Request with Error", {
           method: req.method,
@@ -512,7 +516,11 @@ function cov2ap(options = {}) {
         next();
       } catch (err) {
         // Error
-        logError(req, "Request", err);
+        if (err.statusCode === 400) {
+          logWarn(req, "Request", err);
+        } else {
+          logError(req, "Request", err);
+        }
         // Trace
         logWarn(req, "Request", "Request with Error", {
           method: req.method,
@@ -830,6 +838,11 @@ function cov2ap(options = {}) {
         path: service.path,
       });
       const error = new Error("Invalid service protocol. Only OData services supported");
+      error.statusCode = 400;
+      throw error;
+    }
+    if (req.csn.definitions[service.name]["@cov2ap.ignore"]) {
+      const error = new Error("Service is not exposed as OData V2 protocol");
       error.statusCode = 400;
       throw error;
     }
@@ -1354,7 +1367,11 @@ function cov2ap(options = {}) {
       traceRequest(req, "ProxyRequest", proxyReq.method, proxyReq.path, headers, body);
     } catch (err) {
       // Error
-      logError(req, "Request", err);
+      if (err.statusCode === 400) {
+        logWarn(req, "Request", err);
+      } else {
+        logError(req, "Request", err);
+      }
       // Trace
       logWarn(req, "Request", "Request with Error", {
         method: req.method,
@@ -2774,7 +2791,11 @@ function cov2ap(options = {}) {
       respond(req, res, statusCode, headers, body);
     } catch (err) {
       // Error
-      logError(req, "Response", err);
+      if (err.statusCode === 400) {
+        logWarn(req, "Response", err);
+      } else {
+        logError(req, "Response", err);
+      }
       if (proxyRes.body && proxyRes.body.error) {
         respond(
           req,
