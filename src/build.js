@@ -10,7 +10,7 @@ module.exports = class COV2APBuildPlugin extends cds.build.BuildPlugin {
   }
 
   init() {
-    const mtxBuildTask = this.context.tasks.find(task => task.for === "mtx-sidecar");
+    const mtxBuildTask = this.context.tasks.find((task) => task.for === "mtx-sidecar");
     this.mtxSidecar = !!mtxBuildTask;
     if (!this.mtxSidecar) {
       return;
