@@ -845,7 +845,7 @@ function cov2ap(options = {}) {
       error.statusCode = 400;
       throw error;
     }
-    if (req.csn.definitions[service.name]["@cov2ap.ignore"]) {
+    if (req.csn.definitions[service.name] && req.csn.definitions[service.name]["@cov2ap.ignore"]) {
       const error = new Error("Service is not exposed as OData V2 protocol");
       error.statusCode = 400;
       throw error;
