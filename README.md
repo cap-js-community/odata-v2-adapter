@@ -166,6 +166,7 @@ Logging can be configured to respect the following log levels:
 The following OData V2 adapter for CDS specific annotations are supported:
 
 **Service Level**:
+
 - `@cov2ap.ignore`: Exclude service from OData V2 adapter conversion (service is not exposed as OData V2 service)
 
 **Entity Level**:

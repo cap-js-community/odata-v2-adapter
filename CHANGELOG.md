@@ -33,7 +33,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Service annotation `@cov2ap.ignore` to exclude service from OData V2 adapter
 - Log error with status code 400 as warning (before it was error)
 - Replace deprecated `substr` usages
-- 
+-
+
 ## Version 1.11.9 - 2023-11-20
 
 ### Fixed
