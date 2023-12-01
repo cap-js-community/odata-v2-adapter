@@ -15,7 +15,7 @@ if (cds.env.cov2ap.plugin) {
   if (cds.env.cov2ap.build && cds.build && cds.build.register) {
     cds.build.register("cov2ap", {
       impl: "@cap-js-community/odata-v2-adapter/src/build.js",
-      taskDefaults: { src: cds.env.folders.srv },
+      taskDefaults: { src: "mtx/sidecar" },
     });
   }
 }

@@ -20,6 +20,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Start OData V2 adapter as CDS plugin in test setup
 - Protect against double instantiation, when loaded via CDS plugin
 
+## Version 1.11.11 - tbd
+
+### Fixed
+
+- tbd
+
 ## Version 1.11.10 - 2023-12-01
 
 ### Fixed
