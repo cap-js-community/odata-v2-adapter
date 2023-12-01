@@ -17,7 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Support Node.js 20 (as new active)
 - Default of target changed to `auto`
 - Activate CDS plugin per default (can be disabled with option `plugin: false`)
-- Start OData V2 adapter as CDS plugin in test setup
+- Activate CDS build to precompile OData V2 metadata per default (can be disabled with option `build: false`)
+- Start CDS OData V2 adapter as CDS plugin in test setup
 - Protect against double instantiation, when loaded via CDS plugin
 
 ## Version 1.11.11 - 2023-12-01
