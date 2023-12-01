@@ -2570,6 +2570,19 @@ describe("main", () => {
           lang: "en",
           value: "An error occurred",
         },
+        target: "/#TRANSIENT#",
+        severity: "error",
+        ContentID: "1"
+      }
+    });
+    response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=transientpath");
+    expect(response.body).toMatchObject({
+      error: {
+        code: "ERR01",
+        message: {
+          lang: "en",
+          value: "An error occurred",
+        },
         target: "/#TRANSIENT#/Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
         severity: "error",
         ContentID: "1"

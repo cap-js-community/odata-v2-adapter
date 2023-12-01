@@ -3028,6 +3028,9 @@ function cov2ap(options = {}) {
     if (!messageTarget) {
       return messageTarget;
     }
+    if (messageTarget === MessageTargetTransient) {
+      return messageTarget;
+    }
     if (req.context.operation && req.context.boundDefinition) {
       const bindingParameterName = req.context.operation["@cds.odata.bindingparameter.name"] || "in";
       if (messageTarget.startsWith(`${bindingParameterName}/`)) {

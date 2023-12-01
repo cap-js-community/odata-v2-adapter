@@ -326,6 +326,9 @@ module.exports = (srv) => {
         error.target = "/Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name";
         break;
       case "transient":
+        error.target = "/#TRANSIENT#";
+        break;
+      case "transientpath":
         error.target = "/#TRANSIENT#/Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name";
         break;
       case "invalid":
