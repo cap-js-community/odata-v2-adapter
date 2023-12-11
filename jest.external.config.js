@@ -12,5 +12,5 @@ module.exports = {
       statements: 85,
     },
   },
-  testMatch: ["**/test/**/*-test.js"],
+  testMatch: ["**/test/**/*.test.js"],
 };
