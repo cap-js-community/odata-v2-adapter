@@ -341,6 +341,9 @@ exports[`draft GET $metadata 1`] = `
           </Record>
         </Annotation>
       </Annotations>
+      <Annotations Target="test.DraftService.Header/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="test.DraftService.Header/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
@@ -471,6 +474,9 @@ exports[`draft GET $metadata 1`] = `
           </Record>
         </Annotation>
       </Annotations>
+      <Annotations Target="test.DraftService.HeaderItem/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="test.DraftService.HeaderItem/IsActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Hidden" Bool="true"/>
       </Annotations>
@@ -493,6 +499,9 @@ exports[`draft GET $metadata 1`] = `
           </Record>
         </Annotation>
       </Annotations>
+      <Annotations Target="test.DraftService.HeaderLine/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="test.DraftService.HeaderLine/IsActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Hidden" Bool="true"/>
       </Annotations>
@@ -514,6 +523,7 @@ exports[`draft GET $metadata 1`] = `
       <Annotations Target="test.DraftService.DraftAdministrativeData/DraftUUID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Hidden" Bool="true"/>
         <Annotation Term="Common.Label" String="Draft (Technical ID)"/>
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.DraftService.DraftAdministrativeData/CreationDateTime" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Draft Created On"/>
