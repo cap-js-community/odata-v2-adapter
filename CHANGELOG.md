@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Replace deprecated access
 
 ## Version 1.11.11 - 2023-12-01
 
