@@ -75,7 +75,7 @@ cds.mtx = {
 };
 
 function clearCache() {
-  return cds.mtx.eventEmitter.emit(cds.mtx.events.TENANT_UPDATED, "tenant");
+  return cds.mtx.eventEmitter.emit(cds.mtx.events.TENANT_UPDATED, "t1");
 }
 
 describe("mtx", () => {

@@ -12,7 +12,7 @@ module.exports = {
   coverageThreshold: {
     global: {
       branches: 80,
-      functions: 90,
+      functions: 95,
       lines: 90,
       statements: 90,
     },
@@ -21,7 +21,7 @@ module.exports = {
   modulePathIgnorePatterns: [],
   resetMocks: false,
   resetModules: false,
-  testMatch: ["**/test/**/*-test.js", "**/test-integration/**/*-test.js"],
+  testMatch: ["**/test/**/*.test.js", "**/test-integration/**/*.test.js"],
   testPathIgnorePatterns: ["/node_modules/"],
   verbose: true,
   maxWorkers: 2,

@@ -496,6 +496,9 @@ exports[`analytics GET $metadata 1`] = `
       <Annotations Target="test.AnalyticsService.Header/ID__" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Hidden" Bool="true"/>
       </Annotations>
+      <Annotations Target="test.AnalyticsService.Header/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="test.AnalyticsService.Header/description" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Description"/>
       </Annotations>
@@ -584,6 +587,9 @@ exports[`analytics GET $metadata 1`] = `
         <Annotation Term="Analytics.Measure" Bool="true"/>
         <Annotation Term="Common.Label" String="Price"/>
       </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItem/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="test.AnalyticsService.HeaderItemCount" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Aggregation.ApplySupported">
           <Record Type="Aggregation.ApplySupportedType">
@@ -600,6 +606,9 @@ exports[`analytics GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.AnalyticsService.HeaderItemCount/ID__" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItemCount/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.HeaderItemCount/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Name"/>
@@ -660,6 +669,9 @@ exports[`analytics GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.AnalyticsService.HeaderDisabledAnalytics/ID__" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderDisabledAnalytics/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.HeaderDisabledAnalytics/country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Analytics.Dimension" Bool="true"/>
@@ -743,6 +755,9 @@ exports[`analytics GET $metadata 1`] = `
       <Annotations Target="test.AnalyticsService.Book/price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Analytics.Measure" Bool="true"/>
       </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderSkipKey/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="test.AnalyticsService.HeaderSkipKey/country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Analytics.Dimension" Bool="true"/>
       </Annotations>
@@ -754,6 +769,9 @@ exports[`analytics GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.AnalyticsService.HeaderSkipKey/price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Analytics.Measure" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderLine/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Language Code"/>
