@@ -353,11 +353,7 @@ function cov2ap(options = {}) {
             req.user = {
               id: decodeBase64(token).split(":")[0],
             };
-            if (
-              req.user.id &&
-              cds.env.requires.auth &&
-              ["basic", "mocked"].includes(cds.env.requires.auth.kind)
-            ) {
+            if (req.user.id && cds.env.requires.auth && ["basic", "mocked"].includes(cds.env.requires.auth.kind)) {
               const user = (cds.env.requires.auth.users || {})[req.user.id];
               req.tenant = user && (user.tenant || (user.jwt && user.jwt.zid));
             }
