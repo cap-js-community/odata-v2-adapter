@@ -5,12 +5,13 @@
       "users": {
         "alice": {
           "id": "alice",
-          "tenant": "tenant",
+          "tenant": "t1",
           "password": "alice",
           "roles": ["XYZ4711"]
         },
         "bob": {
           "id": "bob",
+          "tenant": "t2",
           "password": "bob",
           "roles": []
         }

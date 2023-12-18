@@ -200,6 +200,9 @@ exports[`integration-agreement GET $metadata 1`] = `
           </Record>
         </Annotation>
       </Annotations>
+      <Annotations Target="AgreementService.Agreement/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="AgreementService.Agreement/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
@@ -241,6 +244,9 @@ exports[`integration-agreement GET $metadata 1`] = `
           </Record>
         </Annotation>
       </Annotations>
+      <Annotations Target="AgreementService.AgreementItem/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="AgreementService.AgreementItem/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
@@ -281,6 +287,9 @@ exports[`integration-agreement GET $metadata 1`] = `
             <PropertyValue Property="Updatable" Bool="false"/>
           </Record>
         </Annotation>
+      </Annotations>
+      <Annotations Target="AgreementService.AgreementItemPricing/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="AgreementService.AgreementItemPricing/validFrom" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="validFrom"/>
@@ -581,6 +590,9 @@ exports[`integration-agreement GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="AgreementService.AgreementItemPricingForKeyDateType/keyDate" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.Computed" Bool="true"/>
+      </Annotations>
+      <Annotations Target="AgreementService.AgreementItemPricingForKeyDateType/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="AgreementService.AgreementItemPricingForKeyDateType/validFrom" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="validFrom"/>

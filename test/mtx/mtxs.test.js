@@ -46,7 +46,7 @@ const authorization = `Basic ${Buffer.from(
 
 function clearCache() {
   return cds.emit("cds.xt.TENANT_UPDATED", {
-    tenant: "tenant",
+    tenant: "t1",
   });
 }
 

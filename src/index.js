@@ -356,7 +356,7 @@ function cov2ap(options = {}) {
             if (
               req.user.id &&
               cds.env.requires.auth &&
-              ["basic-auth", "mocked-auth"].includes(cds.env.requires.auth.kind)
+              ["basic", "mocked"].includes(cds.env.requires.auth.kind)
             ) {
               const user = (cds.env.requires.auth.users || {})[req.user.id];
               req.tenant = user && (user.tenant || (user.jwt && user.jwt.zid));
