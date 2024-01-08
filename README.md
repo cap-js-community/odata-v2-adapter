@@ -15,8 +15,6 @@
 ## Getting Started
 
 - Run `npm add @cap-js-community/odata-v2-adapter` in `@sap/cds` project
-- Activate CDS plugin by setting CDS env `cds.cov2ap.plugin: true`
-  - Available since CDS 6.7, otherwise custom server is needed (see advanced section)
 - Execute `cds-serve` to start server
   - OData V2 service is available at http://localhost:4004/odata/v2/<service-path>
   - OData V4 service is available at http://localhost:4004/odata/v4/<service-path>
@@ -25,8 +23,8 @@
 
 The OData V2 adapter for CDS instantiates an Express router. The following options are available:
 
-- **plugin:** OData V2 adapter is instantiated as part of CDS plugin. Default is `false`.
-- **build:** In case of plugin scenario, a build step is registered to prepare the OData V2 metadata. Default is `false`.
+- **plugin:** OData V2 adapter is instantiated as part of CDS plugin. Default is `true`.
+- **build:** In case of plugin scenario, a build step is registered to prepare the OData V2 metadata. Default is `true`.
 - **base:** Base path under which the service is reachable. Default is `''`.
 - **path:** Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
 - **model:** CDS service model (path(s) or CSN). Default is `'all'`.
@@ -34,8 +32,8 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **target:** Target which points to OData V4 backend host:port. Use `'auto'` to infer the target from server url after listening. Default is e.g. `'http://localhost:4004'`.
 - **targetPath:** Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
 - **services:** Service mapping object from url path name to service name. Default is `{}`.
-- **mtxRemote:** CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is `false`.
-- **mtxEndpoint:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is `'/mtx/v1'`.
+- **mtxRemote:** CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is `false`.
+- **mtxEndpoint:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (classic MTX only). Default is `'/mtx/v1'`.
 - **ieee754Compatible:** Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is `true`.
 - **fileUploadSizeLimit:** File upload file size limit (in bytes) for multipart/form-data requests. Default is `10485760` (10 MB).
 - **continueOnError:** Indicates to OData V4 backend to continue on error. Default is `false`.

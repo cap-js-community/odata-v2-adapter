@@ -10,11 +10,6 @@ updates:
       timezone: "Europe/Berlin"
     allow:
       - dependency-type: production
-    ignore:
-      # node-fetch v3 is ESM-only, which we don't support
-      # https://github.com/node-fetch/node-fetch#commonjs
-      - dependency-name: node-fetch
-        versions: ["3.x"]
 
   - package-ecosystem: github-actions
     directory: "/"

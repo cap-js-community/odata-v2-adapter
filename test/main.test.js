@@ -649,32 +649,7 @@ describe("main", () => {
       "/odata/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value"
     );
     expect(response.statusCode).toEqual(500);
-    expect(response.body).toMatchObject({
-      error: {
-        code: "ECONNREFUSED",
-        errno: "ECONNREFUSED",
-        innererror: {
-          errordetails: [
-            {
-              code: "ECONNREFUSED",
-              errno: "ECONNREFUSED",
-              message: {
-                lang: "en",
-              },
-              severity: "error",
-              target: "/#TRANSIENT#",
-              type: "system",
-            },
-          ],
-        },
-        message: {
-          lang: "en",
-        },
-        severity: "error",
-        target: "/#TRANSIENT#",
-        type: "system",
-      },
-    });
+    expect(response.body.error.cause.code).toEqual("ECONNREFUSED");
     response = await util.callRead(
       request,
       "/odata/v2/main/HeaderUrlStream(guid'a8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value",
@@ -3827,9 +3802,9 @@ describe("main", () => {
     });
   });
 
-  // TODO: Enable Test (https://github.tools.sap/cap/issues/issues/12350)
+  // TODO: Enable Test (CAP #12350)
   it.skip("GET unbound service action with scoped name", async () => {
-    const response = await util.callWrite(request, "/odata/v2/main/unbound_Action?num=1&text=abc");
+    const response = await util.callWrite(request, "/odata/v2/main/c?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unbound_Action: {
@@ -3844,7 +3819,7 @@ describe("main", () => {
     });
   });
 
-  // TODO: Enable Test (https://github.tools.sap/cap/issues/issues/12350)
+  // TODO: Enable Test (CAP #12350)
   it.skip("GET unbound service function with scoped name", async () => {
     const response = await util.callRead(request, "/odata/v2/main/unbound_Function?num=1&text=abc");
     expect(response.body).toMatchObject({

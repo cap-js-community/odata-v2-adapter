@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Version 1.12.0 - 2024-01-08
+
+### Removed
+
+- Drop Node.js 16 support (as out-of-maintenance)
+- Replace `node-fetch` by standard `fetch`
+
+### Added
+
+- Support Node.js 20 (as new active)
+- Default of `target` changed to `auto`
+- Activate CDS plugin per default (can be disabled with option `plugin: false`)
+- Activate CDS build to precompile OData V2 metadata per default (can be disabled with option `build: false`)
+- Start CDS OData V2 adapter as CDS plugin in test setup
+- Protect against double instantiation, when loaded via CDS plugin
+
 ## Version 1.11.12 - 2023-12-18
 
 ### Fixed
@@ -30,6 +46,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Service annotation `@cov2ap.ignore` to exclude service from OData V2 adapter
 - Log error with status code 400 as warning (before it was error)
 - Replace deprecated `substr` usages
+-
 
 ## Version 1.11.9 - 2023-11-20
 
