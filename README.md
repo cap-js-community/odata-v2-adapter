@@ -258,13 +258,11 @@ The tests can be executed as follows:
   - `npm run test:unit` ([source](test))
 - HANA based:
   - Place HANA credentials at `test-integration/_env/db/default-services.json` in format:
-    ```
+    ```json
     {
       "hana": [
         {
-          "credentials": {
-             // ...
-          }
+          "credentials": {}
         }
       ]
     }
