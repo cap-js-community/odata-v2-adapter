@@ -3802,9 +3802,9 @@ describe("main", () => {
     });
   });
 
-  // TODO: Enable Test (https://github.tools.sap/cap/issues/issues/12350)
+  // TODO: Enable Test (CAP #12350)
   it.skip("GET unbound service action with scoped name", async () => {
-    const response = await util.callWrite(request, "/odata/v2/main/unbound_Action?num=1&text=abc");
+    const response = await util.callWrite(request, "/odata/v2/main/c?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unbound_Action: {
@@ -3819,7 +3819,7 @@ describe("main", () => {
     });
   });
 
-  // TODO: Enable Test (https://github.tools.sap/cap/issues/issues/12350)
+  // TODO: Enable Test (CAP #12350)
   it.skip("GET unbound service function with scoped name", async () => {
     const response = await util.callRead(request, "/odata/v2/main/unbound_Function?num=1&text=abc");
     expect(response.body).toMatchObject({

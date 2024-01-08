@@ -32,8 +32,8 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **target:** Target which points to OData V4 backend host:port. Use `'auto'` to infer the target from server url after listening. Default is e.g. `'http://localhost:4004'`.
 - **targetPath:** Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
 - **services:** Service mapping object from url path name to service name. Default is `{}`.
-- **mtxRemote:** CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is `false`.
-- **mtxEndpoint:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is `'/mtx/v1'`.
+- **mtxRemote:** CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is `false`.
+- **mtxEndpoint:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (classic MTX only). Default is `'/mtx/v1'`.
 - **ieee754Compatible:** Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is `true`.
 - **fileUploadSizeLimit:** File upload file size limit (in bytes) for multipart/form-data requests. Default is `10485760` (10 MB).
 - **continueOnError:** Indicates to OData V4 backend to continue on error. Default is `false`.
