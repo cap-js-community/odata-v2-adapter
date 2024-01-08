@@ -6,6 +6,9 @@ const { path } = cds.utils;
 
 module.exports = class COV2APBuildPlugin extends cds.build.BuildPlugin {
   static hasTask() {
+    cds.env.cov2ap = cds.env.cov2ap || {};
+    cds.env.cov2ap.plugin = cds.env.cov2ap.plugin === undefined ? true : cds.env.cov2ap.plugin;
+    cds.env.cov2ap.build = cds.env.cov2ap.build === undefined ? true : cds.env.cov2ap.build;
     return cds.env.cov2ap && cds.env.cov2ap.plugin;
   }
 
