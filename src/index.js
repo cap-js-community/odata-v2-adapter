@@ -182,10 +182,10 @@ function convertToNodeHeaders(webHeaders) {
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
-  const router = express.Router();
-  if (cov2ap._pluginActive) {
-    return router;
+  if (cov2ap._singleton) {
+    return cov2ap._singleton;
   }
+  const router = express.Router();
   const optionWithFallback = (name, fallback) => {
     if (options && Object.prototype.hasOwnProperty.call(options, name)) {
       return options[name];
@@ -4747,5 +4747,12 @@ function cov2ap(options = {}) {
 
   return router;
 }
+
+cov2ap.singleton = () => {
+  if (!cov2ap._singleton) {
+    cov2ap._singleton = cov2ap();
+  }
+  return cov2ap._singleton;
+};
 
 module.exports = cov2ap;
