@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Message target context resolution issues are logged on reduced level (`debug`)
 
 ## Version 1.12.2 - 2024-01-09
 

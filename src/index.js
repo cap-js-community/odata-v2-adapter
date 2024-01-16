@@ -1498,11 +1498,18 @@ function cov2ap(options = {}) {
           context = lookupParametersDefinition(name, req);
         }
         enhanceParametersDefinition(context, req);
-        if (!context && !suppressWarning) {
-          logWarn(req, "Context", "Invalid definition", {
-            name,
-            path,
-          });
+        if (!context) {
+          if (suppressWarning === "debug") {
+            logDebug(req, "Context", "Invalid definition", {
+              name,
+              path,
+            });
+          } else if (!suppressWarning) {
+            logWarn(req, "Context", "Invalid definition", {
+              name,
+              path,
+            });
+          }
         }
         if (context && (context.kind === "function" || context.kind === "action")) {
           req.lookupContext.operation = context;
@@ -1539,7 +1546,12 @@ function cov2ap(options = {}) {
       if (context && context.kind === "entity" && context.params && ["Set", "Parameters"].includes(name)) {
         return context;
       }
-      if (!suppressWarning) {
+      if (suppressWarning === "debug") {
+        logDebug(req, "Context", "Invalid sub-definition", {
+          name,
+          path,
+        });
+      } else if (!suppressWarning) {
         logWarn(req, "Context", "Invalid sub-definition", {
           name,
           path,
@@ -3097,7 +3109,7 @@ function cov2ap(options = {}) {
             name = part.substring(0, keyStart);
             keyPart = part.substring(keyStart + 1, keyEnd);
           }
-          context = lookupContext(name, context, req, false, messageTarget);
+          context = lookupContext(name, context, req, "debug", messageTarget);
           if (!context) {
             stop = true;
           }
@@ -4657,7 +4669,7 @@ function cov2ap(options = {}) {
       const _url = url || "";
       const _headers = JSON.stringify(headers || {});
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
-      logDebug(req, name, `${method} ${_url}`, _headers && "Headers:", _headers, _body && "Body:", _body);
+      logTrace(req, name, `${method} ${_url}`, _headers && "Headers:", _headers, _body && "Body:", _body);
     }
   }
 
@@ -4666,7 +4678,7 @@ function cov2ap(options = {}) {
     if (LOG._debug) {
       const _headers = JSON.stringify(headers || {});
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
-      logDebug(
+      logTrace(
         req,
         name,
         `${statusCode || ""} ${statusMessage || ""}`,
@@ -4702,7 +4714,15 @@ function cov2ap(options = {}) {
     }
   }
 
-  function logDebug(req, name, ...lines) {
+  function logDebug(req, name, message, info) {
+    const LOG = cds.log("cov2ap");
+    if (LOG._debug) {
+      initCDSContext(req);
+      LOG.debug(`${name}:`, message, info);
+    }
+  }
+
+  function logTrace(req, name, ...lines) {
     const LOG = cds.log("cov2ap");
     if (LOG._debug) {
       initCDSContext(req);
@@ -4725,8 +4745,10 @@ function cov2ap(options = {}) {
         logInfo(req, name, message, info);
         break;
       case "debug":
+        logDebug(req, name, message, info);
+        break;
       case "trace":
-        logDebug(req, name, info);
+        logTrace(req, name, message, info);
         break;
       default:
         return;
