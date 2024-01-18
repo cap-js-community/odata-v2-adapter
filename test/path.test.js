@@ -22,7 +22,7 @@ describe("path", () => {
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Header", "HeaderItem", "HeaderLine"],
+        EntitySets: ["Header", "HeaderItem", "HeaderLine", "Header_texts", "HeaderItem_texts"],
       },
     });
   });

@@ -37,6 +37,7 @@ exports[`analytics GET $metadata 1`] = `
         </FunctionImport>
         <EntitySet Name="HeaderSkipKey" EntityType="test.AnalyticsService.HeaderSkipKey"/>
         <EntitySet Name="HeaderLine" EntityType="test.AnalyticsService.HeaderLine"/>
+        <EntitySet Name="HeaderItem_texts" EntityType="test.AnalyticsService.HeaderItem_texts"/>
         <EntitySet Name="Country_texts" EntityType="test.AnalyticsService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.AnalyticsService.Currency_texts"/>
         <AssociationSet Name="HeaderItem_header" Association="test.AnalyticsService.HeaderItem_header">
@@ -46,6 +47,14 @@ exports[`analytics GET $metadata 1`] = `
         <AssociationSet Name="HeaderItem_NextItem" Association="test.AnalyticsService.HeaderItem_NextItem">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem1" EntitySet="HeaderItem"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_texts_1" Association="test.AnalyticsService.HeaderItem_texts_1">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_localized" Association="test.AnalyticsService.HeaderItem_localized">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
         </AssociationSet>
         <AssociationSet Name="HeaderDisabledAnalytics_Items" Association="test.AnalyticsService.HeaderDisabledAnalytics_Items">
           <End Role="HeaderDisabledAnalytics" EntitySet="HeaderDisabledAnalytics"/>
@@ -100,6 +109,8 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
         <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.AnalyticsService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
+        <NavigationProperty Name="texts" Relationship="test.AnalyticsService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.AnalyticsService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
       </EntityType>
       <EntityType Name="HeaderItemCount" sap:semantics="aggregate">
         <Key>
@@ -184,6 +195,15 @@ exports[`analytics GET $metadata 1`] = `
         <NavigationProperty Name="item" Relationship="test.AnalyticsService.HeaderLine_item" FromRole="HeaderLine" ToRole="HeaderItem"/>
         <Property Name="item_ID" Type="Edm.Guid"/>
       </EntityType>
+      <EntityType Name="HeaderItem_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="Country_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -221,6 +241,16 @@ exports[`analytics GET $metadata 1`] = `
             <PropertyRef Name="NextItem_ID"/>
           </Dependent>
         </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItem_texts_1">
+        <End Role="HeaderItem" Type="test.AnalyticsService.HeaderItem" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="HeaderItem_texts" Type="test.AnalyticsService.HeaderItem_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="HeaderItem_localized">
+        <End Role="HeaderItem" Type="test.AnalyticsService.HeaderItem" Multiplicity="*"/>
+        <End Role="HeaderItem_texts" Type="test.AnalyticsService.HeaderItem_texts" Multiplicity="0..1"/>
       </Association>
       <Association Name="HeaderDisabledAnalytics_Items">
         <End Role="HeaderDisabledAnalytics" Type="test.AnalyticsService.HeaderDisabledAnalytics" Multiplicity="1">
@@ -772,6 +802,12 @@ exports[`analytics GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.AnalyticsService.HeaderLine/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.AnalyticsService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
       </Annotations>
       <Annotations Target="test.AnalyticsService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Language Code"/>

@@ -19,19 +19,19 @@ describe("draft", () => {
 
   it("GET service", async () => {
     const response = await util.callRead(request, "/odata/v2/draft/", {
-      accept: "application/json",
+      accept: "application/json"
     });
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
-        EntitySets: ["Header", "HeaderItem", "HeaderLine"],
-      },
+        EntitySets: ["Header", "HeaderItem", "HeaderLine", "Header_texts", "HeaderItem_texts"]
+      }
     });
   });
 
   it("GET $metadata", async () => {
     const response = await util.callRead(request, "/odata/v2/draft/$metadata", {
-      accept: "application/xml",
+      accept: "application/xml"
     });
     expect(response.body).toBeDefined();
     expect(response.text).toMatchSnapshot();
@@ -49,7 +49,7 @@ describe("draft", () => {
 
   it("GET request with parameters", async () => {
     let response = await util.callWrite(request, "/odata/v2/draft/Header", {
-      name: "Test",
+      name: "Test"
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
@@ -64,7 +64,7 @@ describe("draft", () => {
           "localhost"
         )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
         type: "test.DraftService.Header",
-        etag: etag,
+        etag: etag
       },
       HasActiveEntity: false,
       HasDraftEntity: false,
@@ -79,25 +79,25 @@ describe("draft", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
-        },
+          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`
+        }
       },
       SiblingEntity: {
         __deferred: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
-        },
+          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`
+        }
       },
       DraftAdministrativeData: {
         __deferred: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
-        },
-      },
+          )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`
+        }
+      }
     });
     response = await util.callRead(
       request,
@@ -110,7 +110,7 @@ describe("draft", () => {
 
   it("POST request", async () => {
     let response = await util.callWrite(request, "/odata/v2/draft/Header", {
-      name: "Test Create",
+      name: "Test Create"
     });
     expect(response.statusCode).toEqual(201);
     const etag = response.body.d.__metadata.etag;
@@ -126,7 +126,7 @@ describe("draft", () => {
             "localhost"
           )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
           type: "test.DraftService.Header",
-          etag: etag,
+          etag: etag
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -141,26 +141,26 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
-          },
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`
+          }
         },
         SiblingEntity: {
           __deferred: {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
-          },
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`
+          }
         },
         DraftAdministrativeData: {
           __deferred: {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
-          },
-        },
-      },
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`
+          }
+        }
+      }
     });
     response = await util.callRead(request, "/odata/v2/draft/Header?$filter=name eq 'Test Create'");
     expect(response.body).toBeDefined();
@@ -174,7 +174,7 @@ describe("draft", () => {
             "localhost"
           )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
           type: "test.DraftService.Header",
-          etag: etag,
+          etag: etag
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -189,32 +189,32 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
-          },
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`
+          }
         },
         SiblingEntity: {
           __deferred: {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`,
-          },
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/SiblingEntity`
+          }
         },
         DraftAdministrativeData: {
           __deferred: {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
-          },
-        },
-      },
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`
+          }
+        }
+      }
     });
     response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(0);
     response = await util.callWrite(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`, {
-      name: "Test Update",
+      name: "Test Update"
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -229,7 +229,7 @@ describe("draft", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
+          )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -245,26 +245,26 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
-          },
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`
+          }
         },
         SiblingEntity: {
           __deferred: {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
-          },
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`
+          }
         },
         DraftAdministrativeData: {
           __deferred: {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
-          },
-        },
-      },
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`
+          }
+        }
+      }
     });
     response = await util.callRead(
       request,
@@ -278,7 +278,7 @@ describe("draft", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost"
-          )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`,
+          )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`
         },
         HasActiveEntity: false,
         HasDraftEntity: false,
@@ -294,32 +294,32 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`,
-          },
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/header`
+          }
         },
         SiblingEntity: {
           __deferred: {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`,
-          },
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/SiblingEntity`
+          }
         },
         DraftAdministrativeData: {
           __deferred: {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`,
-          },
-        },
-      },
+            )}/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/DraftAdministrativeData`
+          }
+        }
+      }
     });
   });
 
   it("PUT request", async () => {
     let response = await util.callWrite(request, "/odata/v2/draft/Header", {
-      name: "Test",
+      name: "Test"
     });
     expect(response.body).toBeDefined();
     expect(response.statusCode).toEqual(201);
@@ -332,7 +332,7 @@ describe("draft", () => {
       request,
       `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
       {
-        name: "Test2",
+        name: "Test2"
       },
       true
     );
@@ -343,11 +343,11 @@ describe("draft", () => {
       request,
       `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
       {
-        name: "Test2",
+        name: "Test2"
       },
       true,
       {
-        "If-Match": etag,
+        "If-Match": etag
       }
     );
     expect(response.statusCode).toEqual(200);
@@ -358,11 +358,11 @@ describe("draft", () => {
       request,
       `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
       {
-        name: "Test3",
+        name: "Test3"
       },
       true,
       {
-        "If-Match": etag,
+        "If-Match": etag
       }
     );
     expect(response.statusCode).toEqual(200);
@@ -407,7 +407,7 @@ describe("draft", () => {
             "127.0.0.1",
             "localhost"
           )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
-          type: "test.DraftService.Header",
+          type: "test.DraftService.Header"
         },
         createdBy: "anonymous",
         modifiedBy: "anonymous",
@@ -418,10 +418,10 @@ describe("draft", () => {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
               "localhost"
-            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`,
-          },
-        },
-      },
+            )}/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`
+          }
+        }
+      }
     });
 
     // Update collection not allowed
@@ -429,7 +429,7 @@ describe("draft", () => {
       request,
       "/odata/v2/draft/Header",
       {
-        name: "Test",
+        name: "Test"
       },
       true
     );
@@ -438,7 +438,7 @@ describe("draft", () => {
         code: "405",
         message: {
           lang: "en",
-          value: "Method PATCH not allowed for ENTITY.COLLECTION",
+          value: "Method PATCH not allowed for ENTITY.COLLECTION"
         },
         innererror: {
           errordetails: [
@@ -446,31 +446,31 @@ describe("draft", () => {
               code: "405",
               message: {
                 lang: "en",
-                value: "Method PATCH not allowed for ENTITY.COLLECTION",
+                value: "Method PATCH not allowed for ENTITY.COLLECTION"
               },
-              severity: "error",
-            },
-          ],
-        },
-      },
+              severity: "error"
+            }
+          ]
+        }
+      }
     });
   });
 
   it("DELETE request", async () => {
     let response = await util.callWrite(request, "/odata/v2/draft/Header", {
-      name: "Test",
+      name: "Test"
     });
     expect(response.body).toBeDefined();
     const id = response.body.d.ID;
     const etag = response.body.d.__metadata.etag;
     response = await util.callDelete(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
-      "If-Match": etag,
+      "If-Match": etag
     });
     expect(response.statusCode).toEqual(204);
     response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
     response = await util.callDelete(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
-      "If-Match": "*",
+      "If-Match": "*"
     });
     expect(response.statusCode).toEqual(404);
     expect(response.body).toMatchObject({
@@ -478,7 +478,7 @@ describe("draft", () => {
         code: "404",
         message: {
           lang: "en",
-          value: "Not Found",
+          value: "Not Found"
         },
         innererror: {
           errordetails: [
@@ -486,19 +486,19 @@ describe("draft", () => {
               code: "404",
               message: {
                 lang: "en",
-                value: "Not Found",
+                value: "Not Found"
               },
-              severity: "error",
-            },
-          ],
-        },
-      },
+              severity: "error"
+            }
+          ]
+        }
+      }
     });
   });
 
   it("POST activate request", async () => {
     let response = await util.callWrite(request, "/odata/v2/draft/Header", {
-      name: "Test Create",
+      name: "Test Create"
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -516,7 +516,7 @@ describe("draft", () => {
       {},
       false,
       {
-        "If-Match": etag,
+        "If-Match": etag
       }
     );
     expect(response.statusCode).toEqual(200);
@@ -526,7 +526,7 @@ describe("draft", () => {
       {},
       false,
       {
-        "If-Match": etag,
+        "If-Match": etag
       }
     );
     expect(response.statusCode).toEqual(201);
@@ -544,7 +544,7 @@ describe("draft", () => {
       {},
       false,
       {
-        "If-Match": etag,
+        "If-Match": etag
       }
     );
     expect(response.statusCode).toEqual(201);
@@ -555,7 +555,7 @@ describe("draft", () => {
 
   it("DELETE draft request", async () => {
     let response = await util.callWrite(request, "/odata/v2/draft/Header", {
-      name: "Test Create",
+      name: "Test Create"
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -565,7 +565,7 @@ describe("draft", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d.ID).toEqual(id);
     response = await util.callDelete(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
-      "If-Match": "*",
+      "If-Match": "*"
     });
     expect(response.statusCode).toEqual(204);
     response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
@@ -574,7 +574,7 @@ describe("draft", () => {
 
   it("DELETE draft for active entity", async () => {
     let response = await util.callWrite(request, "/odata/v2/draft/Header", {
-      name: "Test Create",
+      name: "Test Create"
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -591,7 +591,7 @@ describe("draft", () => {
       {},
       false,
       {
-        "If-Match": "*",
+        "If-Match": "*"
       }
     );
     expect(response.statusCode).toEqual(200);
@@ -601,7 +601,7 @@ describe("draft", () => {
       {},
       false,
       {
-        "If-Match": "*",
+        "If-Match": "*"
       }
     );
     expect(response.statusCode).toEqual(201);
@@ -616,14 +616,14 @@ describe("draft", () => {
       {},
       false,
       {
-        "If-Match": "*",
+        "If-Match": "*"
       }
     );
     expect(response.statusCode).toEqual(201);
     response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(200);
     response = await util.callDelete(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
-      "If-Match": "*",
+      "If-Match": "*"
     });
     expect(response.statusCode).toEqual(204);
     response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
@@ -639,9 +639,9 @@ describe("draft", () => {
     expect(response.body.d.SiblingEntity).toEqual(null);
   });
 
-  it("tests unsupported draft requests", async () => {
+  it("Tests unsupported draft requests", async () => {
     let response = await util.callWrite(request, "/odata/v2/draft/Header", {
-      name: "Test Header",
+      name: "Test Header"
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -649,7 +649,7 @@ describe("draft", () => {
     const id = response.body.d.ID;
     response = await util.callWrite(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`, {
       name: "Test Item",
-      description: "ABC",
+      description: "ABC"
     });
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -672,9 +672,9 @@ describe("draft", () => {
           assoc_header_ID: null,
           IsActiveEntity: false,
           HasDraftEntity: false,
-          HasActiveEntity: false,
-        },
-      ],
+          HasActiveEntity: false
+        }
+      ]
     });
     response = await util.callRead(
       request,
@@ -694,9 +694,9 @@ describe("draft", () => {
           assoc_header_ID: null,
           IsActiveEntity: false,
           HasDraftEntity: false,
-          HasActiveEntity: false,
-        },
-      ],
+          HasActiveEntity: false
+        }
+      ]
     });
     response = await util.callRead(
       request,
@@ -716,9 +716,9 @@ describe("draft", () => {
           assoc_header_ID: null,
           IsActiveEntity: false,
           HasDraftEntity: false,
-          HasActiveEntity: false,
-        },
-      ],
+          HasActiveEntity: false
+        }
+      ]
     });
     response = await util.callRead(
       request,
@@ -740,9 +740,9 @@ describe("draft", () => {
           assoc_header_ID: null,
           IsActiveEntity: false,
           HasDraftEntity: false,
-          HasActiveEntity: false,
-        },
-      ],
+          HasActiveEntity: false
+        }
+      ]
     });
     response = await util.callRead(
       request,
@@ -764,9 +764,224 @@ describe("draft", () => {
           assoc_header_ID: null,
           IsActiveEntity: false,
           HasDraftEntity: false,
-          HasActiveEntity: false,
-        },
-      ],
+          HasActiveEntity: false
+        }
+      ]
     });
+  });
+
+  it("Tests draft messages", async () => {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
+      name: "Test Create"
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    let etag = response.body.d.__metadata.etag;
+    response = await util.callWrite(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/texts`, {
+      description: "Test Text",
+      locale: "en"
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const textId = response.body.d.ID_texts;
+    expect(textId).toBeDefined();
+    response = await util.callWrite(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/Items`, {
+      name: "Test Item"
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const itemId = response.body.d.ID;
+    response = await util.callWrite(request, `/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)/texts`, {
+      description: "Test Item Text",
+      locale: "en"
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const itemTextId = response.body.d.ID_texts;
+
+    response = await util.callWrite(
+      request,
+      `/odata/v2/draft/Header_draftPrepare?ID=guid'${id}'&IsActiveEntity=false`,
+      {},
+      false,
+      {
+        "If-Match": etag
+      }
+    );
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "WARN01",
+      details: [],
+      message: "An Warning occurred",
+      severity: "warning",
+      target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name"
+    });
+
+    response = await util.callRead(request, `/odata/v2/draft/HeaderItem(ID=guid'${itemId}',IsActiveEntity=false)`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toMatchObject({
+      ID: itemId,
+      name: "Test Item",
+      description: null,
+      startAt: null,
+      endAt: null
+    });
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "WARN01",
+      details: [],
+      message: "An Warning occurred",
+      severity: "warning",
+      target: "Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name"
+    });
+
+    response = await util.callRead(request, `/odata/v2/draft/HeaderItem_texts(ID_texts=guid'${itemTextId}',IsActiveEntity=false)`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toMatchObject({
+      ID_texts: itemTextId,
+      description: "Test Item Text"
+    });
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "WARN01",
+      details: [],
+      message: "An Warning occurred",
+      severity: "warning",
+      target: "Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/texts(ID=guid'3b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description"
+    });
+  });
+
+  it("Tests transientOnly", async () => {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
+      name: "Test Create"
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    let etag = response.body.d.__metadata.etag;
+
+    response = await util.callWrite(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+        name: "Test Create - Update 1"
+      }, true, {
+        "If-Match": etag
+      }
+    );
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    etag = response.body.d.__metadata.etag;
+
+    expect(JSON.parse(response.headers["sap-message"])).toEqual(
+      {
+        code: "WARN01",
+        details: [
+          {
+            code: "WARN02",
+            message: "An Warning occurred 2",
+            severity: "warning",
+            target: "/#TRANSIENT#"
+          },
+          {
+            code: "WARN03",
+            message: "An Warning occurred 3",
+            severity: "warning",
+            target: "/#TRANSIENT#Header"
+          }
+        ],
+        message: "An Warning occurred 1",
+        severity: "warning",
+        target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name"
+      });
+
+    response = await util.callWrite(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+        name: "Test Create - Update 1"
+      }, true, {
+        "If-Match": etag,
+        "sap-messages": "transientOnly"
+      }
+    );
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    etag = response.body.d.__metadata.etag;
+
+    expect(JSON.parse(response.headers["sap-message"])).toEqual(
+      {
+        code: "WARN02",
+        details: [
+          {
+            code: "WARN03",
+            message: "An Warning occurred 3",
+            severity: "warning",
+            target: "/#TRANSIENT#Header"
+          }
+        ],
+        message: "An Warning occurred 2",
+        severity: "warning",
+        target: "/#TRANSIENT#"
+      });
+
+    response = await util.callWrite(
+      request,
+      `/odata/v2/draft/Header_draftPrepare?ID=guid'${id}'&IsActiveEntity=false`,
+      {},
+      false,
+      {
+        "If-Match": etag
+      }
+    );
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "WARN01",
+      details: [],
+      message: "An Warning occurred",
+      severity: "warning",
+      target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name"
+    });
+  });
+
+  it("Tests transientOnly (batch)", async () => {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
+      name: "Test Create"
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    let etag = response.body.d.__metadata.etag;
+
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-MERGE-Messages.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, id);
+    payload = payload.replace(/{{ETAG}}/g, etag);
+    response = await util.callMultipart(request, "/odata/v2/draft/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    response = responses[0][0];
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toMatchObject({
+      d: {
+        ID: id,
+        name: "Test Create - Update"
+      }
+    });
+    expect(JSON.parse(response.headers["sap-message"])).toEqual(
+      {
+        code: "WARN02",
+        details: [
+          {
+            code: "WARN03",
+            message: "An Warning occurred 3",
+            severity: "warning",
+            target: "/#TRANSIENT#Header"
+          }
+        ],
+        message: "An Warning occurred 2",
+        severity: "warning",
+        target: "/#TRANSIENT#"
+      });
   });
 });

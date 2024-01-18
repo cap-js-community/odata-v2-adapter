@@ -5,11 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.12.3 - 2024-02-xx
+## Version 1.12.3 - 2024-02-01
 
 ### Fixed
 
-- Message target context resolution issues are logged on reduced level (`debug`)
+- Fix definition lookup for suffixed entity names (e.g. `.texts`)
+- Support message target context relative to draft root
+- Support request header `sap-messages: transientOnly"` where state messages with target not starting with `/#TRANSIENT` are removed
+- Log message target context resolution issues as reduced level (`debug`)
 
 ## Version 1.12.2 - 2024-01-09
 

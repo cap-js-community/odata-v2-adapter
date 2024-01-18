@@ -1,0 +1,14 @@
+--boundary
+Content-Type: multipart/mixed; boundary=changeset
+
+--changeset
+Content-Type: application/http
+
+MERGE Header(ID=guid'{{ID}}',IsActiveEntity=false) HTTP/1.1
+Content-Type: application/json
+sap-messages: transientOnly
+If-Match: {{ETAG}}
+
+{"name":"Test Create - Update"}
+--changeset--
+--boundary--

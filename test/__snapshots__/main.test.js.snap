@@ -409,6 +409,8 @@ exports[`main GET $metadata 1`] = `
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
+        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
+        <EntitySet Name="HeaderItem_texts" EntityType="test.MainService.HeaderItem_texts"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
         <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
@@ -536,6 +538,14 @@ exports[`main GET $metadata 1`] = `
           <End Role="Header" EntitySet="Header"/>
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
         </AssociationSet>
+        <AssociationSet Name="Header_texts_1" Association="test.MainService.Header_texts_1">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Header_localized" Association="test.MainService.Header_localized">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+        </AssociationSet>
         <AssociationSet Name="HeaderItem_header" Association="test.MainService.HeaderItem_header">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="Header" EntitySet="Header"/>
@@ -547,6 +557,14 @@ exports[`main GET $metadata 1`] = `
         <AssociationSet Name="HeaderItem_assoc" Association="test.MainService.HeaderItem_assoc">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_texts_1" Association="test.MainService.HeaderItem_texts_1">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_localized" Association="test.MainService.HeaderItem_localized">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
         </AssociationSet>
         <AssociationSet Name="HeaderLine_item" Association="test.MainService.HeaderLine_item">
           <End Role="HeaderLine" EntitySet="HeaderLine"/>
@@ -625,6 +643,8 @@ exports[`main GET $metadata 1`] = `
         <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
         <NavigationProperty Name="FirstItem" Relationship="test.MainService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
         <Property Name="FirstItem_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.Header_texts_1" FromRole="Header" ToRole="Header_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.Header_localized" FromRole="Header" ToRole="Header_texts"/>
       </EntityType>
       <EntityType Name="HeaderItem">
         <Key>
@@ -642,6 +662,8 @@ exports[`main GET $metadata 1`] = `
         <NavigationProperty Name="assoc" Relationship="test.MainService.HeaderItem_assoc" FromRole="HeaderItem" ToRole="HeaderAssocKey"/>
         <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
       </EntityType>
       <EntityType Name="HeaderLine">
         <Key>
@@ -888,6 +910,24 @@ exports[`main GET $metadata 1`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
       </EntityType>
+      <EntityType Name="Header_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="HeaderItem_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="LocalizedEntity_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -999,6 +1039,16 @@ exports[`main GET $metadata 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Association Name="Header_texts_1">
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="Header_texts" Type="test.MainService.Header_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="Header_localized">
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="*"/>
+        <End Role="Header_texts" Type="test.MainService.Header_texts" Multiplicity="0..1"/>
+      </Association>
       <Association Name="HeaderItem_header">
         <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
         <End Role="Header" Type="test.MainService.Header" Multiplicity="0..1">
@@ -1036,6 +1086,16 @@ exports[`main GET $metadata 1`] = `
             <PropertyRef Name="assoc_header_ID"/>
           </Dependent>
         </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItem_texts_1">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="HeaderItem_texts" Type="test.MainService.HeaderItem_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="HeaderItem_localized">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
+        <End Role="HeaderItem_texts" Type="test.MainService.HeaderItem_texts" Multiplicity="0..1"/>
       </Association>
       <Association Name="HeaderLine_item">
         <End Role="HeaderLine" Type="test.MainService.HeaderLine" Multiplicity="*"/>
@@ -1651,6 +1711,18 @@ exports[`main GET $metadata 1`] = `
       <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Text" Path="name"/>
         <Annotation Term="Common.Label" String="Currency Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
       </Annotations>
       <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Language Code"/>
@@ -1824,6 +1896,8 @@ exports[`main GET $metadata localized 1`] = `
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
+        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
+        <EntitySet Name="HeaderItem_texts" EntityType="test.MainService.HeaderItem_texts"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
         <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
@@ -1951,6 +2025,14 @@ exports[`main GET $metadata localized 1`] = `
           <End Role="Header" EntitySet="Header"/>
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
         </AssociationSet>
+        <AssociationSet Name="Header_texts_1" Association="test.MainService.Header_texts_1">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Header_localized" Association="test.MainService.Header_localized">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+        </AssociationSet>
         <AssociationSet Name="HeaderItem_header" Association="test.MainService.HeaderItem_header">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="Header" EntitySet="Header"/>
@@ -1962,6 +2044,14 @@ exports[`main GET $metadata localized 1`] = `
         <AssociationSet Name="HeaderItem_assoc" Association="test.MainService.HeaderItem_assoc">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_texts_1" Association="test.MainService.HeaderItem_texts_1">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_localized" Association="test.MainService.HeaderItem_localized">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
         </AssociationSet>
         <AssociationSet Name="HeaderLine_item" Association="test.MainService.HeaderLine_item">
           <End Role="HeaderLine" EntitySet="HeaderLine"/>
@@ -2040,6 +2130,8 @@ exports[`main GET $metadata localized 1`] = `
         <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
         <NavigationProperty Name="FirstItem" Relationship="test.MainService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
         <Property Name="FirstItem_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.Header_texts_1" FromRole="Header" ToRole="Header_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.Header_localized" FromRole="Header" ToRole="Header_texts"/>
       </EntityType>
       <EntityType Name="HeaderItem">
         <Key>
@@ -2057,6 +2149,8 @@ exports[`main GET $metadata localized 1`] = `
         <NavigationProperty Name="assoc" Relationship="test.MainService.HeaderItem_assoc" FromRole="HeaderItem" ToRole="HeaderAssocKey"/>
         <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
       </EntityType>
       <EntityType Name="HeaderLine">
         <Key>
@@ -2303,6 +2397,24 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
       </EntityType>
+      <EntityType Name="Header_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="HeaderItem_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="LocalizedEntity_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -2414,6 +2526,16 @@ exports[`main GET $metadata localized 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Association Name="Header_texts_1">
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="Header_texts" Type="test.MainService.Header_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="Header_localized">
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="*"/>
+        <End Role="Header_texts" Type="test.MainService.Header_texts" Multiplicity="0..1"/>
+      </Association>
       <Association Name="HeaderItem_header">
         <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
         <End Role="Header" Type="test.MainService.Header" Multiplicity="0..1">
@@ -2451,6 +2573,16 @@ exports[`main GET $metadata localized 1`] = `
             <PropertyRef Name="assoc_header_ID"/>
           </Dependent>
         </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItem_texts_1">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="HeaderItem_texts" Type="test.MainService.HeaderItem_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="HeaderItem_localized">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
+        <End Role="HeaderItem_texts" Type="test.MainService.HeaderItem_texts" Multiplicity="0..1"/>
       </Association>
       <Association Name="HeaderLine_item">
         <End Role="HeaderLine" Type="test.MainService.HeaderLine" Multiplicity="*"/>
@@ -3066,6 +3198,18 @@ exports[`main GET $metadata localized 1`] = `
       <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Text" Path="name"/>
         <Annotation Term="Common.Label" String="Währungscode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
       </Annotations>
       <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Sprachencode"/>
@@ -3239,6 +3383,8 @@ exports[`main GET $metadata localized 2`] = `
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
+        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
+        <EntitySet Name="HeaderItem_texts" EntityType="test.MainService.HeaderItem_texts"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
         <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
@@ -3366,6 +3512,14 @@ exports[`main GET $metadata localized 2`] = `
           <End Role="Header" EntitySet="Header"/>
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
         </AssociationSet>
+        <AssociationSet Name="Header_texts_1" Association="test.MainService.Header_texts_1">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Header_localized" Association="test.MainService.Header_localized">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+        </AssociationSet>
         <AssociationSet Name="HeaderItem_header" Association="test.MainService.HeaderItem_header">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="Header" EntitySet="Header"/>
@@ -3377,6 +3531,14 @@ exports[`main GET $metadata localized 2`] = `
         <AssociationSet Name="HeaderItem_assoc" Association="test.MainService.HeaderItem_assoc">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_texts_1" Association="test.MainService.HeaderItem_texts_1">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_localized" Association="test.MainService.HeaderItem_localized">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
         </AssociationSet>
         <AssociationSet Name="HeaderLine_item" Association="test.MainService.HeaderLine_item">
           <End Role="HeaderLine" EntitySet="HeaderLine"/>
@@ -3455,6 +3617,8 @@ exports[`main GET $metadata localized 2`] = `
         <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
         <NavigationProperty Name="FirstItem" Relationship="test.MainService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
         <Property Name="FirstItem_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.Header_texts_1" FromRole="Header" ToRole="Header_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.Header_localized" FromRole="Header" ToRole="Header_texts"/>
       </EntityType>
       <EntityType Name="HeaderItem">
         <Key>
@@ -3472,6 +3636,8 @@ exports[`main GET $metadata localized 2`] = `
         <NavigationProperty Name="assoc" Relationship="test.MainService.HeaderItem_assoc" FromRole="HeaderItem" ToRole="HeaderAssocKey"/>
         <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
       </EntityType>
       <EntityType Name="HeaderLine">
         <Key>
@@ -3718,6 +3884,24 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
       </EntityType>
+      <EntityType Name="Header_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="HeaderItem_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="LocalizedEntity_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -3829,6 +4013,16 @@ exports[`main GET $metadata localized 2`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Association Name="Header_texts_1">
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="Header_texts" Type="test.MainService.Header_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="Header_localized">
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="*"/>
+        <End Role="Header_texts" Type="test.MainService.Header_texts" Multiplicity="0..1"/>
+      </Association>
       <Association Name="HeaderItem_header">
         <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
         <End Role="Header" Type="test.MainService.Header" Multiplicity="0..1">
@@ -3866,6 +4060,16 @@ exports[`main GET $metadata localized 2`] = `
             <PropertyRef Name="assoc_header_ID"/>
           </Dependent>
         </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItem_texts_1">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="HeaderItem_texts" Type="test.MainService.HeaderItem_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="HeaderItem_localized">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
+        <End Role="HeaderItem_texts" Type="test.MainService.HeaderItem_texts" Multiplicity="0..1"/>
       </Association>
       <Association Name="HeaderLine_item">
         <End Role="HeaderLine" Type="test.MainService.HeaderLine" Multiplicity="*"/>
@@ -4482,6 +4686,18 @@ exports[`main GET $metadata localized 2`] = `
         <Annotation Term="Common.Text" Path="name"/>
         <Annotation Term="Common.Label" String="Währungscode"/>
       </Annotations>
+      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
       <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Sprachencode"/>
       </Annotations>
@@ -4654,6 +4870,8 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
+        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
+        <EntitySet Name="HeaderItem_texts" EntityType="test.MainService.HeaderItem_texts"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
         <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
@@ -4781,6 +4999,14 @@ exports[`main GET $metadata with propagated headers 1`] = `
           <End Role="Header" EntitySet="Header"/>
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
         </AssociationSet>
+        <AssociationSet Name="Header_texts_1" Association="test.MainService.Header_texts_1">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Header_localized" Association="test.MainService.Header_localized">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+        </AssociationSet>
         <AssociationSet Name="HeaderItem_header" Association="test.MainService.HeaderItem_header">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="Header" EntitySet="Header"/>
@@ -4792,6 +5018,14 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <AssociationSet Name="HeaderItem_assoc" Association="test.MainService.HeaderItem_assoc">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_texts_1" Association="test.MainService.HeaderItem_texts_1">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_localized" Association="test.MainService.HeaderItem_localized">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
         </AssociationSet>
         <AssociationSet Name="HeaderLine_item" Association="test.MainService.HeaderLine_item">
           <End Role="HeaderLine" EntitySet="HeaderLine"/>
@@ -4870,6 +5104,8 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
         <NavigationProperty Name="FirstItem" Relationship="test.MainService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
         <Property Name="FirstItem_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.Header_texts_1" FromRole="Header" ToRole="Header_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.Header_localized" FromRole="Header" ToRole="Header_texts"/>
       </EntityType>
       <EntityType Name="HeaderItem">
         <Key>
@@ -4887,6 +5123,8 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <NavigationProperty Name="assoc" Relationship="test.MainService.HeaderItem_assoc" FromRole="HeaderItem" ToRole="HeaderAssocKey"/>
         <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
       </EntityType>
       <EntityType Name="HeaderLine">
         <Key>
@@ -5133,6 +5371,24 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
       </EntityType>
+      <EntityType Name="Header_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="HeaderItem_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="LocalizedEntity_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -5244,6 +5500,16 @@ exports[`main GET $metadata with propagated headers 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Association Name="Header_texts_1">
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="Header_texts" Type="test.MainService.Header_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="Header_localized">
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="*"/>
+        <End Role="Header_texts" Type="test.MainService.Header_texts" Multiplicity="0..1"/>
+      </Association>
       <Association Name="HeaderItem_header">
         <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
         <End Role="Header" Type="test.MainService.Header" Multiplicity="0..1">
@@ -5281,6 +5547,16 @@ exports[`main GET $metadata with propagated headers 1`] = `
             <PropertyRef Name="assoc_header_ID"/>
           </Dependent>
         </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItem_texts_1">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="HeaderItem_texts" Type="test.MainService.HeaderItem_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="HeaderItem_localized">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
+        <End Role="HeaderItem_texts" Type="test.MainService.HeaderItem_texts" Multiplicity="0..1"/>
       </Association>
       <Association Name="HeaderLine_item">
         <End Role="HeaderLine" Type="test.MainService.HeaderLine" Multiplicity="*"/>
@@ -5896,6 +6172,18 @@ exports[`main GET $metadata with propagated headers 1`] = `
       <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Text" Path="name"/>
         <Annotation Term="Common.Label" String="Currency Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
       </Annotations>
       <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Language Code"/>
@@ -6069,6 +6357,8 @@ exports[`main GET $metadata with query options 1`] = `
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
+        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
+        <EntitySet Name="HeaderItem_texts" EntityType="test.MainService.HeaderItem_texts"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
         <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
@@ -6196,6 +6486,14 @@ exports[`main GET $metadata with query options 1`] = `
           <End Role="Header" EntitySet="Header"/>
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
         </AssociationSet>
+        <AssociationSet Name="Header_texts_1" Association="test.MainService.Header_texts_1">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Header_localized" Association="test.MainService.Header_localized">
+          <End Role="Header" EntitySet="Header"/>
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+        </AssociationSet>
         <AssociationSet Name="HeaderItem_header" Association="test.MainService.HeaderItem_header">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="Header" EntitySet="Header"/>
@@ -6207,6 +6505,14 @@ exports[`main GET $metadata with query options 1`] = `
         <AssociationSet Name="HeaderItem_assoc" Association="test.MainService.HeaderItem_assoc">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_texts_1" Association="test.MainService.HeaderItem_texts_1">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="HeaderItem_localized" Association="test.MainService.HeaderItem_localized">
+          <End Role="HeaderItem" EntitySet="HeaderItem"/>
+          <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
         </AssociationSet>
         <AssociationSet Name="HeaderLine_item" Association="test.MainService.HeaderLine_item">
           <End Role="HeaderLine" EntitySet="HeaderLine"/>
@@ -6285,6 +6591,8 @@ exports[`main GET $metadata with query options 1`] = `
         <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
         <NavigationProperty Name="FirstItem" Relationship="test.MainService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
         <Property Name="FirstItem_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.Header_texts_1" FromRole="Header" ToRole="Header_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.Header_localized" FromRole="Header" ToRole="Header_texts"/>
       </EntityType>
       <EntityType Name="HeaderItem">
         <Key>
@@ -6302,6 +6610,8 @@ exports[`main GET $metadata with query options 1`] = `
         <NavigationProperty Name="assoc" Relationship="test.MainService.HeaderItem_assoc" FromRole="HeaderItem" ToRole="HeaderAssocKey"/>
         <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
       </EntityType>
       <EntityType Name="HeaderLine">
         <Key>
@@ -6548,6 +6858,24 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
       </EntityType>
+      <EntityType Name="Header_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="HeaderItem_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="LocalizedEntity_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -6659,6 +6987,16 @@ exports[`main GET $metadata with query options 1`] = `
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Association Name="Header_texts_1">
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="Header_texts" Type="test.MainService.Header_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="Header_localized">
+        <End Role="Header" Type="test.MainService.Header" Multiplicity="*"/>
+        <End Role="Header_texts" Type="test.MainService.Header_texts" Multiplicity="0..1"/>
+      </Association>
       <Association Name="HeaderItem_header">
         <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
         <End Role="Header" Type="test.MainService.Header" Multiplicity="0..1">
@@ -6696,6 +7034,16 @@ exports[`main GET $metadata with query options 1`] = `
             <PropertyRef Name="assoc_header_ID"/>
           </Dependent>
         </ReferentialConstraint>
+      </Association>
+      <Association Name="HeaderItem_texts_1">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <End Role="HeaderItem_texts" Type="test.MainService.HeaderItem_texts" Multiplicity="*"/>
+      </Association>
+      <Association Name="HeaderItem_localized">
+        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
+        <End Role="HeaderItem_texts" Type="test.MainService.HeaderItem_texts" Multiplicity="0..1"/>
       </Association>
       <Association Name="HeaderLine_item">
         <End Role="HeaderLine" Type="test.MainService.HeaderLine" Multiplicity="*"/>
@@ -7312,6 +7660,18 @@ exports[`main GET $metadata with query options 1`] = `
         <Annotation Term="Common.Text" Path="name"/>
         <Annotation Term="Common.Label" String="Currency Code"/>
       </Annotations>
+      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
       <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Language Code"/>
       </Annotations>
@@ -7346,6 +7706,7 @@ exports[`main GET service JSON format 1`] = `
   "HeaderItem",
   "HeaderItemDelta",
   "HeaderItemLargeString",
+  "HeaderItem_texts",
   "HeaderLargeString",
   "HeaderLine",
   "HeaderStream",
@@ -7354,6 +7715,7 @@ exports[`main GET service JSON format 1`] = `
   "HeaderStructure",
   "HeaderTemporal",
   "HeaderUrlStream",
+  "Header_texts",
   "LocalizedEntity",
   "LocalizedEntity_texts",
   "Node",
@@ -7383,6 +7745,7 @@ exports[`main GET service JSON format 2`] = `
   "HeaderItem",
   "HeaderItemDelta",
   "HeaderItemLargeString",
+  "HeaderItem_texts",
   "HeaderLargeString",
   "HeaderLine",
   "HeaderStream",
@@ -7391,6 +7754,7 @@ exports[`main GET service JSON format 2`] = `
   "HeaderStructure",
   "HeaderTemporal",
   "HeaderUrlStream",
+  "Header_texts",
   "LocalizedEntity",
   "LocalizedEntity_texts",
   "Node",
@@ -7420,6 +7784,7 @@ exports[`main GET service JSON format 3`] = `
   "HeaderItem",
   "HeaderItemDelta",
   "HeaderItemLargeString",
+  "HeaderItem_texts",
   "HeaderLargeString",
   "HeaderLine",
   "HeaderStream",
@@ -7428,6 +7793,7 @@ exports[`main GET service JSON format 3`] = `
   "HeaderStructure",
   "HeaderTemporal",
   "HeaderUrlStream",
+  "Header_texts",
   "LocalizedEntity",
   "LocalizedEntity_texts",
   "Node",

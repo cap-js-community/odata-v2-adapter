@@ -1119,12 +1119,23 @@ function cov2ap(options = {}) {
     return (name.startsWith(serviceNamespacePrefix) ? "" : serviceNamespacePrefix) + name;
   }
 
+  function qualifiedSubName(name, req) {
+    if (name.includes("_")) {
+      const parts = name.split("_");
+      const endPart = parts.pop();
+      name = `${parts.join("_")}.${endPart}`;
+    }
+    return qualifiedName(name, req);
+  }
+
   function lookupDefinition(name, req) {
     if (["$metadata"].includes(name) || name.startsWith("cds.") || name.startsWith("Edm.")) {
       return;
     }
     const definitionName = qualifiedName(name, req);
-    const definition = req.csn.definitions[definitionName] || req.csn.definitions[name];
+    const definitionSubName = qualifiedSubName(name, req);
+    const definition =
+      req.csn.definitions[definitionSubName] || req.csn.definitions[definitionName] || req.csn.definitions[name];
     if (definition) {
       return definition;
     }
@@ -1276,6 +1287,9 @@ function cov2ap(options = {}) {
                 contentType = "application/json";
                 headers["content-type"] = contentType;
               }
+              if (headers["sap-messages"]) {
+                req.context.messages = headers["sap-messages"];
+              }
               if (isApplicationJSON(contentType)) {
                 if (ieee754Compatible) {
                   contentType = enrichApplicationJSON(contentType);
@@ -1311,6 +1325,9 @@ function cov2ap(options = {}) {
         if (headers.accept && !headers.accept.includes("application/json")) {
           headers.accept = "application/json," + headers.accept;
           proxyReq.setHeader("accept", headers.accept);
+        }
+        if (headers["sap-messages"]) {
+          req.context.messages = headers["sap-messages"];
         }
         if (isXML(contentType)) {
           req.context.serviceRequestAsXML = true;
@@ -1587,6 +1604,7 @@ function cov2ap(options = {}) {
       aggregationKey: false,
       aggregationFilter: "",
       parameters: null,
+      messages: null,
       expandSiblingEntity: false,
       ...req.lookupContext,
     };
@@ -2985,8 +3003,17 @@ function cov2ap(options = {}) {
 
   function convertMessages(body, headers, definition, req) {
     if (headers["sap-messages"]) {
-      const messages = JSON.parse(headers["sap-messages"]);
+      let messages = JSON.parse(headers["sap-messages"]);
       if (messages && messages.length > 0) {
+        if (req.context.messages === "transientOnly") {
+          messages = messages.filter((message) => {
+            return (
+              !message.target ||
+              message.target === MessageTargetTransient ||
+              message.target.startsWith(MessageTargetTransientPrefix)
+            );
+          });
+        }
         const rootMessage = messages.shift();
         rootMessage.details = Array.isArray(rootMessage.details) ? rootMessage.details : [];
         rootMessage.details.push(...messages);
@@ -3065,6 +3092,7 @@ function cov2ap(options = {}) {
       if (!context && req.lookupContext.returnDefinition && req.lookupContext.returnDefinition.kind === "entity") {
         context = req.lookupContext.returnDefinition;
       }
+      let messageContext;
       if (
         contextFromUrl(
           {
@@ -3077,7 +3105,7 @@ function cov2ap(options = {}) {
         )
       ) {
         // Absolute target (no context)
-        context = undefined;
+        messageContext = undefined;
       } else if (
         contextFromUrl(
           {
@@ -3090,63 +3118,82 @@ function cov2ap(options = {}) {
         )
       ) {
         // Relative target (valid context)
+        messageContext = context;
       } else {
-        // Relative target (invalid context)
-        context = undefined;
+        const rootContext = compositionRoot(context, req);
+        if (
+          context &&
+          contextFromUrl(
+            {
+              contextPath: messageTarget,
+              query: {},
+            },
+            req,
+            rootContext,
+            true,
+          )
+        ) {
+          // Relative target (composition root context)
+          messageContext = rootContext;
+        }
       }
-      let stop = false;
-      messageTarget = messageTarget
-        .split("/")
-        .map((part) => {
-          if (stop || !part) {
-            return part;
-          }
-          let name = part;
-          let keyPart = "";
-          const keyStart = part.indexOf("(");
-          const keyEnd = part.lastIndexOf(")");
-          if (keyStart !== -1 && keyEnd === part.length - 1) {
-            name = part.substring(0, keyStart);
-            keyPart = part.substring(keyStart + 1, keyEnd);
-          }
-          context = lookupContext(name, context, req, "debug", messageTarget);
-          if (!context) {
-            stop = true;
-          }
-          const contextElements = definitionElements(context);
-          const contextKeys = definitionKeys(context);
-          if (context && keyPart) {
-            const keys = keyPart.split(",");
-            return `${name}(${keys
-              .map((key) => {
-                const [name, value] = key.split("=");
-                let type;
-                if (name && value) {
-                  if (context.params && context.params[name]) {
-                    type = context.params[name].type;
-                  }
-                  if (!type) {
-                    type = elementType(contextElements[name], req);
-                  }
-                  return `${name}=${replaceConvertDataTypeToV2(value, type, context)}`;
-                } else if (name) {
-                  const key = Object.keys(contextKeys).find((key) => {
-                    return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
-                  });
-                  type = key && elementType(contextElements[key], req);
-                  return type && `${replaceConvertDataTypeToV2(name, type, context)}`;
-                }
-                return "";
-              })
-              .filter((part) => !!part)
-              .join(",")})`;
-          } else {
-            return part;
-          }
-        })
-        .join("/");
+      messageTarget = convertMessageTargetParts(messageTarget, messageContext, req);
     }
     return (transientTarget ? MessageTargetTransientPrefix : "") + messageTarget;
+  }
+
+  function convertMessageTargetParts(messageTarget, context, req) {
+    let stop = false;
+    return messageTarget
+      .split("/")
+      .map((part) => {
+        if (stop || !part) {
+          return part;
+        }
+        let name = part;
+        let keyPart = "";
+        const keyStart = part.indexOf("(");
+        const keyEnd = part.lastIndexOf(")");
+        if (keyStart !== -1 && keyEnd === part.length - 1) {
+          name = part.substring(0, keyStart);
+          keyPart = part.substring(keyStart + 1, keyEnd);
+        }
+        context = lookupContext(name, context, req, "debug", messageTarget);
+        if (!context) {
+          stop = true;
+        }
+        const contextElements = definitionElements(context);
+        const contextKeys = definitionKeys(context);
+        if (context && keyPart) {
+          const keys = keyPart.split(",");
+          return `${name}(${keys
+            .map((key) => {
+              const [name, value] = key.split("=");
+              let type;
+              if (name && value) {
+                if (context.params && context.params[name]) {
+                  type = context.params[name].type;
+                }
+                if (!type) {
+                  type = elementType(contextElements[name], req);
+                }
+                return `${name}=${replaceConvertDataTypeToV2(value, type, context)}`;
+              } else if (name) {
+                const key = Object.keys(contextKeys).find((key) => {
+                  return contextKeys[key].type !== "cds.Composition" && contextKeys[key].type !== "cds.Association";
+                });
+                type = key && elementType(contextElements[key], req);
+                return type && `${replaceConvertDataTypeToV2(name, type, context)}`;
+              }
+              return "";
+            })
+            .filter((part) => !!part)
+            .join(",")})`;
+        } else {
+          return part;
+        }
+      })
+      .join("/");
   }
 
   function convertResponseError(body, headers, definition, req) {
@@ -4406,6 +4453,66 @@ function cov2ap(options = {}) {
         const element = elements[key];
         return url.contextPath.endsWith(`/${element.name}`);
       });
+  }
+
+  function compositionRoot(entity, req) {
+    if (!entity || entity.kind !== "entity") {
+      return;
+    }
+    const parentEntity = compositionParent(entity, req);
+    return parentEntity ? compositionRoot(parentEntity, req) : entity;
+  }
+
+  function compositionParent(entity, req) {
+    if (!entity || entity.kind !== "entity") {
+      return;
+    }
+    const parentAssociation = compositionParentAssociation(entity, req);
+    return parentAssociation ? parentAssociation._target : null;
+  }
+
+  function compositionParentAssociation(entity, req) {
+    if (!entity || entity.kind !== "entity") {
+      return;
+    }
+    const elements = definitionElements(entity);
+    const parentAssociation = Object.keys(elements).find((name) => {
+      const element = elements[name];
+      if (element.type === "cds.Association") {
+        const parentDefinition = req.csn.definitions[element.target];
+        const parentElements = definitionElements(parentDefinition);
+        return !!Object.keys(parentElements).find((name) => {
+          const parentElement = parentElements[name];
+          if (parentElement.type === "cds.Composition") {
+            return parentElement.target === entity.name;
+          }
+        });
+      }
+    });
+    if (parentAssociation) {
+      return elements[parentAssociation];
+    }
+    if (entity.name.endsWith(".texts")) {
+      const parentEntityName = Object.keys(req.csn.definitions).find((name) => {
+        const definition = req.csn.definitions[name];
+        if (definition.kind !== "entity") {
+          return false;
+        }
+        const elements = definitionElements(definition);
+        return !!Object.keys(elements).find((name) => {
+          const parentElement = elements[name];
+          if (parentElement.type === "cds.Composition") {
+            return parentElement.target === entity.name;
+          }
+        });
+      });
+      if (parentEntityName) {
+        return {
+          target: parentEntityName,
+          _target: req.csn.definitions[parentEntityName],
+        };
+      }
+    }
   }
 
   function determineLocale(req) {

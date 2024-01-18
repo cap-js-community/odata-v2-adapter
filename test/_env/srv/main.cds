@@ -7,9 +7,10 @@ type Value: Integer;
 type Stock: Value;
 type Price: Decimal(12, 2);
 
+@fiori.draft.enabled
 entity Header: cuid, managed {
     name: String;
-    description: String;
+    description: localized String;
     country: String;
     currency: String;
     stock: Stock;
@@ -19,9 +20,10 @@ entity Header: cuid, managed {
     FirstItem: Association to HeaderItem;
 }
 
+@fiori.draft.enabled
 entity HeaderItem: cuid {
     name: String;
-    description: String;
+    description: localized String;
     startAt: Timestamp;
     endAt: Timestamp;
     header: Association to Header;
