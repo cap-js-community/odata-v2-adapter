@@ -888,7 +888,7 @@ describe("draft", () => {
             code: "WARN03",
             message: "An Warning occurred 3",
             severity: "warning",
-            target: "/#TRANSIENT#Header"
+            target: "/#TRANSIENT#/Header"
           }
         ],
         message: "An Warning occurred 1",
@@ -916,7 +916,7 @@ describe("draft", () => {
             code: "WARN03",
             message: "An Warning occurred 3",
             severity: "warning",
-            target: "/#TRANSIENT#Header"
+            target: "/#TRANSIENT#/Header"
           }
         ],
         message: "An Warning occurred 2",
@@ -976,7 +976,7 @@ describe("draft", () => {
             code: "WARN03",
             message: "An Warning occurred 3",
             severity: "warning",
-            target: "/#TRANSIENT#Header"
+            target: "/#TRANSIENT#/Header"
           }
         ],
         message: "An Warning occurred 2",

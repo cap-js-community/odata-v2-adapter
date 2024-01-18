@@ -29,7 +29,7 @@ module.exports = (srv) => {
 
     const info3 = new Error("This is a Warning 3");
     info3.code = "WARN03";
-    info3.target = "/#TRANSIENT#Header";
+    info3.target = "/#TRANSIENT#/Header";
     info3.message = "An Warning occurred 3";
     info3.numericSeverity = 3;
     req.info(info3);
