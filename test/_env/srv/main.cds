@@ -84,7 +84,7 @@ entity HeaderUrlStream: cuid {
 }
 
 entity HeaderBinary: cuid {
-    @Core.MediaType
+    // @Core.MediaType Is intentionally left out, for negative testing
     data: LargeBinary;
     name: String;
 }
