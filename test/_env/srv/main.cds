@@ -84,7 +84,7 @@ entity HeaderUrlStream: cuid {
 }
 
 entity HeaderBinary: cuid {
-    // @Core.MediaType
+    @Core.MediaType
     data: LargeBinary;
     name: String;
 }

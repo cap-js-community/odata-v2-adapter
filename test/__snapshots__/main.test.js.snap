@@ -1460,13 +1460,6 @@ exports[`main GET $metadata 1`] = `
       <Annotations Target="test.MainService.HeaderStream/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
-      <Annotations Target="test.MainService.HeaderStream/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="test.MainService.HeaderStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
       </Annotations>
@@ -1475,14 +1468,6 @@ exports[`main GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.HeaderStreamAttachment/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderStreamAttachment/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-            <PropertyValue Property="Type" String="attachment"/>
-          </Record>
-        </Annotation>
       </Annotations>
       <Annotations Target="test.MainService.HeaderStreamAttachment/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
@@ -1493,13 +1478,6 @@ exports[`main GET $metadata 1`] = `
       <Annotations Target="test.MainService.HeaderStreamDecode/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
-      <Annotations Target="test.MainService.HeaderStreamDecode/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="test.MainService.HeaderStreamDecode/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
       </Annotations>
@@ -1508,9 +1486,6 @@ exports[`main GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.HeaderUrlStream/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderUrlStream/link" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.IsURL" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.HeaderUrlStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
@@ -1523,9 +1498,6 @@ exports[`main GET $metadata 1`] = `
         </Annotation>
       </Annotations>
       <Annotations Target="test.MainService.HeaderBinary/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderAssocKey/header_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.HeaderTemporal/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
@@ -2947,13 +2919,6 @@ exports[`main GET $metadata localized 1`] = `
       <Annotations Target="test.MainService.HeaderStream/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
-      <Annotations Target="test.MainService.HeaderStream/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="test.MainService.HeaderStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
       </Annotations>
@@ -2962,14 +2927,6 @@ exports[`main GET $metadata localized 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.HeaderStreamAttachment/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderStreamAttachment/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-            <PropertyValue Property="Type" String="attachment"/>
-          </Record>
-        </Annotation>
       </Annotations>
       <Annotations Target="test.MainService.HeaderStreamAttachment/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
@@ -2980,13 +2937,6 @@ exports[`main GET $metadata localized 1`] = `
       <Annotations Target="test.MainService.HeaderStreamDecode/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
-      <Annotations Target="test.MainService.HeaderStreamDecode/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="test.MainService.HeaderStreamDecode/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
       </Annotations>
@@ -2995,9 +2945,6 @@ exports[`main GET $metadata localized 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.HeaderUrlStream/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderUrlStream/link" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.IsURL" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.HeaderUrlStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
@@ -3010,9 +2957,6 @@ exports[`main GET $metadata localized 1`] = `
         </Annotation>
       </Annotations>
       <Annotations Target="test.MainService.HeaderBinary/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderAssocKey/header_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.HeaderTemporal/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
@@ -4434,13 +4378,6 @@ exports[`main GET $metadata localized 2`] = `
       <Annotations Target="test.MainService.HeaderStream/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
-      <Annotations Target="test.MainService.HeaderStream/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="test.MainService.HeaderStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
       </Annotations>
@@ -4449,14 +4386,6 @@ exports[`main GET $metadata localized 2`] = `
       </Annotations>
       <Annotations Target="test.MainService.HeaderStreamAttachment/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderStreamAttachment/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-            <PropertyValue Property="Type" String="attachment"/>
-          </Record>
-        </Annotation>
       </Annotations>
       <Annotations Target="test.MainService.HeaderStreamAttachment/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
@@ -4467,13 +4396,6 @@ exports[`main GET $metadata localized 2`] = `
       <Annotations Target="test.MainService.HeaderStreamDecode/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
-      <Annotations Target="test.MainService.HeaderStreamDecode/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="test.MainService.HeaderStreamDecode/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
       </Annotations>
@@ -4482,9 +4404,6 @@ exports[`main GET $metadata localized 2`] = `
       </Annotations>
       <Annotations Target="test.MainService.HeaderUrlStream/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderUrlStream/link" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.IsURL" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.HeaderUrlStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
@@ -4497,9 +4416,6 @@ exports[`main GET $metadata localized 2`] = `
         </Annotation>
       </Annotations>
       <Annotations Target="test.MainService.HeaderBinary/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderAssocKey/header_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.HeaderTemporal/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
@@ -5921,13 +5837,6 @@ exports[`main GET $metadata with propagated headers 1`] = `
       <Annotations Target="test.MainService.HeaderStream/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
-      <Annotations Target="test.MainService.HeaderStream/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="test.MainService.HeaderStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
       </Annotations>
@@ -5936,14 +5845,6 @@ exports[`main GET $metadata with propagated headers 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.HeaderStreamAttachment/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderStreamAttachment/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-            <PropertyValue Property="Type" String="attachment"/>
-          </Record>
-        </Annotation>
       </Annotations>
       <Annotations Target="test.MainService.HeaderStreamAttachment/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
@@ -5954,13 +5855,6 @@ exports[`main GET $metadata with propagated headers 1`] = `
       <Annotations Target="test.MainService.HeaderStreamDecode/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
-      <Annotations Target="test.MainService.HeaderStreamDecode/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="test.MainService.HeaderStreamDecode/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
       </Annotations>
@@ -5969,9 +5863,6 @@ exports[`main GET $metadata with propagated headers 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.HeaderUrlStream/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderUrlStream/link" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.IsURL" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.HeaderUrlStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
@@ -5984,9 +5875,6 @@ exports[`main GET $metadata with propagated headers 1`] = `
         </Annotation>
       </Annotations>
       <Annotations Target="test.MainService.HeaderBinary/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderAssocKey/header_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.HeaderTemporal/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
@@ -7408,13 +7296,6 @@ exports[`main GET $metadata with query options 1`] = `
       <Annotations Target="test.MainService.HeaderStream/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
-      <Annotations Target="test.MainService.HeaderStream/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="test.MainService.HeaderStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
       </Annotations>
@@ -7423,14 +7304,6 @@ exports[`main GET $metadata with query options 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.HeaderStreamAttachment/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderStreamAttachment/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-            <PropertyValue Property="Type" String="attachment"/>
-          </Record>
-        </Annotation>
       </Annotations>
       <Annotations Target="test.MainService.HeaderStreamAttachment/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
@@ -7441,13 +7314,6 @@ exports[`main GET $metadata with query options 1`] = `
       <Annotations Target="test.MainService.HeaderStreamDecode/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
-      <Annotations Target="test.MainService.HeaderStreamDecode/data" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ContentDisposition">
-          <Record Type="Core.ContentDispositionType">
-            <PropertyValue Property="Filename" Path="filename"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="test.MainService.HeaderStreamDecode/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
       </Annotations>
@@ -7456,9 +7322,6 @@ exports[`main GET $metadata with query options 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.HeaderUrlStream/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderUrlStream/link" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.IsURL" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.HeaderUrlStream/mediaType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.IsMediaType" Bool="true"/>
@@ -7471,9 +7334,6 @@ exports[`main GET $metadata with query options 1`] = `
         </Annotation>
       </Annotations>
       <Annotations Target="test.MainService.HeaderBinary/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderAssocKey/header_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.HeaderTemporal/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
