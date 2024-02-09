@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = (srv) => {
-  const { Header, HeaderStream, Book } = srv.entities("test.MainService");
+  const { Header, HeaderStream, Book, User } = srv.entities("test.MainService");
 
   /* Bound Action */
 
@@ -519,4 +519,6 @@ module.exports = (srv) => {
     }
     await next();
   });
+
+  srv.on("Pay", User, async () => {});
 };

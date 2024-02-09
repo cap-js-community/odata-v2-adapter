@@ -1725,8 +1725,7 @@ function cov2ap(options = {}) {
             if (DataTypeMap[type]) {
               url.query[name] = replaceConvertDataTypeToV4(url.query[name], type);
             }
-          }
-          if (context.parent && context.parent.kind === "entity") {
+          } else if (context.parent && context.parent.kind === "entity") {
             const parentElements = definitionElements(context.parent);
             if (parentElements[name]) {
               const element = parentElements[name];
@@ -2003,7 +2002,12 @@ function cov2ap(options = {}) {
   }
 
   function unescapeSingleQuote(element, value, req) {
-    if (element && value && ["cds.String", "cds.LargeString"].includes(elementType(element, req))) {
+    if (
+      element &&
+      value &&
+      typeof value === "string" &&
+      ["cds.String", "cds.LargeString"].includes(elementType(element, req))
+    ) {
       return value.replace(/''/g, "'");
     }
     return value;
@@ -2020,6 +2024,7 @@ function cov2ap(options = {}) {
     if (
       element &&
       value &&
+      typeof value === "string" &&
       [
         "cds.String",
         "cds.LargeString",
@@ -2038,7 +2043,7 @@ function cov2ap(options = {}) {
   }
 
   function unquoteValue(value) {
-    if (value.match(/^['](.*)[']$/s)) {
+    if (value && typeof value === "string" && value.match(/^['](.*)[']$/s)) {
       return value.replace(/^['](.*)[']$/s, "$1").replace(/''/g, "'");
     }
     return value;
@@ -2578,7 +2583,7 @@ function cov2ap(options = {}) {
         return replaceConvertDataTypeToV4(entry, type, definition, headers);
       });
     }
-    if (DataTypeMap[type]) {
+    if (DataTypeMap[type] && typeof value === "string") {
       value = value.replace(DataTypeMap[type].v4, "$1");
     }
     return convertDataTypeToV4(value, type);

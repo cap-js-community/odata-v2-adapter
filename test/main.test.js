@@ -4045,4 +4045,16 @@ describe("main", () => {
       }
     });
   });
+
+  it("POST bound action on entity with virtual field of same name as action parameter", async () => {
+    let response = await util.callWrite(request, "/odata/v2/main/User", {
+      name: "Test User",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callWrite(request, `/odata/v2/main/User_Pay?ID=guid'${ id }'&cost=5454m`);
+    expect(response.statusCode).toEqual(204);
+    response = await util.callWrite(request, `/odata/v2/main/User_Pay?cost=5454m`);
+    expect(response.statusCode).toEqual(400);
+  });
 });

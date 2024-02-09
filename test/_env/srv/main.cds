@@ -192,6 +192,10 @@ entity ![Funcionários] {
     name: String;
 }
 
+entity User: cuid, managed {
+    name: String;
+}
+
 service MainService {
 
     type Result {
@@ -275,6 +279,13 @@ service MainService {
     };
     entity Orders as projection on test.Orders;
     entity ![Funcionários] as projection on test.![Funcionários];
+
+    entity User as projection on test.User {
+        *,
+        virtual null as cost: Decimal(10, 2),
+    } actions {
+        action Pay(cost: Decimal(10, 2));
+    };
 
     action unboundAction(num: Integer, text: String) returns Result;
     action unboundMassAction(ids: array of String) returns array of Result;
