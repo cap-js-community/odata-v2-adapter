@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Fix `undefined` access for message filtering
+- Remove header `connection` for propagation via `fetch`
 
 ## Version 1.12.3 - 2024-02-05
 

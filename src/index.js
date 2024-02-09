@@ -4244,6 +4244,7 @@ function cov2ap(options = {}) {
     headers["x-correlation-id"] = req.contextId;
     headers["x-correlationid"] = req.contextId;
     delete headers.host;
+    delete headers.connection;
     return headers;
   }
 
