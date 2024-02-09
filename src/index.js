@@ -3014,11 +3014,13 @@ function cov2ap(options = {}) {
             );
           });
         }
-        const rootMessage = messages.shift();
-        rootMessage.details = Array.isArray(rootMessage.details) ? rootMessage.details : [];
-        rootMessage.details.push(...messages);
-        const message = convertMessage(rootMessage, definition, req);
-        headers["sap-message"] = convertToUnicode(JSON.stringify(message));
+        if (messages && messages.length > 0) {
+          const rootMessage = messages.shift();
+          rootMessage.details = Array.isArray(rootMessage.details) ? rootMessage.details : [];
+          rootMessage.details.push(...messages);
+          const message = convertMessage(rootMessage, definition, req);
+          headers["sap-message"] = convertToUnicode(JSON.stringify(message));
+        }
       }
       delete headers["sap-messages"];
     }
