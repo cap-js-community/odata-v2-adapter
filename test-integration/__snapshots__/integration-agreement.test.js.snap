@@ -25,9 +25,9 @@ exports[`integration-agreement GET $metadata 1`] = `
         <EntitySet Name="AgreementItem" EntityType="AgreementService.AgreementItem"/>
         <EntitySet Name="AgreementItemPricing" EntityType="AgreementService.AgreementItemPricing"/>
         <EntitySet Name="AgreementStatus" EntityType="AgreementService.AgreementStatus"/>
+        <EntitySet Name="AgreementItemPricingForKeyDateSet" EntityType="AgreementService.AgreementItemPricingForKeyDateType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false"/>
         <EntitySet Name="AgreementStatus_texts" EntityType="AgreementService.AgreementStatus_texts"/>
         <EntitySet Name="AgreementItemPricingForKeyDate" EntityType="AgreementService.AgreementItemPricingForKeyDateParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false"/>
-        <EntitySet Name="AgreementItemPricingForKeyDateSet" EntityType="AgreementService.AgreementItemPricingForKeyDateType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false"/>
         <AssociationSet Name="AgreementItem_agreement" Association="AgreementService.AgreementItem_agreement">
           <End Role="AgreementItem" EntitySet="AgreementItem"/>
           <End Role="Agreement" EntitySet="Agreement"/>
@@ -100,6 +100,18 @@ exports[`integration-agreement GET $metadata 1`] = `
         <NavigationProperty Name="texts" Relationship="AgreementService.AgreementStatus_texts_1" FromRole="AgreementStatus" ToRole="AgreementStatus_texts"/>
         <NavigationProperty Name="localized" Relationship="AgreementService.AgreementStatus_localized" FromRole="AgreementStatus" ToRole="AgreementStatus_texts"/>
       </EntityType>
+      <EntityType Name="AgreementItemPricingForKeyDateType">
+        <Key>
+          <PropertyRef Name="keyDate"/>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="keyDate" Type="Edm.DateTime" Nullable="false" sap:display-format="Date"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="Item" Type="Edm.Guid"/>
+        <Property Name="validFrom" Type="Edm.DateTime" sap:display-format="Date"/>
+        <Property Name="validTo" Type="Edm.DateTime" sap:display-format="Date"/>
+        <NavigationProperty Name="Parameters" Relationship="AgreementService.AgreementItemPricingForKeyDateParameters_Set" FromRole="AgreementItemPricingForKeyDateType" ToRole="AgreementItemPricingForKeyDateParameters"/>
+      </EntityType>
       <EntityType Name="AgreementStatus_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -116,18 +128,6 @@ exports[`integration-agreement GET $metadata 1`] = `
         </Key>
         <Property Name="keyDate" Type="Edm.DateTime" Nullable="false" sap:parameter="mandatory" sap:display-format="Date"/>
         <NavigationProperty Name="Set" Relationship="AgreementService.AgreementItemPricingForKeyDateParameters_Set" FromRole="AgreementItemPricingForKeyDateParameters" ToRole="AgreementItemPricingForKeyDateType"/>
-      </EntityType>
-      <EntityType Name="AgreementItemPricingForKeyDateType">
-        <Key>
-          <PropertyRef Name="keyDate"/>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="keyDate" Type="Edm.DateTime" Nullable="false" sap:display-format="Date"/>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="Item" Type="Edm.Guid"/>
-        <Property Name="validFrom" Type="Edm.DateTime" sap:display-format="Date"/>
-        <Property Name="validTo" Type="Edm.DateTime" sap:display-format="Date"/>
-        <NavigationProperty Name="Parameters" Relationship="AgreementService.AgreementItemPricingForKeyDateParameters_Set" FromRole="AgreementItemPricingForKeyDateType" ToRole="AgreementItemPricingForKeyDateParameters"/>
       </EntityType>
       <Association Name="AgreementItem_agreement">
         <End Role="AgreementItem" Type="AgreementService.AgreementItem" Multiplicity="*"/>
@@ -348,92 +348,6 @@ exports[`integration-agreement GET $metadata 1`] = `
       <Annotations Target="AgreementService.AgreementStatus/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Description"/>
       </Annotations>
-      <Annotations Target="AgreementService.AgreementStatus_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="AgreementService.AgreementStatus_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Name"/>
-      </Annotations>
-      <Annotations Target="AgreementService.AgreementStatus_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Description"/>
-      </Annotations>
-      <Annotations Target="AgreementService.AgreementItemPricingForKeyDateParameters" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Aggregation.ApplySupported">
-          <Record Type="Aggregation.ApplySupportedType">
-            <PropertyValue Property="Transformations">
-              <Collection>
-                <String>aggregate</String>
-                <String>groupby</String>
-                <String>filter</String>
-              </Collection>
-            </PropertyValue>
-            <PropertyValue Property="Rollup" EnumMember="None"/>
-          </Record>
-        </Annotation>
-      </Annotations>
-      <Annotations Target="AgreementService.EntityContainer/AgreementItemPricingForKeyDate" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Aggregation.ApplySupported">
-          <Record Type="Aggregation.ApplySupportedType">
-            <PropertyValue Property="Transformations">
-              <Collection>
-                <String>aggregate</String>
-                <String>groupby</String>
-                <String>filter</String>
-              </Collection>
-            </PropertyValue>
-            <PropertyValue Property="Rollup" EnumMember="None"/>
-          </Record>
-        </Annotation>
-        <Annotation Term="Capabilities.FilterRestrictions">
-          <Record Type="Capabilities.FilterRestrictionsType">
-            <PropertyValue Property="NonFilterableProperties">
-              <Collection>
-                <PropertyPath>keyDate</PropertyPath>
-              </Collection>
-            </PropertyValue>
-          </Record>
-        </Annotation>
-        <Annotation Term="Capabilities.NavigationRestrictions">
-          <Record Type="Capabilities.NavigationRestrictionsType">
-            <PropertyValue Property="RestrictedProperties">
-              <Collection>
-                <Record Type="Capabilities.NavigationPropertyRestriction">
-                  <PropertyValue Property="NavigationProperty" NavigationPropertyPath="Parameters"/>
-                  <PropertyValue Property="FilterRestrictions">
-                    <Record Type="Capabilities.FilterRestrictionsType">
-                      <PropertyValue Property="Filterable" Bool="false"/>
-                    </Record>
-                  </PropertyValue>
-                </Record>
-              </Collection>
-            </PropertyValue>
-          </Record>
-        </Annotation>
-        <Annotation Term="Capabilities.SortRestrictions">
-          <Record Type="Capabilities.SortRestrictionsType">
-            <PropertyValue Property="NonSortableProperties">
-              <Collection>
-                <PropertyPath>keyDate</PropertyPath>
-              </Collection>
-            </PropertyValue>
-          </Record>
-        </Annotation>
-        <Annotation Term="Capabilities.DeleteRestrictions">
-          <Record Type="Capabilities.DeleteRestrictionsType">
-            <PropertyValue Property="Deletable" Bool="false"/>
-          </Record>
-        </Annotation>
-        <Annotation Term="Capabilities.InsertRestrictions">
-          <Record Type="Capabilities.InsertRestrictionsType">
-            <PropertyValue Property="Insertable" Bool="false"/>
-          </Record>
-        </Annotation>
-        <Annotation Term="Capabilities.UpdateRestrictions">
-          <Record Type="Capabilities.UpdateRestrictionsType">
-            <PropertyValue Property="Updatable" Bool="false"/>
-          </Record>
-        </Annotation>
-      </Annotations>
       <Annotations Target="AgreementService.AgreementItemPricingForKeyDateType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Aggregation.ApplySupported">
           <Record Type="Aggregation.ApplySupportedType">
@@ -599,6 +513,92 @@ exports[`integration-agreement GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="AgreementService.AgreementItemPricingForKeyDateType/validTo" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="validTo"/>
+      </Annotations>
+      <Annotations Target="AgreementService.AgreementStatus_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="AgreementService.AgreementStatus_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="AgreementService.AgreementStatus_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="AgreementService.AgreementItemPricingForKeyDateParameters" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="Transformations">
+              <Collection>
+                <String>aggregate</String>
+                <String>groupby</String>
+                <String>filter</String>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Rollup" EnumMember="None"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="AgreementService.EntityContainer/AgreementItemPricingForKeyDate" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Aggregation.ApplySupported">
+          <Record Type="Aggregation.ApplySupportedType">
+            <PropertyValue Property="Transformations">
+              <Collection>
+                <String>aggregate</String>
+                <String>groupby</String>
+                <String>filter</String>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Rollup" EnumMember="None"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.FilterRestrictions">
+          <Record Type="Capabilities.FilterRestrictionsType">
+            <PropertyValue Property="NonFilterableProperties">
+              <Collection>
+                <PropertyPath>keyDate</PropertyPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.NavigationRestrictions">
+          <Record Type="Capabilities.NavigationRestrictionsType">
+            <PropertyValue Property="RestrictedProperties">
+              <Collection>
+                <Record Type="Capabilities.NavigationPropertyRestriction">
+                  <PropertyValue Property="NavigationProperty" NavigationPropertyPath="Parameters"/>
+                  <PropertyValue Property="FilterRestrictions">
+                    <Record Type="Capabilities.FilterRestrictionsType">
+                      <PropertyValue Property="Filterable" Bool="false"/>
+                    </Record>
+                  </PropertyValue>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.SortRestrictions">
+          <Record Type="Capabilities.SortRestrictionsType">
+            <PropertyValue Property="NonSortableProperties">
+              <Collection>
+                <PropertyPath>keyDate</PropertyPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
       </Annotations>
     </Schema>
   </edmx:DataServices>
