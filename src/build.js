@@ -1,8 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-
 const { path } = cds.utils;
+
+const DEFAULT_MAIN_FOLDER = "_main";
 
 module.exports = class COV2APBuildPlugin extends cds.build.BuildPlugin {
   static hasTask() {
@@ -25,7 +26,12 @@ module.exports = class COV2APBuildPlugin extends cds.build.BuildPlugin {
     this.task.src = mtxBuildTask.src;
     const sidecarEnv = cds.env.for("cds", mtxBuildTask.src);
     const modelProviderService = sidecarEnv.requires["cds.xt.ModelProviderService"];
-    this.task.dest = path.join(mtxBuildTask.dest, modelProviderService.root, cds.env.folders.srv, "odata/v2");
+    let main = modelProviderService.root;
+    const profiles = cds.env.profiles ?? [];
+    if (!profiles.includes("production") && !profiles.includes("prod")) {
+      main = DEFAULT_MAIN_FOLDER;
+    }
+    this.task.dest = path.join(mtxBuildTask.dest, main, cds.env.folders.srv, "odata/v2");
   }
 
   async build() {
@@ -48,9 +54,9 @@ module.exports = class COV2APBuildPlugin extends cds.build.BuildPlugin {
         });
         this.write(result).to(`${service.name}.xml`);
       } catch (err) {
-        this._logger.info(
-          `EDMX V2 compilation failed. Service '${service.name}' is (probably) not compatible with OData V2`,
-          err,
+        this.pushMessage(
+          `EDMX V2 compilation failed. Service '${service.name}' is (probably) not compatible with OData V2: ` + err,
+          COV2APBuildPlugin.INFO,
         );
       }
     }
