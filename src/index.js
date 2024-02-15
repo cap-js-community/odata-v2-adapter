@@ -309,7 +309,11 @@ function cov2ap(options = {}) {
     if (!isOData) {
       return;
     }
-    const provider = (entity) => {
+    const provider = (entity, endpoint) => {
+      // endpoint is passed since sap/cds 7.7
+      if (endpoint && !endpoint.kind.startsWith("odata")) {
+        return;
+      }
       const path = serviceODataV4Path(service);
       const href = `${sourcePath}${sourceServicePath(path)}/${entity || "$metadata"}`;
       return { href, name: `${entity || "$metadata"} (V2)`, title: "OData V2" };
