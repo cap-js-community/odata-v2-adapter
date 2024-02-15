@@ -309,7 +309,7 @@ function cov2ap(options = {}) {
     if (!isOData) {
       return;
     }
-    const provider = (entity) => {
+    const provider = (entity, endpoint) => {
       // endpoint is passed since sap/cds 7.7
       if (endpoint && !endpoint.kind.startsWith("odata")) {
         return;
