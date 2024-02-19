@@ -17,12 +17,12 @@ exports[`integration-main GET $metadata 1`] = `
       <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
         <EntitySet Name="Header" EntityType="test.MainService.Header"/>
         <EntitySet Name="HeaderLimited" EntityType="test.MainService.HeaderLimited"/>
-        <EntitySet Name="HeaderParameters" EntityType="test.MainService.HeaderParametersParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false"/>
         <EntitySet Name="HeaderParametersSet" EntityType="test.MainService.HeaderParametersType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false"/>
-        <EntitySet Name="HeaderSet" EntityType="test.MainService.HeaderSetParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false"/>
         <EntitySet Name="HeaderSetSet" EntityType="test.MainService.HeaderSetType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false"/>
-        <EntitySet Name="HeaderUnionSet" EntityType="test.MainService.HeaderUnionSetParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false"/>
         <EntitySet Name="HeaderUnionSetSet" EntityType="test.MainService.HeaderUnionSetType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false"/>
+        <EntitySet Name="HeaderParameters" EntityType="test.MainService.HeaderParametersParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false"/>
+        <EntitySet Name="HeaderSet" EntityType="test.MainService.HeaderSetParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false"/>
+        <EntitySet Name="HeaderUnionSet" EntityType="test.MainService.HeaderUnionSetParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false"/>
         <AssociationSet Name="HeaderParametersParameters_Set" Association="test.MainService.HeaderParametersParameters_Set">
           <End Role="HeaderParametersParameters" EntitySet="HeaderParameters"/>
           <End Role="HeaderParametersType" EntitySet="HeaderParametersSet"/>
@@ -50,7 +50,7 @@ exports[`integration-main GET $metadata 1`] = `
         <Property Name="country" Type="Edm.String"/>
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
       </EntityType>
       <EntityType Name="HeaderLimited">
         <Key>
@@ -66,16 +66,7 @@ exports[`integration-main GET $metadata 1`] = `
         <Property Name="country" Type="Edm.String"/>
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
-      </EntityType>
-      <EntityType Name="HeaderParametersParameters" sap:semantics="parameters">
-        <Key>
-          <PropertyRef Name="STOCK"/>
-          <PropertyRef Name="CURRENCY"/>
-        </Key>
-        <Property Name="STOCK" Type="Edm.Int32" Nullable="false" sap:parameter="mandatory"/>
-        <Property Name="CURRENCY" Type="Edm.String" Nullable="false" sap:parameter="mandatory"/>
-        <NavigationProperty Name="Set" Relationship="test.MainService.HeaderParametersParameters_Set" FromRole="HeaderParametersParameters" ToRole="HeaderParametersType"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
       </EntityType>
       <EntityType Name="HeaderParametersType">
         <Key>
@@ -95,17 +86,8 @@ exports[`integration-main GET $metadata 1`] = `
         <Property Name="country" Type="Edm.String"/>
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
         <NavigationProperty Name="Parameters" Relationship="test.MainService.HeaderParametersParameters_Set" FromRole="HeaderParametersType" ToRole="HeaderParametersParameters"/>
-      </EntityType>
-      <EntityType Name="HeaderSetParameters" sap:semantics="parameters">
-        <Key>
-          <PropertyRef Name="STOCK"/>
-          <PropertyRef Name="CURRENCY"/>
-        </Key>
-        <Property Name="STOCK" Type="Edm.Int32" Nullable="false" sap:parameter="mandatory"/>
-        <Property Name="CURRENCY" Type="Edm.String" Nullable="false" sap:parameter="mandatory"/>
-        <NavigationProperty Name="Set" Relationship="test.MainService.HeaderSetParameters_Set" FromRole="HeaderSetParameters" ToRole="HeaderSetType"/>
       </EntityType>
       <EntityType Name="HeaderSetType">
         <Key>
@@ -125,17 +107,8 @@ exports[`integration-main GET $metadata 1`] = `
         <Property Name="country" Type="Edm.String"/>
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
         <NavigationProperty Name="Parameters" Relationship="test.MainService.HeaderSetParameters_Set" FromRole="HeaderSetType" ToRole="HeaderSetParameters"/>
-      </EntityType>
-      <EntityType Name="HeaderUnionSetParameters" sap:semantics="parameters">
-        <Key>
-          <PropertyRef Name="STOCK"/>
-          <PropertyRef Name="CURRENCY"/>
-        </Key>
-        <Property Name="STOCK" Type="Edm.Int32" Nullable="false" sap:parameter="mandatory"/>
-        <Property Name="CURRENCY" Type="Edm.String" Nullable="false" sap:parameter="mandatory"/>
-        <NavigationProperty Name="Set" Relationship="test.MainService.HeaderUnionSetParameters_Set" FromRole="HeaderUnionSetParameters" ToRole="HeaderUnionSetType"/>
       </EntityType>
       <EntityType Name="HeaderUnionSetType">
         <Key>
@@ -155,8 +128,35 @@ exports[`integration-main GET $metadata 1`] = `
         <Property Name="country" Type="Edm.String"/>
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
         <NavigationProperty Name="Parameters" Relationship="test.MainService.HeaderUnionSetParameters_Set" FromRole="HeaderUnionSetType" ToRole="HeaderUnionSetParameters"/>
+      </EntityType>
+      <EntityType Name="HeaderParametersParameters" sap:semantics="parameters">
+        <Key>
+          <PropertyRef Name="STOCK"/>
+          <PropertyRef Name="CURRENCY"/>
+        </Key>
+        <Property Name="STOCK" Type="Edm.Int32" Nullable="false" sap:parameter="mandatory"/>
+        <Property Name="CURRENCY" Type="Edm.String" Nullable="false" sap:parameter="mandatory"/>
+        <NavigationProperty Name="Set" Relationship="test.MainService.HeaderParametersParameters_Set" FromRole="HeaderParametersParameters" ToRole="HeaderParametersType"/>
+      </EntityType>
+      <EntityType Name="HeaderSetParameters" sap:semantics="parameters">
+        <Key>
+          <PropertyRef Name="STOCK"/>
+          <PropertyRef Name="CURRENCY"/>
+        </Key>
+        <Property Name="STOCK" Type="Edm.Int32" Nullable="false" sap:parameter="mandatory"/>
+        <Property Name="CURRENCY" Type="Edm.String" Nullable="false" sap:parameter="mandatory"/>
+        <NavigationProperty Name="Set" Relationship="test.MainService.HeaderSetParameters_Set" FromRole="HeaderSetParameters" ToRole="HeaderSetType"/>
+      </EntityType>
+      <EntityType Name="HeaderUnionSetParameters" sap:semantics="parameters">
+        <Key>
+          <PropertyRef Name="STOCK"/>
+          <PropertyRef Name="CURRENCY"/>
+        </Key>
+        <Property Name="STOCK" Type="Edm.Int32" Nullable="false" sap:parameter="mandatory"/>
+        <Property Name="CURRENCY" Type="Edm.String" Nullable="false" sap:parameter="mandatory"/>
+        <NavigationProperty Name="Set" Relationship="test.MainService.HeaderUnionSetParameters_Set" FromRole="HeaderUnionSetParameters" ToRole="HeaderUnionSetType"/>
       </EntityType>
       <Association Name="HeaderParametersParameters_Set">
         <End Role="HeaderParametersParameters" Type="test.MainService.HeaderParametersParameters" Multiplicity="0..1"/>
