@@ -167,6 +167,8 @@ The following OData V2 adapter for CDS specific annotations are supported:
 
 **Service Level**:
 
+- `@protocol: [{ kind: 'odata-v2', path: '<path>' }]`: Specifies an additional custom relative OData V2 protocol service path (prepending OData V2 protocol prefix)
+- `@protocol: [{ kind: 'odata-v2', path: '/<path>' }]`: Specifies an additional custom absolute OData V2 protocol service path (ignoring OData V2 protocol prefix)
 - `@cov2ap.ignore`: Exclude service from OData V2 adapter conversion (service is not exposed as OData V2 service)
 
 **Entity Level**:
@@ -248,6 +250,12 @@ cds.on("bootstrap", (app) =>
   }),
 );
 ```
+
+### Build Task
+
+CDS OData V2 Adapter includes an CDS build task, that allows to prepare the OData V2 EDMX files for MTX sidecar app.
+The build task is automatically active, in case project is running in multi-tenant context including MTX sidecar.  
+It can be deactivated using option `cds.cov2ap.build: false`.
 
 ### Unit-Tests
 

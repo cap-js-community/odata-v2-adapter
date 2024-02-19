@@ -305,16 +305,34 @@ function cov2ap(options = {}) {
   }
 
   cds.on("serving", (service) => {
-    const isOData = Object.keys(service._adapters).find((adapter) => adapter.startsWith("odata"));
+    const isOData = isServedViaOData(service);
     if (!isOData) {
       return;
     }
+
+    const odataV2Path = serviceODataV2Path(service);
+    const odataV4Path = serviceODataV4Path(service);
+    const protocolPath = `${sourcePath}${sourceServicePath(odataV4Path)}`;
+    let endpointPath = protocolPath;
+
+    // Protocol re-routing
+    if (odataV2Path && protocolPath !== odataV2Path) {
+      endpointPath = endpointPath.replace(protocolPath, odataV2Path);
+      router.all([`${odataV2Path}`, `${odataV2Path}/*`], (req, res, next) => {
+        req.url = req.url.replace(odataV2Path, protocolPath);
+        req.originalUrl = req.url;
+        req.endpointRewrite = (url) => {
+          return url.replace(protocolPath, odataV2Path);
+        };
+        next();
+      });
+    }
+
     const provider = (entity, endpoint) => {
       if (endpoint && !endpoint.kind.startsWith("odata")) {
         return;
       }
-      const path = serviceODataV4Path(service);
-      const href = `${sourcePath}${sourceServicePath(path)}/${entity || "$metadata"}`;
+      const href = `${endpointPath}/${entity || "$metadata"}`;
       return { href, name: `${entity || "$metadata"} (V2)`, title: "OData V2" };
     };
     service.$linkProviders = service.$linkProviders || [];
@@ -338,7 +356,7 @@ function cov2ap(options = {}) {
     }
   });
 
-  router.use(`/${path}/*`, async (req, res, next) => {
+  async function routeInitRequest(req, res, next) {
     req.now = new Date();
     req.contextId =
       req.headers["x-correlation-id"] ||
@@ -383,9 +401,9 @@ function cov2ap(options = {}) {
       logError(req, "Authorization", err);
     }
     next();
-  });
+  }
 
-  router.get(`/${path}/*\\$metadata`, async (req, res) => {
+  async function routeGetMetadata(req, res) {
     let serviceValid = true;
     try {
       const urlPath = targetUrl(req);
@@ -468,213 +486,200 @@ function cov2ap(options = {}) {
         res.status(404).send("Not Found");
       }
     }
-  });
+  }
 
-  router.use(
-    `/${path}/*`,
+  async function routeBodyParser(req, res, next) {
+    const contentType = req.header("content-type");
+    if (!contentType) {
+      return next();
+    }
 
-    // Body Parsers
-    (req, res, next) => {
-      const contentType = req.header("content-type");
-      if (!contentType) {
-        return next();
-      }
+    if (isApplicationJSON(contentType)) {
+      express.json({ limit: bodyParserLimit })(req, res, next);
+    } else if (isXML(contentType)) {
+      bodyParser.xml({
+        limit: bodyParserLimit,
+        xmlParseOptions: {
+          tagNameProcessors: [xml2js.processors.stripPrefix],
+        },
+      })(req, res, next);
+    } else if (isMultipartMixed(contentType)) {
+      express.text({ type: "multipart/mixed", limit: bodyParserLimit })(req, res, next);
+    } else {
+      req.checkUploadBinary = req.method === "POST";
+      next();
+    }
+  }
 
-      if (isApplicationJSON(contentType)) {
-        express.json({ limit: bodyParserLimit })(req, res, next);
-      } else if (isXML(contentType)) {
-        bodyParser.xml({
-          limit: bodyParserLimit,
-          xmlParseOptions: {
-            tagNameProcessors: [xml2js.processors.stripPrefix],
-          },
-        })(req, res, next);
-      } else if (isMultipartMixed(contentType)) {
-        express.text({ type: "multipart/mixed", limit: bodyParserLimit })(req, res, next);
+  async function routeSetContext(req, res, next) {
+    try {
+      const { csn } = await getMetadata(req);
+      req.csn = csn;
+    } catch (err) {
+      // Error
+      logError(req, "Request", err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    try {
+      const service = serviceFromRequest(req);
+      req.base = base;
+      req.service = service.name;
+      req.servicePath = service.path;
+      req.serviceAbsolute = service.absolute;
+      req.context = {};
+      req.contexts = [];
+      req.contentId = {};
+      req.lookupContext = {};
+      next();
+    } catch (err) {
+      // Error
+      if (err.statusCode === 400) {
+        logWarn(req, "Request", err);
       } else {
-        req.checkUploadBinary = req.method === "POST";
-        next();
-      }
-    },
-
-    // Inject Context
-    async (req, res, next) => {
-      try {
-        const { csn } = await getMetadata(req);
-        req.csn = csn;
-      } catch (err) {
-        // Error
         logError(req, "Request", err);
-        res.status(500).send("Internal Server Error");
-        return;
       }
+      // Trace
+      logWarn(req, "Request", "Request with Error", {
+        method: req.method,
+        url: req.originalUrl,
+        target,
+      });
+      if (err.statusCode) {
+        res.status(err.statusCode).send(err.message);
+      } else {
+        res.status(500).send("Internal Server Error");
+      }
+    }
+  }
+
+  async function routeFileUpload(req, res, next) {
+    if (!req.checkUploadBinary) {
+      return next();
+    }
+
+    const urlPath = targetUrl(req);
+    const url = parseUrl(urlPath, req);
+    const definition = contextFromUrl(url, req);
+    if (!definition) {
+      return next();
+    }
+    convertUrl(url, req);
+    const elements = definitionElements(definition);
+    const mediaDataElementName =
+      findElementByAnnotation(elements, "@Core.MediaType") ||
+      findElementByType(elements, DataTypeOData._Binary, req) ||
+      findElementByType(elements, DataTypeOData.Binary, req);
+    if (!mediaDataElementName) {
+      return next();
+    }
+
+    const handleMediaEntity = async (contentType, filename, headers = {}) => {
       try {
-        const service = serviceFromRequest(req);
-        req.base = base;
-        req.service = service.name;
-        req.servicePath = service.path;
-        req.serviceAbsolute = service.absolute;
-        req.context = {};
-        req.contexts = [];
-        req.contentId = {};
-        req.lookupContext = {};
+        contentType = contentType || "application/octet-stream";
+        const body = {};
+        // Custom body
+        const caseInsensitiveElements = Object.keys(elements).reduce((result, name) => {
+          result[name.toLowerCase()] = elements[name];
+          return result;
+        }, {});
+        Object.keys(headers).forEach((name) => {
+          const element = caseInsensitiveElements[name.toLowerCase()];
+          if (element) {
+            const value = convertDataTypeToV4(headers[name], elementType(element, req), definition, headers);
+            body[element.name] = decodeHeaderValue(definition, element, element.name, value);
+          }
+        });
+        const mediaDataElement = elements[mediaDataElementName];
+        const mediaTypeElementName =
+          (mediaDataElement["@Core.MediaType"] && mediaDataElement["@Core.MediaType"]["="]) ||
+          findElementByAnnotation(elements, "@Core.IsMediaType");
+        if (mediaTypeElementName) {
+          body[mediaTypeElementName] = contentType;
+        }
+        const contentDispositionFilenameElementName =
+          findElementValueByAnnotation(elements, "@Core.ContentDisposition.Filename") ||
+          findElementValueByAnnotation(elements, "@Common.ContentDisposition.Filename");
+        if (contentDispositionFilenameElementName && filename) {
+          const element = elements[contentDispositionFilenameElementName];
+          body[contentDispositionFilenameElementName] = decodeHeaderValue(definition, element, element.name, filename);
+        }
+        const postUrl = target + url.pathname;
+        const postHeaders = propagateHeaders(req, {
+          ...headers,
+          "content-type": "application/json",
+        });
+        delete postHeaders["transfer-encoding"];
+
+        // Trace
+        traceRequest(req, "ProxyRequest", "POST", postUrl, postHeaders, body);
+
+        const postBody = JSON.stringify(body);
+        postHeaders["content-length"] = postBody.length;
+        const response = await fetch(postUrl, {
+          method: "POST",
+          headers: postHeaders,
+          body: postBody,
+        });
+        const responseBody = await response.json();
+        const responseHeaders = convertToNodeHeaders(response.headers);
+        if (!response.ok) {
+          res
+            .status(response.status)
+            .set({
+              "content-type": "application/json",
+            })
+            .send(convertResponseError(responseBody, responseHeaders, definition, req));
+          return;
+        }
+
+        // Rewrite
+        req.method = "PUT";
+        req.originalUrl += `(${entityKey(responseBody, definition, elements, req)})/${mediaDataElementName}`;
+        req.baseUrl = req.originalUrl;
+        req.overwriteResponse = {
+          kind: "uploadBinary",
+          statusCode: response.status,
+          headers: responseHeaders,
+          body: responseBody,
+        };
+
+        // Trace
+        traceResponse(req, "ProxyResponse", response.status, response.statusText, responseHeaders, responseBody);
+
         next();
       } catch (err) {
         // Error
-        if (err.statusCode === 400) {
-          logWarn(req, "Request", err);
-        } else {
-          logError(req, "Request", err);
-        }
-        // Trace
-        logWarn(req, "Request", "Request with Error", {
-          method: req.method,
-          url: req.originalUrl,
-          target,
-        });
-        if (err.statusCode) {
-          res.status(err.statusCode).send(err.message);
-        } else {
-          res.status(500).send("Internal Server Error");
-        }
+        logError(req, "FileUpload", err);
+        res.status(500).send("Internal Server Error");
       }
-    },
+    };
 
-    // File Upload
-    async (req, res, next) => {
-      if (!req.checkUploadBinary) {
-        return next();
-      }
-
-      const urlPath = targetUrl(req);
-      const url = parseUrl(urlPath, req);
-      const definition = contextFromUrl(url, req);
-      if (!definition) {
-        return next();
-      }
-      convertUrl(url, req);
-      const elements = definitionElements(definition);
-      const mediaDataElementName =
-        findElementByAnnotation(elements, "@Core.MediaType") ||
-        findElementByType(elements, DataTypeOData._Binary, req) ||
-        findElementByType(elements, DataTypeOData.Binary, req);
-      if (!mediaDataElementName) {
-        return next();
-      }
-
-      const handleMediaEntity = async (contentType, filename, headers = {}) => {
-        try {
-          contentType = contentType || "application/octet-stream";
-          const body = {};
-          // Custom body
-          const caseInsensitiveElements = Object.keys(elements).reduce((result, name) => {
-            result[name.toLowerCase()] = elements[name];
-            return result;
-          }, {});
-          Object.keys(headers).forEach((name) => {
-            const element = caseInsensitiveElements[name.toLowerCase()];
-            if (element) {
-              const value = convertDataTypeToV4(headers[name], elementType(element, req), definition, headers);
-              body[element.name] = decodeHeaderValue(definition, element, element.name, value);
-            }
-          });
-          const mediaDataElement = elements[mediaDataElementName];
-          const mediaTypeElementName =
-            (mediaDataElement["@Core.MediaType"] && mediaDataElement["@Core.MediaType"]["="]) ||
-            findElementByAnnotation(elements, "@Core.IsMediaType");
-          if (mediaTypeElementName) {
-            body[mediaTypeElementName] = contentType;
-          }
-          const contentDispositionFilenameElementName =
-            findElementValueByAnnotation(elements, "@Core.ContentDisposition.Filename") ||
-            findElementValueByAnnotation(elements, "@Common.ContentDisposition.Filename");
-          if (contentDispositionFilenameElementName && filename) {
-            const element = elements[contentDispositionFilenameElementName];
-            body[contentDispositionFilenameElementName] = decodeHeaderValue(
-              definition,
-              element,
-              element.name,
-              filename,
-            );
-          }
-          const postUrl = target + url.pathname;
-          const postHeaders = propagateHeaders(req, {
-            ...headers,
-            "content-type": "application/json",
-          });
-          delete postHeaders["transfer-encoding"];
-
-          // Trace
-          traceRequest(req, "ProxyRequest", "POST", postUrl, postHeaders, body);
-
-          const postBody = JSON.stringify(body);
-          postHeaders["content-length"] = postBody.length;
-          const response = await fetch(postUrl, {
-            method: "POST",
-            headers: postHeaders,
-            body: postBody,
-          });
-          const responseBody = await response.json();
-          const responseHeaders = convertToNodeHeaders(response.headers);
-          if (!response.ok) {
-            res
-              .status(response.status)
-              .set({
-                "content-type": "application/json",
-              })
-              .send(convertResponseError(responseBody, responseHeaders, definition, req));
-            return;
-          }
-
-          // Rewrite
-          req.method = "PUT";
-          req.originalUrl += `(${entityKey(responseBody, definition, elements, req)})/${mediaDataElementName}`;
-          req.baseUrl = req.originalUrl;
-          req.overwriteResponse = {
-            kind: "uploadBinary",
-            statusCode: response.status,
-            headers: responseHeaders,
-            body: responseBody,
-          };
-
-          // Trace
-          traceResponse(req, "ProxyResponse", response.status, response.statusText, responseHeaders, responseBody);
-
-          next();
-        } catch (err) {
-          // Error
-          logError(req, "FileUpload", err);
-          res.status(500).send("Internal Server Error");
-        }
-      };
-
-      const headers = req.headers;
-      if (isMultipartFormData(headers["content-type"])) {
-        fileUpload(req, res, async () => {
-          await handleMediaEntity(
-            req.body && req.body["content-type"],
-            req.body &&
-              (req.body["slug"] ||
-                req.body["filename"] ||
-                contentDispositionFilename(req.body) ||
-                contentDispositionFilename(headers) ||
-                req.body["name"]),
-            req.body,
-          );
-        });
-      } else {
+    const headers = req.headers;
+    if (isMultipartFormData(headers["content-type"])) {
+      fileUpload(req, res, async () => {
         await handleMediaEntity(
-          headers["content-type"],
-          headers["slug"] || headers["filename"] || contentDispositionFilename(headers) || headers["name"],
-          headers,
+          req.body && req.body["content-type"],
+          req.body &&
+            (req.body["slug"] ||
+              req.body["filename"] ||
+              contentDispositionFilename(req.body) ||
+              contentDispositionFilename(headers) ||
+              req.body["name"]),
+          req.body,
         );
-      }
-    },
-  );
+      });
+    } else {
+      await handleMediaEntity(
+        headers["content-type"],
+        headers["slug"] || headers["filename"] || contentDispositionFilename(headers) || headers["name"],
+        headers,
+      );
+    }
+  }
 
-  // Proxy Middleware
-  function setupProxyMiddleware() {
-    return createProxyMiddleware({
+  function bindRoutes() {
+    const routeMiddleware = createProxyMiddleware({
       target,
       changeOrigin: true,
       selfHandleResponse: true,
@@ -686,18 +691,19 @@ function cov2ap(options = {}) {
         return cds.log("cov2ap");
       },
     });
+    router.use(`/${path}/*`, routeInitRequest);
+    router.get(`/${path}/*\\$metadata`, routeGetMetadata);
+    router.use(`/${path}/*`, routeBodyParser, routeSetContext, routeFileUpload, routeMiddleware);
   }
 
-  if (target === "auto") {
-    target = defaultTarget;
-    cds.on("listening", ({ server, url }) => {
+  cds.on("listening", ({ server, url }) => {
+    if (target === "auto") {
+      target = defaultTarget;
       port = server.address().port;
       target = url;
-      router.use(`/${path}/*`, setupProxyMiddleware());
-    });
-  } else {
-    router.use(`/${path}/*`, setupProxyMiddleware());
-  }
+    }
+    bindRoutes();
+  });
 
   function contentDispositionFilename(headers) {
     const contentDispositionHeader = headers["content-disposition"] || headers["Content-Disposition"];
@@ -859,6 +865,15 @@ function cov2ap(options = {}) {
       valid: service.valid,
       absolute: service.absolute,
     };
+  }
+
+  function serviceODataV2Path(service) {
+    if (Array.isArray(service.endpoints)) {
+      const odataV2Endpoint = service.endpoints.find((endpoint) => ["odata-v2"].includes(endpoint.kind));
+      if (odataV2Endpoint) {
+        return odataV2Endpoint.path;
+      }
+    }
   }
 
   function serviceODataV4Path(service) {
@@ -3875,7 +3890,8 @@ function cov2ap(options = {}) {
         serviceUri += `/${parts.join("/")}`;
       }
     } else {
-      serviceUri += `${sourcePath}/${sourceServicePath(req.servicePath)}`;
+      const endpointPath = `${sourcePath}/${sourceServicePath(req.servicePath)}`;
+      serviceUri += (req.endpointRewrite && req.endpointRewrite(endpointPath)) || endpointPath;
     }
     req.context.serviceUri = serviceUri.endsWith("/") ? serviceUri : `${serviceUri}/`;
     return req.context.serviceUri;

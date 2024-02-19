@@ -14,6 +14,7 @@ using from './navigate';
 using from './passenger';
 using from './path';
 using from './rest';
+using from './task-provider';
 using from './todo';
 using from './zprotocols';
 
