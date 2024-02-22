@@ -14,10 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Fix build task in case of compilation errors
-- Fix Build task to also include pre-compiled OData V2 EDMX files in `srv`
-- Fix Build task for Java
 - Serve OData V2 Adapter routes always after CDS listening (also for non-plugin case)
+- Fix build task in case of compilation errors
+- Fix build task to also include pre-compiled OData V2 EDMX files in `srv`
+- Fix build task for Java
 
 ## Version 1.12.5 - 2024-02-09
 
