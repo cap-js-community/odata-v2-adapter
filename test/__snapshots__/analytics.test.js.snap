@@ -91,7 +91,7 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="country" Type="Edm.String" sap:aggregation-role="dimension" sap:label="Country/Region"/>
         <Property Name="currency" Type="Edm.String" sap:aggregation-role="dimension" sap:label="Currency"/>
         <Property Name="stock" Type="Edm.Int32" sap:aggregation-role="measure" sap:label="Stock"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12" sap:aggregation-role="measure" sap:label="Price"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2" sap:aggregation-role="measure" sap:label="Price"/>
         <NavigationProperty Name="Items" Relationship="test.AnalyticsService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
       </EntityType>
       <EntityType Name="HeaderItem">
@@ -136,7 +136,7 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="country" Type="Edm.String" sap:aggregation-role="dimension"/>
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32" sap:aggregation-role="measure"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12" sap:aggregation-role="measure"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2" sap:aggregation-role="measure"/>
         <NavigationProperty Name="Items" Relationship="test.AnalyticsService.HeaderDisabledAnalytics_Items" FromRole="HeaderDisabledAnalytics" ToRole="HeaderItem"/>
       </EntityType>
       <EntityType Name="Country">
@@ -183,7 +183,7 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="country" Type="Edm.String" Nullable="false"/>
         <Property Name="currency" Type="Edm.String" Nullable="false"/>
         <Property Name="stock" Type="Edm.Int32"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
       </EntityType>
       <EntityType Name="HeaderLine">
         <Key>

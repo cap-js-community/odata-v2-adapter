@@ -408,7 +408,7 @@ exports[`main GET $metadata 1`] = `
         <EntitySet Name="User" EntityType="test.MainService.User"/>
         <FunctionImport Name="User_Pay" m:HttpMethod="POST" sap:action-for="test.MainService.User">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
-          <Parameter Name="cost" Type="Edm.Decimal" Scale="2" Precision="10" Mode="In" Nullable="true"/>
+          <Parameter Name="cost" Type="Edm.Decimal" Precision="10" Scale="2" Mode="In" Nullable="true"/>
         </FunctionImport>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
@@ -644,7 +644,7 @@ exports[`main GET $metadata 1`] = `
         <Property Name="country" Type="Edm.String"/>
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
         <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
         <NavigationProperty Name="FirstItem" Relationship="test.MainService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
         <Property Name="FirstItem_ID" Type="Edm.Guid"/>
@@ -881,7 +881,7 @@ exports[`main GET $metadata 1`] = `
         <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
         <Property Name="name" Type="Edm.String"/>
-        <Property Name="cost" Type="Edm.Decimal" Scale="2" Precision="10"/>
+        <Property Name="cost" Type="Edm.Decimal" Precision="10" Scale="2"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -1914,7 +1914,7 @@ exports[`main GET $metadata localized 1`] = `
         <EntitySet Name="User" EntityType="test.MainService.User"/>
         <FunctionImport Name="User_Pay" m:HttpMethod="POST" sap:action-for="test.MainService.User">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
-          <Parameter Name="cost" Type="Edm.Decimal" Scale="2" Precision="10" Mode="In" Nullable="true"/>
+          <Parameter Name="cost" Type="Edm.Decimal" Precision="10" Scale="2" Mode="In" Nullable="true"/>
         </FunctionImport>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
@@ -2150,7 +2150,7 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="country" Type="Edm.String"/>
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
         <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
         <NavigationProperty Name="FirstItem" Relationship="test.MainService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
         <Property Name="FirstItem_ID" Type="Edm.Guid"/>
@@ -2387,7 +2387,7 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
         <Property Name="name" Type="Edm.String"/>
-        <Property Name="cost" Type="Edm.Decimal" Scale="2" Precision="10"/>
+        <Property Name="cost" Type="Edm.Decimal" Precision="10" Scale="2"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -3420,7 +3420,7 @@ exports[`main GET $metadata localized 2`] = `
         <EntitySet Name="User" EntityType="test.MainService.User"/>
         <FunctionImport Name="User_Pay" m:HttpMethod="POST" sap:action-for="test.MainService.User">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
-          <Parameter Name="cost" Type="Edm.Decimal" Scale="2" Precision="10" Mode="In" Nullable="true"/>
+          <Parameter Name="cost" Type="Edm.Decimal" Precision="10" Scale="2" Mode="In" Nullable="true"/>
         </FunctionImport>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
@@ -3656,7 +3656,7 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="country" Type="Edm.String"/>
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
         <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
         <NavigationProperty Name="FirstItem" Relationship="test.MainService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
         <Property Name="FirstItem_ID" Type="Edm.Guid"/>
@@ -3893,7 +3893,7 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
         <Property Name="name" Type="Edm.String"/>
-        <Property Name="cost" Type="Edm.Decimal" Scale="2" Precision="10"/>
+        <Property Name="cost" Type="Edm.Decimal" Precision="10" Scale="2"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -4926,7 +4926,7 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <EntitySet Name="User" EntityType="test.MainService.User"/>
         <FunctionImport Name="User_Pay" m:HttpMethod="POST" sap:action-for="test.MainService.User">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
-          <Parameter Name="cost" Type="Edm.Decimal" Scale="2" Precision="10" Mode="In" Nullable="true"/>
+          <Parameter Name="cost" Type="Edm.Decimal" Precision="10" Scale="2" Mode="In" Nullable="true"/>
         </FunctionImport>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
@@ -5162,7 +5162,7 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="country" Type="Edm.String"/>
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
         <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
         <NavigationProperty Name="FirstItem" Relationship="test.MainService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
         <Property Name="FirstItem_ID" Type="Edm.Guid"/>
@@ -5399,7 +5399,7 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
         <Property Name="name" Type="Edm.String"/>
-        <Property Name="cost" Type="Edm.Decimal" Scale="2" Precision="10"/>
+        <Property Name="cost" Type="Edm.Decimal" Precision="10" Scale="2"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
@@ -6432,7 +6432,7 @@ exports[`main GET $metadata with query options 1`] = `
         <EntitySet Name="User" EntityType="test.MainService.User"/>
         <FunctionImport Name="User_Pay" m:HttpMethod="POST" sap:action-for="test.MainService.User">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
-          <Parameter Name="cost" Type="Edm.Decimal" Scale="2" Precision="10" Mode="In" Nullable="true"/>
+          <Parameter Name="cost" Type="Edm.Decimal" Precision="10" Scale="2" Mode="In" Nullable="true"/>
         </FunctionImport>
         <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
@@ -6668,7 +6668,7 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="country" Type="Edm.String"/>
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
-        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="12"/>
+        <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
         <NavigationProperty Name="Items" Relationship="test.MainService.HeaderItem_header" FromRole="Header" ToRole="HeaderItem"/>
         <NavigationProperty Name="FirstItem" Relationship="test.MainService.Header_FirstItem" FromRole="Header" ToRole="HeaderItem"/>
         <Property Name="FirstItem_ID" Type="Edm.Guid"/>
@@ -6905,7 +6905,7 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
         <Property Name="name" Type="Edm.String"/>
-        <Property Name="cost" Type="Edm.Decimal" Scale="2" Precision="10"/>
+        <Property Name="cost" Type="Edm.Decimal" Precision="10" Scale="2"/>
       </EntityType>
       <EntityType Name="context_Name_space_v2">
         <Key>
