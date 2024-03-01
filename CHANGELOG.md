@@ -7,13 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Version 1.12.6 - 2024-03-04
 
-### Added
+### Fixed
 
 - Support OData V2 CDS protocol annotation via (`@protocol: [{ kind: 'odata-v2', path: '<path>' }]`)
 - Expose OData V2 service at specified `odata-v2` protocol path, in addition to default endpoint
-
-### Fixed
-
+- Make pipeline stream errors only warnings as root cause is already logged
 - Serve OData V2 Adapter routes always after CDS listening (also for non-plugin case)
 - Fix build task in case of compilation errors
 - Fix build task to also include pre-compiled OData V2 EDMX files in `srv`

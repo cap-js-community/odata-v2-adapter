@@ -2964,7 +2964,7 @@ function cov2ap(options = {}) {
     });
     pipeline(streamRes, res, (err) => {
       if (err) {
-        logError(req, "StreamPipeline", err);
+        logWarn(req, "StreamPipeline", err);
       }
     });
 
