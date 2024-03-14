@@ -62,8 +62,8 @@
   "devDependencies": {
     "@cap-js/sqlite": "^1.5.1",
     "@cap-js-community/odata-v2-adapter": "./",
-    "@sap/cds": "^7.7.0",
-    "@sap/cds-dk": "^7.7.1",
+    "@sap/cds": "^7.7.2",
+    "@sap/cds-dk": "^7.7.2",
     "@sap/cds-hana": "^2.0.0",
     "@types/express": "^4.17.21",
     "compression": "^1.7.4",
