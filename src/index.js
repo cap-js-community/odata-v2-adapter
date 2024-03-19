@@ -2636,7 +2636,7 @@ function cov2ap(options = {}) {
         value = `${match[4] || "00"}:${match[5] || "00"}:${match[6] || "00"}`;
       }
     } else if (["cds.Date", "cds.DateTime", "cds.Timestamp"].includes(type)) {
-      const match = value.match(/\/Date\((.*)\)\//is);
+      const match = value.match(/\\?\/Date\((.*)\)\\?\//is);
       const ticksAndOffset = match && match.pop();
       if (ticksAndOffset !== undefined && ticksAndOffset !== null) {
         value = new Date(calculateTicksOffsetSum(ticksAndOffset)).toISOString(); // always UTC

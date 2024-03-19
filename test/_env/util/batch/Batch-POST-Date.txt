@@ -1,0 +1,8 @@
+--boundary
+Content-Type: application/http
+
+POST PlannedTasks HTTP/1.1
+Content-Type: application/json
+
+{"task_ID":1,"person_ID":1,"startDate":"2024-03-19T00:00:00Z","endDate":"2024-03-19T00:00:00Z","keyDate":"/Date(1710806400000)/","keyTime":"PT12H34M56S","keyDateEdit":"/Date(1710806400000)/","keyTimeEdit":"PT12H34M56S","tentative":true}
+--boundary--
