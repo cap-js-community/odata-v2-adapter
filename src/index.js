@@ -170,15 +170,15 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} options.returnPrimitiveNested Function import return structure of primitive type (non collection) is nested using function import name. Default is true.
  * @param {boolean} options.returnPrimitivePlain Function import return value of primitive type is rendered as plain JSON value. Default is true.
  * @param {string} options.messageTargetDefault Specifies the message target default, if target is undefined. Default is '/#TRANSIENT#'.
- * @param {boolean} options.caseInsensitive: Transforms search functions i.e. substringof, startswith, endswith to case-insensitive variant. Default is false.
- * @param {boolean} options.propagateMessageToDetails: Propagates root error or message always to details section. Default is false.
- * @param {boolean} options.contentDisposition: Default content disposition for media streams (inline, attachment), if not available or calculated. Default is 'attachment'.
- * @param {boolean} options.calcContentDisposition: Calculate content disposition for media streams even if already available. Default is false.
- * @param {boolean} options.quoteSearch: Specifies if search expression is quoted automatically. Default is true.
- * @param {boolean} options.fixDraftRequests: Specifies if unsupported draft requests are converted to a working version. Default is false.
- * @param {string} options.changesetDeviationLogLevel: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
- * @param {string} options.defaultFormat: Specifies the default entity response format (json, atom). Default is 'json'.
- * @param {boolean} options.processForwardedHeaders: Specifies if 'x-forwarded' headers are processed. Default is 'true'.
+ * @param {boolean} options.caseInsensitive Transforms search functions i.e. substringof, startswith, endswith to case-insensitive variant. Default is false.
+ * @param {boolean} options.propagateMessageToDetails Propagates root error or message always to details section. Default is false.
+ * @param {boolean} options.contentDisposition Default content disposition for media streams (inline, attachment), if not available or calculated. Default is 'attachment'.
+ * @param {boolean} options.calcContentDisposition Calculate content disposition for media streams even if already available. Default is false.
+ * @param {boolean} options.quoteSearch Specifies if search expression is quoted automatically. Default is true.
+ * @param {boolean} options.fixDraftRequests Specifies if unsupported draft requests are converted to a working version. Default is false.
+ * @param {string} options.changesetDeviationLogLevel Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
+ * @param {string} options.defaultFormat Specifies the default entity response format (json, atom). Default is 'json'.
+ * @param {boolean} options.processForwardedHeaders Specifies if 'x-forwarded' headers are processed. Default is 'true'.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
