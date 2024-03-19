@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Convert OData V2 date string more relaxed allowing optional backslashes before forward slashes 
+- Convert OData V2 date string more relaxed allowing optional backslashes before forward slashes
 
 ## Version 1.12.7 - 2024-03-06
 
