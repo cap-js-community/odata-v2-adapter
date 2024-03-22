@@ -4375,36 +4375,38 @@ function cov2ap(options = {}) {
       for (const key in definition.elements || {}) {
         keys.push(key);
       }
-      const elements = keys.reduce((elements, key) => {
-        const element = definition.elements[key];
-        if (element["@cds.api.ignore"]) {
+      const elements = Object.freeze(
+        keys.reduce((elements, key) => {
+          const element = definition.elements[key];
+          if (element["@cds.api.ignore"]) {
+            return elements;
+          }
+          elements[key] = element;
+          if (
+            (element.type === "cds.Composition" || element.type === "cds.Association") &&
+            element.keys &&
+            element._target
+          ) {
+            element.keys.forEach((key) => {
+              const targetKey = key.ref[0];
+              const foreignKey = `${element.name}_${targetKey}`;
+              if (!elements[foreignKey]) {
+                elements[foreignKey] = {
+                  key: element.key,
+                  type: element._target.elements[targetKey].type,
+                  name: foreignKey,
+                  parent: element.parent,
+                  kind: element.kind,
+                };
+              }
+            });
+          }
           return elements;
-        }
-        elements[key] = element;
-        if (
-          (element.type === "cds.Composition" || element.type === "cds.Association") &&
-          element.keys &&
-          element._target
-        ) {
-          element.keys.forEach((key) => {
-            const targetKey = key.ref[0];
-            const foreignKey = `${element.name}_${targetKey}`;
-            if (!elements[foreignKey]) {
-              elements[foreignKey] = {
-                key: element.key,
-                type: element._target.elements[targetKey].type,
-                name: foreignKey,
-                parent: element.parent,
-                kind: element.kind,
-              };
-            }
-          });
-        }
-        return elements;
-      }, {});
+        }, {}),
+      );
       if (cacheDefinitions) {
         Object.defineProperty(definition, cacheSymbol, {
-          value: Object.freeze(elements),
+          value: elements,
           writable: false,
           configurable: true,
         });
