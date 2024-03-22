@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Convert OData V2 date string more relaxed allowing optional backslashes before forward slashes
+- Freeze definition element cache to prevent modification and store is as symbol
+- Option to disable definition cache via `cacheDefinitions: false`
+- ESLint interface typings correctly
 
 ## Version 1.12.7 - 2024-03-06
 

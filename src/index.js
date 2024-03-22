@@ -17,6 +17,7 @@ const xmlParser = new xml2js.Parser({
   async: false,
   tagNameProcessors: [xml2js.processors.stripPrefix],
 });
+const cacheSymbol = Symbol("cov2ap");
 
 const SeverityMap = {
   1: "success",
@@ -179,6 +180,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} options.changesetDeviationLogLevel Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
  * @param {string} options.defaultFormat Specifies the default entity response format (json, atom). Default is 'json'.
  * @param {boolean} options.processForwardedHeaders Specifies if 'x-forwarded' headers are processed. Default is 'true'.
+ * @param {boolean} options.cacheDefinitions Specifies if the definition elements are cached. Default is 'true'.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
@@ -260,6 +262,7 @@ function cov2ap(options = {}) {
   const changesetDeviationLogLevel = optionWithFallback("changesetDeviationLogLevel", "info");
   const defaultFormat = optionWithFallback("defaultFormat", "json");
   const processForwardedHeaders = optionWithFallback("processForwardedHeaders", true);
+  const cacheDefinitions = optionWithFallback("cacheDefinitions", true);
 
   if (cds.env.protocols) {
     cds.env.protocols["odata-v2"] = {
@@ -292,12 +295,12 @@ function cov2ap(options = {}) {
     if (metadataCache[tenant]) {
       const tenantCache = metadataCache[tenant];
       delete metadataCache[tenant];
-      const csn = await callCached(tenantCache, "csn");
-      if (csn) {
-        for (const name in csn.definitions) {
-          const definition = csn.definitions[name];
-          if (definition.elements) {
-            delete definition.__elements__;
+      if (cacheDefinitions) {
+        const csn = await callCached(tenantCache, "csn");
+        if (csn) {
+          for (const name in csn.definitions) {
+            const definition = csn.definitions[name];
+            delete definition[cacheSymbol];
           }
         }
       }
@@ -4362,15 +4365,17 @@ function cov2ap(options = {}) {
 
   function definitionElements(definition) {
     if (definition && definition.elements) {
-      if (definition.__elements__) {
-        return definition.__elements__;
+      if (cacheDefinitions) {
+        if (definition.hasOwnProperty(cacheSymbol)) {
+          return definition[cacheSymbol];
+        }
       }
       // Collect keys of prototype hierarchy
       const keys = [];
       for (const key in definition.elements || {}) {
         keys.push(key);
       }
-      const apiElements = keys.reduce((elements, key) => {
+      const elements = keys.reduce((elements, key) => {
         const element = definition.elements[key];
         if (element["@cds.api.ignore"]) {
           return elements;
@@ -4397,8 +4402,14 @@ function cov2ap(options = {}) {
         }
         return elements;
       }, {});
-      Object.defineProperty(definition, "__elements__", { value: apiElements, writable: true, configurable: true });
-      return definition.__elements__;
+      if (cacheDefinitions) {
+        Object.defineProperty(definition, cacheSymbol, {
+          value: Object.freeze(elements),
+          writable: false,
+          configurable: true,
+        });
+      }
+      return elements;
     }
     return {};
   }

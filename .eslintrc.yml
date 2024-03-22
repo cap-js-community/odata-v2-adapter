@@ -3,7 +3,7 @@ root: true
 #  https://eslint.org/docs/rules/
 env:
   node: true
-  es2020: true
+  es2023: true
 globals:
   sap: false
   SELECT: false
@@ -15,9 +15,12 @@ globals:
   STREAM: false
 plugins:
   - jest
+  - "@typescript-eslint"
 extends:
   - eslint:recommended
   - plugin:jest/recommended
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended
   - prettier
 rules:
   no-unused-vars: [off]
@@ -27,7 +30,9 @@ rules:
   no-eval: [error] # security
   no-implied-eval: [error] # security
   no-console: [error] # ops
-  strict: [error]
+  strict: [off]
   curly: [error]
   no-constant-condition: [error, { checkLoops: false }]
   no-prototype-builtins: off
+  "@typescript-eslint/no-unused-vars": [off]
+  "@typescript-eslint/no-var-requires": [off]

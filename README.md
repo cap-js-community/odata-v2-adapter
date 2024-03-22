@@ -57,6 +57,7 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **changesetDeviationLogLevel**: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is `'info'`.
 - **defaultFormat**: Specifies the default entity response format (json, atom). Default is `'json'`.
 - **processForwardedHeaders** Specifies if the `x-forwarded` headers are processed. Default is `true`.
+- **cacheDefinitions** Specifies if the definition elements are cached. Default is `true`.
 
 > All OData V2 adapter for CDS options can also be specified as part of CDS project-specific configuration
 > under section `cds.cov2ap` and accessed during runtime via `cds.env.cov2ap`.

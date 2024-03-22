@@ -1,4 +1,5 @@
 "use strict";
+
 const cds = require("@sap/cds");
 
 const cov2ap = require("./src");
