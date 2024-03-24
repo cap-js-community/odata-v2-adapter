@@ -22,4 +22,23 @@ describe("rest", () => {
     expect(response.body).toBeDefined();
     expect(response.text).toMatchSnapshot();
   });
+
+  it("GET Entity cache via prototype works", async () => {
+    let response = await util.callWrite(request, "/odata/v2/cache/Header", {
+      name: "Test"
+    }, false, {
+      accept: "application/xml",
+    });
+    expect(response.status).toBe(201)
+    expect(response.body).toBeDefined();
+
+    response = await util.callWrite(request, "/odata/v2/cache/HeaderMore", {
+      name: "Test",
+      dueAt: "/Date(1711152000000)/"
+    }, false, {
+      accept: "application/xml",
+    });
+    expect(response.status).toBe(201)
+    expect(response.body).toBeDefined();
+  });
 });
