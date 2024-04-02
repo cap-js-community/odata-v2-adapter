@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Adopt new http proxy middleware 
+- Adopt new http proxy middleware
 
 ## Version 1.12.8 - 2024-04-02
 
