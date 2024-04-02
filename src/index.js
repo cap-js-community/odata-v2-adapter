@@ -687,13 +687,14 @@ function cov2ap(options = {}) {
       changeOrigin: true,
       selfHandleResponse: true,
       pathRewrite,
-      onError: convertProxyError,
-      onProxyReq: convertProxyRequest,
-      onProxyRes: convertProxyResponse,
-      logProvider: () => {
-        return cds.log("cov2ap");
+      on: {
+        error: convertProxyError,
+        proxyReq: convertProxyRequest,
+        proxyRes: convertProxyResponse,
       },
+      logger: cds.log("cov2ap"),
     });
+    routeMiddleware.__LEGACY_HTTP_PROXY_MIDDLEWARE__ = true;
     router.use(`/${path}/*`, routeInitRequest);
     router.get(`/${path}/*\\$metadata`, routeGetMetadata);
     router.use(`/${path}/*`, routeBodyParser, routeSetContext, routeFileUpload, routeMiddleware);

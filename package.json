@@ -56,7 +56,7 @@
     "body-parser-xml": "^2.0.5",
     "express": "^4.19.2",
     "express-fileupload": "^1.5.0",
-    "http-proxy-middleware": "^2.0.6",
+    "http-proxy-middleware": "^3.0.0",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
