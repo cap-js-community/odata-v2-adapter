@@ -638,8 +638,8 @@ function cov2ap(options = {}) {
 
         // Rewrite
         req.method = "PUT";
-        req.originalUrl += `(${entityKey(responseBody, definition, elements, req)})/${mediaDataElementName}`;
-        req.baseUrl = req.originalUrl;
+        req.url += `(${entityKey(responseBody, definition, elements, req)})/${mediaDataElementName}`;
+        req.originalUrl = req.url;
         req.overwriteResponse = {
           kind: "uploadBinary",
           statusCode: response.status,
@@ -683,10 +683,9 @@ function cov2ap(options = {}) {
 
   function bindRoutes() {
     const routeMiddleware = createProxyMiddleware({
-      target,
+      target: `${target}/${targetPath}`,
       changeOrigin: true,
       selfHandleResponse: true,
-      pathRewrite,
       on: {
         error: convertProxyError,
         proxyReq: convertProxyRequest,
@@ -694,10 +693,9 @@ function cov2ap(options = {}) {
       },
       logger: cds.log("cov2ap"),
     });
-    routeMiddleware.__LEGACY_HTTP_PROXY_MIDDLEWARE__ = true;
-    router.use(`/${path}/*`, routeInitRequest);
+    router.use(`/${path}`, routeInitRequest);
     router.get(`/${path}/*\\$metadata`, routeGetMetadata);
-    router.use(`/${path}/*`, routeBodyParser, routeSetContext, routeFileUpload, routeMiddleware);
+    router.use(`/${path}`, routeBodyParser, routeSetContext, routeFileUpload, routeMiddleware);
   }
 
   cds.on("listening", ({ server, url }) => {
@@ -747,7 +745,7 @@ function cov2ap(options = {}) {
   }
 
   function serviceFromRequest(req) {
-    const servicePathUrl = normalizeSlashes(req.params["0"]);
+    const servicePathUrl = normalizeSlashes(req.params["0"] || req.url); // wildcard or non-wildcard
     const servicePath = targetPath ? `/${targetPath}${servicePathUrl}` : servicePathUrl;
     const service = {
       name: "",
