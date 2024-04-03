@@ -26,7 +26,7 @@ const SeverityMap = {
   4: "error",
 };
 
-// NOTE: we want to support HANA's SYSUUID, which does not conform to real UUID formats
+// Support HANA's SYSUUID, which does not conform to real UUID formats
 const UUIDLikeRegex = /guid'([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})'/gi;
 // https://www.w3.org/TR/xmlschema11-2/#nt-duDTFrag
 const DurationRegex =
@@ -232,9 +232,8 @@ function cov2ap(options = {}) {
   const sourcePath = `${base ? "/" + base : ""}/${path}`;
   const targetPath = optionWithFallback("targetPath", oDataV4RelativePath);
   const rewritePath = `${base ? "/" + base : ""}${targetPath ? "/" : ""}${targetPath}`;
-  const pathRewrite = { [`^${sourcePath}`]: rewritePath };
   let port = optionWithFallback("port", process.env.PORT || DefaultPort);
-  let defaultTarget = `http://${DefaultHost}:${port}`;
+  const defaultTarget = `http://${DefaultHost}:${port}`;
   let target = optionWithFallback("target", "auto");
   const services = optionWithFallback("services", {});
   const mtxRemote = optionWithFallback("mtxRemote", false);
@@ -409,7 +408,7 @@ function cov2ap(options = {}) {
   async function routeGetMetadata(req, res) {
     let serviceValid = true;
     try {
-      const urlPath = targetUrl(req);
+      const urlPath = targetUrl(req.originalUrl);
       const metadataUrl = URL.parse(urlPath, true);
       let metadataPath = metadataUrl.pathname.substring(0, metadataUrl.pathname.length - 9);
 
@@ -561,7 +560,7 @@ function cov2ap(options = {}) {
       return next();
     }
 
-    const urlPath = targetUrl(req);
+    const urlPath = targetUrl(req.originalUrl);
     const url = parseUrl(urlPath, req);
     const definition = contextFromUrl(url, req);
     if (!definition) {
@@ -683,7 +682,7 @@ function cov2ap(options = {}) {
 
   function bindRoutes() {
     const routeMiddleware = createProxyMiddleware({
-      target: `${target}/${targetPath}`,
+      target: `${target}${rewritePath}`,
       changeOrigin: true,
       selfHandleResponse: true,
       on: {
@@ -4324,13 +4323,8 @@ function cov2ap(options = {}) {
     return value;
   }
 
-  function targetUrl(req) {
-    // Non-batch scenario only
-    let path = req.originalUrl;
-    Object.entries(pathRewrite).forEach(([key, value]) => {
-      path = path.replace(new RegExp(key, "g"), value);
-    });
-    return path;
+  function targetUrl(url) {
+    return url.replace(sourcePath, rewritePath);
   }
 
   function lookupReturnDefinition(returns, req) {
