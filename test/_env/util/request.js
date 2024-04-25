@@ -116,18 +116,19 @@ function callAttach(request, path, file, update, headers, fields) {
 }
 
 function multipartMixedToTextParser(res, callback) {
-  let text = "";
+  const textParts = [];
   res.setEncoding("utf8");
   res.on("data", (chunk) => {
-    text += chunk;
+    textParts.push(chunk.toString());
   });
   res.on("end", () => {
-    res.text = text;
-    callback(null, text);
+    res.text = textParts.join("");
+    callback(null, textParts);
   });
 }
 
 function splitMultipartResponse(body, boundary = "boundary") {
+  body = Array.isArray(body) ? body.join("") : body;
   return body
     .split(new RegExp(`(?:^|\r\n)--${boundary}(?:\r\n|--\r\n$|--$)`))
     .slice(1, -1)

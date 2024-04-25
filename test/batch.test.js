@@ -417,6 +417,6 @@ describe("batch", () => {
   it("Send malformed batch request", async () => {
     const response = await util.callMultipart(request, "/odata/v2/main/$batch", null);
     expect(response.statusCode).toEqual(400);
-    expect(response.body).toEqual("Invalid multipart body");
+    expect(response.body).toEqual(["Invalid multipart body"]);
   });
 });
