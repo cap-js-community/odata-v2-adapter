@@ -419,4 +419,14 @@ describe("batch", () => {
     expect(response.statusCode).toEqual(400);
     expect(response.body).toEqual(["Invalid multipart body"]);
   });
+
+  it("Header 'odata-version' is removed", async () => {
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-POST-ODataVersion.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    const response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    expect(responses.filter((response) => response.statusCode === 201).length).toEqual(1);
+  });
 });
