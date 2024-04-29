@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Adopt new http proxy middleware
 - Remove `odata-version` header from request
+- Remove obsolete documentation about `cds.odata.v2proxy.urlpath` as now derived from protocols
 
 ## Version 1.12.8 - 2024-04-02
 
