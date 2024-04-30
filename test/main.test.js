@@ -3393,21 +3393,21 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text=01234\n5678");
+    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text=01234%0A5678");
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: "01234\n5678",
       },
     });
-    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text='01234\n5678'");
+    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text='01234%0A5678'");
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: "01234\n5678",
       },
     });
-    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text="01234\n5678"`);
+    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text="01234%0A5678"`);
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
@@ -3437,7 +3437,7 @@ describe("main", () => {
         },
       },
     });
-    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text='01234\n56789'");
+    response = await util.callWrite(request, "/odata/v2/main/unboundActionMaxLength?&text='01234%0A56789'");
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
@@ -3488,14 +3488,14 @@ describe("main", () => {
         unboundActionMaxLength: '""""""""""',
       },
     });
-    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text='""""\n"""""'`);
+    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text='""""%0A"""""'`);
     expect(response.statusCode).toEqual(200);
     expect(response.body).toMatchObject({
       d: {
         unboundActionMaxLength: '""""\n"""""',
       },
     });
-    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text='"""""\n"""""'`);
+    response = await util.callWrite(request, `/odata/v2/main/unboundActionMaxLength?&text='"""""%0A"""""'`);
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
