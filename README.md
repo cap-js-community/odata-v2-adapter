@@ -70,9 +70,6 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 > - path => CDS_COV2AP_PATH=odatav2
 > - quoteSearch => quote_search => CDS_COV2AP_QUOTE\_\_SEARCH=false
 
-> Option `cds.odata.v2proxy.urlpath` is available to specify an OData V2 proxy url path
-> different from default `/odata/v2` for CDS core.
-
 ## Advanced
 
 ### Custom Server

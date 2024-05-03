@@ -5,11 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.12.9 - 2024-05-xx
+## Version 1.12.9 - 2024-05-03
 
 ### Fixed
 
 - Adopt new http proxy middleware
+- Remove `odata-version` header from request
+- Remove obsolete documentation about `cds.odata.v2proxy.urlpath` as now derived from protocols
 
 ## Version 1.12.8 - 2024-04-02
 

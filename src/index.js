@@ -1290,6 +1290,8 @@ function cov2ap(options = {}) {
               if (contentId) {
                 req.contentId[`$${contentId}`] = req.context.url;
               }
+              delete headers["odata-version"];
+              delete headers["Odata-Version"];
               delete headers.dataserviceversion;
               delete headers.DataServiceVersion;
               delete headers.maxdataserviceversion;
@@ -1363,10 +1365,14 @@ function cov2ap(options = {}) {
 
       Object.entries(headers).forEach(([name, value]) => {
         if (
-          name === "dataserviceversion" ||
-          name === "DataServiceVersion" ||
-          name === "maxdataserviceversion" ||
-          name === "MaxDataServiceVersion"
+          [
+            "odata-version",
+            "Odata-Version",
+            "dataserviceversion",
+            "DataServiceVersion",
+            "maxdataserviceversion",
+            "MaxDataServiceVersion",
+          ].includes(name)
         ) {
           delete headers[name];
           proxyReq.removeHeader(name);

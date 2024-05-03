@@ -1,0 +1,9 @@
+--boundary
+Content-Type: application/http
+
+POST Header HTTP/1.1
+Content-Type: application/json
+odata-version: 2.0
+
+{"name":"Test – ABC"}
+--boundary--
