@@ -6,7 +6,9 @@ const cov2ap = require("../../../src");
 let credentials = JSON.parse(process.env.HANA_DB_CREDENTIALS || null);
 try {
   credentials = require("../db/default-services").hana[0].credentials;
-} catch {}
+} catch {
+  // ignore
+}
 
 cds.env.requires.db = {
   kind: "hana",

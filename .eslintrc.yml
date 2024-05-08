@@ -26,10 +26,13 @@ rules:
   no-unused-vars: [off]
   require-atomic-updates: [off]
   jest/no-conditional-expect: [off]
+  jest/no-disabled-tests: [off]
+  jest/expect-expect: [off]
   no-restricted-modules: [error, child_process] # security
   no-eval: [error] # security
   no-implied-eval: [error] # security
   no-console: [error] # ops
+  no-useless-escape: [off]
   strict: [off]
   curly: [error]
   no-constant-condition: [error, { checkLoops: false }]

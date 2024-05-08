@@ -112,8 +112,8 @@ describe("batch", () => {
 
     expect(
       third.body.d.results.filter(
-        (result) => result.name === "Test – ABC" && result.Items.results.length === 1 && result.FirstItem === null
-      ).length
+        (result) => result.name === "Test – ABC" && result.Items.results.length === 1 && result.FirstItem === null,
+      ).length,
     ).toEqual(1);
 
     expect(fourth.body.d.results.filter((result) => result.name === "Test – ABC").length).toEqual(1);
@@ -371,7 +371,7 @@ describe("batch", () => {
             },
           },
         },
-      })
+      }),
     );
     expect(first.contentTransferEncoding).toEqual("binary");
     expect(second.body).toEqual(
@@ -386,7 +386,7 @@ describe("batch", () => {
             },
           },
         },
-      })
+      }),
     );
     expect(second.contentTransferEncoding).toEqual("binary");
   });

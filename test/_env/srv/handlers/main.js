@@ -1,5 +1,7 @@
 "use strict";
 
+const cds = require("@sap/cds");
+
 module.exports = (srv) => {
   const { Header, HeaderStream, Book, User } = srv.entities("test.MainService");
 

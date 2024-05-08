@@ -32,7 +32,7 @@ describe("emissions", () => {
               type: "userData.EmissionsCalculatorService.UserPreferences",
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/emissions-calculator/UserPreferences()`,
             },
           },
@@ -45,7 +45,7 @@ describe("emissions", () => {
               type: "userData.EmissionsCalculatorService.UserPreferences",
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/emissions-calculator/UserPreferences()`,
             },
           },

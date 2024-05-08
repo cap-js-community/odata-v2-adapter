@@ -3,5 +3,5 @@ sap.ui.define(["sap/ovp/app/Component"], (AppComponent) =>
     metadata: {
       manifest: "json",
     },
-  })
+  }),
 );

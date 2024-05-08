@@ -42,7 +42,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'ABC'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -54,7 +54,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'CHF'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -66,7 +66,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -78,7 +78,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'U%2FSD'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -90,7 +90,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -103,7 +103,7 @@ describe("analytics", () => {
     });
     response = await util.callRead(
       request,
-      `/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`
+      `/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -111,7 +111,7 @@ describe("analytics", () => {
         __metadata: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
           type: "test.AnalyticsService.Header",
         },
@@ -122,7 +122,7 @@ describe("analytics", () => {
     });
     response = await util.callRead(
       request,
-      `/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'U%2FSD'"},"value":["currency","stock"]}')`
+      `/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'U%2FSD'"},"value":["currency","stock"]}')`,
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -130,7 +130,7 @@ describe("analytics", () => {
         __metadata: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'U%2FSD'"},"value":["currency","stock"]}')`,
           type: "test.AnalyticsService.Header",
         },
@@ -151,7 +151,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"country":"'Germany'","currency":"'EUR'"},"value":["country","currency","stock","price"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -165,7 +165,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"country":"'New%20%22Jersey'","currency":"'ABC'"},"value":["country","currency","stock","price"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -179,7 +179,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"country":"'New%20York'","currency":"'U%2FSD'"},"value":["country","currency","stock","price"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -193,7 +193,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"country":"'Spain'","currency":"'EUR'"},"value":["country","currency","stock","price"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -207,7 +207,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"country":"'Switzerland'","currency":"'CHF'"},"value":["country","currency","stock","price"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -221,7 +221,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"country":"'Texas'","currency":"'USD'"},"value":["country","currency","stock","price"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -239,7 +239,7 @@ describe("analytics", () => {
   it("GET request with grouping and aggregation and order by", async () => {
     const response = await util.callRead(
       request,
-      "/odata/v2/analytics/Header?$select=currency,stock&$top=5&$orderby=stock asc"
+      "/odata/v2/analytics/Header?$select=currency,stock&$top=5&$orderby=stock asc",
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -249,7 +249,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'ABC'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -261,7 +261,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'CHF'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -273,7 +273,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -285,7 +285,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -297,7 +297,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'U%2FSD'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -313,7 +313,7 @@ describe("analytics", () => {
   it("GET request with grouping and aggregation and filter", async () => {
     let response = await util.callRead(
       request,
-      "/odata/v2/analytics/Header?$select=stock,currency&$top=4&$filter=currency eq 'USD'"
+      "/odata/v2/analytics/Header?$select=stock,currency&$top=4&$filter=currency eq 'USD'",
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -323,7 +323,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock","currency"],"filter":"currency%20eq%20'USD'"}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -336,7 +336,7 @@ describe("analytics", () => {
     });
     response = await util.callRead(
       request,
-      '/odata/v2/analytics/Header(aggregation\'{"key":{"currency":"\'USD\'"},"value":["stock","currency"],"filter":"currency%20eq%20\'USD\'"}\')'
+      '/odata/v2/analytics/Header(aggregation\'{"key":{"currency":"\'USD\'"},"value":["stock","currency"],"filter":"currency%20eq%20\'USD\'"}\')',
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -344,7 +344,7 @@ describe("analytics", () => {
         __metadata: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock","currency"],"filter":"currency%20eq%20'USD'"}')`,
           type: "test.AnalyticsService.Header",
         },
@@ -356,7 +356,7 @@ describe("analytics", () => {
 
     response = await util.callRead(
       request,
-      "/odata/v2/analytics/Header?$select=stock,currency&$top=4&$filter=(currency eq 'USD' or currency eq 'EUR')"
+      "/odata/v2/analytics/Header?$select=stock,currency&$top=4&$filter=(currency eq 'USD' or currency eq 'EUR')",
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -366,7 +366,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock","currency"],"filter":"(currency%20eq%20'USD'%20or%20currency%20eq%20'EUR')"}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -378,7 +378,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock","currency"],"filter":"(currency%20eq%20'USD'%20or%20currency%20eq%20'EUR')"}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -391,7 +391,7 @@ describe("analytics", () => {
     });
     response = await util.callRead(
       request,
-      '/odata/v2/analytics/Header(aggregation\'{"key":{"currency":"\'EUR\'"},"value":["stock","currency"],"filter":"(currency%20eq%20\'USD\'%20or%20currency%20eq%20\'EUR\')"}\')'
+      '/odata/v2/analytics/Header(aggregation\'{"key":{"currency":"\'EUR\'"},"value":["stock","currency"],"filter":"(currency%20eq%20\'USD\'%20or%20currency%20eq%20\'EUR\')"}\')',
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -399,7 +399,7 @@ describe("analytics", () => {
         __metadata: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["stock","currency"],"filter":"(currency%20eq%20'USD'%20or%20currency%20eq%20'EUR')"}')`,
           type: "test.AnalyticsService.Header",
         },
@@ -410,7 +410,7 @@ describe("analytics", () => {
     });
     response = await util.callRead(
       request,
-      '/odata/v2/analytics/Header(aggregation\'{"key":{"currency":"\'USD\'"},"value":["stock","currency"],"filter":"(currency%20eq%20\'USD\'%20or%20currency%20eq%20\'EUR\')"}\')'
+      '/odata/v2/analytics/Header(aggregation\'{"key":{"currency":"\'USD\'"},"value":["stock","currency"],"filter":"(currency%20eq%20\'USD\'%20or%20currency%20eq%20\'EUR\')"}\')',
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -418,7 +418,7 @@ describe("analytics", () => {
         __metadata: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["stock","currency"],"filter":"(currency%20eq%20'USD'%20or%20currency%20eq%20'EUR')"}')`,
           type: "test.AnalyticsService.Header",
         },
@@ -430,7 +430,10 @@ describe("analytics", () => {
   });
 
   it("GET request with aggregation and filter element not selected", async () => {
-    let response = await util.callRead(request, "/odata/v2/analytics/Header?$select=stock&$top=4&$filter=currency eq 'USD'");
+    let response = await util.callRead(
+      request,
+      "/odata/v2/analytics/Header?$select=stock&$top=4&$filter=currency eq 'USD'",
+    );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
       d: {
@@ -439,7 +442,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{},"value":["stock"],"filter":"currency%20eq%20'USD'"}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -451,7 +454,7 @@ describe("analytics", () => {
     });
     response = await util.callRead(
       request,
-      '/odata/v2/analytics/Header(aggregation\'{"key":{},"value":["stock"],"filter":"currency%20eq%20\'USD\'"}\')'
+      '/odata/v2/analytics/Header(aggregation\'{"key":{},"value":["stock"],"filter":"currency%20eq%20\'USD\'"}\')',
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -459,7 +462,7 @@ describe("analytics", () => {
         __metadata: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/analytics/Header(aggregation'{"key":{},"value":["stock"],"filter":"currency%20eq%20'USD'"}')`,
           type: "test.AnalyticsService.Header",
         },
@@ -470,7 +473,7 @@ describe("analytics", () => {
 
     response = await util.callRead(
       request,
-      "/odata/v2/analytics/Header?$select=stock&$top=4&$filter=(currency eq 'USD' or currency eq 'EUR')"
+      "/odata/v2/analytics/Header?$select=stock&$top=4&$filter=(currency eq 'USD' or currency eq 'EUR')",
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -480,7 +483,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{},"value":["stock"],"filter":"(currency%20eq%20'USD'%20or%20currency%20eq%20'EUR')"}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -492,7 +495,7 @@ describe("analytics", () => {
     });
     response = await util.callRead(
       request,
-      '/odata/v2/analytics/Header(aggregation\'{"key":{},"value":["stock"],"filter":"(currency%20eq%20\'USD\'%20or%20currency%20eq%20\'EUR\')"}\')'
+      '/odata/v2/analytics/Header(aggregation\'{"key":{},"value":["stock"],"filter":"(currency%20eq%20\'USD\'%20or%20currency%20eq%20\'EUR\')"}\')',
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -500,7 +503,7 @@ describe("analytics", () => {
         __metadata: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/analytics/Header(aggregation'{"key":{},"value":["stock"],"filter":"(currency%20eq%20'USD'%20or%20currency%20eq%20'EUR')"}')`,
           type: "test.AnalyticsService.Header",
         },
@@ -522,7 +525,9 @@ describe("analytics", () => {
               code: "501",
               message: {
                 lang: "en",
-                value: expect.stringMatching(/Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/),
+                value: expect.stringMatching(
+                  /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
+                ),
               },
               severity: "error",
               target: "/#TRANSIENT#",
@@ -531,7 +536,9 @@ describe("analytics", () => {
         },
         message: {
           lang: "en",
-          value: expect.stringMatching(/Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/),
+          value: expect.stringMatching(
+            /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
+          ),
         },
         severity: "error",
         target: "/#TRANSIENT#",
@@ -542,7 +549,7 @@ describe("analytics", () => {
   it("GET request with grouping and aggregation combined with search and filtering", async () => {
     let response = await util.callRead(
       request,
-      "/odata/v2/analytics/Header?$select=stock&$filter=currency eq 'USD'&search=Header"
+      "/odata/v2/analytics/Header?$select=stock&$filter=currency eq 'USD'&search=Header",
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -554,7 +561,9 @@ describe("analytics", () => {
               code: "501",
               message: {
                 lang: "en",
-                value: expect.stringMatching(/Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/),
+                value: expect.stringMatching(
+                  /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
+                ),
               },
               severity: "error",
               target: "/#TRANSIENT#",
@@ -563,7 +572,9 @@ describe("analytics", () => {
         },
         message: {
           lang: "en",
-          value: expect.stringMatching(/Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/),
+          value: expect.stringMatching(
+            /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
+          ),
         },
         severity: "error",
         target: "/#TRANSIENT#",
@@ -581,7 +592,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'ABC'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -593,7 +604,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'CHF'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -605,7 +616,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'EUR'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -617,7 +628,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'U%2FSD'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -629,7 +640,7 @@ describe("analytics", () => {
             __metadata: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
               type: "test.AnalyticsService.Header",
             },
@@ -642,7 +653,7 @@ describe("analytics", () => {
     });
     response = await util.callRead(
       request,
-      `/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`
+      `/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -650,7 +661,7 @@ describe("analytics", () => {
         __metadata: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
           type: "test.AnalyticsService.Header",
         },
@@ -661,7 +672,7 @@ describe("analytics", () => {
     });
     response = await util.callRead(
       request,
-      `/odata/v2/analytics/Header('aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}'')`
+      `/odata/v2/analytics/Header('aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}'')`,
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -669,7 +680,7 @@ describe("analytics", () => {
         __metadata: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
           type: "test.AnalyticsService.Header",
         },
@@ -680,7 +691,7 @@ describe("analytics", () => {
     });
     response = await util.callRead(
       request,
-      `/odata/v2/analytics/Header(ID__='aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}'')`
+      `/odata/v2/analytics/Header(ID__='aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}'')`,
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -688,7 +699,7 @@ describe("analytics", () => {
         __metadata: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/analytics/Header(aggregation'{"key":{"currency":"'USD'"},"value":["currency","stock"]}')`,
           type: "test.AnalyticsService.Header",
         },
@@ -710,7 +721,7 @@ describe("analytics", () => {
               type: "test.AnalyticsService.HeaderItemCount",
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1546300800000%2B0000)%2F\'"},"value":["startAt","header"]}\')`,
             },
             header: "4",
@@ -722,7 +733,7 @@ describe("analytics", () => {
               type: "test.AnalyticsService.HeaderItemCount",
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1577836800000%2B0000)%2F\'"},"value":["startAt","header"]}\')`,
             },
             header: "4",
@@ -734,7 +745,7 @@ describe("analytics", () => {
               type: "test.AnalyticsService.HeaderItemCount",
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1640995200000%2B0000)%2F\'"},"value":["startAt","header"]}\')`,
             },
             header: "1",
@@ -756,7 +767,7 @@ describe("analytics", () => {
               type: "test.AnalyticsService.HeaderItemCount",
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1546300800000%2B0000)%2F\'"},"value":["startAt","header2"]}\')`,
             },
             header2: 4,
@@ -768,7 +779,7 @@ describe("analytics", () => {
               type: "test.AnalyticsService.HeaderItemCount",
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1577836800000%2B0000)%2F\'"},"value":["startAt","header2"]}\')`,
             },
             header2: 4,
@@ -780,7 +791,7 @@ describe("analytics", () => {
               type: "test.AnalyticsService.HeaderItemCount",
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1640995200000%2B0000)%2F\'"},"value":["startAt","header2"]}\')`,
             },
             header2: 1,
@@ -802,7 +813,7 @@ describe("analytics", () => {
               type: "test.AnalyticsService.HeaderItemCount",
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1546300800000%2B0000)%2F\'"},"value":["startAt","header_count"]}\')`,
             },
             header_count: "4",
@@ -814,7 +825,7 @@ describe("analytics", () => {
               type: "test.AnalyticsService.HeaderItemCount",
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1577836800000%2B0000)%2F\'"},"value":["startAt","header_count"]}\')`,
             },
             header_count: "4",
@@ -826,7 +837,7 @@ describe("analytics", () => {
               type: "test.AnalyticsService.HeaderItemCount",
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/analytics/HeaderItemCount(aggregation\'{"key":{"startAt":"datetimeoffset\'%2FDate(1640995200000%2B0000)%2F\'"},"value":["startAt","header_count"]}\')`,
             },
             header_count: "2",
@@ -840,7 +851,7 @@ describe("analytics", () => {
   it("POST bound action on analytical entity", async () => {
     let response = await util.callRead(
       request,
-      "/odata/v2/analytics/Book?$select=author,genre_ID,price&$top=124&$inlinecount=allpages"
+      "/odata/v2/analytics/Book?$select=author,genre_ID,price&$top=124&$inlinecount=allpages",
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length).toEqual(1);
@@ -856,7 +867,7 @@ describe("analytics", () => {
         type: "test.AnalyticsService.Book",
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
-          "localhost"
+          "localhost",
         )}/odata/v2/analytics/Book(author='Catweazle',genre_ID=1)`,
       },
     });
@@ -865,7 +876,7 @@ describe("analytics", () => {
   it("POST bound action on analytical entity with incomplete key", async () => {
     let response = await util.callRead(
       request,
-      "/odata/v2/analytics/Book?$select=author,price&$top=124&$inlinecount=allpages"
+      "/odata/v2/analytics/Book?$select=author,price&$top=124&$inlinecount=allpages",
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length).toEqual(1);
@@ -900,14 +911,14 @@ describe("analytics", () => {
   it("POST bound action on analytical entity with whitespaces in key", async () => {
     let response = await util.callRead(
       request,
-      "/odata/v2/analytics/Book?$select=author,genre_ID,price&$top=124&$inlinecount=allpages"
+      "/odata/v2/analytics/Book?$select=author,genre_ID,price&$top=124&$inlinecount=allpages",
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length).toEqual(1);
     const ID__ = response.body.d.results[0].ID__;
     response = await util.callWrite(
       request,
-      `/odata/v2/analytics/Book_order?ID__=${ID__.replace("Catweazle", "Cat weazle")}&number=5`
+      `/odata/v2/analytics/Book_order?ID__=${ID__.replace("Catweazle", "Cat weazle")}&number=5`,
     );
     expect(response.body.d).toMatchObject({
       author: "Cat weazle",
@@ -919,7 +930,7 @@ describe("analytics", () => {
         type: "test.AnalyticsService.Book",
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
-          "localhost"
+          "localhost",
         )}/odata/v2/analytics/Book(author='Cat%20weazle',genre_ID=1)`,
       },
     });
@@ -928,12 +939,15 @@ describe("analytics", () => {
   it("POST bound action on analytical entity with escaped ID__", async () => {
     let response = await util.callRead(
       request,
-      "/odata/v2/analytics/Book?$select=author,genre_ID,price&$top=124&$inlinecount=allpages"
+      "/odata/v2/analytics/Book?$select=author,genre_ID,price&$top=124&$inlinecount=allpages",
     );
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length).toEqual(1);
     const ID__ = response.body.d.results[0].ID__;
-    response = await util.callWrite(request, `/odata/v2/analytics/Book_order?ID__='${ID__.replace(/'/g, "''")}'&number=5`);
+    response = await util.callWrite(
+      request,
+      `/odata/v2/analytics/Book_order?ID__='${ID__.replace(/'/g, "''")}'&number=5`,
+    );
     expect(response.body.d).toMatchObject({
       author: "Catweazle",
       genre_ID: 1,
@@ -944,7 +958,7 @@ describe("analytics", () => {
         type: "test.AnalyticsService.Book",
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
-          "localhost"
+          "localhost",
         )}/odata/v2/analytics/Book(author='Catweazle',genre_ID=1)`,
       },
     });

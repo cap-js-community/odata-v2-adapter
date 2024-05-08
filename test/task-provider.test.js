@@ -44,10 +44,12 @@ describe("task-provider", () => {
     });
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length > 0).toEqual(true);
-    expect(response.body.d.results[0].urn).toEqual("urn:sap.odm.bpm.task:4711:task-approval$ea99df92-6225-4d75-bbd0-9b11f73c7f60");
+    expect(response.body.d.results[0].urn).toEqual(
+      "urn:sap.odm.bpm.task:4711:task-approval$ea99df92-6225-4d75-bbd0-9b11f73c7f60",
+    );
     expect(response.body.d.results[0].__metadata).toEqual({
       type: "test.TaskProviderService.tasks",
-      uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/task-provider/tasks('urn:sap.odm.bpm.task:4711:task-approval%24ea99df92-6225-4d75-bbd0-9b11f73c7f60')`
+      uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/task-provider/tasks('urn:sap.odm.bpm.task:4711:task-approval%24ea99df92-6225-4d75-bbd0-9b11f73c7f60')`,
     });
   });
 
@@ -69,11 +71,12 @@ describe("task-provider", () => {
     });
     expect(response.body).toBeDefined();
     expect(response.body.d.results.length > 0).toEqual(true);
-    expect(response.body.d.results[0].urn).toEqual("urn:sap.odm.bpm.task:4711:task-approval$ea99df92-6225-4d75-bbd0-9b11f73c7f60");
+    expect(response.body.d.results[0].urn).toEqual(
+      "urn:sap.odm.bpm.task:4711:task-approval$ea99df92-6225-4d75-bbd0-9b11f73c7f60",
+    );
     expect(response.body.d.results[0].__metadata).toEqual({
       type: "test.TaskProviderService.tasks",
-      uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/task-provider/v2/tasks('urn:sap.odm.bpm.task:4711:task-approval%24ea99df92-6225-4d75-bbd0-9b11f73c7f60')`
+      uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/task-provider/v2/tasks('urn:sap.odm.bpm.task:4711:task-approval%24ea99df92-6225-4d75-bbd0-9b11f73c7f60')`,
     });
   });
-
 });

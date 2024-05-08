@@ -40,7 +40,7 @@ describe("auth", () => {
         __deferred: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/audit/Audits(guid'${id}')/audit_type`,
         },
       },
@@ -48,7 +48,7 @@ describe("auth", () => {
         __deferred: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/audit/Audits(guid'${id}')/work_activity`,
         },
       },
@@ -90,7 +90,7 @@ describe("auth", () => {
           __deferred: {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
-              "localhost"
+              "localhost",
             )}/odata/v2/audit/Audits(guid'${id}')/audit_type`,
           },
         },
@@ -98,7 +98,7 @@ describe("auth", () => {
           __deferred: {
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
-              "localhost"
+              "localhost",
             )}/odata/v2/audit/Audits(guid'${id}')/work_activity`,
           },
         },

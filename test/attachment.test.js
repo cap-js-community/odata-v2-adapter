@@ -33,7 +33,7 @@ describe("attachment", () => {
       false,
       {
         "content-type": "image/png",
-      }
+      },
     );
     expect(response.statusCode).toEqual(201);
     expect(response.body).toBeDefined();
@@ -47,7 +47,7 @@ describe("attachment", () => {
         __deferred: {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/attachment/Attachment(guid'${attachmentId}')/folder`,
         },
       },
@@ -55,11 +55,11 @@ describe("attachment", () => {
         type: "attachment.AttachmentService.Attachment",
         uri: `http://${response.request.host.replace(
           "127.0.0.1",
-          "localhost"
+          "localhost",
         )}/odata/v2/attachment/Attachment(guid'${attachmentId}')`,
         media_src: `http://${response.request.host.replace(
           "127.0.0.1",
-          "localhost"
+          "localhost",
         )}/odata/v2/attachment/Attachment(guid'${attachmentId}')/$value`,
         content_type: "image/png",
       },
@@ -75,19 +75,19 @@ describe("attachment", () => {
             content_type: "image/png",
             media_src: `http://${response.request.host.replace(
               "127.0.0.1",
-              "localhost"
+              "localhost",
             )}/odata/v2/attachment/Attachment(guid'${attachmentId}')/$value`,
             type: "attachment.AttachmentService.Attachment",
             uri: `http://${response.request.host.replace(
               "127.0.0.1",
-              "localhost"
+              "localhost",
             )}/odata/v2/attachment/Attachment(guid'${attachmentId}')`,
           },
           folder: {
             __deferred: {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
-                "localhost"
+                "localhost",
               )}/odata/v2/attachment/Attachment(guid'${attachmentId}')/folder`,
             },
           },

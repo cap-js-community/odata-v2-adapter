@@ -21,11 +21,11 @@ async function initData({ app }) {
     });
     responses.push(response);
   }
-  console.log(
+  cds.log().info(
     "Test Instances: " +
       responses.filter((entry) => {
         return entry.statusCode === 201;
-      }).length
+      }).length,
   );
 }
 
@@ -38,7 +38,7 @@ async function initBinary({ port }) {
       data: file,
       mediaType: "image/png",
       filename: "file.png",
-    })
+    }),
   );
   await cds.run(
     INSERT.into("test.HeaderStreamAttachment").entries({
@@ -46,7 +46,7 @@ async function initBinary({ port }) {
       data: file,
       mediaType: "image/png",
       filename: "file.png",
-    })
+    }),
   );
   await cds.run(
     INSERT.into("test.HeaderUrlStream").entries([
@@ -68,6 +68,6 @@ async function initBinary({ port }) {
         mediaType: "image/png",
         filename: "file.png",
       },
-    ])
+    ]),
   );
 }
