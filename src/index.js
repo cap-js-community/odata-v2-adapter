@@ -4809,11 +4809,19 @@ function cov2ap(options = {}) {
     return newParts.join("\r\n");
   }
 
+  const sanitizeHeaders = (headers) => {
+    headers = { ...(headers || {}) };
+    if (headers.authorization) {
+      headers.authorization = headers.authorization.split(" ")[0] + " ***";
+    }
+    return headers;
+  };
+
   function traceRequest(req, name, method, url, headers, body) {
     const LOG = cds.log("cov2ap");
     if (LOG._debug) {
       const _url = url || "";
-      const _headers = JSON.stringify(headers || {});
+      const _headers = JSON.stringify(sanitizeHeaders(headers));
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
       logTrace(req, name, `${method} ${_url}`, _headers && "Headers:", _headers, _body && "Body:", _body);
     }
@@ -4822,7 +4830,7 @@ function cov2ap(options = {}) {
   function traceResponse(req, name, statusCode, statusMessage, headers, body) {
     const LOG = cds.log("cov2ap");
     if (LOG._debug) {
-      const _headers = JSON.stringify(headers || {});
+      const _headers = JSON.stringify(sanitizeHeaders(headers));
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
       logTrace(
         req,
