@@ -9,7 +9,13 @@ const express = require("express");
 const expressFileUpload = require("express-fileupload");
 const cds = require("@sap/cds");
 const { promisify } = require("util");
+
+// Suppress deprecation warning in Node 22 due to http-proxy using util._extend()
+// -> see: https://github.com/http-party/node-http-proxy/pull/1668
+// -> see: https://github.com/http-party/node-http-proxy/pull/1666
+require('util')._extend = Object.assign
 const { createProxyMiddleware } = require("http-proxy-middleware");
+
 const bodyParser = require("body-parser");
 require("body-parser-xml")(bodyParser);
 const xml2js = require("xml2js");
