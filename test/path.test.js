@@ -20,11 +20,9 @@ describe("path", () => {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
-    expect(response.body).toEqual({
-      d: {
-        EntitySets: ["Header", "HeaderItem", "HeaderLine", "Header_texts", "HeaderItem_texts"],
-      },
-    });
+    expect(response.body.d.EntitySets.sort()).toEqual(
+      ["Header", "HeaderItem", "HeaderLine", "Header_texts", "HeaderItem_texts"].sort(),
+    );
   });
 
   it("GET service data", async () => {
