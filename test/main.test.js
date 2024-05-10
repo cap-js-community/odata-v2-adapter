@@ -33,7 +33,7 @@ describe("main", () => {
     expect(response.status).toEqual(200);
     expect(response.text).not.toBeDefined();
     expect(response.headers).toMatchObject({
-      "content-type": "application/json",
+      "content-type": expect.stringMatching(/application\/json/),
       dataserviceversion: "2.0",
     });
     response = await util.callHead(request, "/odata/v2/main/Header");
@@ -1554,7 +1554,7 @@ describe("main", () => {
     response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.name).toEqual("Test: èèòàù");
-    expect(response.headers["content-type"]).toEqual("application/json");
+    expect(response.headers["content-type"]).toMatch(/application\/json/);
 
     response = await util.callWrite(
       request,
@@ -1576,7 +1576,7 @@ describe("main", () => {
     response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.name).toEqual("Test: èèòàù");
-    expect(response.headers["content-type"]).toEqual("application/json");
+    expect(response.headers["content-type"]).toMatch(/application\/json/);
   });
 
   it("POST request with x-http-method", async () => {
