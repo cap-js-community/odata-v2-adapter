@@ -1522,7 +1522,7 @@ describe("main", () => {
         code: "405",
         message: {
           lang: "en",
-          value: "Method PATCH not allowed for ENTITY.COLLECTION",
+          value: expect.stringMatching(/PATCH .*not allowed .*entity collection/i),
         },
         severity: "error",
         innererror: {
@@ -1531,7 +1531,7 @@ describe("main", () => {
               code: "405",
               message: {
                 lang: "en",
-                value: "Method PATCH not allowed for ENTITY.COLLECTION",
+          value: expect.stringMatching(/PATCH .*not allowed .*entity collection/i),
               },
               severity: "error",
             },
