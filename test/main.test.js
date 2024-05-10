@@ -1531,7 +1531,7 @@ describe("main", () => {
               code: "405",
               message: {
                 lang: "en",
-          value: expect.stringMatching(/PATCH .*not allowed .*entity collection/i),
+                value: expect.stringMatching(/PATCH .*not allowed .*entity collection/i),
               },
               severity: "error",
             },
