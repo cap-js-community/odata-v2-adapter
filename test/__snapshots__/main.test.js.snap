@@ -559,10 +559,6 @@ exports[`main GET $metadata 1`] = `
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem1" EntitySet="HeaderItem"/>
         </AssociationSet>
-        <AssociationSet Name="HeaderItem_assoc" Association="test.MainService.HeaderItem_assoc">
-          <End Role="HeaderItem" EntitySet="HeaderItem"/>
-          <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
-        </AssociationSet>
         <AssociationSet Name="HeaderItem_texts_1" Association="test.MainService.HeaderItem_texts_1">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
@@ -664,8 +660,6 @@ exports[`main GET $metadata 1`] = `
         <Property Name="header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="NextItem" Relationship="test.MainService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
-        <NavigationProperty Name="assoc" Relationship="test.MainService.HeaderItem_assoc" FromRole="HeaderItem" ToRole="HeaderAssocKey"/>
-        <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
         <NavigationProperty Name="texts" Relationship="test.MainService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
         <NavigationProperty Name="localized" Relationship="test.MainService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
@@ -1089,18 +1083,6 @@ exports[`main GET $metadata 1`] = `
           </Principal>
           <Dependent Role="HeaderItem">
             <PropertyRef Name="NextItem_ID"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
-      <Association Name="HeaderItem_assoc">
-        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
-        <End Role="HeaderAssocKey" Type="test.MainService.HeaderAssocKey" Multiplicity="0..1"/>
-        <ReferentialConstraint>
-          <Principal Role="HeaderAssocKey">
-            <PropertyRef Name="header_ID"/>
-          </Principal>
-          <Dependent Role="HeaderItem">
-            <PropertyRef Name="assoc_header_ID"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -2065,10 +2047,6 @@ exports[`main GET $metadata localized 1`] = `
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem1" EntitySet="HeaderItem"/>
         </AssociationSet>
-        <AssociationSet Name="HeaderItem_assoc" Association="test.MainService.HeaderItem_assoc">
-          <End Role="HeaderItem" EntitySet="HeaderItem"/>
-          <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
-        </AssociationSet>
         <AssociationSet Name="HeaderItem_texts_1" Association="test.MainService.HeaderItem_texts_1">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
@@ -2170,8 +2148,6 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="NextItem" Relationship="test.MainService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
-        <NavigationProperty Name="assoc" Relationship="test.MainService.HeaderItem_assoc" FromRole="HeaderItem" ToRole="HeaderAssocKey"/>
-        <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
         <NavigationProperty Name="texts" Relationship="test.MainService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
         <NavigationProperty Name="localized" Relationship="test.MainService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
@@ -2595,18 +2571,6 @@ exports[`main GET $metadata localized 1`] = `
           </Principal>
           <Dependent Role="HeaderItem">
             <PropertyRef Name="NextItem_ID"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
-      <Association Name="HeaderItem_assoc">
-        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
-        <End Role="HeaderAssocKey" Type="test.MainService.HeaderAssocKey" Multiplicity="0..1"/>
-        <ReferentialConstraint>
-          <Principal Role="HeaderAssocKey">
-            <PropertyRef Name="header_ID"/>
-          </Principal>
-          <Dependent Role="HeaderItem">
-            <PropertyRef Name="assoc_header_ID"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -3571,10 +3535,6 @@ exports[`main GET $metadata localized 2`] = `
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem1" EntitySet="HeaderItem"/>
         </AssociationSet>
-        <AssociationSet Name="HeaderItem_assoc" Association="test.MainService.HeaderItem_assoc">
-          <End Role="HeaderItem" EntitySet="HeaderItem"/>
-          <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
-        </AssociationSet>
         <AssociationSet Name="HeaderItem_texts_1" Association="test.MainService.HeaderItem_texts_1">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
@@ -3676,8 +3636,6 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="NextItem" Relationship="test.MainService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
-        <NavigationProperty Name="assoc" Relationship="test.MainService.HeaderItem_assoc" FromRole="HeaderItem" ToRole="HeaderAssocKey"/>
-        <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
         <NavigationProperty Name="texts" Relationship="test.MainService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
         <NavigationProperty Name="localized" Relationship="test.MainService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
@@ -4101,18 +4059,6 @@ exports[`main GET $metadata localized 2`] = `
           </Principal>
           <Dependent Role="HeaderItem">
             <PropertyRef Name="NextItem_ID"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
-      <Association Name="HeaderItem_assoc">
-        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
-        <End Role="HeaderAssocKey" Type="test.MainService.HeaderAssocKey" Multiplicity="0..1"/>
-        <ReferentialConstraint>
-          <Principal Role="HeaderAssocKey">
-            <PropertyRef Name="header_ID"/>
-          </Principal>
-          <Dependent Role="HeaderItem">
-            <PropertyRef Name="assoc_header_ID"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -5077,10 +5023,6 @@ exports[`main GET $metadata with propagated headers 1`] = `
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem1" EntitySet="HeaderItem"/>
         </AssociationSet>
-        <AssociationSet Name="HeaderItem_assoc" Association="test.MainService.HeaderItem_assoc">
-          <End Role="HeaderItem" EntitySet="HeaderItem"/>
-          <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
-        </AssociationSet>
         <AssociationSet Name="HeaderItem_texts_1" Association="test.MainService.HeaderItem_texts_1">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
@@ -5182,8 +5124,6 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="NextItem" Relationship="test.MainService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
-        <NavigationProperty Name="assoc" Relationship="test.MainService.HeaderItem_assoc" FromRole="HeaderItem" ToRole="HeaderAssocKey"/>
-        <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
         <NavigationProperty Name="texts" Relationship="test.MainService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
         <NavigationProperty Name="localized" Relationship="test.MainService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
@@ -5607,18 +5547,6 @@ exports[`main GET $metadata with propagated headers 1`] = `
           </Principal>
           <Dependent Role="HeaderItem">
             <PropertyRef Name="NextItem_ID"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
-      <Association Name="HeaderItem_assoc">
-        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
-        <End Role="HeaderAssocKey" Type="test.MainService.HeaderAssocKey" Multiplicity="0..1"/>
-        <ReferentialConstraint>
-          <Principal Role="HeaderAssocKey">
-            <PropertyRef Name="header_ID"/>
-          </Principal>
-          <Dependent Role="HeaderItem">
-            <PropertyRef Name="assoc_header_ID"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -6583,10 +6511,6 @@ exports[`main GET $metadata with query options 1`] = `
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem1" EntitySet="HeaderItem"/>
         </AssociationSet>
-        <AssociationSet Name="HeaderItem_assoc" Association="test.MainService.HeaderItem_assoc">
-          <End Role="HeaderItem" EntitySet="HeaderItem"/>
-          <End Role="HeaderAssocKey" EntitySet="HeaderAssocKey"/>
-        </AssociationSet>
         <AssociationSet Name="HeaderItem_texts_1" Association="test.MainService.HeaderItem_texts_1">
           <End Role="HeaderItem" EntitySet="HeaderItem"/>
           <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
@@ -6688,8 +6612,6 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="NextItem" Relationship="test.MainService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
-        <NavigationProperty Name="assoc" Relationship="test.MainService.HeaderItem_assoc" FromRole="HeaderItem" ToRole="HeaderAssocKey"/>
-        <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
         <NavigationProperty Name="texts" Relationship="test.MainService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
         <NavigationProperty Name="localized" Relationship="test.MainService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
@@ -7113,18 +7035,6 @@ exports[`main GET $metadata with query options 1`] = `
           </Principal>
           <Dependent Role="HeaderItem">
             <PropertyRef Name="NextItem_ID"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
-      <Association Name="HeaderItem_assoc">
-        <End Role="HeaderItem" Type="test.MainService.HeaderItem" Multiplicity="*"/>
-        <End Role="HeaderAssocKey" Type="test.MainService.HeaderAssocKey" Multiplicity="0..1"/>
-        <ReferentialConstraint>
-          <Principal Role="HeaderAssocKey">
-            <PropertyRef Name="header_ID"/>
-          </Principal>
-          <Dependent Role="HeaderItem">
-            <PropertyRef Name="assoc_header_ID"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>

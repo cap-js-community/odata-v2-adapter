@@ -29,6 +29,8 @@ entity AgreementItemPricing : cuid {
 
 service AgreementService {
 
+    entity Agreement as projection on agreement.Agreement;
+    entity AgreementItem as projection on agreement.AgreementItem;
     @readonly
     entity AgreementItemPricing as projection on agreement.AgreementItemPricing;
 };

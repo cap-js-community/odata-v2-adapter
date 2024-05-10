@@ -358,7 +358,7 @@ exports[`integration-agreement GET $metadata 1`] = `
                 <String>filter</String>
               </Collection>
             </PropertyValue>
-            <PropertyValue Property="Rollup" EnumMember="None"/>
+            <PropertyValue Property="Rollup" EnumMember="Aggregation.RollupType/None"/>
           </Record>
         </Annotation>
         <Annotation Term="UI.SelectionFields">
@@ -449,7 +449,7 @@ exports[`integration-agreement GET $metadata 1`] = `
                 <String>filter</String>
               </Collection>
             </PropertyValue>
-            <PropertyValue Property="Rollup" EnumMember="None"/>
+            <PropertyValue Property="Rollup" EnumMember="Aggregation.RollupType/None"/>
           </Record>
         </Annotation>
         <Annotation Term="Capabilities.FilterRestrictions">
@@ -533,7 +533,7 @@ exports[`integration-agreement GET $metadata 1`] = `
                 <String>filter</String>
               </Collection>
             </PropertyValue>
-            <PropertyValue Property="Rollup" EnumMember="None"/>
+            <PropertyValue Property="Rollup" EnumMember="Aggregation.RollupType/None"/>
           </Record>
         </Annotation>
       </Annotations>
@@ -547,7 +547,7 @@ exports[`integration-agreement GET $metadata 1`] = `
                 <String>filter</String>
               </Collection>
             </PropertyValue>
-            <PropertyValue Property="Rollup" EnumMember="None"/>
+            <PropertyValue Property="Rollup" EnumMember="Aggregation.RollupType/None"/>
           </Record>
         </Annotation>
         <Annotation Term="Capabilities.FilterRestrictions">

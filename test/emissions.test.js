@@ -33,7 +33,7 @@ describe("emissions", () => {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
                 "localhost",
-              )}/odata/v2/emissions-calculator/UserPreferences()`,
+              )}/odata/v2/emissions-calculator/UserPreferences(TYPE='LOCAL',LOCATION='ImportData',NAME='CSV_DECIMAL_SEPARATOR')`,
             },
           },
           {
@@ -46,7 +46,7 @@ describe("emissions", () => {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
                 "localhost",
-              )}/odata/v2/emissions-calculator/UserPreferences()`,
+              )}/odata/v2/emissions-calculator/UserPreferences(TYPE='LOCAL',LOCATION='ImportData',NAME='CSV_DECIMAL_SEPARATOR')`,
             },
           },
         ],

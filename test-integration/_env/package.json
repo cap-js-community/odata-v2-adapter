@@ -28,30 +28,6 @@
     },
     "hana": {
       "deploy-format": "hdbtable"
-    },
-    "build": {
-      "tasks": [
-        {
-          "src": "db",
-          "for": "hana",
-          "options": {
-            "model": [
-              "db",
-              "srv"
-            ]
-          }
-        },
-        {
-          "src": "srv",
-          "for": "nodejs",
-          "options": {
-            "model": [
-              "db",
-              "srv"
-            ]
-          }
-        }
-      ]
     }
   }
 }

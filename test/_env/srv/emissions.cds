@@ -10,6 +10,6 @@ entity PREFERENCES {
 
 service EmissionsCalculatorService {
 
-    entity UserPreferences as select from userData.PREFERENCES { TYPE, LOCATION, NAME, VALUE } /*where USER_ID = $user.id*/;
-    // entity UserPreferences as select from userData.PREFERENCES { key TYPE, key LOCATION, key NAME, VALUE } /*where USER_ID = $user.id*/;
+    // entity UserPreferences as select from userData.PREFERENCES { TYPE, LOCATION, NAME, VALUE } /*where USER_ID = $user.id*/;
+    entity UserPreferences as select from userData.PREFERENCES { key TYPE, key LOCATION, key NAME, VALUE } /*where USER_ID = $user.id*/;
 }

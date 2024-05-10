@@ -14,7 +14,6 @@ annotate AnalyticsService.Header with @(
         },
 
         Chart#Price: {
-            Qualifier: Price,
             ChartType: #Bar,
             Measures:  ['price'],
             MeasureAttributes: [{
@@ -39,7 +38,6 @@ annotate AnalyticsService.Header with @(
         },
 
         Chart#Stock: {
-            Qualifier: Stock,
             ChartType: #Donut,
             Measures:  ['stock'],
             MeasureAttributes: [{
