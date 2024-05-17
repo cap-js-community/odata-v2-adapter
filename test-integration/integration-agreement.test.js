@@ -32,7 +32,7 @@ describe("integration-agreement", () => {
     // Empty Parameters
     let response = await util.callRead(
       request,
-      "/odata/v2/agreement/AgreementItemPricingForKeyDate(datetime'2002-06-20T00:00:00')"
+      "/odata/v2/agreement/AgreementItemPricingForKeyDate(datetime'2002-06-20T00:00:00')",
     );
     expect(response.statusCode).toEqual(404);
     expect(response.body).toBeDefined();
@@ -62,14 +62,14 @@ describe("integration-agreement", () => {
     // Empty Set
     response = await util.callRead(
       request,
-      "/odata/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2000-06-20T00:00:00')/Set"
+      "/odata/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2000-06-20T00:00:00')/Set",
     );
     expect(response.body.d.results).toEqual([]);
 
     // Parameters
     response = await util.callRead(
       request,
-      "/odata/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')"
+      "/odata/v2/agreement/AgreementItemPricingForKeyDate(datetime'2022-06-20T00:00:00')",
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body)).toMatchSnapshot();
@@ -77,7 +77,7 @@ describe("integration-agreement", () => {
     // Result Set
     response = await util.callRead(
       request,
-      "/odata/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00')/Set"
+      "/odata/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00')/Set",
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body)).toMatchSnapshot();
@@ -85,7 +85,7 @@ describe("integration-agreement", () => {
     // Single Entry
     response = await util.callRead(
       request,
-      "/odata/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')"
+      "/odata/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')",
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body)).toMatchSnapshot();
@@ -93,7 +93,7 @@ describe("integration-agreement", () => {
     // Entry Parameters
     response = await util.callRead(
       request,
-      "/odata/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters"
+      "/odata/v2/agreement/AgreementItemPricingForKeyDateSet(keyDate=datetime'2022-06-20T00:00:00',ID=guid'f8420eac-a36b-49af-b91c-6559b8f7627e')/Parameters",
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body)).toMatchSnapshot();
@@ -102,7 +102,7 @@ describe("integration-agreement", () => {
   it("GET with parameters and $count", async () => {
     const response = await util.callRead(
       request,
-      "/odata/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00')/Set/$count"
+      "/odata/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00')/Set/$count",
     );
     expect(response.text).toEqual("2");
   });
@@ -110,7 +110,7 @@ describe("integration-agreement", () => {
   it("GET with parameters and sort", async () => {
     const response = await util.callRead(
       request,
-      "/odata/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00')/Set?$skip=0&$top=20&$orderby=keyDate%20asc"
+      "/odata/v2/agreement/AgreementItemPricingForKeyDate(keyDate=datetime'2022-06-20T00:00:00')/Set?$skip=0&$top=20&$orderby=keyDate%20asc",
     );
     expect(response.body.d.results.length).toEqual(2);
   });

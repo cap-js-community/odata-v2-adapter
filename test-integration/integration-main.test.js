@@ -119,7 +119,7 @@ describe("integration-main", () => {
     // Single Entry
     response = await util.callRead(
       request,
-      `/odata/v2/main/HeaderParametersSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')`
+      `/odata/v2/main/HeaderParametersSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')`,
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body, ID)).toMatchSnapshot();
@@ -127,7 +127,7 @@ describe("integration-main", () => {
     // Entry Parameters
     response = await util.callRead(
       request,
-      `/odata/v2/main/HeaderParametersSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`
+      `/odata/v2/main/HeaderParametersSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`,
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body, ID)).toMatchSnapshot();
@@ -181,14 +181,17 @@ describe("integration-main", () => {
     expect(clean(response.body, ID)).toMatchSnapshot();
 
     // Single Entry
-    response = await util.callRead(request, `/odata/v2/main/HeaderSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')`);
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/HeaderSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')`,
+    );
     expect(response.body).toBeDefined();
     expect(clean(response.body, ID)).toMatchSnapshot();
 
     // Entry Parameters
     response = await util.callRead(
       request,
-      `/odata/v2/main/HeaderSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`
+      `/odata/v2/main/HeaderSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`,
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body, ID)).toMatchSnapshot();
@@ -242,14 +245,17 @@ describe("integration-main", () => {
     expect(clean(response.body, ID)).toMatchSnapshot();
 
     // Single Entry
-    response = await util.callRead(request, `/odata/v2/main/HeaderUnionSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')`);
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/HeaderUnionSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')`,
+    );
     expect(response.body).toBeDefined();
     expect(clean(response.body, ID)).toMatchSnapshot();
 
     // Entry Parameters
     response = await util.callRead(
       request,
-      `/odata/v2/main/HeaderUnionSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`
+      `/odata/v2/main/HeaderUnionSetSet(STOCK=${stock},CURRENCY='EUR',ID=guid'${ID}')/Parameters`,
     );
     expect(response.body).toBeDefined();
     expect(clean(response.body, ID)).toMatchSnapshot();
@@ -261,11 +267,20 @@ describe("integration-main", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',name)`);
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}' and substringof('es',name)`,
+    );
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}' and substringof('ES',name)`);
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}' and substringof('ES',name)`,
+    );
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}' and substringof('XX',name)`);
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}' and substringof('XX',name)`,
+    );
     expect(response.body.d.results).toHaveLength(0);
     await util.callDelete(request, `/odata/v2/main/Header(guid'${id}')`);
   });
@@ -276,11 +291,20 @@ describe("integration-main", () => {
     });
     expect(response.statusCode).toEqual(201);
     const id = response.body.d.ID;
-    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}' and startswith(name,'Te')`);
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}' and startswith(name,'Te')`,
+    );
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}' and startswith(name,'TE')`);
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}' and startswith(name,'TE')`,
+    );
     expect(response.body.d.results).toHaveLength(1);
-    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}' and startswith(name,'XX')`);
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}' and startswith(name,'XX')`,
+    );
     expect(response.body.d.results).toHaveLength(0);
     await util.callDelete(request, `/odata/v2/main/Header(guid'${id}')`);
   });
@@ -321,9 +345,7 @@ describe("integration-main", () => {
 
 function clean(responseBody, ID) {
   function replaceUri(text) {
-    return text
-      .replace(/localhost:([0-9]*)/g, "localhost:00000")
-      .replace(ID, "<ID>")
+    return text.replace(/localhost:([0-9]*)/g, "localhost:00000").replace(ID, "<ID>");
   }
 
   function replaceAll(entry) {

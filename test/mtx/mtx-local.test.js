@@ -19,12 +19,12 @@ const csn = {
       kind: "entity",
       elements: {
         ID: {
-          type: "cds.UUID"
+          type: "cds.UUID",
         },
         name: {
-          type: "cds.String"
-        }
-      }
+          type: "cds.String",
+        },
+      },
     },
   },
 };
@@ -42,7 +42,7 @@ const edmx = `<?xml version="1.0" encoding="utf-8"?>
 </edmx:Edmx>`;
 
 const authorization = `Basic ${Buffer.from(
-  `${cds.requires.auth.users.alice.id}:${cds.requires.auth.users.alice.password}`
+  `${cds.requires.auth.users.alice.id}:${cds.requires.auth.users.alice.password}`,
 ).toString("base64")}`;
 
 let errorExtended = false;
@@ -113,7 +113,7 @@ describe("mtx", () => {
     expect(consoleSpy).toHaveBeenCalledWith(
       "[cov2ap] -",
       "MetadataRequest:",
-      expect.objectContaining(new Error("MTX isExtended Error"))
+      expect.objectContaining(new Error("MTX isExtended Error")),
     );
     consoleSpy.mockClear();
 
@@ -129,7 +129,7 @@ describe("mtx", () => {
     expect(consoleSpy).toHaveBeenCalledWith(
       "[cov2ap] -",
       "MetadataRequest:",
-      expect.objectContaining(new Error("MTX getCsn Error"))
+      expect.objectContaining(new Error("MTX getCsn Error")),
     );
     consoleSpy.mockClear();
 
@@ -145,7 +145,7 @@ describe("mtx", () => {
     expect(consoleSpy).toHaveBeenCalledWith(
       "[cov2ap] -",
       "MetadataRequest:",
-      expect.objectContaining(new Error("MTX getEdmx Error"))
+      expect.objectContaining(new Error("MTX getEdmx Error")),
     );
     consoleSpy.mockClear();
 

@@ -107,7 +107,6 @@ exports[`analytics GET $metadata 1`] = `
         <Property Name="header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="NextItem" Relationship="test.AnalyticsService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
-        <Property Name="assoc_header_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.AnalyticsService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
         <NavigationProperty Name="texts" Relationship="test.AnalyticsService.HeaderItem_texts_1" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
         <NavigationProperty Name="localized" Relationship="test.AnalyticsService.HeaderItem_localized" FromRole="HeaderItem" ToRole="HeaderItem_texts"/>
@@ -317,7 +316,6 @@ exports[`analytics GET $metadata 1`] = `
         </Annotation>
         <Annotation Term="UI.Chart" Qualifier="Price">
           <Record Type="UI.ChartDefinitionType">
-            <PropertyValue Property="Qualifier" Path="Price"/>
             <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Bar"/>
             <PropertyValue Property="Measures">
               <Collection>
@@ -366,7 +364,6 @@ exports[`analytics GET $metadata 1`] = `
         </Annotation>
         <Annotation Term="UI.Chart" Qualifier="Stock">
           <Record Type="UI.ChartDefinitionType">
-            <PropertyValue Property="Qualifier" Path="Stock"/>
             <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/>
             <PropertyValue Property="Measures">
               <Collection>
@@ -428,12 +425,10 @@ exports[`analytics GET $metadata 1`] = `
           </Collection>
         </Annotation>
         <Annotation Term="UI.DataPoint">
-          <Collection>
-            <Record Type="UI.DataPointType">
-              <PropertyValue Property="Title" String="Price"/>
-              <PropertyValue Property="Value" Path="price"/>
-            </Record>
-          </Collection>
+          <Record Type="UI.DataPointType">
+            <PropertyValue Property="Title" String="Price"/>
+            <PropertyValue Property="Value" Path="price"/>
+          </Record>
         </Annotation>
         <Annotation Term="UI.Chart">
           <Record Type="UI.ChartDefinitionType">

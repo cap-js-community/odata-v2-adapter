@@ -3,5 +3,5 @@ sap.ui.define(["sap/ui/generic/app/AppComponent"], (AppComponent) =>
     metadata: {
       manifest: "json",
     },
-  })
+  }),
 );

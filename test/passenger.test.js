@@ -21,7 +21,7 @@ describe("passenger", () => {
       "/odata/v2/passenger-transportation/CalculationFactors(TRANSPORT_MODE_KEY='Company_Car',DIMENSION='DEFAULT',CLASS='DEFAULT',COUNTRY_OF_TRIP='DEFAULT',CURRENCY='DEFAULT',ALLOCATION_METHOD='KM',VALID_FROM='2000-01-02',VALID_TO='4000-01-02')",
       {
         accept: "application/json",
-      }
+      },
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
@@ -38,7 +38,7 @@ describe("passenger", () => {
           type: "passenger.PassengerTransportationService.CalculationFactors",
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
-            "localhost"
+            "localhost",
           )}/odata/v2/passenger-transportation/CalculationFactors(TRANSPORT_MODE_KEY='Company_Car',DIMENSION='DEFAULT',CLASS='DEFAULT',COUNTRY_OF_TRIP='DEFAULT',CURRENCY='DEFAULT',ALLOCATION_METHOD='KM',VALID_FROM='2000-01-02',VALID_TO='4000-01-02')`,
         },
       },

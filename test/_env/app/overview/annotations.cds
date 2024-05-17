@@ -10,10 +10,10 @@ annotate AnalyticsService.Header with @(
             {$Type: 'UI.DataField', Label: '{i18n>Stock}', Value: stock},
             {$Type: 'UI.DataField', Label: '{i18n>Price}', Value: price},
         ],
-        DataPoint: [{
+        DataPoint: {
             Title: 'Price',
             Value: price
-        }],
+        },
         Chart: {
             ChartType: #Donut,
             Measures: ['price'],

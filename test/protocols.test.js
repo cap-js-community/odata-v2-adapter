@@ -74,29 +74,38 @@ describe("CDS protocols", () => {
 
   it("service annotated with @odata", async () => expectGET(request, "/odata/v2/atodata"));
 
-  it("reject service annotated with @rest", async () => expectRejectProtocol(request, '/odata/v2/rest/atrest'));
+  it("reject service annotated with @rest", async () => expectRejectProtocol(request, "/odata/v2/rest/atrest"));
 
-  it("service annotated with @protocol: 'odata'", async () => expectGET(request, '/odata/v2/atprotocolodata'));
+  it("service annotated with @protocol: 'odata'", async () => expectGET(request, "/odata/v2/atprotocolodata"));
 
-  it("service annotated with @protocol: 'rest'", async () => expectRejectProtocol(request, '/odata/v2/rest/atprotocolrest'));
+  it("service annotated with @protocol: 'rest'", async () =>
+    expectRejectProtocol(request, "/odata/v2/rest/atprotocolrest"));
 
-  it("service annotated with @protocol: ['odata']", async () => expectGET(request, '/odata/v2/atprotocollistodata'));
+  it("service annotated with @protocol: ['odata']", async () => expectGET(request, "/odata/v2/atprotocollistodata"));
 
-  it("service annotated with @protocol: ['rest']", async () => expectRejectProtocol(request, '/odata/v2/rest/atprotocollistrest'));
+  it("service annotated with @protocol: ['rest']", async () =>
+    expectRejectProtocol(request, "/odata/v2/rest/atprotocollistrest"));
 
-  it("service annotated with @protocol: [{ kind: 'odata', path: 'relative2' }]", async () => expectGET(request, '/odata/v2/relative2'));
+  it("service annotated with @protocol: [{ kind: 'odata', path: 'relative2' }]", async () =>
+    expectGET(request, "/odata/v2/relative2"));
 
-  it("service annotated with @protocol: [{ kind: 'odata', path: '/absolute2' }]", async () => expectGET(request, '/odata/v2/absolute2'));
+  it("service annotated with @protocol: [{ kind: 'odata', path: '/absolute2' }]", async () =>
+    expectGET(request, "/odata/v2/absolute2"));
 
-  it("service annotated with @protocol: [{ kind: 'odata', path: '/custom/odata/path' }]", async () => expectGET(request, '/odata/v2/custom/odata/path'));
+  it("service annotated with @protocol: [{ kind: 'odata', path: '/custom/odata/path' }]", async () =>
+    expectGET(request, "/odata/v2/custom/odata/path"));
 
-  it("service annotated with @protocol: [{ kind: 'odata-v4', path: '/custom2/odata/path' }]", async () => expectGET(request, '/odata/v2/custom2/odata/path'));
+  it("service annotated with @protocol: [{ kind: 'odata-v4', path: '/custom2/odata/path' }]", async () =>
+    expectGET(request, "/odata/v2/custom2/odata/path"));
 
-  it("service annotated with @protocol: [{ kind: 'odata-v4', path: '/odata' }]", async () => expectGET(request, '/odata/v2/odata'));
+  it("service annotated with @protocol: [{ kind: 'odata-v4', path: '/odata' }]", async () =>
+    expectGET(request, "/odata/v2/odata"));
 
-  it("service annotated with @protocol: [{ kind: 'odata-v4', path: 'odata' }]", async () => expectGET(request, '/odata/v2/odata'));
+  it("service annotated with @protocol: [{ kind: 'odata-v4', path: 'odata' }]", async () =>
+    expectGET(request, "/odata/v2/odata"));
 
-  it("service annotated with @protocol: [{ kind: 'odata-v4', path: '/odata/v4/odata' }]", async () => expectGET(request, '/odata/v2/odata'));
+  it("service annotated with @protocol: [{ kind: 'odata-v4', path: '/odata/v4/odata' }]", async () =>
+    expectGET(request, "/odata/v2/odata"));
 
   it("service with absolute path on batch calls", async () => {
     let response = await util.callRead(request, "/odata/v2/absolute/Header?$top=1");

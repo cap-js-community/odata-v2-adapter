@@ -18,12 +18,12 @@ const csn = {
       kind: "entity",
       elements: {
         ID: {
-          type: "cds.UUID"
+          type: "cds.UUID",
         },
         name: {
-          type: "cds.String"
-        }
-      }
+          type: "cds.String",
+        },
+      },
     },
   },
 };
@@ -41,7 +41,7 @@ const edmx = `<?xml version="1.0" encoding="utf-8"?>
 </edmx:Edmx>`;
 
 const authorization = `Basic ${Buffer.from(
-  `${cds.requires.auth.users.alice.id}:${cds.requires.auth.users.alice.password}`
+  `${cds.requires.auth.users.alice.id}:${cds.requires.auth.users.alice.password}`,
 ).toString("base64")}`;
 
 function clearCache() {

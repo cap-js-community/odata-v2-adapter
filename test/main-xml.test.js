@@ -58,14 +58,17 @@ describe("main-xml", () => {
   it("GET request", async () => {
     let response = await util.callRead(
       request,
-      "/odata/v2/main/Header?$filter=ID eq guid'e0582b6a-6d93-46d9-bd28-98723a285d40'&$format=atom"
+      "/odata/v2/main/Header?$filter=ID eq guid'e0582b6a-6d93-46d9-bd28-98723a285d40'&$format=atom",
     );
     expect(response.text).toBeDefined();
     response.text = cleanResponse(response.text);
     expect(response.text).toMatchSnapshot();
     expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
 
-    response = await util.callRead(request, "/odata/v2/main/Header(guid'e0582b6a-6d93-46d9-bd28-98723a285d40')?$format=atom");
+    response = await util.callRead(
+      request,
+      "/odata/v2/main/Header(guid'e0582b6a-6d93-46d9-bd28-98723a285d40')?$format=atom",
+    );
     expect(response.text).toBeDefined();
     response.text = cleanResponse(response.text);
     expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
@@ -84,7 +87,7 @@ describe("main-xml", () => {
       "/odata/v2/main/Header(guid'e0582b6a-6d93-46d9-bd28-98723a285d40')?$expand=Items",
       {
         accept: "application/xml",
-      }
+      },
     );
     expect(response.text).toBeDefined();
     response.text = cleanResponse(response.text);
@@ -99,9 +102,13 @@ describe("main-xml", () => {
     expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
     expect(response.text).toMatchSnapshot();
 
-    response = await util.callRead(request, "/odata/v2/main/Header(guid'e0582b6a-6d93-46d9-bd28-98723a285d40')/name/$value", {
-      accept: "application/xml",
-    });
+    response = await util.callRead(
+      request,
+      "/odata/v2/main/Header(guid'e0582b6a-6d93-46d9-bd28-98723a285d40')/name/$value",
+      {
+        accept: "application/xml",
+      },
+    );
     expect(response.text).toBeDefined();
     response.text = cleanResponse(response.text);
     expect(response.headers["content-type"]).toEqual("text/plain");
@@ -138,7 +145,7 @@ describe("main-xml", () => {
       {
         accept: "application/xml",
         "content-type": "application/atom+xml",
-      }
+      },
     );
     expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
     response.text = cleanResponse(response.text);
@@ -229,9 +236,15 @@ describe("main-xml", () => {
     response.text = cleanResponse(response.text);
     expect(response.text).toMatchSnapshot();
 
-    response = await util.callWrite(request, "/odata/v2/main/unboundMassActionPrimitive?text1=abc&text2=def", {}, false, {
-      accept: "application/xml",
-    });
+    response = await util.callWrite(
+      request,
+      "/odata/v2/main/unboundMassActionPrimitive?text1=abc&text2=def",
+      {},
+      false,
+      {
+        accept: "application/xml",
+      },
+    );
     expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
     response.text = cleanResponse(response.text);
     expect(response.text).toMatchSnapshot();
@@ -243,9 +256,15 @@ describe("main-xml", () => {
     response.text = cleanResponse(response.text);
     expect(response.text).toMatchSnapshot();
 
-    response = await util.callWrite(request, "/odata/v2/main/unboundMassActionEntity?ids=TEST1&ids='TEST2'", {}, false, {
-      accept: "application/xml",
-    });
+    response = await util.callWrite(
+      request,
+      "/odata/v2/main/unboundMassActionEntity?ids=TEST1&ids='TEST2'",
+      {},
+      false,
+      {
+        accept: "application/xml",
+      },
+    );
     expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
     response.text = cleanResponse(response.text);
     expect(response.text).toMatchSnapshot();
@@ -254,7 +273,7 @@ describe("main-xml", () => {
   it("GET error response", async () => {
     let response = await util.callRead(
       request,
-      "/odata/v2/main/Header(guid'a0582b6a-6d93-46d9-bd28-98723a285d40')?$format=atom"
+      "/odata/v2/main/Header(guid'a0582b6a-6d93-46d9-bd28-98723a285d40')?$format=atom",
     );
     expect(response.text).toBeDefined();
     response.text = cleanResponse(response.text);

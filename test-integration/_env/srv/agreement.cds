@@ -18,7 +18,7 @@ service AgreementService {
           'groupby',
           'filter'
         ],
-        Rollup: 'None'
+        Rollup: #None
     }
     @Capabilities.FilterRestrictions: {
         NonFilterableProperties: [keyDate]

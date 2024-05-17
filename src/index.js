@@ -19,6 +19,9 @@ const xmlParser = new xml2js.Parser({
 });
 const cacheSymbol = Symbol("cov2ap");
 
+// Suppress deprecation warning in Node 22 due to http-proxy using util._extend()
+require("util")._extend = Object.assign;
+
 const SeverityMap = {
   1: "success",
   2: "info",
@@ -2926,7 +2929,12 @@ function cov2ap(options = {}) {
               } catch (err) {
                 logError(req, "MediaStream", err);
                 const headers = { "content-type": "application/json" };
-                const errorBody = convertResponseError({ error: err }, headers, context.definition, req);
+                const errorBody = convertResponseError(
+                  { error: { message: err.message } },
+                  headers,
+                  context.definition,
+                  req,
+                );
                 respond(req, res, 500, headers, errorBody);
                 return;
               }
@@ -4809,11 +4817,19 @@ function cov2ap(options = {}) {
     return newParts.join("\r\n");
   }
 
+  const sanitizeHeaders = (headers) => {
+    headers = { ...(headers || {}) };
+    if (headers.authorization) {
+      headers.authorization = headers.authorization.split(" ")[0] + " ***";
+    }
+    return headers;
+  };
+
   function traceRequest(req, name, method, url, headers, body) {
     const LOG = cds.log("cov2ap");
     if (LOG._debug) {
       const _url = url || "";
-      const _headers = JSON.stringify(headers || {});
+      const _headers = JSON.stringify(sanitizeHeaders(headers));
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
       logTrace(req, name, `${method} ${_url}`, _headers && "Headers:", _headers, _body && "Body:", _body);
     }
@@ -4822,7 +4838,7 @@ function cov2ap(options = {}) {
   function traceResponse(req, name, statusCode, statusMessage, headers, body) {
     const LOG = cds.log("cov2ap");
     if (LOG._debug) {
-      const _headers = JSON.stringify(headers || {});
+      const _headers = JSON.stringify(sanitizeHeaders(headers));
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
       logTrace(
         req,
