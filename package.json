@@ -62,8 +62,8 @@
   },
   "devDependencies": {
     "@cap-js-community/odata-v2-adapter": "./",
-    "@cap-js/hana": "^0.3.0",
-    "@cap-js/sqlite": "^1.7.0",
+    "@cap-js/hana": "^0.4.0",
+    "@cap-js/sqlite": "^1.7.1",
     "@sap/cds": "^7.9.1",
     "@sap/cds-dk": "^7.9.2",
     "@sap/cds-hana": "^2.0.0",

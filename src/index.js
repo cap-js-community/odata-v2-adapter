@@ -19,6 +19,9 @@ const xmlParser = new xml2js.Parser({
 });
 const cacheSymbol = Symbol("cov2ap");
 
+// Suppress deprecation warning in Node 22 due to http-proxy using util._extend()
+require("util")._extend = Object.assign;
+
 const SeverityMap = {
   1: "success",
   2: "info",
