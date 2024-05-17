@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Do not log authorization header in debug traces
+- Fix error response for errors during media stream read
 
 ## Version 1.12.9 - 2024-05-03
 

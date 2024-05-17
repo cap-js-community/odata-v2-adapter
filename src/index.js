@@ -2926,7 +2926,12 @@ function cov2ap(options = {}) {
               } catch (err) {
                 logError(req, "MediaStream", err);
                 const headers = { "content-type": "application/json" };
-                const errorBody = convertResponseError({ error: err }, headers, context.definition, req);
+                const errorBody = convertResponseError(
+                  { error: { message: err.message } },
+                  headers,
+                  context.definition,
+                  req,
+                );
                 respond(req, res, 500, headers, errorBody);
                 return;
               }

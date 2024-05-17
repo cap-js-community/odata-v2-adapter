@@ -659,7 +659,7 @@ describe("main", () => {
       "/odata/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value",
     );
     expect(response.statusCode).toEqual(500);
-    expect(response.body.error.cause.code).toEqual("ECONNREFUSED");
+    expect(response.body.error.message.value).toEqual("fetch failed");
     response = await util.callRead(
       request,
       "/odata/v2/main/HeaderUrlStream(guid'a8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value",
