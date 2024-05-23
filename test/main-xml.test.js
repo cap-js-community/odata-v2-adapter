@@ -34,25 +34,26 @@ describe("main-xml", () => {
   });
 
   it("GET service XML format", async () => {
+    const snapshotName = process.env.CDS_FEATURES_ODATA__NEW__ADAPTER === "true" ? 'noah' : undefined
     let response = await util.callRead(request, "/odata/v2/main", {
       accept: "application/xml",
     });
     expect(response.text).toBeDefined();
     response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
-    expect(response.text).toMatchSnapshot();
+    expect(response.text).toMatchSnapshot(snapshotName);
     response = await util.callRead(request, "/odata/v2/main/", {
       accept: "application/xml",
     });
     expect(response.text).toBeDefined();
     response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
-    expect(response.text).toMatchSnapshot();
+    expect(response.text).toMatchSnapshot(snapshotName);
     response = await util.callRead(request, "/odata/v2/main");
     expect(response.text).toBeDefined();
     response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
-    expect(response.text).toMatchSnapshot();
+    expect(response.text).toMatchSnapshot(snapshotName);
     response = await util.callRead(request, "/odata/v2/main/?$format=atom");
     response.text = response.text.replace(/http:\/\/localhost:(\d*)\//, "");
-    expect(response.text).toMatchSnapshot();
+    expect(response.text).toMatchSnapshot(snapshotName);
   });
 
   it("GET request", async () => {
