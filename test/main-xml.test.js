@@ -34,7 +34,7 @@ describe("main-xml", () => {
   });
 
   it("GET service XML format", async () => {
-    const snapshotName = process.env.CDS_FEATURES_ODATA__NEW__ADAPTER === "true" ? 'noah' : undefined
+    const snapshotName = process.env.CDS_FEATURES_ODATA__NEW__ADAPTER === "true" ? "noah" : undefined;
     let response = await util.callRead(request, "/odata/v2/main", {
       accept: "application/xml",
     });
