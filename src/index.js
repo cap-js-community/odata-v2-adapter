@@ -2112,18 +2112,21 @@ function cov2ap(options = {}) {
         req.context.selects.forEach((select) => {
           let current = context;
           let currentDefinition = definition;
-          select.split("/").forEach((part) => {
+          const parts = select.split("/");
+          parts.forEach((part) => {
             if (!current) {
               return;
             }
             const element = definitionElements(currentDefinition)[part];
             if (element) {
+              current.select[part] = true;
               const type = elementType(element, req);
               if (type === "cds.Composition" || type === "cds.Association") {
-                current = current && current.expand[part];
+                current = current.expand[part];
+                if (current && parts.length === 1) {
+                  current.all = true;
+                }
                 currentDefinition = element._target;
-              } else if (current && current.select) {
-                current.select[part] = true;
               }
             }
           });
@@ -2140,7 +2143,7 @@ function cov2ap(options = {}) {
             .map((name) => {
               let value = expand[name];
               let result = name;
-              const selects = Object.keys(value.select);
+              const selects = value.all ? [] : Object.keys(value.select);
               const expands = Object.keys(value.expand);
               if (selects.length > 0 || expands.length > 0) {
                 result += "(";
@@ -4828,7 +4831,7 @@ function cov2ap(options = {}) {
   function traceRequest(req, name, method, url, headers, body) {
     const LOG = cds.log("cov2ap");
     if (LOG._debug) {
-      const _url = url || "";
+      const _url = decodeURIComponent(url) || "";
       const _headers = JSON.stringify(sanitizeHeaders(headers));
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
       logTrace(req, name, `${method} ${_url}`, _headers && "Headers:", _headers, _body && "Body:", _body);

@@ -309,15 +309,6 @@ describe("main", () => {
         type: "test.MainService.Header",
       },
       ID: id,
-      createdBy: "anonymous",
-      modifiedBy: "anonymous",
-      name: "Test",
-      description: null,
-      country: null,
-      currency: null,
-      stock: null,
-      price: null,
-      FirstItem_ID: null,
       Items: {
         results: [
           {
@@ -325,6 +316,56 @@ describe("main", () => {
               type: "test.MainService.HeaderItem",
             },
             name: "TestItem",
+          },
+        ],
+      },
+    });
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items&$select=name,Items/name`,
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+      ID: id,
+      name: "Test",
+      Items: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.HeaderItem",
+            },
+            name: "TestItem",
+          },
+        ],
+      },
+    });
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items&$select=Items/name,Items`,
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+      ID: id,
+      Items: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.HeaderItem",
+            },
+            name: "TestItem",
+            description: null,
+            startAt: null,
+            endAt: null,
+            header_ID: id,
+            NextItem_ID: null,
           },
         ],
       },
