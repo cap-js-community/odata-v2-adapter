@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Fix expand and select of navigations properties
+- Fix expand and select of navigation properties
 - Fix error response for errors during media stream read
 - Do not log authorization header in debug traces
 - Decode request url for debug traces
