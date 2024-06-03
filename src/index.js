@@ -2113,7 +2113,7 @@ function cov2ap(options = {}) {
           let current = context;
           let currentDefinition = definition;
           const parts = select.split("/");
-          parts.forEach((part) => {
+          parts.forEach((part, index) => {
             if (!current) {
               return;
             }
@@ -2123,7 +2123,7 @@ function cov2ap(options = {}) {
               const type = elementType(element, req);
               if (type === "cds.Composition" || type === "cds.Association") {
                 current = current.expand[part];
-                if (current && parts.length === 1) {
+                if (current && index === parts.length - 1) {
                   current.all = true;
                 }
                 currentDefinition = element._target;
