@@ -2117,16 +2117,20 @@ function cov2ap(options = {}) {
             if (!current) {
               return;
             }
-            const element = definitionElements(currentDefinition)[part];
-            if (element) {
+            if (part === "*") {
               current.select[part] = true;
-              const type = elementType(element, req);
-              if (type === "cds.Composition" || type === "cds.Association") {
-                current = current.expand[part];
-                if (current && index === parts.length - 1) {
-                  current.all = true;
+            } else {
+              const element = definitionElements(currentDefinition)[part];
+              if (element) {
+                current.select[part] = true;
+                const type = elementType(element, req);
+                if (type === "cds.Composition" || type === "cds.Association") {
+                  current = current.expand[part];
+                  if (current && index === parts.length - 1) {
+                    current.all = true;
+                  }
+                  currentDefinition = element._target;
                 }
-                currentDefinition = element._target;
               }
             }
           });

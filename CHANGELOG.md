@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Improve expand/select handling and support `*` notation
 
 ## Version 1.12.10 - 2024-06-05
 

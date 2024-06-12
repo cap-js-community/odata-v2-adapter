@@ -370,6 +370,114 @@ describe("main", () => {
         ],
       },
     });
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$select=*`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      ID: id,
+      createdAt: expect.stringMatching(/\/Date\(.*\)\//),
+      createdBy: "anonymous",
+      modifiedAt: expect.stringMatching(/\/Date\(.*\)\//),
+      modifiedBy: "anonymous",
+      name: "Test",
+      description: null,
+      country: null,
+      currency: null,
+      stock: null,
+      price: null,
+      FirstItem_ID: null,
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+    });
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$select=*,name`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      ID: id,
+      createdAt: expect.stringMatching(/\/Date\(.*\)\//),
+      createdBy: "anonymous",
+      modifiedAt: expect.stringMatching(/\/Date\(.*\)\//),
+      modifiedBy: "anonymous",
+      name: "Test",
+      description: null,
+      country: null,
+      currency: null,
+      stock: null,
+      price: null,
+      FirstItem_ID: null,
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+    });
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$select=*,name,Items&$expand=Items`,
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      ID: id,
+      createdAt: expect.stringMatching(/\/Date\(.*\)\//),
+      createdBy: "anonymous",
+      modifiedAt: expect.stringMatching(/\/Date\(.*\)\//),
+      modifiedBy: "anonymous",
+      name: "Test",
+      description: null,
+      country: null,
+      currency: null,
+      stock: null,
+      price: null,
+      FirstItem_ID: null,
+      Items: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.HeaderItem",
+            },
+            name: "TestItem",
+            description: null,
+            startAt: null,
+            endAt: null,
+            header_ID: id,
+            NextItem_ID: null,
+          },
+        ],
+      },
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+    });
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$select=Items&$expand=Items/Lines`,
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      ID: id,
+      Items: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.HeaderItem",
+            },
+            name: "TestItem",
+            description: null,
+            startAt: null,
+            endAt: null,
+            header_ID: id,
+            NextItem_ID: null,
+            Lines: {
+              results: [],
+            },
+          },
+        ],
+      },
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+    });
   });
 
   it("GET request with $select on deferreds", async () => {
