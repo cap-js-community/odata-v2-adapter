@@ -1,8 +1,9 @@
 "use strict";
 
 // OData V2/V4 Delta: http://docs.oasis-open.org/odata/new-in-odata/v4.0/cn01/new-in-odata-v4.0-cn01.html
-
+const os = require("os");
 const fs = require("fs");
+const fsPath = require("path");
 const URL = require("url");
 const { pipeline } = require("stream");
 const express = require("express");
@@ -18,6 +19,8 @@ const xmlParser = new xml2js.Parser({
   tagNameProcessors: [xml2js.processors.stripPrefix],
 });
 const cacheSymbol = Symbol("cov2ap");
+
+const CACHE_DIR = fs.realpathSync(os.tmpdir());
 
 // Suppress deprecation warning in Node 22 due to http-proxy using util._extend()
 require("util")._extend = Object.assign;
@@ -184,6 +187,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} options.defaultFormat Specifies the default entity response format (json, atom). Default is 'json'.
  * @param {boolean} options.processForwardedHeaders Specifies if 'x-forwarded' headers are processed. Default is 'true'.
  * @param {boolean} options.cacheDefinitions Specifies if the definition elements are cached. Default is 'true'.
+ * @param {string} options.cacheMetadata Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is 'memory'.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
@@ -265,6 +269,7 @@ function cov2ap(options = {}) {
   const defaultFormat = optionWithFallback("defaultFormat", "json");
   const processForwardedHeaders = optionWithFallback("processForwardedHeaders", true);
   const cacheDefinitions = optionWithFallback("cacheDefinitions", true);
+  const cacheMetadata = optionWithFallback("cacheMetadata", "memory");
 
   if (cds.env.protocols) {
     cds.env.protocols["odata-v2"] = {
@@ -451,7 +456,13 @@ function cov2ap(options = {}) {
       delete headers["content-encoding"];
       let body;
       if (metadataResponse.ok || metadataResponse.status === 304) {
-        body = edmx;
+        if (cacheMetadata === "disk") {
+          body = await fs.promises.readFile(edmx, "utf8");
+        } else if (cacheMetadata === "stream") {
+          body = fs.createReadStream(edmx);
+        } else {
+          body = edmx;
+        }
       } else {
         body = metadataBody;
       }
@@ -683,6 +694,36 @@ function cov2ap(options = {}) {
     }
   }
 
+  function routeBeforeRequest(req, res, next) {
+    if (typeof router.before === "function") {
+      router.before(req, res, next);
+    } else if (Array.isArray(router.before) && router.before.length > 0) {
+      const routes = router.before.slice(0);
+
+      function call() {
+        try {
+          const route = routes.shift();
+          if (!route) {
+            return next(null);
+          }
+          route(req, res, (err) => {
+            if (err) {
+              next(err);
+            } else {
+              call();
+            }
+          });
+        } catch (err) {
+          next(err);
+        }
+      }
+
+      call();
+    } else {
+      next();
+    }
+  }
+
   function bindRoutes() {
     const routeMiddleware = createProxyMiddleware({
       target: `${target}${rewritePath}`,
@@ -695,6 +736,7 @@ function cov2ap(options = {}) {
       },
       logger: cds.log("cov2ap"),
     });
+    router.use(`/${path}`, routeBeforeRequest);
     router.use(`/${path}`, routeInitRequest);
     router.get(`/${path}/*\\$metadata`, routeGetMetadata);
     router.use(`/${path}`, routeBodyParser, routeSetContext, routeFileUpload, routeMiddleware);
@@ -1046,8 +1088,14 @@ function cov2ap(options = {}) {
     }
     metadataCache[tenant].edmx = metadataCache[tenant].edmx || {};
     metadataCache[tenant].edmx[service] = metadataCache[tenant].edmx[service] || {};
-    const edmx = await callCached(metadataCache[tenant].edmx[service], locale, () => {
-      return prepareEdmx(tenant, csn, loadEdmx, service, locale);
+    const edmx = await callCached(metadataCache[tenant].edmx[service], locale, async () => {
+      const edmx = await prepareEdmx(tenant, csn, loadEdmx, service, locale);
+      if (["disk", "stream"].includes(cacheMetadata)) {
+        const edmxFilename = fsPath.join(CACHE_DIR, `${tenant}$${service}$${locale}.edmx.xml`);
+        await fs.promises.writeFile(edmxFilename, edmx);
+        return edmxFilename;
+      }
+      return edmx;
     });
     return { csn, edmx };
   }
@@ -2986,7 +3034,7 @@ function cov2ap(options = {}) {
     });
     pipeline(streamRes, res, (err) => {
       if (err) {
-        logWarn(req, "StreamPipeline", err);
+        logWarn(req, "StreamResponse", err);
       }
     });
 
@@ -4068,9 +4116,19 @@ function cov2ap(options = {}) {
       });
       res.status(statusCode);
       if (body && statusCode !== 204) {
-        res.write(body);
+        if (body.pipe) {
+          pipeline(body, res, (err) => {
+            if (err) {
+              logWarn(req, "MetadataStream", err);
+            }
+          });
+        } else {
+          res.write(body);
+          res.end();
+        }
+      } else {
+        res.end();
       }
-      res.end();
 
       // Trace
       traceResponse(req, "Response", res.statusCode, res.statusMessage, headers, body);
@@ -4618,7 +4676,7 @@ function cov2ap(options = {}) {
   }
 
   function setContentLength(headers, body) {
-    if (body && !(headers["transfer-encoding"] || "").includes("chunked")) {
+    if (body && body.length && !(headers["transfer-encoding"] || "").includes("chunked")) {
       headers["content-length"] = Buffer.byteLength(body);
     } else {
       clearContentLength(headers);
@@ -4942,6 +5000,7 @@ function cov2ap(options = {}) {
 cov2ap.singleton = () => {
   if (!cov2ap._singleton) {
     cov2ap._singleton = cov2ap();
+    cds.cov2ap = cov2ap._singleton;
   }
   return cov2ap._singleton;
 };

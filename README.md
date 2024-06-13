@@ -23,26 +23,26 @@
 
 The OData V2 adapter for CDS instantiates an Express router. The following options are available:
 
-- **plugin:** OData V2 adapter is instantiated as part of CDS plugin. Default is `true`.
-- **build:** In case of plugin scenario, a build step is registered to prepare the OData V2 metadata. Default is `true`.
-- **base:** Base path under which the service is reachable. Default is `''`.
-- **path:** Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
-- **model:** CDS service model (path(s) or CSN). Default is `'all'`.
-- **port:** Target port which points to OData V4 backend port. Default is process.env.PORT or `4004`.
-- **target:** Target which points to OData V4 backend host:port. Use `'auto'` to infer the target from server url after listening. Default is e.g. `'http://localhost:4004'`.
-- **targetPath:** Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
-- **services:** Service mapping object from url path name to service name. Default is `{}`.
-- **mtxRemote:** CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is `false`.
-- **mtxEndpoint:** Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (classic MTX only). Default is `'/mtx/v1'`.
-- **ieee754Compatible:** Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is `true`.
-- **fileUploadSizeLimit:** File upload file size limit (in bytes) for multipart/form-data requests. Default is `10485760` (10 MB).
-- **continueOnError:** Indicates to OData V4 backend to continue on error. Default is `false`.
-- **isoTime:** Use ISO 8601 format for type cds.Time (Edm.Time). Default is `false`.
-- **isoDate:** Use ISO 8601 format for type cds.Date (Edm.DateTime). Default is `false`.
-- **isoDateTime:** Use ISO 8601 format for type cds.DateTime (Edm.DateTimeOffset). Default is `false`.
-- **isoTimestamp:** Use ISO 8601 format for type cds.Timestamp (Edm.DateTimeOffset). Default is `false`.
-- **isoDateTimeOffset:** Use ISO 8601 format for type Edm.DateTimeOffset (cds.DateTime, cds.Timestamp). Default is `false`.
-- **bodyParserLimit:** Request and response body parser size limit. Default is `'100mb'`.
+- **plugin**: OData V2 adapter is instantiated as part of CDS plugin. Default is `true`.
+- **build**: In case of plugin scenario, a build step is registered to prepare the OData V2 metadata. Default is `true`.
+- **base**: Base path under which the service is reachable. Default is `''`.
+- **path**: Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
+- **model**: CDS service model (path(s) or CSN). Default is `'all'`.
+- **port**: Target port which points to OData V4 backend port. Default is process.env.PORT or `4004`.
+- **target**: Target which points to OData V4 backend host:port. Use `'auto'` to infer the target from server url after listening. Default is e.g. `'http://localhost:4004'`.
+- **targetPath**: Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
+- **services**: Service mapping object from url path name to service name. Default is `{}`.
+- **mtxRemote**: CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is `false`.
+- **mtxEndpoint**: Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (classic MTX only). Default is `'/mtx/v1'`.
+- **ieee754Compatible**: Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is `true`.
+- **fileUploadSizeLimit**: File upload file size limit (in bytes) for multipart/form-data requests. Default is `10485760` (10 MB).
+- **continueOnError**: Indicates to OData V4 backend to continue on error. Default is `false`.
+- **isoTime**: Use ISO 8601 format for type cds.Time (Edm.Time). Default is `false`.
+- **isoDate**: Use ISO 8601 format for type cds.Date (Edm.DateTime). Default is `false`.
+- **isoDateTime**: Use ISO 8601 format for type cds.DateTime (Edm.DateTimeOffset). Default is `false`.
+- **isoTimestamp**: Use ISO 8601 format for type cds.Timestamp (Edm.DateTimeOffset). Default is `false`.
+- **isoDateTimeOffset**: Use ISO 8601 format for type Edm.DateTimeOffset (cds.DateTime, cds.Timestamp). Default is `false`.
+- **bodyParserLimit**: Request and response body parser size limit. Default is `'100mb'`.
 - **returnCollectionNested**: Collection of entity type is returned nested into a results section. Default is `true`.
 - **returnComplexNested**: Function import return structure of complex type (non collection) is nested using function import name. Default is `true`.
 - **returnPrimitiveNested**: Function import return structure of primitive type (non collection) is nested using function import name. Default is `true`.
@@ -50,14 +50,15 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **messageTargetDefault**: Specifies the message target default, if target is undefined. Default is `'/#TRANSIENT#'`.
 - **caseInsensitive**: Transforms search functions i.e. substringof, startswith, endswith to case-insensitive variant. Default is `false`.
 - **propagateMessageToDetails**: Propagates root error or message always to details section. Default is `false`.
-- **contentDisposition**: Default content disposition for media streams (inline, attachment), if not available or calculated. Default is `'attachment'`.
+- **contentDisposition**: Default content disposition for media streams, if not available or calculated. Options are `inline`, `attachment`. Default is `'attachment'`.
 - **calcContentDisposition**: Calculate content disposition for media streams even if already available. Default is `false`.
 - **quoteSearch**: Specifies if search expression is quoted automatically. Default is `true`.
 - **fixDraftRequests**: Specifies if unsupported draft requests are converted to a working version. Default is `false`.
 - **changesetDeviationLogLevel**: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is `'info'`.
 - **defaultFormat**: Specifies the default entity response format (json, atom). Default is `'json'`.
-- **processForwardedHeaders** Specifies if the `x-forwarded` headers are processed. Default is `true`.
-- **cacheDefinitions** Specifies if the definition elements are cached. Default is `true`.
+- **processForwardedHeaders**: Specifies if the `x-forwarded` headers are processed. Default is `true`.
+- **cacheDefinitions**: Specifies if the definition elements are cached. Default is `true`.
+- **cacheMetadata**: Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is `memory`.
 
 > All OData V2 adapter for CDS options can also be specified as part of CDS project-specific configuration
 > under section `cds.cov2ap` and accessed during runtime via `cds.env.cov2ap`.
@@ -69,6 +70,59 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 >
 > - path => CDS_COV2AP_PATH=odatav2
 > - quoteSearch => quote_search => CDS_COV2AP_QUOTE\_\_SEARCH=false
+
+## Singleton
+
+CDS OData V2 Adapter is instantiated via CDS plugin as singleton, which is exposed at:
+
+```js
+const cds = require("@sap/cds");
+cds.cov2ap;
+```
+
+The singleton can also be instantiated manually and accessed in custom server via:
+
+```js
+const cov2ap = require("@cap-js-community/odata-v2-adapter");
+cov2ap.singleton();
+```
+
+### Before Middleware Routes
+
+Before middleware routes can be registered on the OData V2 adapter for CDS singleton, to be executed before the main route processing.
+The before middleware routes can be registered as single function or as array of route functions.
+
+Single before route can be registered as follows:
+
+```js
+const cds = require("@sap/cds");
+
+cds.on("bootstrap", (app) => {
+  cds.cov2ap.before = (req, res, next) => {
+    // custom route processing
+    next();
+  };
+});
+```
+
+Multiple before routes can be registered as follows:
+
+```js
+const cds = require("@sap/cds");
+
+cds.on("bootstrap", (app) => {
+  cds.cov2ap.before = [
+    (req, res, next) => {
+      // custom route processing
+      next();
+    },
+    (req, res, next) => {
+      // custom route processing
+      next();
+    },
+  ];
+});
+```
 
 ## Advanced
 
@@ -102,8 +156,8 @@ feature toggle `cds.features.kibana_formatter: true` needs to be set.
 Debug mode can be activated to log requests and responses processed (V2) and initiated (V4)
 by OData V2 adapter for CDS. The following information can be retrieved for analysis:
 
-- **Request:** url, headers, body
-- **Response:** status code/message, headers, body
+- **Request** url, headers, body
+- **Response**: status code/message, headers, body
 
 Debug log level can be activated
 
@@ -191,10 +245,10 @@ The following OData V2 adapter for CDS specific annotations are supported:
 CDS project configuration `cds.odata.version` shall be set to `v4`, as OData V2 maps to OData V4.
 CDS supports modelling features that are not compatible with OData V2 standard:
 
-- **Singletons:** Usage of annotation `@odata.singleton` is not supported in combination with OData V2
-- **Structured Types:** Usage of `cds.odata.structs: true` is not supported in combination with OData V2
-- **Arrayed Types:** Usages of `array of` or `many` in entity element definitions lead to CDS compilation error: `Element must not be an "array of" for OData V2`
-- **Managed Compositions:** The usage of managed composition (currently) produces Format Exception in Fiori Elements V2 for Date/Time data types
+- **Singletons**: Usage of annotation `@odata.singleton` is not supported in combination with OData V2
+- **Structured Types**: Usage of `cds.odata.structs: true` is not supported in combination with OData V2
+- **Arrayed Types**: Usages of `array of` or `many` in entity element definitions lead to CDS compilation error: `Element must not be an "array of" for OData V2`
+- **Managed Compositions**: The usage of managed composition (currently) produces Format Exception in Fiori Elements V2 for Date/Time data types
 
 To provide an OData V2 service based on the OData V2 adapter for CDS, those CDS modelling features must not be used.
 In general any CDS OData API flavor must not be used in combination with OData V2 adapter for CDS.
@@ -241,11 +295,13 @@ To add support for a specific feature toggles management you can add a simple Ex
 
 ```js
 const cds = require("@sap/cds");
-cds.on("bootstrap", (app) =>
-  app.use((req, res, next) => {
-    req.features = req.features || ["advanced"];
-    next();
-  }),
+cds.on(
+  "bootstrap",
+  (app) =>
+    (cds.cov2ap.before = (req, res, next) => {
+      req.features = req.features || ["advanced"];
+      next();
+    }),
 );
 ```
 
@@ -313,12 +369,10 @@ module in Express app at bootstrap time, e.g. in `srv/server.js`:
 
 ```js
 const cds = require("@sap/cds");
-const cov2ap = require("@cap-js-community/odata-v2-adapter");
 const compression = require("compression");
 
 cds.on("bootstrap", (app) => {
-  app.use(compression({ filter: shouldCompress }));
-  app.use(cov2ap());
+  cds.cov2ap.before = [compression({ filter: shouldCompress })];
 });
 
 function shouldCompress(req, res) {

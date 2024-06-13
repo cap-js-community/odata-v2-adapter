@@ -67,7 +67,6 @@ describe("main", () => {
     expect(response.headers).toMatchObject({
       "content-type": "application/xml",
       dataserviceversion: "2.0",
-      "transfer-encoding": "chunked",
     });
   });
 

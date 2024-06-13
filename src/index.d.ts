@@ -175,4 +175,9 @@ type Options = {
    * Specifies if the definition elements are cached. Default is 'true'.
    */
   cacheDefinitions?: boolean | true;
+
+  /**
+   * Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is 'memory'.
+   */
+  cacheMetadata?: string | "memory" | "disk" | "stream";
 };

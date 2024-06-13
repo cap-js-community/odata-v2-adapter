@@ -28,6 +28,7 @@ rules:
   jest/no-conditional-expect: [off]
   jest/no-disabled-tests: [off]
   jest/expect-expect: [off]
+  no-inner-declarations: [off]
   no-restricted-modules: [error, child_process] # security
   no-eval: [error] # security
   no-implied-eval: [error] # security
