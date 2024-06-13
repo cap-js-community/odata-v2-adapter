@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Allow to register `before` express routes for CDS OData V2 Adapter router via `cds.cov2ap.before`
 - Option to cache and stream generated EDMX from disk instead of keeping it in memory
 
+### Changed
+
+- Use new `cds.build.register` API version @sap/cds-dk >= 7.5.0
+
 ## Version 1.12.10 - 2024-06-05
 
 ### Fixed
