@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Expose CDS OData V2 Adapter singleton instance from CDS plugin at `cds.cov2ap`
 - Allow to register `before` express routes for CDS OData V2 Adapter router via `cds.cov2ap.before`
 - Option to cache and stream generated EDMX from disk instead of keeping it in memory
+- Use new `cds.build.register` API version
 
 ## Version 1.12.10 - 2024-06-05
 

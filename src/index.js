@@ -1143,8 +1143,7 @@ function cov2ap(options = {}) {
       logDebug({ tenant }, "Metadata", `No metadata file found for service ${service} at ${filePath}`);
     }
     if (exists) {
-      const file = await fs.promises.readFile(filePath);
-      return file.toString();
+      return await fs.promises.readFile(filePath, "utf8");
     }
   }
 
