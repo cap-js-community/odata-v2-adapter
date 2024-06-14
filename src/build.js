@@ -6,6 +6,8 @@ const { path } = cds.utils;
 const DEFAULT_MAIN_FOLDER = "_main";
 
 module.exports = class COV2APBuildPlugin extends cds.build.Plugin {
+  static taskDefaults = { src: "srv" }; // used by build plugin
+
   static hasTask() {
     cds.env.cov2ap = cds.env.cov2ap || {};
     cds.env.cov2ap.plugin = cds.env.cov2ap.plugin === undefined ? true : cds.env.cov2ap.plugin;
