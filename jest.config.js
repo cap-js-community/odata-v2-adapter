@@ -21,7 +21,7 @@ module.exports = {
   modulePathIgnorePatterns: [],
   resetMocks: false,
   resetModules: false,
-  testMatch: ["**/test/**/*.test.js", "**/test-integration/**/*.test.js"],
+  testMatch: ["**/test/**/*.test.js", "**/test-hana/**/*.test.js"],
   testPathIgnorePatterns: ["/node_modules/"],
   verbose: true,
   maxWorkers: 2,

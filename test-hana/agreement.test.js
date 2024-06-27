@@ -10,7 +10,7 @@ cds.test(__dirname + "/_env");
 
 let request;
 
-describe("integration-agreement", () => {
+describe("hana-agreement", () => {
   beforeAll(() => {
     request = supertest(cds.app);
   });

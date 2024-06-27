@@ -13,7 +13,7 @@ let stock;
 let headerID1;
 let headerID2;
 
-describe("integration-main", () => {
+describe("hana-main", () => {
   beforeAll(async () => {
     request = supertest(cds.app);
 

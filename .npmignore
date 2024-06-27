@@ -2,7 +2,8 @@
 node_modules/
 reports/
 test/
-test-integration/
+test-hana/
+test-postgres/
 .eslintignore
 .eslintrc.yml
 .gitignore

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`integration-main GET $metadata 1`] = `
+exports[`hana-main GET $metadata 1`] = `
 "<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
   <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
@@ -51,6 +51,10 @@ exports[`integration-main GET $metadata 1`] = `
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
         <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
+        <Property Name="date" Type="Edm.DateTime" sap:display-format="Date"/>
+        <Property Name="dateTime" Type="Edm.DateTimeOffset"/>
+        <Property Name="time" Type="Edm.Time"/>
+        <Property Name="timestamp" Type="Edm.DateTimeOffset" Precision="7"/>
       </EntityType>
       <EntityType Name="HeaderLimited">
         <Key>
@@ -67,6 +71,10 @@ exports[`integration-main GET $metadata 1`] = `
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
         <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
+        <Property Name="date" Type="Edm.DateTime" sap:display-format="Date"/>
+        <Property Name="dateTime" Type="Edm.DateTimeOffset"/>
+        <Property Name="time" Type="Edm.Time"/>
+        <Property Name="timestamp" Type="Edm.DateTimeOffset" Precision="7"/>
       </EntityType>
       <EntityType Name="HeaderParametersType">
         <Key>
@@ -87,6 +95,10 @@ exports[`integration-main GET $metadata 1`] = `
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
         <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
+        <Property Name="date" Type="Edm.DateTime" sap:display-format="Date"/>
+        <Property Name="dateTime" Type="Edm.DateTimeOffset"/>
+        <Property Name="time" Type="Edm.Time"/>
+        <Property Name="timestamp" Type="Edm.DateTimeOffset" Precision="7"/>
         <NavigationProperty Name="Parameters" Relationship="test.MainService.HeaderParametersParameters_Set" FromRole="HeaderParametersType" ToRole="HeaderParametersParameters"/>
       </EntityType>
       <EntityType Name="HeaderSetType">
@@ -108,6 +120,10 @@ exports[`integration-main GET $metadata 1`] = `
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
         <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
+        <Property Name="date" Type="Edm.DateTime" sap:display-format="Date"/>
+        <Property Name="dateTime" Type="Edm.DateTimeOffset"/>
+        <Property Name="time" Type="Edm.Time"/>
+        <Property Name="timestamp" Type="Edm.DateTimeOffset" Precision="7"/>
         <NavigationProperty Name="Parameters" Relationship="test.MainService.HeaderSetParameters_Set" FromRole="HeaderSetType" ToRole="HeaderSetParameters"/>
       </EntityType>
       <EntityType Name="HeaderUnionSetType">
@@ -129,6 +145,10 @@ exports[`integration-main GET $metadata 1`] = `
         <Property Name="currency" Type="Edm.String"/>
         <Property Name="stock" Type="Edm.Int32"/>
         <Property Name="price" Type="Edm.Decimal" Precision="12" Scale="2"/>
+        <Property Name="date" Type="Edm.DateTime" sap:display-format="Date"/>
+        <Property Name="dateTime" Type="Edm.DateTimeOffset"/>
+        <Property Name="time" Type="Edm.Time"/>
+        <Property Name="timestamp" Type="Edm.DateTimeOffset" Precision="7"/>
         <NavigationProperty Name="Parameters" Relationship="test.MainService.HeaderUnionSetParameters_Set" FromRole="HeaderUnionSetType" ToRole="HeaderUnionSetParameters"/>
       </EntityType>
       <EntityType Name="HeaderParametersParameters" sap:semantics="parameters">
@@ -328,7 +348,7 @@ exports[`integration-main GET $metadata 1`] = `
 </edmx:Edmx>"
 `;
 
-exports[`integration-main GET with parameters (header - full circle) - parameters 1`] = `
+exports[`hana-main GET with parameters (header - full circle) - parameters 1`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -346,7 +366,7 @@ exports[`integration-main GET with parameters (header - full circle) - parameter
 }
 `;
 
-exports[`integration-main GET with parameters (header - full circle) - parameters 2`] = `
+exports[`hana-main GET with parameters (header - full circle) - parameters 2`] = `
 {
   "d": {
     "results": [
@@ -365,18 +385,22 @@ exports[`integration-main GET with parameters (header - full circle) - parameter
         "country": null,
         "createdBy": "anonymous",
         "currency": "EUR",
+        "date": null,
+        "dateTime": null,
         "description": null,
         "modifiedBy": "anonymous",
         "name": null,
         "price": null,
         "stock": 1,
+        "time": null,
+        "timestamp": null,
       },
     ],
   },
 }
 `;
 
-exports[`integration-main GET with parameters (header - full circle) - parameters 3`] = `
+exports[`hana-main GET with parameters (header - full circle) - parameters 3`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -393,16 +417,20 @@ exports[`integration-main GET with parameters (header - full circle) - parameter
     "country": null,
     "createdBy": "anonymous",
     "currency": "EUR",
+    "date": null,
+    "dateTime": null,
     "description": null,
     "modifiedBy": "anonymous",
     "name": null,
     "price": null,
     "stock": 1,
+    "time": null,
+    "timestamp": null,
   },
 }
 `;
 
-exports[`integration-main GET with parameters (header - full circle) - parameters 4`] = `
+exports[`hana-main GET with parameters (header - full circle) - parameters 4`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -420,7 +448,7 @@ exports[`integration-main GET with parameters (header - full circle) - parameter
 }
 `;
 
-exports[`integration-main GET with parameters (header - full circle) - set 1`] = `
+exports[`hana-main GET with parameters (header - full circle) - set 1`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -438,7 +466,7 @@ exports[`integration-main GET with parameters (header - full circle) - set 1`] =
 }
 `;
 
-exports[`integration-main GET with parameters (header - full circle) - set 2`] = `
+exports[`hana-main GET with parameters (header - full circle) - set 2`] = `
 {
   "d": {
     "results": [
@@ -457,18 +485,22 @@ exports[`integration-main GET with parameters (header - full circle) - set 2`] =
         "country": null,
         "createdBy": "anonymous",
         "currency": "EUR",
+        "date": null,
+        "dateTime": null,
         "description": null,
         "modifiedBy": "anonymous",
         "name": null,
         "price": null,
         "stock": 1,
+        "time": null,
+        "timestamp": null,
       },
     ],
   },
 }
 `;
 
-exports[`integration-main GET with parameters (header - full circle) - set 3`] = `
+exports[`hana-main GET with parameters (header - full circle) - set 3`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -485,16 +517,20 @@ exports[`integration-main GET with parameters (header - full circle) - set 3`] =
     "country": null,
     "createdBy": "anonymous",
     "currency": "EUR",
+    "date": null,
+    "dateTime": null,
     "description": null,
     "modifiedBy": "anonymous",
     "name": null,
     "price": null,
     "stock": 1,
+    "time": null,
+    "timestamp": null,
   },
 }
 `;
 
-exports[`integration-main GET with parameters (header - full circle) - set 4`] = `
+exports[`hana-main GET with parameters (header - full circle) - set 4`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -512,7 +548,7 @@ exports[`integration-main GET with parameters (header - full circle) - set 4`] =
 }
 `;
 
-exports[`integration-main GET with parameters (union header - full circle) - set 1`] = `
+exports[`hana-main GET with parameters (union header - full circle) - set 1`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -530,7 +566,7 @@ exports[`integration-main GET with parameters (union header - full circle) - set
 }
 `;
 
-exports[`integration-main GET with parameters (union header - full circle) - set 2`] = `
+exports[`hana-main GET with parameters (union header - full circle) - set 2`] = `
 {
   "d": {
     "results": [
@@ -549,18 +585,22 @@ exports[`integration-main GET with parameters (union header - full circle) - set
         "country": null,
         "createdBy": "anonymous",
         "currency": "EUR",
+        "date": null,
+        "dateTime": null,
         "description": null,
         "modifiedBy": "anonymous",
         "name": null,
         "price": null,
         "stock": 1,
+        "time": null,
+        "timestamp": null,
       },
     ],
   },
 }
 `;
 
-exports[`integration-main GET with parameters (union header - full circle) - set 3`] = `
+exports[`hana-main GET with parameters (union header - full circle) - set 3`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -577,16 +617,20 @@ exports[`integration-main GET with parameters (union header - full circle) - set
     "country": null,
     "createdBy": "anonymous",
     "currency": "EUR",
+    "date": null,
+    "dateTime": null,
     "description": null,
     "modifiedBy": "anonymous",
     "name": null,
     "price": null,
     "stock": 1,
+    "time": null,
+    "timestamp": null,
   },
 }
 `;
 
-exports[`integration-main GET with parameters (union header - full circle) - set 4`] = `
+exports[`hana-main GET with parameters (union header - full circle) - set 4`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",

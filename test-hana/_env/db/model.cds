@@ -9,4 +9,8 @@ entity Header: cuid, managed {
     currency: String;
     stock: Integer;
     price: Decimal(12, 2);
+    date: Date;
+    dateTime: DateTime;
+    time: Time;
+    timestamp: Timestamp;
 }

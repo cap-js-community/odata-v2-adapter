@@ -1,5 +1,5 @@
 {
-  "name": "@cap-js-community/odata-v2-adapter-test-integration-db",
+  "name": "@cap-js-community/odata-v2-adapter-test-hana-db",
   "version": "1.0.0",
   "dependencies": {
     "@sap/hdi-deploy": "^5.1.1"

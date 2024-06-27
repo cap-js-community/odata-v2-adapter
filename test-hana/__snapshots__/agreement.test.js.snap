@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`integration-agreement GET $metadata 1`] = `
+exports[`hana-agreement GET $metadata 1`] = `
 "<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
   <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Aggregation.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
@@ -605,7 +605,7 @@ exports[`integration-agreement GET $metadata 1`] = `
 </edmx:Edmx>"
 `;
 
-exports[`integration-agreement GET with parameters (agreement pricing for key date - full circle) 1`] = `
+exports[`hana-agreement GET with parameters (agreement pricing for key date - full circle) 1`] = `
 {
   "d": {
     "Set": {
@@ -622,7 +622,7 @@ exports[`integration-agreement GET with parameters (agreement pricing for key da
 }
 `;
 
-exports[`integration-agreement GET with parameters (agreement pricing for key date - full circle) 2`] = `
+exports[`hana-agreement GET with parameters (agreement pricing for key date - full circle) 2`] = `
 {
   "d": {
     "results": [
@@ -663,7 +663,7 @@ exports[`integration-agreement GET with parameters (agreement pricing for key da
 }
 `;
 
-exports[`integration-agreement GET with parameters (agreement pricing for key date - full circle) 3`] = `
+exports[`hana-agreement GET with parameters (agreement pricing for key date - full circle) 3`] = `
 {
   "d": {
     "ID": "f8420eac-a36b-49af-b91c-6559b8f7627e",
@@ -684,7 +684,7 @@ exports[`integration-agreement GET with parameters (agreement pricing for key da
 }
 `;
 
-exports[`integration-agreement GET with parameters (agreement pricing for key date - full circle) 4`] = `
+exports[`hana-agreement GET with parameters (agreement pricing for key date - full circle) 4`] = `
 {
   "d": {
     "Set": {

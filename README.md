@@ -319,7 +319,7 @@ The tests can be executed as follows:
 - SQLite based:
   - `npm run test:unit` ([source](test))
 - HANA based:
-  - Place HANA credentials at `test-integration/_env/db/default-services.json` in format:
+  - Place HANA credentials at `test-hana/_env/db/default-services.json` in format:
     ```json
     {
       "hana": [
@@ -329,12 +329,14 @@ The tests can be executed as follows:
       ]
     }
     ```
-  - Deploy HANA test schema
-    - Switch dir: `cd test-integration/_env`
-    - Build model: `npm run build`
-    - Deploy model: `npm run deploy`
-  - Run tests (root dir): `npm run test:integration` ([source](test-integration))
-- All:
+  - Deploy HANA (root dir): `npm run deploy:hana`
+  - Run tests (root dir): `npm run test:hana` ([source](test-hana))
+- Postgres based:
+  - Start Postgres on port `5432`
+  - Assure default configuration is available (user, password, database) is set to `postgres`
+  - Deploy HANA (root dir): `npm run deploy:postgres`
+  - Run tests (root dir): `npm run test:postgres` ([source](test-postgres))
+- CI Tests (SQLite + HANA):
   - `npm test`
 
 All tests are executed as part of the GitHub Actions Continuous Integration (CI) pipeline.
@@ -353,13 +355,16 @@ SAP Fiori Elements V2 examples:
   - **Overview**: Overview Page app ([source](test/_env/app/overview))
   - **XML**: Basic app (Atom format) ([source](test/_env/app/xml))
 - HANA based:
-  - **Parameters**: Parameterized Entity app ([source](test-integration/_env/app/parameters))
+  - **Parameters**: Parameterized entity app ([source](test-hana/_env/app/parameters))
+- Postgres based:
+  - **Basic Edit**: Basic editing app ([source](test-postgres/_env/app/basic))
 
 Examples can be tested as follows:
 
 - Start server:
   - SQLite based: `npm start`
   - HANA based: `npm run start:hana`
+  - Postgres based: `npm run start:postgres`
 - Open Fiori Launchpad: http://localhost:4004/flp.html
 
 ### Compression Support
