@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Version 1.12.12 - 2024-07-04
 
+### Fixed
+
+- Set `content-length` header correctly for OData V4 request in batch mode
+
 ### Added
 
 - CI Matrix Test Node 22

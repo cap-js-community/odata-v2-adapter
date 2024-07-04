@@ -1368,6 +1368,14 @@ function cov2ap(options = {}) {
                 }
                 body = convertRequestBody(body, headers, url, req);
               }
+              if (body !== undefined) {
+                for (const name in headers) {
+                  if (name.toLowerCase() === "content-length") {
+                    headers[name] = Buffer.byteLength(body);
+                    break;
+                  }
+                }
+              }
               return { body, headers };
             },
             req.contentIdOrder,
