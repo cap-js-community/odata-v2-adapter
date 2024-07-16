@@ -4771,7 +4771,7 @@ function cov2ap(options = {}) {
               statusCodeText = (result && result.statusCodeText) || statusCodeText;
               body = (result && result.body) || body;
               headers = (result && result.headers) || headers;
-              if (["DELETE"].includes(method)) {
+              if (["HEAD", "OPTIONS", "GET", "DELETE"].includes(method)) {
                 body = "";
               }
             } catch (err) {
