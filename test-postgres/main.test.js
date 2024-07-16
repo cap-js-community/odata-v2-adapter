@@ -31,7 +31,7 @@ describe("postgres-main", () => {
     expect(response.status).toEqual(200);
     expect(response.text).not.toBeDefined();
     expect(response.headers).toMatchObject({
-      "content-type": "application/json",
+      "content-type": "application/json; charset=utf-8",
       dataserviceversion: "2.0",
     });
     response = await util.callHead(request, "/odata/v2/main/Header");

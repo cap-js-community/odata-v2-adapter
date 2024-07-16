@@ -16,7 +16,7 @@ module.exports = class COV2APBuildPlugin extends cds.build.Plugin {
   }
 
   async build() {
-    const model = await this.model(); // TODO: Use this.baseModel(), when available
+    const model = await (this.baseModel ? this.baseModel() : this.model());
     if (!model) {
       return;
     }

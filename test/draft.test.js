@@ -436,7 +436,7 @@ describe("draft", () => {
         code: "405",
         message: {
           lang: "en",
-          value: "Method PATCH not allowed for ENTITY.COLLECTION",
+          value: "Method PATCH is not allowed for entity collections",
         },
         innererror: {
           errordetails: [
@@ -444,7 +444,7 @@ describe("draft", () => {
               code: "405",
               message: {
                 lang: "en",
-                value: "Method PATCH not allowed for ENTITY.COLLECTION",
+                value: "Method PATCH is not allowed for entity collections",
               },
               severity: "error",
             },

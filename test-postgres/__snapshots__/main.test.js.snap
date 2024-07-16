@@ -166,12 +166,14 @@ exports[`postgres-main GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.Header/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Common.Label" String="Created On"/>
       </Annotations>
       <Annotations Target="test.MainService.Header/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="User's unique ID"/>
@@ -179,11 +181,13 @@ exports[`postgres-main GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.Header/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Common.Label" String="Changed On"/>
       </Annotations>
       <Annotations Target="test.MainService.Header/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="User's unique ID"/>
         <Annotation Term="Common.Label" String="Changed By"/>
@@ -359,12 +363,14 @@ exports[`postgres-main GET $metadata localized 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.Header/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Common.Label" String="Angelegt am"/>
       </Annotations>
       <Annotations Target="test.MainService.Header/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
@@ -372,11 +378,13 @@ exports[`postgres-main GET $metadata localized 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.Header/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Common.Label" String="Geändert am"/>
       </Annotations>
       <Annotations Target="test.MainService.Header/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
         <Annotation Term="Common.Label" String="Geändert von"/>
@@ -552,12 +560,14 @@ exports[`postgres-main GET $metadata localized 2`] = `
       </Annotations>
       <Annotations Target="test.MainService.Header/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Common.Label" String="Angelegt am"/>
       </Annotations>
       <Annotations Target="test.MainService.Header/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
@@ -565,11 +575,13 @@ exports[`postgres-main GET $metadata localized 2`] = `
       </Annotations>
       <Annotations Target="test.MainService.Header/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Common.Label" String="Geändert am"/>
       </Annotations>
       <Annotations Target="test.MainService.Header/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
         <Annotation Term="Common.Label" String="Geändert von"/>
@@ -745,12 +757,14 @@ exports[`postgres-main GET $metadata with query options 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.Header/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Common.Label" String="Created On"/>
       </Annotations>
       <Annotations Target="test.MainService.Header/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="User's unique ID"/>
@@ -758,11 +772,13 @@ exports[`postgres-main GET $metadata with query options 1`] = `
       </Annotations>
       <Annotations Target="test.MainService.Header/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Common.Label" String="Changed On"/>
       </Annotations>
       <Annotations Target="test.MainService.Header/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="User's unique ID"/>
         <Annotation Term="Common.Label" String="Changed By"/>
