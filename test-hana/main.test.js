@@ -9,31 +9,12 @@ cds.test(__dirname + "/_env");
 
 let request;
 
-let stock;
-let headerID1;
-let headerID2;
-
 describe("hana-main", () => {
   beforeAll(async () => {
     request = supertest(cds.app);
-
-    stock = Math.round(new Date().getTime() / 1000);
-    const response1 = await util.callWrite(request, "/odata/v2/main/Header", {
-      stock: stock,
-      currency: "USD",
-    });
-    headerID1 = response1.body.d.ID;
-    const response2 = await util.callWrite(request, "/odata/v2/main/Header", {
-      stock: 1,
-      currency: "EUR",
-    });
-    headerID2 = response2.body.d.ID;
   });
 
   afterAll(async () => {
-    await util.callDelete(request, `/odata/v2/main/Header(guid'${headerID1}')`);
-    await util.callDelete(request, `/odata/v2/main/Header(guid'${headerID2}')`);
-
     await cds.disconnect();
     await cds.shutdown();
   });
@@ -47,7 +28,7 @@ describe("hana-main", () => {
   });
 
   it("GET with parameters", async () => {
-    const response = await util.callRead(request, `/odata/v2/main/HeaderParameters(STOCK=${stock},CURRENCY='USD')/Set`);
+    const response = await util.callRead(request, `/odata/v2/main/HeaderParameters(STOCK=33,CURRENCY='USD')/Set`);
     expect(response.body).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
     expect(response.body.d.results).toMatchObject([
@@ -55,15 +36,15 @@ describe("hana-main", () => {
         __metadata: {
           type: "test.MainService.HeaderParametersType",
         },
-        country: null,
-        createdBy: "anonymous",
+        country: "USA",
+        createdBy: null,
         currency: "USD",
-        description: null,
-        modifiedBy: "anonymous",
-        name: null,
-        price: null,
-        stock,
-        STOCK_PARAM: stock,
+        description: "This is a test Header",
+        modifiedBy: null,
+        name: "Header",
+        price: "89.99",
+        stock: 33,
+        STOCK_PARAM: 33,
         CURRENCY_PARAM: "USD",
       },
     ]);
