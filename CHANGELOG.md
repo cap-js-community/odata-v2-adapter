@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- CDS New OData Adapter compatibility
+- Fix action call without return value  
+
 ## Version 1.13.0 - 2024-07-16
 
 ### Added

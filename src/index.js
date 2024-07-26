@@ -2850,7 +2850,11 @@ function cov2ap(options = {}) {
               if (statusCode < 400) {
                 convertHeaders(body, headers, serviceDefinition, req);
                 if (body && isApplicationJSON(contentType)) {
-                  body = convertResponseBody(Object.assign({}, body), headers, req);
+                  if (statusCode === 204) {
+                    body = JSON.stringify({});
+                  } else {
+                    body = convertResponseBody(Object.assign({}, body), headers, req);
+                  }
                 }
               } else {
                 convertHeaders(body, headers, serviceDefinition, req);
@@ -2902,7 +2906,7 @@ function cov2ap(options = {}) {
           }
         }
       } else {
-        // Failed
+        // No body or failed
         const serviceDefinition = initContext(req);
         convertHeaders(body, headers, serviceDefinition, req);
         body = convertResponseError(body, headers, serviceDefinition, req);
@@ -3404,27 +3408,33 @@ function cov2ap(options = {}) {
         operationLocalName = `${localName(req.context.boundDefinition, req)}_${operationLocalName}`;
       }
       const isArrayResult = Array.isArray(body.d.results) || Array.isArray(body.d);
-      if (req.context.definition.kind === "type") {
-        if (returnComplexNested && !isArrayResult) {
-          body.d = {
-            [operationLocalName]: body.d,
-          };
-          req.context.operationNested = true;
-        }
-      } else if (!req.context.definition.kind && req.context.definition.name && req.context.definitionElements.value) {
-        if (returnPrimitivePlain) {
-          body.d = isArrayResult ? (body.d.results || body.d).map((entry) => entry.value) : body.d.value;
-        }
-        if (returnPrimitiveNested) {
-          if (isArrayResult) {
-            body.d = {
-              results: body.d,
-            };
-          } else {
+      if (req.context.definition) {
+        if (req.context.definition.kind === "type") {
+          if (returnComplexNested && !isArrayResult) {
             body.d = {
               [operationLocalName]: body.d,
             };
             req.context.operationNested = true;
+          }
+        } else if (
+          !req.context.definition.kind &&
+          req.context.definition.name &&
+          req.context.definitionElements.value
+        ) {
+          if (returnPrimitivePlain) {
+            body.d = isArrayResult ? (body.d.results || body.d).map((entry) => entry.value) : body.d.value;
+          }
+          if (returnPrimitiveNested) {
+            if (isArrayResult) {
+              body.d = {
+                results: body.d,
+              };
+            } else {
+              body.d = {
+                [operationLocalName]: body.d,
+              };
+              req.context.operationNested = true;
+            }
           }
         }
       }

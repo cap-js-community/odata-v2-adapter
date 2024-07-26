@@ -429,4 +429,17 @@ describe("batch", () => {
     expect(responses.length).toEqual(1);
     expect(responses.filter((response) => response.statusCode === 201).length).toEqual(1);
   });
+
+  it("POST action request without return", async () => {
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-Action-NoReturn.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    let response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    expect(responses.filter((response) => response.statusCode === 204).length).toEqual(1);
+    const [first] = responses;
+    expect(first.body).toEqual({});
+    expect(first.contentTransferEncoding).toEqual("binary");
+  });
 });

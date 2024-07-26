@@ -2593,6 +2593,7 @@ describe("main", () => {
 
   it("POST unbound action request with no return", async () => {
     let response = await util.callWrite(request, "/odata/v2/main/unboundActionNoReturn?num=1&text=abc");
+    expect(response.statusCode).toEqual(204);
     expect(response.body).toEqual({});
   });
 
