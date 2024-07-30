@@ -589,7 +589,7 @@ describe("main", () => {
     expect(response.text).toEqual("1");
   });
 
-  it.skip("GET request with search with backslashes", async () => {
+  it("GET request with search with backslashes", async () => {
     let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "hall\\ooo",
     });
@@ -598,17 +598,17 @@ describe("main", () => {
     expect(response.text).toEqual("1");
   });
 
-  it.skip("GET request with search with quotes", async () => {
+  it("GET request with search with quotes", async () => {
     let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: 'Search"Quote"',
     });
     expect(response.statusCode).toEqual(201);
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search="`);
-    expect(response.text).toEqual("1");
+    expect(response.text).toEqual("2");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search=""`);
     expect(response.text).toEqual("0");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search=`);
-    expect(response.text).toEqual("8");
+    expect(response.text).toEqual("15");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search="""`);
     expect(response.text).toEqual("0");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search=Search"Quote"`);
@@ -3968,9 +3968,8 @@ describe("main", () => {
     });
   });
 
-  // TODO: Enable Test (CAP #12350)
-  it.skip("GET unbound service action with scoped name", async () => {
-    const response = await util.callWrite(request, "/odata/v2/main/c?num=1&text=abc");
+  it("GET unbound service action with scoped name", async () => {
+    const response = await util.callWrite(request, "/odata/v2/main/unbound_Action?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unbound_Action: {
@@ -3985,8 +3984,7 @@ describe("main", () => {
     });
   });
 
-  // TODO: Enable Test (CAP #12350)
-  it.skip("GET unbound service function with scoped name", async () => {
+  it("GET unbound service function with scoped name", async () => {
     const response = await util.callRead(request, "/odata/v2/main/unbound_Function?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
