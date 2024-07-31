@@ -439,7 +439,7 @@ describe("batch", () => {
     expect(responses.length).toEqual(1);
     expect(responses.filter((response) => response.statusCode === 204).length).toEqual(1);
     const [first] = responses;
-    expect(first.body).toEqual({});
+    expect(first.body).toEqual("");
     expect(first.contentTransferEncoding).toEqual("binary");
   });
 });

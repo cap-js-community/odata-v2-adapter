@@ -2851,7 +2851,7 @@ function cov2ap(options = {}) {
                 convertHeaders(body, headers, serviceDefinition, req);
                 if (body && isApplicationJSON(contentType)) {
                   if (statusCode === 204) {
-                    body = JSON.stringify({});
+                    body = "";
                   } else {
                     body = convertResponseBody(Object.assign({}, body), headers, req);
                   }
@@ -4779,7 +4779,7 @@ function cov2ap(options = {}) {
               });
               statusCode = (result && result.statusCode) || statusCode;
               statusCodeText = (result && result.statusCodeText) || statusCodeText;
-              body = (result && result.body) || body;
+              body = (result && result.body) ?? body;
               headers = (result && result.headers) || headers;
               if (["HEAD", "OPTIONS", "GET", "DELETE"].includes(method)) {
                 body = "";
