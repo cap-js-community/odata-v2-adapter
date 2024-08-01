@@ -48,6 +48,7 @@ module.exports = [
       "no-throw-literal": ["error"],
       "no-control-regex": ["off"],
       "no-constant-binary-expression": ["off"],
+      "no-inner-declarations": ["off"],
       "prefer-promise-reject-errors": ["error"],
       "no-constant-condition": ["error", { checkLoops: false }],
       "no-var": ["error"],
@@ -58,8 +59,8 @@ module.exports = [
       "n/no-deprecated-api": ["off"],
       "jest/no-conditional-expect": ["off"],
       "jest/no-disabled-tests": ["off"],
-      "@typescript-eslint/no-unused-vars": [off],
-      "@typescript-eslint/no-var-requires": [off],
+      "@typescript-eslint/no-unused-vars": ["off"],
+      "@typescript-eslint/no-var-requires": ["off"]
     }
   }
 ];
