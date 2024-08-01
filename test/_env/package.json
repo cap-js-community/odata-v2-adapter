@@ -8,13 +8,13 @@
     "start:root": "cds-serve --service test.MainService --from ./test/_env/srv/model --at /",
     "test:deploy": "cds deploy srv/index.cds --to sqlite:test.sqlite",
     "build": "cds build",
-    "tsc": "cd util/typescript && tsc"
+    "tsc": "cd typescript && tsc"
   },
   "dependencies": {
     "@cap-js-community/odata-v2-adapter": "../../"
   },
   "devDependencies": {
-    "typescript": "^4.7.4"
+    "typescript": "^5.5.2"
   },
   "cds": {
     "odata": {

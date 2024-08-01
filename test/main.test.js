@@ -33,7 +33,7 @@ describe("main", () => {
     expect(response.status).toEqual(200);
     expect(response.text).not.toBeDefined();
     expect(response.headers).toMatchObject({
-      "content-type": "application/json",
+      "content-type": expect.stringMatching(/application\/json/),
       dataserviceversion: "2.0",
     });
     response = await util.callHead(request, "/odata/v2/main/Header");
@@ -67,7 +67,6 @@ describe("main", () => {
     expect(response.headers).toMatchObject({
       "content-type": "application/xml",
       dataserviceversion: "2.0",
-      "transfer-encoding": "chunked",
     });
   });
 
@@ -309,7 +308,117 @@ describe("main", () => {
         type: "test.MainService.Header",
       },
       ID: id,
+      Items: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.HeaderItem",
+            },
+            name: "TestItem",
+          },
+        ],
+      },
+    });
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items&$select=name,Items/name`,
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+      ID: id,
+      name: "Test",
+      Items: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.HeaderItem",
+            },
+            name: "TestItem",
+          },
+        ],
+      },
+    });
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$expand=Items&$select=Items/name,Items`,
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+      ID: id,
+      Items: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.HeaderItem",
+            },
+            name: "TestItem",
+            description: null,
+            startAt: null,
+            endAt: null,
+            header_ID: id,
+            NextItem_ID: null,
+          },
+        ],
+      },
+    });
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$select=*`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      ID: id,
+      createdAt: expect.stringMatching(/\/Date\(.*\)\//),
       createdBy: "anonymous",
+      modifiedAt: expect.stringMatching(/\/Date\(.*\)\//),
+      modifiedBy: "anonymous",
+      name: "Test",
+      description: null,
+      country: null,
+      currency: null,
+      stock: null,
+      price: null,
+      FirstItem_ID: null,
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+    });
+    response = await util.callRead(request, `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$select=*,name`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      ID: id,
+      createdAt: expect.stringMatching(/\/Date\(.*\)\//),
+      createdBy: "anonymous",
+      modifiedAt: expect.stringMatching(/\/Date\(.*\)\//),
+      modifiedBy: "anonymous",
+      name: "Test",
+      description: null,
+      country: null,
+      currency: null,
+      stock: null,
+      price: null,
+      FirstItem_ID: null,
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+    });
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$select=*,name,Items&$expand=Items`,
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      ID: id,
+      createdAt: expect.stringMatching(/\/Date\(.*\)\//),
+      createdBy: "anonymous",
+      modifiedAt: expect.stringMatching(/\/Date\(.*\)\//),
       modifiedBy: "anonymous",
       name: "Test",
       description: null,
@@ -325,8 +434,47 @@ describe("main", () => {
               type: "test.MainService.HeaderItem",
             },
             name: "TestItem",
+            description: null,
+            startAt: null,
+            endAt: null,
+            header_ID: id,
+            NextItem_ID: null,
           },
         ],
+      },
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
+      },
+    });
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/Header?$filter=ID eq guid'${id}'&$select=Items&$expand=Items/Lines`,
+    );
+    expect(response.body).toBeDefined();
+    expect(response.body.d.results[0]).toMatchObject({
+      ID: id,
+      Items: {
+        results: [
+          {
+            __metadata: {
+              type: "test.MainService.HeaderItem",
+            },
+            name: "TestItem",
+            description: null,
+            startAt: null,
+            endAt: null,
+            header_ID: id,
+            NextItem_ID: null,
+            Lines: {
+              results: [],
+            },
+          },
+        ],
+      },
+      __metadata: {
+        uri: `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/Header(guid'${id}')`,
+        type: "test.MainService.Header",
       },
     });
   });
@@ -429,15 +577,6 @@ describe("main", () => {
       name: "Search_Instance_Test",
     });
     expect(response.statusCode).toEqual(201);
-    response = await util.callWrite(request, "/odata/v2/main/Header", {
-      name: "hall\\ooo",
-    });
-    expect(response.statusCode).toEqual(201);
-    response = await util.callWrite(request, "/odata/v2/main/Header", {
-      name: 'Search"Quote"',
-    });
-    expect(response.statusCode).toEqual(201);
-    const id = response.body.d.ID;
     response = await util.callRead(request, `/odata/v2/main/Header?search=Search_Instance`);
     expect(response.body.d.results.length).toEqual(1);
     response = await util.callRead(request, `/odata/v2/main/Header?$search=Search_Instance`);
@@ -448,12 +587,26 @@ describe("main", () => {
     expect(response.text).toEqual("1");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?$search="Search_Instance"`);
     expect(response.text).toEqual("1");
+  });
+
+  it("GET request with search with backslashes", async () => {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
+      name: "hall\\ooo",
+    });
+    expect(response.statusCode).toEqual(201);
+    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=%5C`);
+    expect(response.text).toEqual("1");
+  });
+
+  it("GET request with search with quotes", async () => {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
+      name: 'Search"Quote"',
+    });
+    expect(response.statusCode).toEqual(201);
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search="`);
     expect(response.text).toEqual("2");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search=""`);
     expect(response.text).toEqual("0");
-    response = await util.callRead(request, `/odata/v2/main/Header/$count?search=hall%5Cooo`);
-    expect(response.text).toEqual("1");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search=`);
     expect(response.text).toEqual("15");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?search="""`);
@@ -464,7 +617,6 @@ describe("main", () => {
     expect(response.text).toEqual("1");
     response = await util.callRead(request, `/odata/v2/main/Header/$count?$search="\\"\\""`);
     expect(response.text).toEqual("0");
-
     response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: '"',
     });
@@ -625,32 +777,38 @@ describe("main", () => {
         accept: "image/png",
       },
     );
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(307);
+    expect(response.headers.location).toEqual(
+      `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
+    );
     response = await util.callRead(
       request,
       "/odata/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link",
     );
-    expect(response.statusCode).toEqual(200);
-    expect(response.body.length).toBe(17686);
-    expect(response.headers["transfer-encoding"]).toEqual("chunked");
-    expect(response.headers["content-type"]).toEqual("image/png");
-    expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(307);
+    expect(response.headers.location).toEqual(
+      `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
+    );
     response = await util.callRead(
       request,
       "/odata/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/link/$value",
     );
-    expect(response.statusCode).toEqual(200);
-    expect(response.body.length).toBe(17686);
-    expect(response.headers["transfer-encoding"]).toEqual("chunked");
-    expect(response.headers["content-type"]).toEqual("image/png");
-    expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
+    expect(response.headers.location).toEqual(
+      `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
+    );
     response = await util.callRead(
       request,
       "/odata/v2/main/HeaderUrlStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value",
     );
+    expect(response.statusCode).toEqual(307);
+    expect(response.headers.location).toEqual(
+      `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
+    );
+    response = await util.callRead(
+      request,
+      "/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value",
+    );
     expect(response.statusCode).toEqual(200);
-    expect(response.body.length).toBe(17686);
     expect(response.headers["transfer-encoding"]).toEqual("chunked");
     expect(response.headers["content-type"]).toEqual("image/png");
     expect(response.headers["content-disposition"]).toEqual('attachment; filename="file.png"');
@@ -658,8 +816,10 @@ describe("main", () => {
       request,
       "/odata/v2/main/HeaderUrlStream(guid'e8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value",
     );
-    expect(response.statusCode).toEqual(500);
-    expect(response.body.error.message.value).toEqual("fetch failed");
+    expect(response.statusCode).toEqual(307);
+    expect(response.headers.location).toEqual(
+      `http://localhost:8888/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value`,
+    );
     response = await util.callRead(
       request,
       "/odata/v2/main/HeaderUrlStream(guid'a8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value",
@@ -667,31 +827,10 @@ describe("main", () => {
         accept: "image/png",
       },
     );
-    expect(response.statusCode).toEqual(400);
-    expect(response.body).toEqual({
-      error: {
-        code: "400",
-        message: {
-          lang: "en",
-          value: "Expected uri token 'EOF' could not be found in '$value2' at position 7",
-        },
-        innererror: {
-          errordetails: [
-            {
-              code: "400",
-              message: {
-                lang: "en",
-                value: "Expected uri token 'EOF' could not be found in '$value2' at position 7",
-              },
-              severity: "error",
-              target: "/#TRANSIENT#",
-            },
-          ],
-        },
-        severity: "error",
-        target: "/#TRANSIENT#",
-      },
-    });
+    expect(response.statusCode).toEqual(307);
+    expect(response.headers.location).toEqual(
+      `http://${response.request.host.replace("127.0.0.1", "localhost")}/odata/v2/main/HeaderStream(guid'f8a7a4f7-1901-4032-a237-3fba1d1b2343')/$value2`,
+    );
   });
 
   it("PUT request with stream", async () => {
@@ -1004,22 +1143,22 @@ describe("main", () => {
       "content-type": "image/png",
       name: "test",
     });
-    expect(createResponse.statusCode).toEqual(400);
+    expect(createResponse.statusCode).toEqual(415);
     expect(createResponse.body.error).toMatchObject({
-      code: "400",
+      code: "415",
       message: {
         lang: "en",
-        value: "No payload deserializer available for resource kind 'PRIMITIVE' and mime type 'image/png'",
+        value: "Unsupported Media Type",
       },
       severity: "error",
       target: "/#TRANSIENT#",
       innererror: {
         errordetails: [
           {
-            code: "400",
+            code: "415",
             message: {
               lang: "en",
-              value: "No payload deserializer available for resource kind 'PRIMITIVE' and mime type 'image/png'",
+              value: "Unsupported Media Type",
             },
             severity: "error",
             target: "/#TRANSIENT#",
@@ -1522,7 +1661,7 @@ describe("main", () => {
         code: "405",
         message: {
           lang: "en",
-          value: "Method PATCH not allowed for ENTITY.COLLECTION",
+          value: expect.stringMatching(/PATCH .*not allowed .*entity.collection/i),
         },
         severity: "error",
         innererror: {
@@ -1531,7 +1670,7 @@ describe("main", () => {
               code: "405",
               message: {
                 lang: "en",
-                value: "Method PATCH not allowed for ENTITY.COLLECTION",
+                value: expect.stringMatching(/PATCH .*not allowed .*entity.collection/i),
               },
               severity: "error",
             },
@@ -1554,7 +1693,7 @@ describe("main", () => {
     response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.name).toEqual("Test: èèòàù");
-    expect(response.headers["content-type"]).toEqual("application/json");
+    expect(response.headers["content-type"]).toMatch(/application\/json/);
 
     response = await util.callWrite(
       request,
@@ -1576,7 +1715,7 @@ describe("main", () => {
     response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.name).toEqual("Test: èèòàù");
-    expect(response.headers["content-type"]).toEqual("application/json");
+    expect(response.headers["content-type"]).toMatch(/application\/json/);
   });
 
   it("POST request with x-http-method", async () => {
@@ -2012,7 +2151,7 @@ describe("main", () => {
         code: "400",
         message: {
           lang: "en",
-          value: `Current function 'unboundNavigationFunction' is not composable; trailing segment 'Items' ist not allowed`,
+          value: "Unbound functions are only supported as the last path segment",
         },
         severity: "error",
         innererror: {
@@ -2021,7 +2160,7 @@ describe("main", () => {
               code: "400",
               message: {
                 lang: "en",
-                value: `Current function 'unboundNavigationFunction' is not composable; trailing segment 'Items' ist not allowed`,
+                value: "Unbound functions are only supported as the last path segment",
               },
               severity: "error",
             },
@@ -2454,6 +2593,7 @@ describe("main", () => {
 
   it("POST unbound action request with no return", async () => {
     let response = await util.callWrite(request, "/odata/v2/main/unboundActionNoReturn?num=1&text=abc");
+    expect(response.statusCode).toEqual(204);
     expect(response.body).toEqual({});
   });
 
@@ -3386,24 +3526,20 @@ describe("main", () => {
         code: "400",
         message: {
           lang: "en",
-          value: expect.stringMatching(
-            /Deserialization Error: Invalid value 0123456789a \((?:JavaScript )?string\) for property \\?"text\\?"\. The length of the Edm\.String value must not be greater than the MaxLength facet value \(10\)\./,
-          ),
+          value: "Value 0123456789a is not a valid String(10)",
         },
         severity: "error",
-        target: "/#TRANSIENT#",
+        target: "text",
         innererror: {
           errordetails: [
             {
               code: "400",
               message: {
                 lang: "en",
-                value: expect.stringMatching(
-                  /Deserialization Error: Invalid value 0123456789a \((?:JavaScript )?string\) for property \\?"text\\?"\. The length of the Edm\.String value must not be greater than the MaxLength facet value \(10\)\./,
-                ),
+                value: "Value 0123456789a is not a valid String(10)",
               },
               severity: "error",
-              target: "/#TRANSIENT#",
+              target: "text",
             },
           ],
         },
@@ -3416,24 +3552,20 @@ describe("main", () => {
         code: "400",
         message: {
           lang: "en",
-          value: expect.stringMatching(
-            /Deserialization Error: Invalid value 0123456789a \((?:JavaScript )?string\) for property \\?"text\\?"\. The length of the Edm\.String value must not be greater than the MaxLength facet value \(10\)\./,
-          ),
+          value: "Value 0123456789a is not a valid String(10)",
         },
         severity: "error",
-        target: "/#TRANSIENT#",
+        target: "text",
         innererror: {
           errordetails: [
             {
               code: "400",
               message: {
                 lang: "en",
-                value: expect.stringMatching(
-                  /Deserialization Error: Invalid value 0123456789a \((?:JavaScript )?string\) for property \\?"text\\?"\. The length of the Edm\.String value must not be greater than the MaxLength facet value \(10\)\./,
-                ),
+                value: "Value 0123456789a is not a valid String(10)",
               },
               severity: "error",
-              target: "/#TRANSIENT#",
+              target: "text",
             },
           ],
         },
@@ -3460,24 +3592,20 @@ describe("main", () => {
         code: "400",
         message: {
           lang: "en",
-          value: expect.stringMatching(
-            /Deserialization Error: Invalid value "01234\n5678" \((?:JavaScript )?string\) for property \\?"text\\?"\. The length of the Edm\.String value must not be greater than the MaxLength facet value \(10\)\./,
-          ),
+          value: 'Value "01234\n5678" is not a valid String(10)',
         },
         severity: "error",
-        target: "/#TRANSIENT#",
+        target: "text",
         innererror: {
           errordetails: [
             {
               code: "400",
               message: {
                 lang: "en",
-                value: expect.stringMatching(
-                  /Deserialization Error: Invalid value "01234\n5678" \((?:JavaScript )?string\) for property \\?"text\\?"\. The length of the Edm\.String value must not be greater than the MaxLength facet value \(10\)\./,
-                ),
+                value: 'Value "01234\n5678" is not a valid String(10)',
               },
               severity: "error",
-              target: "/#TRANSIENT#",
+              target: "text",
             },
           ],
         },
@@ -3490,24 +3618,20 @@ describe("main", () => {
         code: "400",
         message: {
           lang: "en",
-          value: expect.stringMatching(
-            /Deserialization Error: Invalid value 01234\n56789 \((?:JavaScript )?string\) for property \\?"text\\?"\. The length of the Edm\.String value must not be greater than the MaxLength facet value \(10\)\./,
-          ),
+          value: "Value 01234\n56789 is not a valid String(10)",
         },
         severity: "error",
-        target: "/#TRANSIENT#",
+        target: "text",
         innererror: {
           errordetails: [
             {
               code: "400",
               message: {
                 lang: "en",
-                value: expect.stringMatching(
-                  /Deserialization Error: Invalid value 01234\n56789 \((?:JavaScript )?string\) for property \\?"text\\?"\. The length of the Edm\.String value must not be greater than the MaxLength facet value \(10\)\./,
-                ),
+                value: "Value 01234\n56789 is not a valid String(10)",
               },
               severity: "error",
-              target: "/#TRANSIENT#",
+              target: "text",
             },
           ],
         },
@@ -3548,24 +3672,20 @@ describe("main", () => {
         code: "400",
         message: {
           lang: "en",
-          value: expect.stringMatching(
-            /Deserialization Error: Invalid value """""\n""""" \((?:JavaScript )?string\) for property \\?"text\\?"\. The length of the Edm\.String value must not be greater than the MaxLength facet value \(10\)\./,
-          ),
+          value: 'Value """""\n""""" is not a valid String(10)',
         },
         severity: "error",
-        target: "/#TRANSIENT#",
+        target: "text",
         innererror: {
           errordetails: [
             {
               code: "400",
               message: {
                 lang: "en",
-                value: expect.stringMatching(
-                  /Deserialization Error: Invalid value """""\n""""" \((?:JavaScript )?string\) for property \\?"text\\?"\. The length of the Edm\.String value must not be greater than the MaxLength facet value \(10\)\./,
-                ),
+                value: 'Value """""\n""""" is not a valid String(10)',
               },
               severity: "error",
-              target: "/#TRANSIENT#",
+              target: "text",
             },
           ],
         },
@@ -3721,7 +3841,7 @@ describe("main", () => {
         code: "405",
         message: {
           lang: "en",
-          value: 'Entity "test.MainService.LocalizedEntity_texts" is not explicitly exposed as part of the service',
+          value: 'Entity "test.MainService.LocalizedEntity.texts" is not explicitly exposed as part of the service',
         },
         severity: "error",
         target: "/#TRANSIENT#",
@@ -3732,7 +3852,7 @@ describe("main", () => {
               message: {
                 lang: "en",
                 value:
-                  'Entity "test.MainService.LocalizedEntity_texts" is not explicitly exposed as part of the service',
+                  'Entity "test.MainService.LocalizedEntity.texts" is not explicitly exposed as part of the service',
               },
               severity: "error",
               target: "/#TRANSIENT#",
@@ -3830,7 +3950,7 @@ describe("main", () => {
     });
     response = await util.callRead(
       request,
-      "/odata/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')",
+      `/odata/v2/main/context_LocalizedEntity(guid'${id}')/texts(locale='en',ID=guid'${id}')`,
     );
     expect(response.body).toMatchObject({
       d: {
@@ -3842,15 +3962,14 @@ describe("main", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost",
-          )}/odata/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+          )}/odata/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'${id}')`,
         },
       },
     });
   });
 
-  // TODO: Enable Test (CAP #12350)
-  it.skip("GET unbound service action with scoped name", async () => {
-    const response = await util.callWrite(request, "/odata/v2/main/c?num=1&text=abc");
+  it("GET unbound service action with scoped name", async () => {
+    const response = await util.callWrite(request, "/odata/v2/main/unbound_Action?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
         unbound_Action: {
@@ -3865,8 +3984,7 @@ describe("main", () => {
     });
   });
 
-  // TODO: Enable Test (CAP #12350)
-  it.skip("GET unbound service function with scoped name", async () => {
+  it("GET unbound service function with scoped name", async () => {
     const response = await util.callRead(request, "/odata/v2/main/unbound_Function?num=1&text=abc");
     expect(response.body).toMatchObject({
       d: {
@@ -4093,7 +4211,7 @@ describe("main", () => {
     response = await util.callWrite(request, `/odata/v2/main/User_Pay?ID=guid'${id}'&cost=5454m`);
     expect(response.statusCode).toEqual(204);
     response = await util.callWrite(request, `/odata/v2/main/User_Pay?cost=5454m`);
-    expect(response.statusCode).toEqual(400);
+    expect(response.statusCode).toEqual(404);
   });
 
   it("Header 'odata-version' is removed", async () => {

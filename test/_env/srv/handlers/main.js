@@ -297,7 +297,7 @@ module.exports = (srv) => {
     return req.data.text;
   });
 
-  srv.on("unbound_Action", async (req) => {
+  srv.on("unbound.Action", async (req) => {
     return [
       {
         code: "TEST",

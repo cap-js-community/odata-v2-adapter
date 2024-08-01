@@ -5,12 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.12.10 - 2024-06-xx
+## Version 1.13.1 - 2024-08-01
 
 ### Fixed
 
-- Do not log authorization header in debug traces
+- CDS New OData Adapter compatibility
+- Fix action call without return value
+
+## Version 1.13.0 - 2024-07-16
+
+### Added
+
+- CDS 8 compatibility
+- Use base model for CDS build task
+
+## Version 1.12.12 - 2024-07-04
+
+### Fixed
+
+- Set `content-length` header correctly for OData V4 request in batch mode
+
+### Added
+
+- CI Matrix Test Node 22
+- Test with Postgres
+
+## Version 1.12.11 - 2024-06-24
+
+### Fixed
+
+- Improve expand/select handling and support `*` notation
+- Expose CDS OData V2 Adapter singleton instance from CDS plugin at `cds.cov2ap`
+- Allow to register `before` express routes for CDS OData V2 Adapter router via `cds.cov2ap.before`
+- Option to cache and stream generated EDMX from disk instead of keeping it in memory
+- Use new `cds.build.register` API version
+
+## Version 1.12.10 - 2024-06-05
+
+### Fixed
+
+- Fix expand and select of navigation properties
 - Fix error response for errors during media stream read
+- Do not log authorization header in debug traces
+- Decode request url for debug traces
 
 ## Version 1.12.9 - 2024-05-03
 

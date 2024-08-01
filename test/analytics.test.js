@@ -517,31 +517,20 @@ describe("analytics", () => {
     let response = await util.callRead(request, "/odata/v2/analytics/Header?$select=stock&search=Header");
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
-      error: {
-        code: "501",
-        innererror: {
-          errordetails: [
-            {
-              code: "501",
-              message: {
-                lang: "en",
-                value: expect.stringMatching(
-                  /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
-                ),
-              },
-              severity: "error",
-              target: "/#TRANSIENT#",
+      d: {
+        results: [
+          {
+            ID__: 'aggregation\'{"key":{},"value":["stock"],"search":"%22Header%22"}\'',
+            __metadata: {
+              type: "test.AnalyticsService.Header",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost",
+              )}/odata/v2/analytics/Header(aggregation\'{"key":{},"value":["stock"],"search":"%22Header%22"}\')`,
             },
-          ],
-        },
-        message: {
-          lang: "en",
-          value: expect.stringMatching(
-            /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
-          ),
-        },
-        severity: "error",
-        target: "/#TRANSIENT#",
+            stock: 153,
+          },
+        ],
       },
     });
   });
@@ -553,31 +542,20 @@ describe("analytics", () => {
     );
     expect(response.body).toBeDefined();
     expect(response.body).toEqual({
-      error: {
-        code: "501",
-        innererror: {
-          errordetails: [
-            {
-              code: "501",
-              message: {
-                lang: "en",
-                value: expect.stringMatching(
-                  /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
-                ),
-              },
-              severity: "error",
-              target: "/#TRANSIENT#",
+      d: {
+        results: [
+          {
+            ID__: 'aggregation\'{"key":{},"value":["stock"],"filter":"currency%20eq%20\'USD\'","search":"%22Header%22"}\'',
+            __metadata: {
+              type: "test.AnalyticsService.Header",
+              uri: `http://${response.request.host.replace(
+                "127.0.0.1",
+                "localhost",
+              )}/odata/v2/analytics/Header(aggregation\'{"key":{},"value":["stock"],"filter":"currency%20eq%20\'USD\'","search":"%22Header%22"}\')`,
             },
-          ],
-        },
-        message: {
-          lang: "en",
-          value: expect.stringMatching(
-            /Feature is not supported: Transformation "(10|SEARCH)" with query option \$apply/,
-          ),
-        },
-        severity: "error",
-        target: "/#TRANSIENT#",
+            stock: 17,
+          },
+        ],
       },
     });
   });
@@ -884,20 +862,20 @@ describe("analytics", () => {
     response = await util.callWrite(request, `/odata/v2/analytics/Book_order?ID__=${ID__}&number=5`);
     expect(response.body).toMatchObject({
       error: {
-        code: "400",
+        code: "404",
         message: {
           lang: "en",
-          value: "No 'Edm.Int32' value found for key 'genre_ID'",
+          value: "Invalid resource path \"test.AnalyticsService.Book(author='Catweazle',genre_ID=undefined)\"",
         },
         severity: "error",
         target: "/#TRANSIENT#",
         innererror: {
           errordetails: [
             {
-              code: "400",
+              code: "404",
               message: {
                 lang: "en",
-                value: "No 'Edm.Int32' value found for key 'genre_ID'",
+                value: "Invalid resource path \"test.AnalyticsService.Book(author='Catweazle',genre_ID=undefined)\"",
               },
               severity: "error",
               target: "/#TRANSIENT#",

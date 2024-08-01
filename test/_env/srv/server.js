@@ -6,7 +6,17 @@ const compression = require("compression");
 const init = require("./init");
 
 cds.on("bootstrap", (app) => {
-  app.use(compression({ filter: shouldCompress }));
+  const before = [];
+  if (!(process.env.TEST_COV2AP_COMPRESSION === "false")) {
+    before.push(compression({ filter: shouldCompress }));
+  }
+  if (!(process.env.TEST_COV2AP_FEATURE_TOGGLES === "false")) {
+    before.push((req, res, next) => {
+      req.features = req.features || ["advanced"];
+      next();
+    });
+  }
+  cds.cov2ap.before = before;
 });
 
 cds.on("listening", ({ server }) => {

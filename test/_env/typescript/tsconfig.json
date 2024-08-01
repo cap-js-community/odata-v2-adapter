@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "module": "commonjs",
+    "target": "es2023",
+    "sourceMap": true,
+    "alwaysStrict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  },
+  "exclude": ["../node_modules"]
+}

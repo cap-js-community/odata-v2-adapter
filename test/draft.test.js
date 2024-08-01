@@ -22,11 +22,9 @@ describe("draft", () => {
       accept: "application/json",
     });
     expect(response.body).toBeDefined();
-    expect(response.body).toEqual({
-      d: {
-        EntitySets: ["Header", "HeaderItem", "HeaderLine", "Header_texts", "HeaderItem_texts"],
-      },
-    });
+    expect(response.body.d.EntitySets.sort()).toEqual(
+      ["Header", "HeaderItem", "HeaderLine", "Header_texts", "HeaderItem_texts"].sort(),
+    );
   });
 
   it("GET $metadata", async () => {
@@ -438,7 +436,7 @@ describe("draft", () => {
         code: "405",
         message: {
           lang: "en",
-          value: "Method PATCH not allowed for ENTITY.COLLECTION",
+          value: "Method PATCH is not allowed for entity collections",
         },
         innererror: {
           errordetails: [
@@ -446,7 +444,7 @@ describe("draft", () => {
               code: "405",
               message: {
                 lang: "en",
-                value: "Method PATCH not allowed for ENTITY.COLLECTION",
+                value: "Method PATCH is not allowed for entity collections",
               },
               severity: "error",
             },

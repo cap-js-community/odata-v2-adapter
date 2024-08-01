@@ -1,0 +1,83 @@
+{
+  "defaultRenderer": "fiori2",
+  "applications": {
+    "BasicHeader-display": {
+      "title": "Basic Edit",
+      "description": "Basic Editing App",
+      "additionalInformation": "SAPUI5.Component=com.sap.cds.app.basic",
+      "applicationType": "URL",
+      "url": "./basic/webapp"
+    },
+    "DraftHeader-display": {
+      "title": "Draft Edit",
+      "description": "Draft Editing App",
+      "additionalInformation": "SAPUI5.Component=com.sap.cds.app.draft",
+      "applicationType": "URL",
+      "url": "./draft/webapp"
+    },
+    "Hierarchy-display": {
+      "title": "Hierarchy",
+      "description": "Hierarchy App",
+      "additionalInformation": "SAPUI5.Component=com.sap.cds.app.hierarchy",
+      "applicationType": "URL",
+      "url": "./hierarchy/webapp"
+    },
+    "Overview-display": {
+      "title": "Overview",
+      "description": "Overview App",
+      "additionalInformation": "SAPUI5.Component=com.sap.cds.app.overview",
+      "applicationType": "URL",
+      "url": "./overview/webapp"
+    },
+    "Analytics-display": {
+      "title": "Analytics",
+      "description": "Analytics App",
+      "additionalInformation": "SAPUI5.Component=com.sap.cds.app.analytics",
+      "applicationType": "URL",
+      "url": "./analytics/webapp"
+    },
+    "XML-display": {
+      "title": "Atom",
+      "description": "Basic App (Atom)",
+      "additionalInformation": "SAPUI5.Component=com.sap.cds.app.xml",
+      "applicationType": "URL",
+      "url": "./xml/webapp"
+    }
+  },
+  "renderers": {
+    "fiori2": {
+      "componentData": {
+        "config": {
+          "enableMergeAppAndShellHeaders": true,
+          "search": "hidden"
+        }
+      }
+    }
+  },
+  "services": {
+    "NavTargetResolution": {
+      "config": {
+        "runStandaloneAppFolderWhitelist": {
+          "*": true
+        },
+        "allowTestUrlComponentConfig": true,
+        "enableClientSideTargetResolution": true
+      }
+    },
+    "EndUserFeedback": {
+      "adapter": {
+        "config": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "bootstrapPlugins": {
+    "RuntimeAuthoringPlugin": {
+      "component": "sap.ushell.plugins.rta",
+      "config": {
+        "validateAppVersion": false
+      }
+    }
+  }
+}

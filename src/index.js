@@ -1,8 +1,9 @@
 "use strict";
 
 // OData V2/V4 Delta: http://docs.oasis-open.org/odata/new-in-odata/v4.0/cn01/new-in-odata-v4.0-cn01.html
-
+const os = require("os");
 const fs = require("fs");
+const fsPath = require("path");
 const URL = require("url");
 const { pipeline } = require("stream");
 const express = require("express");
@@ -18,6 +19,8 @@ const xmlParser = new xml2js.Parser({
   tagNameProcessors: [xml2js.processors.stripPrefix],
 });
 const cacheSymbol = Symbol("cov2ap");
+
+const CACHE_DIR = fs.realpathSync(os.tmpdir());
 
 // Suppress deprecation warning in Node 22 due to http-proxy using util._extend()
 require("util")._extend = Object.assign;
@@ -184,6 +187,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} options.defaultFormat Specifies the default entity response format (json, atom). Default is 'json'.
  * @param {boolean} options.processForwardedHeaders Specifies if 'x-forwarded' headers are processed. Default is 'true'.
  * @param {boolean} options.cacheDefinitions Specifies if the definition elements are cached. Default is 'true'.
+ * @param {string} options.cacheMetadata Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is 'memory'.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
@@ -265,6 +269,7 @@ function cov2ap(options = {}) {
   const defaultFormat = optionWithFallback("defaultFormat", "json");
   const processForwardedHeaders = optionWithFallback("processForwardedHeaders", true);
   const cacheDefinitions = optionWithFallback("cacheDefinitions", true);
+  const cacheMetadata = optionWithFallback("cacheMetadata", "memory");
 
   if (cds.env.protocols) {
     cds.env.protocols["odata-v2"] = {
@@ -451,7 +456,13 @@ function cov2ap(options = {}) {
       delete headers["content-encoding"];
       let body;
       if (metadataResponse.ok || metadataResponse.status === 304) {
-        body = edmx;
+        if (cacheMetadata === "disk") {
+          body = await fs.promises.readFile(edmx, "utf8");
+        } else if (cacheMetadata === "stream") {
+          body = fs.createReadStream(edmx);
+        } else {
+          body = edmx;
+        }
       } else {
         body = metadataBody;
       }
@@ -683,6 +694,36 @@ function cov2ap(options = {}) {
     }
   }
 
+  function routeBeforeRequest(req, res, next) {
+    if (typeof router.before === "function") {
+      router.before(req, res, next);
+    } else if (Array.isArray(router.before) && router.before.length > 0) {
+      const routes = router.before.slice(0);
+
+      function call() {
+        try {
+          const route = routes.shift();
+          if (!route) {
+            return next(null);
+          }
+          route(req, res, (err) => {
+            if (err) {
+              next(err);
+            } else {
+              call();
+            }
+          });
+        } catch (err) {
+          next(err);
+        }
+      }
+
+      call();
+    } else {
+      next();
+    }
+  }
+
   function bindRoutes() {
     const routeMiddleware = createProxyMiddleware({
       target: `${target}${rewritePath}`,
@@ -695,6 +736,7 @@ function cov2ap(options = {}) {
       },
       logger: cds.log("cov2ap"),
     });
+    router.use(`/${path}`, routeBeforeRequest);
     router.use(`/${path}`, routeInitRequest);
     router.get(`/${path}/*\\$metadata`, routeGetMetadata);
     router.use(`/${path}`, routeBodyParser, routeSetContext, routeFileUpload, routeMiddleware);
@@ -1046,8 +1088,14 @@ function cov2ap(options = {}) {
     }
     metadataCache[tenant].edmx = metadataCache[tenant].edmx || {};
     metadataCache[tenant].edmx[service] = metadataCache[tenant].edmx[service] || {};
-    const edmx = await callCached(metadataCache[tenant].edmx[service], locale, () => {
-      return prepareEdmx(tenant, csn, loadEdmx, service, locale);
+    const edmx = await callCached(metadataCache[tenant].edmx[service], locale, async () => {
+      const edmx = await prepareEdmx(tenant, csn, loadEdmx, service, locale);
+      if (["disk", "stream"].includes(cacheMetadata)) {
+        const edmxFilename = fsPath.join(CACHE_DIR, `${tenant}$${service}$${locale}.edmx.xml`);
+        await fs.promises.writeFile(edmxFilename, edmx);
+        return edmxFilename;
+      }
+      return edmx;
     });
     return { csn, edmx };
   }
@@ -1095,8 +1143,7 @@ function cov2ap(options = {}) {
       logDebug({ tenant }, "Metadata", `No metadata file found for service ${service} at ${filePath}`);
     }
     if (exists) {
-      const file = await fs.promises.readFile(filePath);
-      return file.toString();
+      return await fs.promises.readFile(filePath, "utf8");
     }
   }
 
@@ -1320,6 +1367,14 @@ function cov2ap(options = {}) {
                   headers["content-type"] = contentType;
                 }
                 body = convertRequestBody(body, headers, url, req);
+              }
+              if (body !== undefined) {
+                for (const name in headers) {
+                  if (name.toLowerCase() === "content-length") {
+                    headers[name] = Buffer.byteLength(body);
+                    break;
+                  }
+                }
               }
               return { body, headers };
             },
@@ -2112,18 +2167,25 @@ function cov2ap(options = {}) {
         req.context.selects.forEach((select) => {
           let current = context;
           let currentDefinition = definition;
-          select.split("/").forEach((part) => {
+          const parts = select.split("/");
+          parts.forEach((part, index) => {
             if (!current) {
               return;
             }
-            const element = definitionElements(currentDefinition)[part];
-            if (element) {
-              const type = elementType(element, req);
-              if (type === "cds.Composition" || type === "cds.Association") {
-                current = current && current.expand[part];
-                currentDefinition = element._target;
-              } else if (current && current.select) {
+            if (part === "*") {
+              current.select[part] = true;
+            } else {
+              const element = definitionElements(currentDefinition)[part];
+              if (element) {
                 current.select[part] = true;
+                const type = elementType(element, req);
+                if (type === "cds.Composition" || type === "cds.Association") {
+                  current = current.expand[part];
+                  if (current && index === parts.length - 1) {
+                    current.all = true;
+                  }
+                  currentDefinition = element._target;
+                }
               }
             }
           });
@@ -2140,7 +2202,7 @@ function cov2ap(options = {}) {
             .map((name) => {
               let value = expand[name];
               let result = name;
-              const selects = Object.keys(value.select);
+              const selects = value.all ? [] : Object.keys(value.select);
               const expands = Object.keys(value.expand);
               if (selects.length > 0 || expands.length > 0) {
                 result += "(";
@@ -2788,7 +2850,11 @@ function cov2ap(options = {}) {
               if (statusCode < 400) {
                 convertHeaders(body, headers, serviceDefinition, req);
                 if (body && isApplicationJSON(contentType)) {
-                  body = convertResponseBody(Object.assign({}, body), headers, req);
+                  if (statusCode === 204) {
+                    body = "";
+                  } else {
+                    body = convertResponseBody(Object.assign({}, body), headers, req);
+                  }
                 }
               } else {
                 convertHeaders(body, headers, serviceDefinition, req);
@@ -2840,7 +2906,7 @@ function cov2ap(options = {}) {
           }
         }
       } else {
-        // Failed
+        // No body or failed
         const serviceDefinition = initContext(req);
         convertHeaders(body, headers, serviceDefinition, req);
         body = convertResponseError(body, headers, serviceDefinition, req);
@@ -2979,7 +3045,7 @@ function cov2ap(options = {}) {
     });
     pipeline(streamRes, res, (err) => {
       if (err) {
-        logWarn(req, "StreamPipeline", err);
+        logWarn(req, "StreamResponse", err);
       }
     });
 
@@ -3342,27 +3408,33 @@ function cov2ap(options = {}) {
         operationLocalName = `${localName(req.context.boundDefinition, req)}_${operationLocalName}`;
       }
       const isArrayResult = Array.isArray(body.d.results) || Array.isArray(body.d);
-      if (req.context.definition.kind === "type") {
-        if (returnComplexNested && !isArrayResult) {
-          body.d = {
-            [operationLocalName]: body.d,
-          };
-          req.context.operationNested = true;
-        }
-      } else if (!req.context.definition.kind && req.context.definition.name && req.context.definitionElements.value) {
-        if (returnPrimitivePlain) {
-          body.d = isArrayResult ? (body.d.results || body.d).map((entry) => entry.value) : body.d.value;
-        }
-        if (returnPrimitiveNested) {
-          if (isArrayResult) {
-            body.d = {
-              results: body.d,
-            };
-          } else {
+      if (req.context.definition) {
+        if (req.context.definition.kind === "type") {
+          if (returnComplexNested && !isArrayResult) {
             body.d = {
               [operationLocalName]: body.d,
             };
             req.context.operationNested = true;
+          }
+        } else if (
+          !req.context.definition.kind &&
+          req.context.definition.name &&
+          req.context.definitionElements.value
+        ) {
+          if (returnPrimitivePlain) {
+            body.d = isArrayResult ? (body.d.results || body.d).map((entry) => entry.value) : body.d.value;
+          }
+          if (returnPrimitiveNested) {
+            if (isArrayResult) {
+              body.d = {
+                results: body.d,
+              };
+            } else {
+              body.d = {
+                [operationLocalName]: body.d,
+              };
+              req.context.operationNested = true;
+            }
           }
         }
       }
@@ -4061,9 +4133,19 @@ function cov2ap(options = {}) {
       });
       res.status(statusCode);
       if (body && statusCode !== 204) {
-        res.write(body);
+        if (body.pipe) {
+          pipeline(body, res, (err) => {
+            if (err) {
+              logWarn(req, "MetadataStream", err);
+            }
+          });
+        } else {
+          res.write(body);
+          res.end();
+        }
+      } else {
+        res.end();
       }
-      res.end();
 
       // Trace
       traceResponse(req, "Response", res.statusCode, res.statusMessage, headers, body);
@@ -4611,7 +4693,7 @@ function cov2ap(options = {}) {
   }
 
   function setContentLength(headers, body) {
-    if (body && !(headers["transfer-encoding"] || "").includes("chunked")) {
+    if (body && body.length && !(headers["transfer-encoding"] || "").includes("chunked")) {
       headers["content-length"] = Buffer.byteLength(body);
     } else {
       clearContentLength(headers);
@@ -4697,8 +4779,11 @@ function cov2ap(options = {}) {
               });
               statusCode = (result && result.statusCode) || statusCode;
               statusCodeText = (result && result.statusCodeText) || statusCodeText;
-              body = (result && result.body) || body;
+              body = (result && result.body) ?? body;
               headers = (result && result.headers) || headers;
+              if (["HEAD", "OPTIONS", "GET", "DELETE"].includes(method)) {
+                body = "";
+              }
             } catch (err) {
               // Error
               logError(req, "Batch", err);
@@ -4828,7 +4913,7 @@ function cov2ap(options = {}) {
   function traceRequest(req, name, method, url, headers, body) {
     const LOG = cds.log("cov2ap");
     if (LOG._debug) {
-      const _url = url || "";
+      const _url = decodeURIComponent(url) || "";
       const _headers = JSON.stringify(sanitizeHeaders(headers));
       const _body = typeof body === "string" ? body : body ? JSON.stringify(body) : "";
       logTrace(req, name, `${method} ${_url}`, _headers && "Headers:", _headers, _body && "Body:", _body);
@@ -4935,6 +5020,7 @@ function cov2ap(options = {}) {
 cov2ap.singleton = () => {
   if (!cov2ap._singleton) {
     cov2ap._singleton = cov2ap();
+    cds.cov2ap = cov2ap._singleton;
   }
   return cov2ap._singleton;
 };

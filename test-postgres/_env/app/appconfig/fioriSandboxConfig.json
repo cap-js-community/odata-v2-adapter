@@ -1,0 +1,48 @@
+{
+  "defaultRenderer": "fiori2",
+  "applications": {
+    "Header-display": {
+      "title": "Basic",
+      "description": "Basic App",
+      "additionalInformation": "SAPUI5.Component=com.sap.cds.app.basic",
+      "applicationType": "URL",
+      "url": "./basic/webapp"
+    }
+  },
+  "renderers": {
+    "fiori2": {
+      "componentData": {
+        "config": {
+          "enableMergeAppAndShellHeaders": true,
+          "search": "hidden"
+        }
+      }
+    }
+  },
+  "services": {
+    "NavTargetResolution": {
+      "config": {
+        "runStandaloneAppFolderWhitelist": {
+          "*": true
+        },
+        "allowTestUrlComponentConfig": true,
+        "enableClientSideTargetResolution": true
+      }
+    },
+    "EndUserFeedback": {
+      "adapter": {
+        "config": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "bootstrapPlugins": {
+    "RuntimeAuthoringPlugin": {
+      "component": "sap.ushell.plugins.rta",
+      "config": {
+        "validateAppVersion": false
+      }
+    }
+  }
+}

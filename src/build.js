@@ -5,7 +5,9 @@ const { path } = cds.utils;
 
 const DEFAULT_MAIN_FOLDER = "_main";
 
-module.exports = class COV2APBuildPlugin extends cds.build.BuildPlugin {
+module.exports = class COV2APBuildPlugin extends cds.build.Plugin {
+  static taskDefaults = { src: "srv" }; // used by build plugin
+
   static hasTask() {
     cds.env.cov2ap = cds.env.cov2ap || {};
     cds.env.cov2ap.plugin = cds.env.cov2ap.plugin === undefined ? true : cds.env.cov2ap.plugin;
@@ -13,10 +15,8 @@ module.exports = class COV2APBuildPlugin extends cds.build.BuildPlugin {
     return cds.env.cov2ap.plugin && cds.env.cov2ap.build;
   }
 
-  init() {}
-
   async build() {
-    const model = await this.model(); // TODO: Use this.baseModel(), when available
+    const model = await (this.baseModel ? this.baseModel() : this.model());
     if (!model) {
       return;
     }

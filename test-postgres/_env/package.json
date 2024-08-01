@@ -1,0 +1,40 @@
+{
+  "name": "@cap-js-community/odata-v2-adapter-test-postgres",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cds-serve --production",
+    "build": "cds build --production",
+    "deploy": "cds deploy",
+    "test:deploy": "npm run build && npm run deploy"
+  },
+  "dependencies": {
+    "@cap-js-community/odata-v2-adapter": "../../",
+    "@cap-js/postgres": "../../node_modules/@cap-js/postgres"
+  },
+  "devDependencies": {},
+  "cds": {
+    "cov2ap": {
+      "caseInsensitive": true,
+      "fixDraftRequests": true
+    },
+    "requires": {
+      "db": {
+        "kind": "postgres",
+        "credentials": {
+          "host": "localhost",
+          "port": 5432,
+          "user": "postgres",
+          "password": "postgres",
+          "database": "postgres"
+        }
+      },
+      "auth": {
+        "kind": "mocked-auth"
+      }
+    },
+    "hana": {
+      "deploy-format": "hdbtable"
+    }
+  }
+}
