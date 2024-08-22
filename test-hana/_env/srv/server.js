@@ -9,9 +9,6 @@ try {
   // ignore
 }
 
-cds.env.requires.db = {
-  kind: "hana",
-  credentials,
-};
+cds.env.requires.db.credentials = credentials;
 
 module.exports = cds.server;
