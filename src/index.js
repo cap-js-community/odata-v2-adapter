@@ -4651,6 +4651,7 @@ function cov2ap(options = {}) {
     } catch {
       try {
         // CDS 3
+        // eslint-disable-next-line n/no-missing-require
         locale = require("@sap/cds-runtime/lib/cds-services/adapter/utils/locale")({ req });
       } catch {
         // Default

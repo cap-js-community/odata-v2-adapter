@@ -6,23 +6,32 @@ const js = require("@eslint/js");
 const nodePlugin = require("eslint-plugin-n");
 const jestPlugin = require("eslint-plugin-jest");
 const configPrettier = require("eslint-config-prettier");
+// const typescriptPlugin = require("typescript-eslint");
 
 // https://eslint.org/docs/latest/use/configure/configuration-files
 // https://eslint.org/docs/rules/
 module.exports = [
   {
-    ignores: ["**/node_modules/", "**/temp/", "**/reports/", "**/test/", "**/test-integration/"]
+    ignores: ["**/node_modules/", "**/reports/", "**/temp/", "**/test/", "**/test-hana/", "**/test-postgres/"],
   },
   js.configs.recommended,
   nodePlugin.configs["flat/recommended-script"],
   jestPlugin.configs["flat/recommended"],
-  // typescriptPlugin.configs["flat/eslint-recommended"]
-  // typescriptPlugin.configs["flat/recommended"]
   configPrettier,
+  /*...typescriptPlugin.configs["recommended"].map((config) => {
+    return {
+      files: ["*.ts"],
+      ...config,
+    };
+  }),*/
   {
     languageOptions: {
-      ecmaVersion: 2022,
+      ecmaVersion: 2024,
       sourceType: "commonjs",
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: __dirname,
+      },
       globals: {
         ...globals.node,
         sap: false,
@@ -34,8 +43,8 @@ module.exports = [
         DELETE: false,
         CREATE: false,
         DROP: false,
-        STREAM: false
-      }
+        STREAM: false,
+      },
     },
     rules: {
       strict: ["error"],
@@ -60,7 +69,7 @@ module.exports = [
       "jest/no-conditional-expect": ["off"],
       "jest/no-disabled-tests": ["off"],
       "@typescript-eslint/no-unused-vars": ["off"],
-      "@typescript-eslint/no-var-requires": ["off"]
-    }
-  }
+      "@typescript-eslint/no-var-requires": ["off"],
+    },
+  },
 ];
