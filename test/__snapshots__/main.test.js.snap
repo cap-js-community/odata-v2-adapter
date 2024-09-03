@@ -198,10 +198,10 @@ exports[`main Entity with key including reserved/escaped uri characters 1`] = `
     {
       "__metadata": {
         "type": "test.MainService.Favorite",
-        "uri": "/odata/v2/main/Favorite('WE%5C%5CDE-SFSNRF')",
+        "uri": "/odata/v2/main/Favorite('WE%5CDE-SFSNRF')",
       },
-      "name": "WE\\\\DE-SFSNRF",
-      "value": "\\\\",
+      "name": "WE\\DE-SFSNRF",
+      "value": "\\",
     },
     {
       "__metadata": {
