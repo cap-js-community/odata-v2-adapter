@@ -20,6 +20,14 @@ exports[`hana-agreement GET $metadata 1`] = `
   </edmx:Reference>
   <edmx:DataServices m:DataServiceVersion="2.0">
     <Schema Namespace="AgreementService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <Annotation Term="Core.Links">
+        <Collection>
+          <Record>
+            <PropertyValue Property="rel" String="author"/>
+            <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+          </Record>
+        </Collection>
+      </Annotation>
       <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
         <EntitySet Name="Agreement" EntityType="AgreementService.Agreement"/>
         <EntitySet Name="AgreementItem" EntityType="AgreementService.AgreementItem"/>

@@ -14,6 +14,14 @@ exports[`draft GET $metadata 1`] = `
   </edmx:Reference>
   <edmx:DataServices m:DataServiceVersion="2.0">
     <Schema Namespace="test.DraftService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <Annotation Term="Core.Links">
+        <Collection>
+          <Record>
+            <PropertyValue Property="rel" String="author"/>
+            <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+          </Record>
+        </Collection>
+      </Annotation>
       <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
         <EntitySet Name="Header" EntityType="test.DraftService.Header"/>
         <FunctionImport Name="Header_draftPrepare" EntitySet="Header" ReturnType="test.DraftService.Header" m:HttpMethod="POST" sap:action-for="test.DraftService.Header">
