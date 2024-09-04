@@ -3062,6 +3062,8 @@ describe("main", () => {
       let name = decodeURIComponent(id);
       name = name.replace(/''/g, "'");
       let value = name.substr(2, 1);
+      // Special handling
+      value = value === "\\" ? "\\\\" : value;
       expect(data).toEqual({
         __metadata: {
           type: "test.MainService.Favorite",
