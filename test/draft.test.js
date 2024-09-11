@@ -992,4 +992,75 @@ describe("draft", () => {
       target: "/#TRANSIENT#",
     });
   });
+
+  it("GET draft administrative data request", async () => {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
+      name: "Test Create",
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.body).toBeDefined();
+    expect(response.body.d.ID).toEqual(id);
+    response = await util.callRead(
+      request,
+      `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)/DraftAdministrativeData`,
+    );
+    expect(response.body).toBeDefined();
+    const draftUUID = response.body.d.DraftUUID;
+    expect(response.body).toEqual({
+      d: {
+        CreatedByUser: "anonymous",
+        CreationDateTime: expect.stringMatching(/\/Date\(.*\)\//),
+        DraftIsCreatedByMe: true,
+        DraftIsProcessedByMe: true,
+        DraftUUID: expect.any(String),
+        InProcessByUser: "anonymous",
+        LastChangeDateTime: expect.stringMatching(/\/Date\(.*\)\//),
+        LastChangedByUser: "anonymous",
+        __metadata: {
+          type: "test.DraftService.DraftAdministrativeData",
+          uri: `http://${response.request.host.replace(
+            "127.0.0.1",
+            "localhost",
+          )}/odata/v2/draft/DraftAdministrativeData(guid'${draftUUID}')`,
+        },
+      },
+    });
+    response = await util.callRead(request, `/odata/v2/draft/DraftAdministrativeData(guid'${draftUUID}')`);
+    expect(response.body).toBeDefined;
+    // TODO: Fix with #16770
+    expect(response.body).toEqual({
+      error: {
+        code: "500",
+        innererror: {
+          errordetails: [
+            {
+              code: "500",
+              message: {
+                lang: "en",
+                value: "Cannot set properties of undefined (setting '_target')",
+              },
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
+        },
+        message: {
+          lang: "en",
+          value: "Cannot set properties of undefined (setting '_target')",
+        },
+        severity: "error",
+        target: "/#TRANSIENT#",
+      },
+    });
+    response = await util.callDelete(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`, {
+      "If-Match": "*",
+    });
+    expect(response.statusCode).toEqual(204);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.statusCode).toEqual(404);
+  });
 });

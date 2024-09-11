@@ -3582,7 +3582,19 @@ function cov2ap(options = {}) {
     if (!context) {
       return;
     }
-    context = context.substring(context.indexOf("#") + 1);
+    if (context === "$metadata") {
+      return "";
+    }
+    const metadataIndex = context.indexOf("$metadata#");
+    if (metadataIndex !== -1) {
+      context = context.substring(metadataIndex + "$metadata#".length);
+    }
+    if (context.endsWith("/$entity")) {
+      context = context.substring(0, context.length - "/$entity".length);
+    }
+    if (context.endsWith("/DraftAdministrativeData")) {
+      return "DraftAdministrativeData";
+    }
     if (context.startsWith("Collection(")) {
       context = context.substring("Collection(".length, context.indexOf(")"));
     } else {

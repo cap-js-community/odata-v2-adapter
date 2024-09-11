@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Convert Draft Administrative Data correctly in response
 
 ## Version 1.13.2 - 2024-09-02
 
