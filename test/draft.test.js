@@ -1041,7 +1041,7 @@ describe("draft", () => {
               code: "500",
               message: {
                 lang: "en",
-                value: "Cannot set properties of undefined (setting '_target')",
+                value: "Invalid draft request",
               },
               severity: "error",
               target: "/#TRANSIENT#",
@@ -1050,7 +1050,7 @@ describe("draft", () => {
         },
         message: {
           lang: "en",
-          value: "Cannot set properties of undefined (setting '_target')",
+          value: "Invalid draft request",
         },
         severity: "error",
         target: "/#TRANSIENT#",
