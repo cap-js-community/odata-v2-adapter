@@ -11,7 +11,6 @@
     "tsc": "cd typescript && tsc"
   },
   "dependencies": {
-    "express": "^4.19.2",
     "@cap-js-community/odata-v2-adapter": "../../"
   },
   "devDependencies": {
