@@ -378,6 +378,7 @@ function cov2ap(options = {}) {
     res.set("x-correlation-id", req.contextId);
     res.set("x-correlationid", req.contextId);
     try {
+      // Authorization is validated within target request (-> simple decode)
       const [authType, token] = (req.headers.authorization && req.headers.authorization.split(" ")) || [];
       if (authType && token) {
         let jwtBody;
@@ -409,6 +410,13 @@ function cov2ap(options = {}) {
       }
     } catch (err) {
       logError(req, "Authorization", err);
+    }
+    if (req.tenant) {
+      req.tenant = String(req.tenant);
+    }
+    if (["constructor", "prototype", "__proto__"].includes(req.tenant)) {
+      logError(req, "Authorization", new Error("Invalid tenant"));
+      req.tenant = undefined;
     }
     next();
   }
