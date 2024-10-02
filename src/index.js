@@ -415,7 +415,7 @@ function cov2ap(options = {}) {
       req.tenant = String(req.tenant);
     }
     if (["constructor", "prototype", "__proto__"].includes(req.tenant)) {
-      logError(req, "Authorization", new Error("Invalid tenant"));
+      logWarn(req, "Authorization", "Invalid tenant", { tenant: req.tenant });
       req.tenant = undefined;
     }
     next();
