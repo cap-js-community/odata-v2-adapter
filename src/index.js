@@ -4116,17 +4116,15 @@ function cov2ap(options = {}) {
     });
     return (
       serviceUri(req) +
-      decodeURIComponent(
-        URL.format({
-          ...originalUrl,
-          search: null,
-          pathname: originalUrl.contextPath,
-          query: {
-            ...originalUrl.query,
-            ...params,
-          },
-        }),
-      )
+      URL.format({
+        ...originalUrl,
+        search: null,
+        pathname: originalUrl.contextPath,
+        query: {
+          ...originalUrl.query,
+          ...params,
+        },
+      })
     );
   }
 

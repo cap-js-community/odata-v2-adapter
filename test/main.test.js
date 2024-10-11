@@ -676,7 +676,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.__delta).toMatch(
-      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/HeaderDelta\(guid'.*?'\)\/Items\?\$filter=name eq 'a \/'&!deltatoken='(\d*)'/,
+      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/HeaderDelta\(guid'.*?'\)\/Items\?%24filter=name%20eq%20'a%20%2F'&!deltatoken='(\d*)'/,
     );
   });
 
@@ -694,12 +694,41 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?\$skiptoken=1/);
+    expect(response.body.d.__next).toMatch(
+      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?%24skiptoken=1/,
+    );
     const nextUrl = response.body.d.__next.match(/http:\/\/localhost:\d*(.*)/)[1];
     response = await util.callRead(request, nextUrl);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?\$skiptoken=2/);
+    expect(response.body.d.__next).toMatch(
+      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?%24skiptoken=2/,
+    );
+  });
+
+  it("GET request filtered with next link responses", async () => {
+    let response = await util.callRead(request, "/odata/v2/main/FavoriteLimited?$filter=name eq 'WE%2BDE-SFSNRF'");
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results).toBeDefined();
+    expect(response.body.d.results).toHaveLength(1);
+    expect(response.body.d.results[0]).toMatchObject({
+      name: "WE+DE-SFSNRF",
+      value: "+",
+    });
+    expect(response.body.d.__next).toMatch(
+      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?%24filter=name%20eq%20'WE%2BDE-SFSNRF'&%24skiptoken=1/,
+    );
+    response = await util.callRead(request, "/odata/v2/main/FavoriteLimited?$filter=name eq 'WE+DE-SFSNRF'");
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d.results).toBeDefined();
+    expect(response.body.d.results).toHaveLength(1);
+    expect(response.body.d.results[0]).toMatchObject({
+      name: "WE DE-SFSNRF",
+      value: " ",
+    });
+    expect(response.body.d.__next).toMatch(
+      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?%24filter=name%20eq%20'WE%20DE-SFSNRF'&%24skiptoken=1/,
+    );
   });
 
   it("GET request with stream", async () => {
