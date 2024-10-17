@@ -676,7 +676,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.__delta).toMatch(
-      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/HeaderDelta\(guid'.*?'\)\/Items\?%24filter=name%20eq%20'a%20%2F'&!deltatoken='(\d*)'/,
+      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/HeaderDelta\(guid'.*?'\)\/Items\?\$filter=name%20eq%20'a%20%2F'&!deltatoken='(\d*)'/,
     );
   });
 
@@ -694,16 +694,12 @@ describe("main", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    expect(response.body.d.__next).toMatch(
-      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?%24skiptoken=1/,
-    );
+    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?\$skiptoken=1/);
     const nextUrl = response.body.d.__next.match(/http:\/\/localhost:\d*(.*)/)[1];
     response = await util.callRead(request, nextUrl);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    expect(response.body.d.__next).toMatch(
-      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?%24skiptoken=2/,
-    );
+    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?\$skiptoken=2/);
   });
 
   it("GET request filtered with next link responses", async () => {
@@ -716,7 +712,7 @@ describe("main", () => {
       value: "+",
     });
     expect(response.body.d.__next).toMatch(
-      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?%24filter=name%20eq%20'WE%2BDE-SFSNRF'&%24skiptoken=1/,
+      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?\$filter=name%20eq%20'WE%2BDE-SFSNRF'&\$skiptoken=1/,
     );
     response = await util.callRead(request, "/odata/v2/main/FavoriteLimited?$filter=name eq 'WE+DE-SFSNRF'");
     expect(response.statusCode).toEqual(200);
@@ -727,7 +723,7 @@ describe("main", () => {
       value: " ",
     });
     expect(response.body.d.__next).toMatch(
-      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?%24filter=name%20eq%20'WE%20DE-SFSNRF'&%24skiptoken=1/,
+      /http:\/\/localhost:(\d*)\/odata\/v2\/main\/FavoriteLimited\?\$filter=name%20eq%20'WE%20DE-SFSNRF'&\$skiptoken=1/,
     );
   });
 
@@ -2768,6 +2764,19 @@ describe("main", () => {
         ContentID: "1",
       },
     });
+    response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=parameter");
+    expect(response.body).toMatchObject({
+      error: {
+        code: "ERR01",
+        message: {
+          lang: "en",
+          value: "An error occurred",
+        },
+        target: "in/text",
+        severity: "error",
+        ContentID: "1",
+      },
+    });
     response = await util.callWrite(request, "/odata/v2/main/unboundErrorAction?num=1&text=transient");
     expect(response.body).toMatchObject({
       error: {
@@ -3040,6 +3049,44 @@ describe("main", () => {
             },
           },
         ],
+      },
+    });
+  });
+
+  it("POST bound action request with error", async () => {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
+      name: "Test",
+    });
+    expect(response.body).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callWrite(
+      request,
+      `/odata/v2/main/Header_boundErrorAction?ID=guid'${id}'&num=1&text=parameter`,
+    );
+    expect(response.body).toEqual({
+      error: {
+        ContentID: "1",
+        code: "ERR01",
+        innererror: {
+          errordetails: [
+            {
+              ContentID: "1",
+              code: "ERR01",
+              message: {
+                lang: "en",
+                value: "An error occurred",
+              },
+              severity: "error",
+              target: "text",
+            },
+          ],
+        },
+        message: {
+          lang: "en",
+          value: "An error occurred",
+        },
+        severity: "error",
+        target: "text",
       },
     });
   });

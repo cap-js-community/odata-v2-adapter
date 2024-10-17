@@ -226,6 +226,7 @@ service MainService {
         action boundMassActionPrimitive(text1: String, text2: String) returns array of String;
         action boundActionEntity(num: Integer, text: String) returns Header;
         action boundMassActionEntity(ids: array of String) returns array of Header;
+        action boundErrorAction(text: String) returns Header;
 
         function boundFunction(num: Integer, text: String) returns Result;
         function boundMassFunction(ids: array of String) returns array of Result;

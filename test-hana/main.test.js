@@ -314,12 +314,12 @@ describe("hana-main", () => {
     response = await util.callRead(request, "/odata/v2/main/HeaderLimited");
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.results).toBeDefined();
-    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/HeaderLimited\?%24skiptoken=1/);
+    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/HeaderLimited\?\$skiptoken=1/);
     const nextUrl = response.body.d.__next.match(/http:\/\/localhost:\d*(.*)/)[1];
     response = await util.callRead(request, nextUrl);
     expect(response.body.d.results).toBeDefined();
     expect(response.body.d.results).toHaveLength(1);
-    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/HeaderLimited\?%24skiptoken=2/);
+    expect(response.body.d.__next).toMatch(/http:\/\/localhost:(\d*)\/odata\/v2\/main\/HeaderLimited\?\$skiptoken=2/);
     await util.callDelete(request, `/odata/v2/main/Header(guid'${id}')`);
   });
 });

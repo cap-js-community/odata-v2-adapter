@@ -1,0 +1,44 @@
+
+--batch_7aea-4212-7158
+Content-Type: multipart/mixed; boundary=changeset_bb54-08e2-e2a7
+
+--changeset_bb54-08e2-e2a7
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+POST Header_draftPrepare?ID=guid'{{ID}}'&IsActiveEntity=false HTTP/1.1
+sap-contextid-accept: header
+Accept: application/json
+Accept-Language: en-US
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+X-Requested-With: XMLHttpRequest
+Content-Type: application/json
+Content-ID: id-1729067365887-331
+If-Match: {{ETAG}}
+
+
+--changeset_bb54-08e2-e2a7--
+
+--batch_7aea-4212-7158
+Content-Type: multipart/mixed; boundary=changeset_236d-232b-fad8
+
+--changeset_236d-232b-fad8
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+POST Header_draftActivate?ID=guid'{{ID}}'&IsActiveEntity=false HTTP/1.1
+Prefer: handling=strict
+sap-contextid-accept: header
+Accept: application/json
+Accept-Language: en-US
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+X-Requested-With: XMLHttpRequest
+Content-Type: application/json
+Content-ID: id-1729067365887-334
+If-Match: {{ETAG}}
+
+
+--changeset_236d-232b-fad8--
+--batch_7aea-4212-7158--

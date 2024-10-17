@@ -75,6 +75,10 @@ exports[`main GET $metadata 1`] = `
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="ids" Type="Collection(Edm.String)" Nullable="true" Mode="In"/>
         </FunctionImport>
+        <FunctionImport Name="Header_boundErrorAction" EntitySet="Header" ReturnType="test.MainService.Header" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="Header_boundFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET" sap:action-for="test.MainService.Header">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>

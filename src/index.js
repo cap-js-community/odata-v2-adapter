@@ -4116,15 +4116,17 @@ function cov2ap(options = {}) {
     });
     return (
       serviceUri(req) +
-      URL.format({
-        ...originalUrl,
-        search: null,
-        pathname: originalUrl.contextPath,
-        query: {
-          ...originalUrl.query,
-          ...params,
-        },
-      })
+      formatLinkUri(
+        URL.format({
+          ...originalUrl,
+          search: null,
+          pathname: originalUrl.contextPath,
+          query: {
+            ...originalUrl.query,
+            ...params,
+          },
+        }),
+      )
     );
   }
 
@@ -4428,6 +4430,10 @@ function cov2ap(options = {}) {
 
   function decodeURIKey(value) {
     return decodeURIComponent(value).replace(/%2F/g, "/");
+  }
+
+  function formatLinkUri(value) {
+    return value.replace(/%24/g, "$");
   }
 
   function encodeReplaceValue(value) {
@@ -4855,7 +4861,7 @@ function cov2ap(options = {}) {
         if (boundaryChangeSet && part === `--${boundaryChangeSet}--`) {
           boundaryChangeSet = "";
         }
-      } else if (urlAfterBlank && previousLineIsBlank) {
+      } else if (part && urlAfterBlank && previousLineIsBlank) {
         urlAfterBlank = false;
         bodyAfterBlank = true;
         // Url

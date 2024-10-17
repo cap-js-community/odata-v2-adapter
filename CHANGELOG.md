@@ -5,11 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.13.6 - 2024-11-xx
+## Version 1.13.6 - 2024-10-17
 
 ### Fixed
 
-- tbd
+- Decode `$` in `__next` link
+- Make `multipart/mixed` parser more robust for blank line detection
 
 ## Version 1.13.5 - 2024-10-11
 

@@ -367,7 +367,7 @@ describe("draft", () => {
     etag = response.body.d.__metadata.etag;
 
     // 1st Batch Patch OK
-    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-MERGE-Draft.txt", "utf8");
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-Draft-MERGE.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ETAG}}/g, etag);
@@ -381,7 +381,7 @@ describe("draft", () => {
     expect(response.body.d.__metadata.etag).toEqual(etag);
 
     // 2nd Batch Patch OK
-    payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-MERGE-Draft.txt", "utf8");
+    payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-Draft-MERGE.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ETAG}}/g, etag);
@@ -528,6 +528,15 @@ describe("draft", () => {
       },
     );
     expect(response.statusCode).toEqual(201);
+
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "INFO",
+      details: [],
+      message: "All good!",
+      severity: "success",
+      target: "name",
+    });
+
     etag = response.body.d.__metadata.etag;
     expect(etag).toBeDefined();
     response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
@@ -549,6 +558,163 @@ describe("draft", () => {
     response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.d.ID).toEqual(id);
+  });
+
+  it("POST activate request (batch)", async () => {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
+      name: "Test Create",
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    let etag = response.body.d.__metadata.etag;
+
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-Draft-MERGE.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, id);
+    payload = payload.replace(/{{ETAG}}/g, etag);
+    response = await util.callMultipart(request, "/odata/v2/draft/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+    let responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    response = responses[0][0];
+    expect(response.statusCode).toEqual(200);
+    etag = response.headers.etag;
+    expect(response.body.d.__metadata.etag).toEqual(etag);
+
+    payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-Draft-Activate.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, id);
+    payload = payload.replace(/{{ETAG}}/g, etag);
+    response = await util.callMultipart(request, "/odata/v2/draft/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+    responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    expect(responses[0].length).toEqual(2);
+    response = responses[0][0];
+    expect(response.statusCode).toEqual(200);
+    etag = response.headers.etag;
+    expect(response.body.d.__metadata.etag).toEqual(etag);
+
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "WARN01",
+      details: [
+        {
+          code: "WARN02",
+          message: "An Warning occurred",
+          severity: "warning",
+          target: "name",
+        },
+      ],
+      message: "An Warning occurred",
+      severity: "warning",
+      target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+    });
+
+    response = responses[0][1];
+    expect(response.statusCode).toEqual(201);
+    etag = response.headers.etag;
+    expect(response.body.d.__metadata.etag).toEqual(etag);
+
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "INFO",
+      details: [],
+      message: "All good!",
+      severity: "success",
+      target: "name",
+    });
+
+    payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-Draft-Delete.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, id);
+    payload = payload.replace(/{{ETAG}}/g, etag);
+    response = await util.callMultipart(request, "/odata/v2/draft/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.statusCode).toEqual(404);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
+    expect(response.statusCode).toEqual(404);
+  });
+
+  it("POST activate request (multiple batch)", async () => {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
+      name: "Test Create",
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    let etag = response.body.d.__metadata.etag;
+
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-Draft-MERGE.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, id);
+    payload = payload.replace(/{{ETAG}}/g, etag);
+    response = await util.callMultipart(request, "/odata/v2/draft/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+    let responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    response = responses[0][0];
+    expect(response.statusCode).toEqual(200);
+    etag = response.headers.etag;
+    expect(response.body.d.__metadata.etag).toEqual(etag);
+
+    payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-Draft-ActivateMultiBatch.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, id);
+    payload = payload.replace(/{{ETAG}}/g, etag);
+    response = await util.callMultipart(request, "/odata/v2/draft/$batch", payload, "batch_7aea-4212-7158");
+    expect(response.statusCode).toEqual(202);
+    responses = util.splitMultipartResponse(response.body, "batch_7aea-4212-7158");
+    expect(responses.length).toEqual(2);
+    expect(responses[0].length).toEqual(1);
+    response = responses[0][0];
+    expect(response.statusCode).toEqual(200);
+    etag = response.headers.etag;
+    expect(response.body.d.__metadata.etag).toEqual(etag);
+
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "WARN01",
+      details: [
+        {
+          code: "WARN02",
+          message: "An Warning occurred",
+          severity: "warning",
+          target: "name",
+        },
+      ],
+      message: "An Warning occurred",
+      severity: "warning",
+      target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+    });
+
+    response = responses[1][0];
+    expect(responses[1].length).toEqual(1);
+    expect(response.statusCode).toEqual(201);
+    etag = response.headers.etag;
+    expect(response.body.d.__metadata.etag).toEqual(etag);
+
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "INFO",
+      details: [],
+      message: "All good!",
+      severity: "success",
+      target: "name",
+    });
+
+    payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-Draft-Delete.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    payload = payload.replace(/{{ID}}/g, id);
+    payload = payload.replace(/{{ETAG}}/g, etag);
+    response = await util.callMultipart(request, "/odata/v2/draft/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
+    expect(response.statusCode).toEqual(404);
+    response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
+    expect(response.statusCode).toEqual(404);
   });
 
   it("DELETE draft request", async () => {
@@ -603,6 +769,15 @@ describe("draft", () => {
       },
     );
     expect(response.statusCode).toEqual(201);
+
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "INFO",
+      details: [],
+      message: "All good!",
+      severity: "success",
+      target: "name",
+    });
+
     response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`);
     expect(response.statusCode).toEqual(404);
     response = await util.callRead(request, `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=true)`);
@@ -812,7 +987,14 @@ describe("draft", () => {
     );
     expect(JSON.parse(response.headers["sap-message"])).toEqual({
       code: "WARN01",
-      details: [],
+      details: [
+        {
+          code: "WARN02",
+          message: "An Warning occurred",
+          severity: "warning",
+          target: "name",
+        },
+      ],
       message: "An Warning occurred",
       severity: "warning",
       target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
@@ -881,8 +1063,14 @@ describe("draft", () => {
     etag = response.body.d.__metadata.etag;
 
     expect(JSON.parse(response.headers["sap-message"])).toEqual({
-      code: "WARN01",
+      code: "INFO",
       details: [
+        {
+          code: "WARN01",
+          message: "An Warning occurred 1",
+          severity: "warning",
+          target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+        },
         {
           code: "WARN02",
           message: "An Warning occurred 2",
@@ -896,9 +1084,9 @@ describe("draft", () => {
           target: "/#TRANSIENT#/Header",
         },
       ],
-      message: "An Warning occurred 1",
-      severity: "warning",
-      target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+      message: "All good!",
+      severity: "success",
+      target: "name",
     });
 
     response = await util.callWrite(
@@ -944,7 +1132,14 @@ describe("draft", () => {
     );
     expect(JSON.parse(response.headers["sap-message"])).toEqual({
       code: "WARN01",
-      details: [],
+      details: [
+        {
+          code: "WARN02",
+          message: "An Warning occurred",
+          severity: "warning",
+          target: "name",
+        },
+      ],
       message: "An Warning occurred",
       severity: "warning",
       target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
@@ -961,7 +1156,7 @@ describe("draft", () => {
     const id = response.body.d.ID;
     let etag = response.body.d.__metadata.etag;
 
-    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-MERGE-Messages.txt", "utf8");
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-Draft-MERGE-Messages.txt", "utf8");
     payload = payload.replace(/\r\n/g, "\n");
     payload = payload.replace(/{{ID}}/g, id);
     payload = payload.replace(/{{ETAG}}/g, etag);

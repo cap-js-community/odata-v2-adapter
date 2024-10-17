@@ -4,11 +4,35 @@ module.exports = (srv) => {
   const { Header, HeaderItem, ["HeaderItem.texts"]: HeaderItemText } = srv.entities("test.DraftService");
 
   srv.after("draftPrepare", Header.drafts, (data, req) => {
-    const info = new Error("This is a Warning");
-    info.code = "WARN01";
-    info.target = "Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name";
-    info.message = "An Warning occurred";
-    info.numericSeverity = 3;
+    const info1 = new Error("This is a Warning");
+    info1.code = "WARN01";
+    info1.target = "Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name";
+    info1.message = "An Warning occurred";
+    info1.numericSeverity = 3;
+    req.info(info1);
+    const info2 = new Error("This is a Warning 2");
+    info2.code = "WARN02";
+    info2.target = "in/name";
+    info2.message = "An Warning occurred";
+    info2.numericSeverity = 3;
+    req.info(info2);
+  });
+
+  srv.after("SAVE", Header.drafts, (data, req) => {
+    const info = new Error("Success");
+    info.code = "INFO";
+    info.target = "name";
+    info.message = "All good!";
+    info.numericSeverity = 1;
+    req.info(info);
+  });
+
+  srv.after("SAVE", Header, (data, req) => {
+    const info = new Error("Success");
+    info.code = "INFO";
+    info.target = "in/name";
+    info.message = "All good!";
+    info.numericSeverity = 1;
     req.info(info);
   });
 

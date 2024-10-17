@@ -79,6 +79,25 @@ module.exports = (srv) => {
     });
   });
 
+  srv.on("boundErrorAction", async (req) => {
+    const error = new Error("An error occurred");
+    error.code = "ERR01";
+    switch (req.data.text) {
+      case "default":
+      default:
+        error.target = "text";
+        break;
+      case "parameter":
+        error.target = "in/text";
+        break;
+    }
+    error.message = "An error occurred";
+    error.severity = 4;
+    error["@Common.numericSeverity"] = 4;
+    error["@Core.ContentID"] = "1";
+    req.error(error);
+  });
+
   srv.on("order", Book, async (req) => {
     return {
       author: req.params[0].author,
@@ -326,6 +345,9 @@ module.exports = (srv) => {
         break;
       case "absolute":
         error.target = "/Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name";
+        break;
+      case "parameter":
+        error.target = "in/text";
         break;
       case "transient":
         error.target = "/#TRANSIENT#";
