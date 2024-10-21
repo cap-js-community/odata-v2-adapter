@@ -1177,8 +1177,8 @@ function cov2ap(options = {}) {
       definition.params &&
       req.context.parameters &&
       req.context.parameters.kind === "Set"
-      ? "Set"
-      : "";
+        ? "Set"
+        : "";
     return localName + nameSuffix;
   }
 
