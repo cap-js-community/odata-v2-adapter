@@ -687,11 +687,11 @@ function cov2ap(options = {}) {
         await handleMediaEntity(
           req.body && req.body["content-type"],
           req.body &&
-          (req.body["slug"] ||
-            req.body["filename"] ||
-            contentDispositionFilename(req.body) ||
-            contentDispositionFilename(headers) ||
-            req.body["name"]),
+            (req.body["slug"] ||
+              req.body["filename"] ||
+              contentDispositionFilename(req.body) ||
+              contentDispositionFilename(headers) ||
+              req.body["name"]),
           req.body,
         );
       });
@@ -1174,11 +1174,11 @@ function cov2ap(options = {}) {
     const localName = isServiceName(definition.name, req) ? odataName(definition.name, req) : definition.name;
     const nameSuffix =
       definition.kind === "entity" &&
-        definition.params &&
-        req.context.parameters &&
-        req.context.parameters.kind === "Set"
-        ? "Set"
-        : "";
+      definition.params &&
+      req.context.parameters &&
+      req.context.parameters.kind === "Set"
+      ? "Set"
+      : "";
     return localName + nameSuffix;
   }
 
