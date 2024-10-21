@@ -188,6 +188,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} [options.processForwardedHeaders] Specifies if 'x-forwarded' headers are processed. Default is 'true'.
  * @param {boolean} [options.cacheDefinitions] Specifies if the definition elements are cached. Default is 'true'.
  * @param {string} [options.cacheMetadata] Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is 'memory'.
+ * @param {boolean} [options.odataNoCreator] Supress the adding of Core.Links Watermark in EDMX. Default is 'true'.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
@@ -270,6 +271,7 @@ function cov2ap(options = {}) {
   const processForwardedHeaders = optionWithFallback("processForwardedHeaders", true);
   const cacheDefinitions = optionWithFallback("cacheDefinitions", true);
   const cacheMetadata = optionWithFallback("cacheMetadata", "memory");
+  const odataNoCreator = optionWithFallback("odataNoCreator", true);
 
   if (cds.env.protocols) {
     cds.env.protocols["odata-v2"] = {
@@ -685,11 +687,11 @@ function cov2ap(options = {}) {
         await handleMediaEntity(
           req.body && req.body["content-type"],
           req.body &&
-            (req.body["slug"] ||
-              req.body["filename"] ||
-              contentDispositionFilename(req.body) ||
-              contentDispositionFilename(headers) ||
-              req.body["name"]),
+          (req.body["slug"] ||
+            req.body["filename"] ||
+            contentDispositionFilename(req.body) ||
+            contentDispositionFilename(headers) ||
+            req.body["name"]),
           req.body,
         );
       });
@@ -1135,6 +1137,7 @@ function cov2ap(options = {}) {
         edmx = await cds.compile.to.edmx(csn, {
           service,
           version: "v2",
+          odataNoCreator: odataNoCreator
         });
       }
       edmx = cds.localize(csn, locale, edmx);
@@ -1171,9 +1174,9 @@ function cov2ap(options = {}) {
     const localName = isServiceName(definition.name, req) ? odataName(definition.name, req) : definition.name;
     const nameSuffix =
       definition.kind === "entity" &&
-      definition.params &&
-      req.context.parameters &&
-      req.context.parameters.kind === "Set"
+        definition.params &&
+        req.context.parameters &&
+        req.context.parameters.kind === "Set"
         ? "Set"
         : "";
     return localName + nameSuffix;
