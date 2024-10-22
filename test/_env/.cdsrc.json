@@ -7,7 +7,9 @@
           "id": "alice",
           "tenant": "t1",
           "password": "alice",
-          "roles": ["XYZ4711"]
+          "roles": [
+            "XYZ4711"
+          ]
         },
         "bob": {
           "id": "bob",
@@ -16,12 +18,13 @@
           "roles": []
         }
       }
-    },
-    "cdsc": {
-      "variableReplacements": {
-        "$user": {
-          "id": "alice"
-        }
+    }
+  },
+  "cdsc": {
+    "odataNoCreator": false,
+    "variableReplacements": {
+      "$user": {
+        "id": "alice"
       }
     }
   }
