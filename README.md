@@ -5,12 +5,36 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/cap-js-community/odata-v2-adapter)](https://api.reuse.software/info/github.com/cap-js-community/odata-v2-adapter)
 [![Main CI](https://github.com/cap-js-community/odata-v2-adapter/actions/workflows/main-ci.yml/badge.svg)](https://github.com/cap-js-community/odata-v2-adapter/commits/main)
 
-### [OData V2 adapter for CDS](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter)
+### [OData V2 Adapter for CDS](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter)
 
 > Exposes a full-fledged OData V2 service, converting OData V2 requests to CDS OData V4 service calls and responses back.
 > Runs in context of the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
 > using CDS Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds) or CDS Java modules
 > [com.sap.cds](https://mvnrepository.com/artifact/com.sap.cds).
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Options](#options)
+- [Documentation](#documentation)
+  - [Singleton](#singleton)
+  - [Before Middleware Routes](#before-middlewares)
+  - [Custom Server](#custom-server)
+  - [Logging](#logging)
+  - [CDS Annotations](#cds-annotations)
+  - [CDS Modeling Restrictions](#cds-modeling-restrictions)
+  - [Cloud Foundry Deployment](#cloud-foundry-deployment)
+  - [Multitenancy, Feature Toggles and Extensibility (MTX)](#multitenancy-feature-toggles-and-extensibility-mtx)
+  - [Build Task](#build-task)
+  - [Unit-Tests](#unit-tests)
+  - [SAP Fiori Elements V2](#sap-fiori-elements-v2)
+  - [Compression Support](#compression-support)
+- [Contributions](#contributions)
+- [Features](#features)
+- [OData V2/V4 Delta](#odata-v2v4-delta)
+- [Support, Feedback, Contributing](#support-feedback-contributing)
+- [Code of Conduct](#code-of-conduct)
+- [Licensing](#licensing)
 
 ## Getting Started
 
@@ -71,9 +95,11 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 > - path => CDS_COV2AP_PATH=odatav2
 > - quoteSearch => quote_search => CDS_COV2AP_QUOTE\_\_SEARCH=false
 
-## Singleton
+## Documentation
 
-CDS OData V2 Adapter is instantiated via CDS plugin as singleton, which is exposed at:
+### Singleton
+
+CDS OData V2 adapter is instantiated via CDS plugin as singleton, which is exposed at:
 
 ```js
 const cds = require("@sap/cds");
@@ -87,7 +113,7 @@ const cov2ap = require("@cap-js-community/odata-v2-adapter");
 cov2ap.singleton();
 ```
 
-### Before Middleware Routes
+### Before Middlewares
 
 Before middleware routes can be registered on the OData V2 adapter for CDS singleton, to be executed before the main route processing.
 The before middleware routes can be registered as single function or as array of route functions.
@@ -123,8 +149,6 @@ cds.on("bootstrap", (app) => {
   ];
 });
 ```
-
-## Advanced
 
 ### Custom Server
 
@@ -307,7 +331,7 @@ cds.on(
 
 ### Build Task
 
-CDS OData V2 Adapter includes an CDS build task, that allows to prepare the OData V2 EDMX files for MTX sidecar app.
+CDS OData V2 adapter includes an CDS build task, that allows to prepare the OData V2 EDMX files for MTX sidecar app.
 The build task is automatically active, in case project is running in multi-tenant context including MTX sidecar.  
 It can be deactivated using option `cds.cov2ap.build: false`.
 
@@ -393,7 +417,7 @@ function shouldCompress(req, res) {
 The shown compression filter function enables compression including
 OData Batch (`$batch`) calls with content type `multipart/mixed`.
 
-### Approuter Compression
+#### Approuter Compression
 
 `@sap/approuter` now support out-of-the-box compression for OData $batch calls with `multipart/mixed`.
 It's disabled by default, but can be enabled using option [compressResponseMixedTypeContent](https://www.npmjs.com/package/@sap/approuter#compression-property).
@@ -436,7 +460,7 @@ Note that `@sap/cds` is a peer dependency and needs to be available as module as
 
 ### CAP Java Custom
 
-> For CAP Java projects prefer the Native OData V2 Adapter ([com.sap.cds/cds-adapter-odata-v2](https://mvnrepository.com/artifact/com.sap.cds/cds-adapter-odata-v2)).
+> For CAP Java projects prefer the Native CDS OData V2 Adapter ([com.sap.cds/cds-adapter-odata-v2](https://mvnrepository.com/artifact/com.sap.cds/cds-adapter-odata-v2)).
 
 - Run `npm install @cap-js-community/odata-v2-adapter -s` in `@sap/cds` project
 - Provide CDS models (`db`, `srv`, `app`) or compile a generated CSN (see details below)
