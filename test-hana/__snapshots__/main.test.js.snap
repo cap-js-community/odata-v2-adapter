@@ -14,7 +14,7 @@ exports[`hana-main GET $metadata 1`] = `
   </edmx:Reference>
   <edmx:DataServices m:DataServiceVersion="2.0">
     <Schema Namespace="test.MainService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-      <Annotation Term="Core.Links">
+      <Annotation Term="Core.Links" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Collection>
           <Record>
             <PropertyValue Property="rel" String="author"/>

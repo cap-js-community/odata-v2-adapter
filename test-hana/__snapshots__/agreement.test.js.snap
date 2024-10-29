@@ -20,7 +20,7 @@ exports[`hana-agreement GET $metadata 1`] = `
   </edmx:Reference>
   <edmx:DataServices m:DataServiceVersion="2.0">
     <Schema Namespace="AgreementService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-      <Annotation Term="Core.Links">
+      <Annotation Term="Core.Links" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Collection>
           <Record>
             <PropertyValue Property="rel" String="author"/>
