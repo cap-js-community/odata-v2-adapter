@@ -18,7 +18,7 @@
 - [Options](#options)
 - [Documentation](#documentation)
   - [Singleton](#singleton)
-  - [Before Middleware Routes](#before-middlewares)
+  - [Before Middlewares](#before-middlewares)
   - [Custom Server](#custom-server)
   - [Logging](#logging)
   - [CDS Annotations](#cds-annotations)
