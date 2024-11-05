@@ -271,6 +271,7 @@ CDS supports modelling features that are not compatible with OData V2 standard:
 
 - **Singletons**: Usage of annotation `@odata.singleton` is not supported in combination with OData V2
 - **Structured Types**: Usage of `cds.odata.structs: true` is not supported in combination with OData V2
+- **Map Type**: Usage of data type `cds.Map` is not supported in combination with OData V2
 - **Arrayed Types**: Usages of `array of` or `many` in entity element definitions lead to CDS compilation error: `Element must not be an "array of" for OData V2`
 - **Managed Compositions**: The usage of managed composition (currently) produces Format Exception in Fiori Elements V2 for Date/Time data types
 

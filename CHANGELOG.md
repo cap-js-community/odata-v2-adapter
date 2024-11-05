@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Document that `cds.Map` is not supported
 
 ## Version 1.13.7 - 2024-11-04
 
