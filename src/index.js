@@ -9,6 +9,7 @@ const { pipeline } = require("stream");
 const express = require("express");
 const expressFileUpload = require("express-fileupload");
 const cds = require("@sap/cds");
+const extractionPatterns = require("./lib/extraction-patterns");
 const { promisify } = require("util");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const bodyParser = require("body-parser");
@@ -52,8 +53,8 @@ const DataTypeMap = {
   "cds.Double": { v2: `$1d`, v4: /([-]?[0-9]+?\.?[0-9]*(?:E[+-]?[0-9]+?)?)d/gi },
   "cds.Date": { v2: `datetime'$1'`, v4: /datetime'(.+?)'/gi },
   "cds.Time": { v2: `time'$1'`, v4: /time'(.+?)'/gi },
-  "cds.DateTime": { v2: `datetimeoffset'$1'`, v4: /datetime(?:offset)?'(.+?)'/gi },
-  "cds.Timestamp": { v2: `datetimeoffset'$1'`, v4: /datetime(?:offset)?'(.+?)'/gi },
+  "cds.DateTime": { v2: `datetimeoffset'$1'`, v4: extractionPatterns.dateTime },
+  "cds.Timestamp": { v2: `datetimeoffset'$1'`, v4: extractionPatterns.dateTime },
   "cds.String": { v2: `'$1'`, v4: /(.*)/gis },
   "cds.Binary": { v2: `binary'$1'`, v4: /X'(?:[0-9a-f][0-9a-f])+?'/gi },
   "cds.LargeBinary": { v2: `binary'$1'`, v4: /X'(?:[0-9a-f][0-9a-f])+?'/gi },
@@ -685,11 +686,11 @@ function cov2ap(options = {}) {
         await handleMediaEntity(
           req.body && req.body["content-type"],
           req.body &&
-            (req.body["slug"] ||
-              req.body["filename"] ||
-              contentDispositionFilename(req.body) ||
-              contentDispositionFilename(headers) ||
-              req.body["name"]),
+          (req.body["slug"] ||
+            req.body["filename"] ||
+            contentDispositionFilename(req.body) ||
+            contentDispositionFilename(headers) ||
+            req.body["name"]),
           req.body,
         );
       });
@@ -1080,7 +1081,7 @@ function cov2ap(options = {}) {
         }
         return await cds.load(model);
       },
-      async () => {},
+      async () => { },
       service,
       determineLocale(req),
     );
@@ -1171,9 +1172,9 @@ function cov2ap(options = {}) {
     const localName = isServiceName(definition.name, req) ? odataName(definition.name, req) : definition.name;
     const nameSuffix =
       definition.kind === "entity" &&
-      definition.params &&
-      req.context.parameters &&
-      req.context.parameters.kind === "Set"
+        definition.params &&
+        req.context.parameters &&
+        req.context.parameters.kind === "Set"
         ? "Set"
         : "";
     return localName + nameSuffix;
@@ -1928,7 +1929,7 @@ function cov2ap(options = {}) {
     if (filter === null || filter === undefined) {
       return filter;
     }
-    return buildQuoteParts(filter)
+    let newFilter = buildQuoteParts(filter)
       .map((part) => {
         if (!part.quote) {
           convertUrlDataTypesForFilterElements(part, context, req);
@@ -1936,6 +1937,7 @@ function cov2ap(options = {}) {
         return part.content;
       })
       .join("");
+    return newFilter;
   }
 
   function convertUrlDataTypesForFilterElements(part, entity, req, path = "", depth = 0) {
@@ -2401,9 +2403,8 @@ function cov2ap(options = {}) {
             if (aggregationFunction.startsWith("$")) {
               return `${aggregationFunction} as ${AggregationPrefix}${measure.name}`;
             } else {
-              return `${referenceElement(measure) || measure.name} with ${aggregationFunction} as ${AggregationPrefix}${
-                measure.name
-              }`;
+              return `${referenceElement(measure) || measure.name} with ${aggregationFunction} as ${AggregationPrefix}${measure.name
+                }`;
             }
           })
           .filter((aggregation) => !!aggregation)
