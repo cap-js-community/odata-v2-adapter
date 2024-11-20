@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = {
+const rootConfig = {
   reporters: ["default"],
   automock: false,
   bail: false,
@@ -18,12 +18,35 @@ module.exports = {
     },
   },
   moduleDirectories: ["node_modules"],
-  modulePathIgnorePatterns: [],
   resetMocks: false,
   resetModules: false,
-  testMatch: ["**/test/**/*.test.js", "**/test-hana/**/*.test.js"],
-  testPathIgnorePatterns: ["/node_modules/"],
   verbose: true,
   maxWorkers: 2,
+};
+
+const projectBaseConfig = {
   setupFilesAfterEnv: ["./jest.setup.js"],
+  testPathIgnorePatterns: ["/node_modules/"],
+  modulePathIgnorePatterns: [],
+};
+
+module.exports = {
+  projects: [
+    {
+      ...projectBaseConfig,
+      displayName: "sqlite",
+      testMatch: ["**/test/**/*.test.js"],
+    },
+    {
+      ...projectBaseConfig,
+      displayName: "hana",
+      testMatch: ["**/test-hana/**/*.test.js"],
+    },
+    {
+      ...projectBaseConfig,
+      displayName: "postgres",
+      testMatch: ["**/test-postgres/**/*.test.js"],
+    },
+  ],
+  ...rootConfig,
 };
