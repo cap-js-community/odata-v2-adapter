@@ -5,10 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.13.8 - 2024-12-xx
+## Version 1.13.8 - 2024-12-02
 
 ### Fixed
 
+- Option to disable route registration on CDS `listening` via `registerOnListening: false`
 - Document that `cds.Map` is not supported
 
 ## Version 1.13.7 - 2024-11-04

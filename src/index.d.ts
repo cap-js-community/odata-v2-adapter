@@ -47,12 +47,12 @@ type Options = {
   services?: [string, string] | object;
 
   /**
-   * CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is false.
+   * CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is false.
    */
   mtxRemote?: boolean | false;
 
   /**
-   * Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is '/mtx/v1'.
+   * Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (classic MTX only). Default is '/mtx/v1'.
    */
   mtxEndpoint?: string | "/mtx/v1";
 
@@ -167,12 +167,12 @@ type Options = {
   defaultFormat?: string | "json";
 
   /**
-   * Specifies if 'x-forwarded' headers are processed. Default is 'true'.
+   * Specifies if 'x-forwarded' headers are processed. Default is true.
    */
   processForwardedHeaders?: boolean | true;
 
   /**
-   * Specifies if the definition elements are cached. Default is 'true'.
+   * Specifies if the definition elements are cached. Default is true.
    */
   cacheDefinitions?: boolean | true;
 
@@ -180,4 +180,9 @@ type Options = {
    * Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is 'memory'.
    */
   cacheMetadata?: string | "memory" | "disk" | "stream";
+
+  /**
+   * Routes are registered on CDS `listening` event instead of registering routes immediately. Default is true.
+   */
+  registerOnListening?: boolean | true;
 };

@@ -161,10 +161,10 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} [options.target] Target which points to OData V4 backend host:port. Use 'auto' to infer the target from server url after listening. Default is e.g. 'auto'.
  * @param {string} [options.targetPath] Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
  * @param {object} [options.services] Service mapping object from url path name to service name. Default is {}.
- * @param {boolean} [options.mtxRemote] CDS model is retrieved remotely via MTX endpoint for multitenant scenario (old MTX only). Default is false.
- * @param {string} [options.mtxEndpoint] Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (old MTX only). Default is '/mtx/v1'.
+ * @param {boolean} [options.mtxRemote] CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is false.
+ * @param {string} [options.mtxEndpoint] Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (classic MTX only). Default is '/mtx/v1'.
  * @param {boolean} [options.ieee754Compatible] Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is true.
- * @param {number} [options.fileUploadSizeLimit] File upload file size limit (in bytes) for multipart/form-data . Default is 10485760 (10 MB).
+ * @param {number} [options.fileUploadSizeLimit] File upload file size limit (in bytes) for multipart/form-data requests. Default is 10485760 (10 MB).
  * @param {boolean} [options.continueOnError] Indicates to OData V4 backend to continue on error. Default is false.
  * @param {boolean} [options.isoTime] Use ISO 8601 format for type cds.Time (Edm.Time). Default is false.
  * @param {boolean} [options.isoDate] Use ISO 8601 format for type cds.Date (Edm.DateTime). Default is false.
@@ -185,9 +185,10 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} [options.fixDraftRequests] Specifies if unsupported draft requests are converted to a working version. Default is false.
  * @param {string} [options.changesetDeviationLogLevel] Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
  * @param {string} [options.defaultFormat] Specifies the default entity response format (json, atom). Default is 'json'.
- * @param {boolean} [options.processForwardedHeaders] Specifies if 'x-forwarded' headers are processed. Default is 'true'.
- * @param {boolean} [options.cacheDefinitions] Specifies if the definition elements are cached. Default is 'true'.
+ * @param {boolean} [options.processForwardedHeaders] Specifies if 'x-forwarded' headers are processed. Default is true.
+ * @param {boolean} [options.cacheDefinitions] Specifies if the definition elements are cached. Default is true.
  * @param {string} [options.cacheMetadata] Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is 'memory'.
+ * @param {string} [options.registerOnListening] Routes are registered on CDS `listening` event instead of registering routes immediately. Default is true.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
@@ -270,6 +271,7 @@ function cov2ap(options = {}) {
   const processForwardedHeaders = optionWithFallback("processForwardedHeaders", true);
   const cacheDefinitions = optionWithFallback("cacheDefinitions", true);
   const cacheMetadata = optionWithFallback("cacheMetadata", "memory");
+  const registerOnListening = optionWithFallback("registerOnListening", true);
 
   if (cds.env.protocols) {
     cds.env.protocols["odata-v2"] = {
@@ -423,8 +425,8 @@ function cov2ap(options = {}) {
 
   async function routeGetMetadata(req, res) {
     let serviceValid = true;
+    const urlPath = targetUrl(req.originalUrl);
     try {
-      const urlPath = targetUrl(req.originalUrl);
       const metadataUrl = URL.parse(urlPath, true);
       let metadataPath = metadataUrl.pathname.substring(0, metadataUrl.pathname.length - 9);
 
@@ -438,7 +440,7 @@ function cov2ap(options = {}) {
       const serviceUrl = target + metadataPath;
 
       // Trace
-      traceRequest(req, "Request", req.method, req.originalUrl, req.headers, req.body);
+      traceRequest(req, "Request", req.method, urlPath, req.headers, req.body);
       traceRequest(req, "ProxyRequest", req.method, metadataPath, req.headers, req.body);
 
       const result = await Promise.all([
@@ -498,11 +500,13 @@ function cov2ap(options = {}) {
         // Trace
         logWarn(req, "MetadataRequest", "Request with Error", {
           method: req.method,
-          url: req.originalUrl,
+          url: urlPath,
           target,
         });
         if (err.statusCode) {
           res.status(err.statusCode).send(err.message);
+        } else if (err.message === "fetch failed") {
+          res.status(400).send(err.message);
         } else {
           res.status(500).send("Internal Server Error");
         }
@@ -566,7 +570,7 @@ function cov2ap(options = {}) {
       // Trace
       logWarn(req, "Request", "Request with Error", {
         method: req.method,
-        url: req.originalUrl,
+        url: req.url,
         target,
       });
       if (err.statusCode) {
@@ -750,14 +754,20 @@ function cov2ap(options = {}) {
     router.use(`/${path}`, routeBodyParser, routeSetContext, routeFileUpload, routeMiddleware);
   }
 
-  cds.on("listening", ({ server, url }) => {
+  if (registerOnListening) {
+    cds.on("listening", ({ server, url }) => {
+      if (target === "auto") {
+        target = url;
+        port = server.address().port;
+      }
+      bindRoutes();
+    });
+  } else {
     if (target === "auto") {
       target = defaultTarget;
-      port = server.address().port;
-      target = url;
     }
     bindRoutes();
-  });
+  }
 
   function contentDispositionFilename(headers) {
     const contentDispositionHeader = headers["content-disposition"] || headers["Content-Disposition"];
@@ -1487,7 +1497,7 @@ function cov2ap(options = {}) {
       // Trace
       logWarn(req, "Request", "Request with Error", {
         method: req.method,
-        url: req.originalUrl,
+        url: req.url,
         target,
       });
       if (err.statusCode) {
@@ -4974,7 +4984,7 @@ function cov2ap(options = {}) {
     const LOG = cds.log("cov2ap");
     if (LOG._warn) {
       initCDSContext(req);
-      LOG.warn(`${name}:`, message, info);
+      LOG.warn(`${name}:`, message, info ?? "");
     }
   }
 
@@ -4982,7 +4992,7 @@ function cov2ap(options = {}) {
     const LOG = cds.log("cov2ap");
     if (LOG._info) {
       initCDSContext(req);
-      LOG.info(`${name}:`, message, info);
+      LOG.info(`${name}:`, message, info ?? "");
     }
   }
 
@@ -4990,7 +5000,7 @@ function cov2ap(options = {}) {
     const LOG = cds.log("cov2ap");
     if (LOG._debug) {
       initCDSContext(req);
-      LOG.debug(`${name}:`, message, info);
+      LOG.debug(`${name}:`, message, info ?? "");
     }
   }
 

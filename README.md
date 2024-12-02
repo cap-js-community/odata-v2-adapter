@@ -53,7 +53,7 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **path**: Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
 - **model**: CDS service model (path(s) or CSN). Default is `'all'`.
 - **port**: Target port which points to OData V4 backend port. Default is process.env.PORT or `4004`.
-- **target**: Target which points to OData V4 backend host:port. Use `'auto'` to infer the target from server url after listening. Default is e.g. `'http://localhost:4004'`.
+- **target**: Target which points to OData V4 backend host:port. Use `'auto'` to infer the target from server url after listening. Default is e.g. `'auto'`.
 - **targetPath**: Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
 - **services**: Service mapping object from url path name to service name. Default is `{}`.
 - **mtxRemote**: CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is `false`.
@@ -74,15 +74,16 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **messageTargetDefault**: Specifies the message target default, if target is undefined. Default is `'/#TRANSIENT#'`.
 - **caseInsensitive**: Transforms search functions i.e. substringof, startswith, endswith to case-insensitive variant. Default is `false`.
 - **propagateMessageToDetails**: Propagates root error or message always to details section. Default is `false`.
-- **contentDisposition**: Default content disposition for media streams, if not available or calculated. Options are `inline`, `attachment`. Default is `'attachment'`.
+- **contentDisposition**: Default content disposition for media streams (inline, attachment), if not available or calculated. Default is `'attachment'`.
 - **calcContentDisposition**: Calculate content disposition for media streams even if already available. Default is `false`.
 - **quoteSearch**: Specifies if search expression is quoted automatically. Default is `true`.
 - **fixDraftRequests**: Specifies if unsupported draft requests are converted to a working version. Default is `false`.
 - **changesetDeviationLogLevel**: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is `'info'`.
 - **defaultFormat**: Specifies the default entity response format (json, atom). Default is `'json'`.
-- **processForwardedHeaders**: Specifies if the `x-forwarded` headers are processed. Default is `true`.
+- **processForwardedHeaders**: Specifies if `x-forwarded` headers are processed. Default is `true`.
 - **cacheDefinitions**: Specifies if the definition elements are cached. Default is `true`.
-- **cacheMetadata**: Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is `memory`.
+- **cacheMetadata**: Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is `'memory'`.
+- **registerOnListening**: Routes are registered on CDS `listening` event instead of registering routes immediately. Default is `true`.
 
 > All OData V2 adapter for CDS options can also be specified as part of CDS project-specific configuration
 > under section `cds.cov2ap` and accessed during runtime via `cds.env.cov2ap`.
@@ -484,6 +485,7 @@ const port = process.env.PORT || 4004;
       services: {
         "<odata-v4-service-path>": "<qualified.ServiceName>",
       },
+      registerOnListening: false,
     }),
   );
 
