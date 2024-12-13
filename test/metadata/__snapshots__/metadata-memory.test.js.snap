@@ -258,6 +258,7 @@ exports[`main GET $metadata 1`] = `
         </FunctionImport>
         <FunctionImport Name="unboundDecimalFunction" ReturnType="Edm.Decimal" m:HttpMethod="GET"/>
         <FunctionImport Name="unboundDecimalsFunction" ReturnType="Collection(Edm.Decimal)" m:HttpMethod="GET"/>
+        <FunctionImport Name="unboundDecimalResultFunction" ReturnType="test.MainService.return_test_MainService_unboundDecimalResultFunction" m:HttpMethod="GET"/>
         <FunctionImport Name="unboundErrorFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET"/>
         <FunctionImport Name="unboundWarningFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET"/>
         <FunctionImport Name="unboundEscapedWarningFunction" ReturnType="Edm.String" m:HttpMethod="GET"/>
@@ -775,6 +776,10 @@ exports[`main GET $metadata 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="code" Type="Edm.String"/>
         <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_unboundDecimalResultFunction">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
       </ComplexType>
       <Association Name="Country_texts_1">
         <End Role="Country" Type="test.MainService.Country" Multiplicity="1">

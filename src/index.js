@@ -2694,7 +2694,7 @@ function cov2ap(options = {}) {
     if (DataTypeMap[type] && typeof value === "string") {
       value = value.replace(DataTypeMap[type].v4, "$1");
     }
-    return convertDataTypeToV4(value, type);
+    return convertDataTypeToV4(value, type, definition, headers);
   }
 
   function convertDataTypeToV4(value, type, definition, headers = {}) {
@@ -2707,7 +2707,7 @@ function cov2ap(options = {}) {
       });
     }
     const contentType = headers["content-type"];
-    const ieee754Compatible = contentType && contentType.includes(IEEE754Compatible);
+    const contentTypeIEEE754Compatible = contentType && contentType.includes(IEEE754Compatible);
     if (["cds.Boolean"].includes(type)) {
       if (value === "true") {
         value = true;
@@ -2717,7 +2717,7 @@ function cov2ap(options = {}) {
     } else if (["cds.Integer"].includes(type)) {
       value = parseInt(value, 10);
     } else if (["cds.Integer64", "cds.Decimal", "cds.DecimalFloat"].includes(type)) {
-      value = ieee754Compatible ? `${value}` : parseFloat(value);
+      value = ieee754Compatible || contentTypeIEEE754Compatible ? `${value}` : parseFloat(value);
     } else if (["cds.Double"].includes(type)) {
       value = parseFloat(value);
     } else if (["cds.Time"].includes(type)) {
@@ -3387,6 +3387,7 @@ function cov2ap(options = {}) {
             proxyBody.value,
             elementType(definitionElement, req),
             definition,
+            headers,
           );
           convertResponseElementData(body, headers, definition, elements, proxyBody, req);
           if (req.context.$value) {
@@ -3741,7 +3742,7 @@ function cov2ap(options = {}) {
               value = false;
             }
           }
-          let aggregationValue = convertDataTypeToV2(value, aggregationType, definition);
+          let aggregationValue = convertDataTypeToV2(value, aggregationType, definition, headers);
           // Convert to JSON number
           const element = req.context.$apply.value.find((entry) => {
             return entry.name === name;
@@ -3819,16 +3820,16 @@ function cov2ap(options = {}) {
     }
   }
 
-  function replaceConvertDataTypeToV2(value, type, definition) {
+  function replaceConvertDataTypeToV2(value, type, definition, headers = {}) {
     if (value === null || value === undefined) {
       return value;
     }
     if (Array.isArray(value)) {
       return value.map((entry) => {
-        return replaceConvertDataTypeToV2(entry, type, definition);
+        return replaceConvertDataTypeToV2(entry, type, definition, headers);
       });
     }
-    value = convertDataTypeToV2(value, type, definition);
+    value = convertDataTypeToV2(value, type, definition, headers);
     if (DataTypeMap[type]) {
       if (!value.match(DataTypeMap[type].v2.replace("$1", ".*"))) {
         value = DataTypeMap[type].v2.replace("$1", encodeReplaceValue(value));
@@ -3846,21 +3847,23 @@ function cov2ap(options = {}) {
       if (!element) {
         return;
       }
-      data[key] = convertDataTypeToV2(data[key], elementType(element, req), definition);
+      data[key] = convertDataTypeToV2(data[key], elementType(element, req), definition, headers);
     });
   }
 
-  function convertDataTypeToV2(value, type, definition) {
+  function convertDataTypeToV2(value, type, definition, headers = {}) {
     if (value === null || value === undefined) {
       return value;
     }
     if (Array.isArray(value)) {
       return value.map((entry) => {
-        return convertDataTypeToV2(entry, type, definition);
+        return convertDataTypeToV2(entry, type, definition, headers);
       });
     }
+    const contentType = headers["content-type"];
+    const contentTypeIEEE754Compatible = contentType && contentType.includes(IEEE754Compatible);
     if (["cds.Decimal", "cds.DecimalFloat", "cds.Double", "cds.Integer64"].includes(type)) {
-      value = `${value}`;
+      value = ieee754Compatible || contentTypeIEEE754Compatible ? `${value}` : parseFloat(value);
     } else if (!isoDate && !definition["@cov2ap.isoDate"] && ["cds.Date"].includes(type)) {
       value = `/Date(${new Date(value).getTime()})/`;
     } else if (!isoTime && !definition["@cov2ap.isoTime"] && ["cds.Time"].includes(type)) {

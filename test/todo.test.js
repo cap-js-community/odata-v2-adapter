@@ -549,12 +549,14 @@ describe("todo", () => {
     });
     expect(response.body.d).toBeDefined();
     expect(response.body.d.ID).toEqual(1);
+    expect(response.body.d.value1).toEqual("1.5");
     expect(response.body.d.value2).toEqual("1.6");
     let taskUri = response.body.d.__metadata.uri;
     response = await util.callWrite(
       request,
       "/odata/v2/todo/Tasks(1)",
       {
+        value1: "1.51",
         value2: "1.61",
       },
       true,
@@ -569,6 +571,7 @@ describe("todo", () => {
     });
     expect(response.body.d).toBeDefined();
     expect(response.body.d.ID).toEqual(1);
+    expect(response.body.d.value1).toEqual("1.51");
     expect(response.body.d.value2).toEqual("1.61");
 
     let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-PUT-Decimal.txt", "utf8");
@@ -580,6 +583,7 @@ describe("todo", () => {
     });
     expect(response.body.d).toBeDefined();
     expect(response.body.d.ID).toEqual(1);
+    expect(response.body.d.value1).toEqual("1.52");
     expect(response.body.d.value2).toEqual("1.62");
   });
 

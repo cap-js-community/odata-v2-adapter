@@ -17,7 +17,7 @@ async function initData({ app }) {
   for (const header of Headers) {
     const request = supertest(app);
     const response = await util.callWrite(request, `/odata/v4/main/Header`, header, false, {
-      "content-type": "application/json;IEEE754Compatible=true",
+      "content-type": "application/json",
     });
     responses.push(response);
   }

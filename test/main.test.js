@@ -2061,6 +2061,15 @@ describe("main", () => {
         results: ["12345.6789", "12345.6789"],
       },
     });
+    response = await util.callRead(request, "/odata/v2/main/unboundDecimalResultFunction");
+    expect(response.body).toMatchObject({
+      d: {
+        unboundDecimalResultFunction: {
+          name: "Test",
+          decimal: "12345.6789",
+        },
+      },
+    });
   });
 
   it("GET unbound function error", async () => {

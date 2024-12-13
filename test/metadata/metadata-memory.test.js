@@ -28,7 +28,7 @@ describe("main", () => {
       "x-correlation-id": expect.any(String),
       "x-correlationid": expect.any(String),
       connection: "keep-alive",
-      "content-length": "89093",
+      "content-length": "89487",
       "content-type": "application/xml",
       date: expect.any(String),
       etag: expect.any(String),

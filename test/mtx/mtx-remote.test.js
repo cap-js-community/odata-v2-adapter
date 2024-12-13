@@ -9,9 +9,7 @@ const util = require("../_env/util/request");
 
 cds.test(__dirname + "/../_env");
 
-cds.env.cov2ap = {
-  mtxRemote: true,
-};
+cds.env.cov2ap.mtxRemote = true;
 
 let request;
 

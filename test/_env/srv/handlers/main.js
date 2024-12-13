@@ -451,6 +451,13 @@ module.exports = (srv) => {
     return [12345.6789, 12345.6789];
   });
 
+  srv.on("unboundDecimalResultFunction", async (req) => {
+    return {
+      name: "Test",
+      decimal: 12345.6789,
+    };
+  });
+
   srv.on("unboundErrorFunction", async (req) => {
     const error = new Error("An error occurred");
     error.code = "ERR01";

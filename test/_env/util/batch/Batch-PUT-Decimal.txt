@@ -4,5 +4,5 @@ Content-Type: application/http
 PUT Tasks(1) HTTP/1.1
 Content-Type: application/json
 
-{"value2": "1.62"}
+{"value1": 1.52, "value2": "1.62"}
 --boundary--
