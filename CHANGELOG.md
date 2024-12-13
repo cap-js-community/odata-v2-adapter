@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Support deactivation of IEEE754 compatibility for OData V2 
+- Support deactivation of IEEE754 compatibility for OData V2
 - With `ieee754Compatible: false` numbers are represented as JSON numbers (not strings anymore)
 - JSON numbers may lose precision due to the conversion
 
