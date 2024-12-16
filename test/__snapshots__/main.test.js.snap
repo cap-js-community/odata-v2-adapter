@@ -1034,6 +1034,11 @@ exports[`main GET $metadata 1`] = `
       <ComplexType Name="return_test_MainService_unboundDecimalResultFunction">
         <Property Name="name" Type="Edm.String"/>
         <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
+        <Property Name="array" Type="Collection(test.MainService.return_test_MainService_unboundDecimalResultFunction_array)" Nullable="true"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_unboundDecimalResultFunction_array">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
       </ComplexType>
       <Association Name="Country_texts_1">
         <End Role="Country" Type="test.MainService.Country" Multiplicity="1">
@@ -2561,6 +2566,11 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="age" Type="Edm.Int32"/>
       </ComplexType>
       <ComplexType Name="return_test_MainService_unboundDecimalResultFunction">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
+        <Property Name="array" Type="Collection(test.MainService.return_test_MainService_unboundDecimalResultFunction_array)" Nullable="true"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_unboundDecimalResultFunction_array">
         <Property Name="name" Type="Edm.String"/>
         <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
       </ComplexType>
@@ -4092,6 +4102,11 @@ exports[`main GET $metadata localized 2`] = `
       <ComplexType Name="return_test_MainService_unboundDecimalResultFunction">
         <Property Name="name" Type="Edm.String"/>
         <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
+        <Property Name="array" Type="Collection(test.MainService.return_test_MainService_unboundDecimalResultFunction_array)" Nullable="true"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_unboundDecimalResultFunction_array">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
       </ComplexType>
       <Association Name="Country_texts_1">
         <End Role="Country" Type="test.MainService.Country" Multiplicity="1">
@@ -5621,6 +5636,11 @@ exports[`main GET $metadata with propagated headers 1`] = `
       <ComplexType Name="return_test_MainService_unboundDecimalResultFunction">
         <Property Name="name" Type="Edm.String"/>
         <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
+        <Property Name="array" Type="Collection(test.MainService.return_test_MainService_unboundDecimalResultFunction_array)" Nullable="true"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_unboundDecimalResultFunction_array">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
       </ComplexType>
       <Association Name="Country_texts_1">
         <End Role="Country" Type="test.MainService.Country" Multiplicity="1">
@@ -7148,6 +7168,11 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="age" Type="Edm.Int32"/>
       </ComplexType>
       <ComplexType Name="return_test_MainService_unboundDecimalResultFunction">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
+        <Property Name="array" Type="Collection(test.MainService.return_test_MainService_unboundDecimalResultFunction_array)" Nullable="true"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_unboundDecimalResultFunction_array">
         <Property Name="name" Type="Edm.String"/>
         <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
       </ComplexType>

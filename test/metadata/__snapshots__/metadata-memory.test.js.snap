@@ -780,6 +780,11 @@ exports[`main GET $metadata 1`] = `
       <ComplexType Name="return_test_MainService_unboundDecimalResultFunction">
         <Property Name="name" Type="Edm.String"/>
         <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
+        <Property Name="array" Type="Collection(test.MainService.return_test_MainService_unboundDecimalResultFunction_array)" Nullable="true"/>
+      </ComplexType>
+      <ComplexType Name="return_test_MainService_unboundDecimalResultFunction_array">
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="decimal" Type="Edm.Decimal" Precision="19" Scale="4"/>
       </ComplexType>
       <Association Name="Country_texts_1">
         <End Role="Country" Type="test.MainService.Country" Multiplicity="1">
