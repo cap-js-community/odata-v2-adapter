@@ -333,7 +333,11 @@ service MainService {
     function unboundDecimalsFunction() returns array of Decimal(19,4);
     function unboundDecimalResultFunction() returns {
         name: String;
-        decimal: Decimal(19,4)
+        decimal: Decimal(19,4);
+        array: array of {
+            name: String;
+            decimal: Decimal(19,4);
+        };
     };
     function unboundErrorFunction() returns Result;
     function unboundWarningFunction() returns Result;

@@ -41,6 +41,12 @@ describe("decimal", () => {
         unboundDecimalResultFunction: {
           name: "Test",
           decimal: 12345.6789,
+          array: [
+            {
+              name: "Test",
+              decimal: 12345.6789,
+            },
+          ],
         },
       },
     });
