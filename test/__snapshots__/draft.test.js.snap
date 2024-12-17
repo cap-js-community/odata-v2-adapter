@@ -176,6 +176,7 @@ exports[`draft GET $metadata 1`] = `
         <Property Name="endAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <NavigationProperty Name="header" Relationship="test.DraftService.HeaderItem_header" FromRole="HeaderItem" ToRole="Header"/>
         <Property Name="header_ID" Type="Edm.Guid"/>
+        <Property Name="large" Type="Edm.String"/>
         <NavigationProperty Name="NextItem" Relationship="test.DraftService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.DraftService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>

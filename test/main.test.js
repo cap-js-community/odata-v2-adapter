@@ -4314,4 +4314,22 @@ describe("main", () => {
     const id = response.body.d.ID;
     expect(id).toBeDefined();
   });
+
+  it("GET expand property not allowed", async () => {
+    let response = await util.callWrite(request, "/odata/v2/main/Header", {
+      name: "Test Create",
+      Items: [
+        {
+          name: "Test Create Item",
+          large: "5",
+        },
+      ],
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    response = await util.callWrite(request, `/odata/v2/main/Header(guid'${id}')?$expand=Items/large`);
+    expect(response.statusCode).toEqual(400);
+  });
 });

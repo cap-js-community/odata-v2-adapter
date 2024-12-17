@@ -671,6 +671,7 @@ exports[`main GET $metadata 1`] = `
         <Property Name="endAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <NavigationProperty Name="header" Relationship="test.MainService.HeaderItem_header" FromRole="HeaderItem" ToRole="Header"/>
         <Property Name="header_ID" Type="Edm.Guid"/>
+        <Property Name="large" Type="Edm.String"/>
         <NavigationProperty Name="NextItem" Relationship="test.MainService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
@@ -2205,6 +2206,7 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="endAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <NavigationProperty Name="header" Relationship="test.MainService.HeaderItem_header" FromRole="HeaderItem" ToRole="Header"/>
         <Property Name="header_ID" Type="Edm.Guid"/>
+        <Property Name="large" Type="Edm.String"/>
         <NavigationProperty Name="NextItem" Relationship="test.MainService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
@@ -3739,6 +3741,7 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="endAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <NavigationProperty Name="header" Relationship="test.MainService.HeaderItem_header" FromRole="HeaderItem" ToRole="Header"/>
         <Property Name="header_ID" Type="Edm.Guid"/>
+        <Property Name="large" Type="Edm.String"/>
         <NavigationProperty Name="NextItem" Relationship="test.MainService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
@@ -5273,6 +5276,7 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="endAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <NavigationProperty Name="header" Relationship="test.MainService.HeaderItem_header" FromRole="HeaderItem" ToRole="Header"/>
         <Property Name="header_ID" Type="Edm.Guid"/>
+        <Property Name="large" Type="Edm.String"/>
         <NavigationProperty Name="NextItem" Relationship="test.MainService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>
@@ -6807,6 +6811,7 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="endAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <NavigationProperty Name="header" Relationship="test.MainService.HeaderItem_header" FromRole="HeaderItem" ToRole="Header"/>
         <Property Name="header_ID" Type="Edm.Guid"/>
+        <Property Name="large" Type="Edm.String"/>
         <NavigationProperty Name="NextItem" Relationship="test.MainService.HeaderItem_NextItem" FromRole="HeaderItem" ToRole="HeaderItem1"/>
         <Property Name="NextItem_ID" Type="Edm.Guid"/>
         <NavigationProperty Name="Lines" Relationship="test.MainService.HeaderLine_item" FromRole="HeaderItem" ToRole="HeaderLine"/>

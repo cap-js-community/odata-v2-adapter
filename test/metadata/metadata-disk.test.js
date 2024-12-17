@@ -29,13 +29,13 @@ describe("main", () => {
       "x-correlation-id": expect.any(String),
       "x-correlationid": expect.any(String),
       connection: "keep-alive",
-      "content-length": "89867",
       "content-type": "application/xml",
       date: expect.any(String),
       etag: expect.any(String),
       "keep-alive": expect.stringMatching(/timeout=.*/),
       dataserviceversion: "2.0",
     });
+    expect(response.headers["content-length"]).toMatchSnapshot();
     expect(response.text).toMatchSnapshot();
   });
 });

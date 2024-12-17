@@ -27,6 +27,7 @@ entity HeaderItem: cuid {
     startAt: Timestamp;
     endAt: Timestamp;
     header: Association to Header;
+    large: LargeString;
     NextItem: Association to HeaderItem;
     Lines: Composition of many HeaderLine on Lines.item = $self;
 }
