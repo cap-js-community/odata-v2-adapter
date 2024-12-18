@@ -1,5 +1,8 @@
 "use strict";
 
+// Suppress deprecation warning in Node 22 due to http-proxy using util._extend()
+require("util")._extend = Object.assign;
+
 // OData V2/V4 Delta: http://docs.oasis-open.org/odata/new-in-odata/v4.0/cn01/new-in-odata-v4.0-cn01.html
 const os = require("os");
 const fs = require("fs");
@@ -21,9 +24,6 @@ const xmlParser = new xml2js.Parser({
 const cacheSymbol = Symbol("cov2ap");
 
 const CACHE_DIR = fs.realpathSync(os.tmpdir());
-
-// Suppress deprecation warning in Node 22 due to http-proxy using util._extend()
-require("util")._extend = Object.assign;
 
 const SeverityMap = {
   1: "success",
