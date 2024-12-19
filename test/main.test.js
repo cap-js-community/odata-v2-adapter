@@ -4329,7 +4329,16 @@ describe("main", () => {
     expect(response.body).toBeDefined();
     expect(response.body.d).toBeDefined();
     const id = response.body.d.ID;
-    response = await util.callWrite(request, `/odata/v2/main/Header(guid'${id}')?$expand=Items/large`);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')?$expand=Items/large`);
     expect(response.statusCode).toEqual(400);
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${id}')?$expand=Items&patch=true`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.d).toMatchObject({
+      ID: id,
+      name: "Test Create",
+      Items: {
+        results: [5],
+      },
+    });
   });
 });

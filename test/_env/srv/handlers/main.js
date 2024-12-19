@@ -5,6 +5,12 @@ const cds = require("@sap/cds");
 module.exports = (srv) => {
   const { Header, HeaderStream, Book, User } = srv.entities("test.MainService");
 
+  srv.after("READ", Header, async (data, req) => {
+    if (req.http.req.url.includes("patch=true")) {
+      data[0].Items = [5];
+    }
+  });
+
   /* Bound Action */
 
   srv.on("boundAction", Header, async (req) => {

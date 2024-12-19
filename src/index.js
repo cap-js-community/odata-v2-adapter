@@ -3528,16 +3528,19 @@ function cov2ap(options = {}) {
     if (data === null) {
       return;
     }
-    if (!Array.isArray(data)) {
-      return convertResponseData([data], headers, definition, proxyBody, req, selects);
-    }
     if (!definition) {
       return;
+    }
+    if (!Array.isArray(data)) {
+      return convertResponseData([data], headers, definition, proxyBody, req, selects);
     }
     selects = selects || req.context.selects || [];
     const elements = definitionElements(definition);
     // Recursion
     data.forEach((data) => {
+      if (!isObject(data)) {
+        return;
+      }
       Object.keys(data).forEach((key) => {
         let element = elements[key];
         if (!element) {
@@ -3561,14 +3564,23 @@ function cov2ap(options = {}) {
     });
     // Structural Changes
     data.forEach((data) => {
+      if (!isObject(data)) {
+        return;
+      }
       addResultsNesting(data, headers, definition, elements, proxyBody, req);
     });
     // Deferreds
     data.forEach((data) => {
+      if (!isObject(data)) {
+        return;
+      }
       addDeferreds(data, headers, definition, elements, proxyBody, req, selects);
     });
     // Modify Payload
     data.forEach((data) => {
+      if (!isObject(data)) {
+        return;
+      }
       addMetadata(data, headers, definition, elements, proxyBody, req);
       removeMetadata(data, headers, definition, elements, proxyBody, req);
       convertMedia(data, headers, definition, elements, proxyBody, req);
@@ -4699,6 +4711,10 @@ function cov2ap(options = {}) {
     }
     return locale || "en";
   }
+
+  const isObject = (object) => {
+    return typeof object === "object" && !Array.isArray(object) && object !== null;
+  };
 
   const ensureArray = (value) => {
     if (!value) {
