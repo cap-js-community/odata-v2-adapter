@@ -4341,4 +4341,27 @@ describe("main", () => {
       },
     });
   });
+
+  it("POST unbound structure action", async () => {
+    let response = await util.callWrite(request, "/odata/v2/main/unboundStructAction", {
+      elements: [
+        {
+          ID: 1,
+          binding: {
+            ID: 1,
+            name: "A",
+          },
+        },
+        {
+          ID: 2,
+          binding: null,
+        },
+      ],
+    });
+    expect(response.body).toMatchObject({
+      d: {
+        unboundStructAction: true,
+      },
+    });
+  });
 });

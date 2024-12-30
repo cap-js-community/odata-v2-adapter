@@ -7,6 +7,21 @@ type Value: Integer;
 type Stock: Value;
 type Price: Decimal(12, 2);
 
+type ElemType: {
+    ID: Integer;
+    name: String;
+}
+
+type Elem: {
+    ID: Integer;
+    binding: ElemType;
+};
+
+type Struct: {
+    ID: Integer;
+    element: Elem;
+};
+
 @fiori.draft.enabled
 entity Header: cuid, managed {
     name: String;
@@ -310,6 +325,7 @@ service MainService {
     action unboundActionMaxLength(text: String(10)) returns String(10);
     action unbound.Action(num: Integer, text: String) returns Result;
     action unboundErrorAction(num: Integer, text: String) returns Header;
+    action unboundStructAction(elements : array of Elem) returns Boolean;
 
     function unboundFunction(num: Integer, text: String) returns Result;
     function unboundMassFunction(ids: array of String) returns array of Result;

@@ -2633,12 +2633,18 @@ function cov2ap(options = {}) {
     }
     // Modify Payload
     data.forEach((data) => {
+      if (!isObject(data)) {
+        return;
+      }
       delete data.__metadata;
       delete data.__count;
       convertDataTypesToV4(data, headers, definition, elements, req);
     });
     // Recursion
     data.forEach((data) => {
+      if (!isObject(data)) {
+        return;
+      }
       Object.keys(data).forEach((key) => {
         const element = elements[key];
         if (!element) {

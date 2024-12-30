@@ -372,6 +372,10 @@ module.exports = (srv) => {
     req.error(error);
   });
 
+  srv.on("unboundStructAction", async () => {
+    return true;
+  });
+
   /* Unbound Function */
 
   srv.on("unboundFunction", async (req) => {

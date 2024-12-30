@@ -222,6 +222,9 @@ exports[`main GET $metadata 1`] = `
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
           <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
         </FunctionImport>
+        <FunctionImport Name="unboundStructAction" ReturnType="Edm.Boolean" m:HttpMethod="POST">
+          <Parameter Name="elements" Type="Collection(test.MainService.test_Elem)" Nullable="true" Mode="In"/>
+        </FunctionImport>
         <FunctionImport Name="unboundFunction" ReturnType="test.MainService.Result" m:HttpMethod="GET">
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
           <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
@@ -767,6 +770,14 @@ exports[`main GET $metadata 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="code" Type="Edm.String"/>
         <Property Name="age" Type="Edm.Int32"/>
+      </ComplexType>
+      <ComplexType Name="test_Elem">
+        <Property Name="ID" Type="Edm.Int32"/>
+        <Property Name="binding" Type="test.MainService.test_ElemType"/>
+      </ComplexType>
+      <ComplexType Name="test_ElemType">
+        <Property Name="ID" Type="Edm.Int32"/>
+        <Property Name="name" Type="Edm.String"/>
       </ComplexType>
       <ComplexType Name="return_test_MainService_unboundFunctionInline">
         <Property Name="name" Type="Edm.String"/>
