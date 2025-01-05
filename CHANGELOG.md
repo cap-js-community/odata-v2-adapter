@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Support deactivation of IEEE754 compatibility for OData V2
 - With `ieee754Compatible: false` numbers are represented as JSON numbers (not strings anymore)
-- JSON numbers may lose precision due to the conversion
+  - JSON numbers may lose precision with this configuration due to number conversion
 - Make request and response data conversion more stable
 - Fix `util.extend()` Node 22 warning
 
