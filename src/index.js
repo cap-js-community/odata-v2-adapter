@@ -462,10 +462,10 @@ function cov2ap(options = {}) {
       const [metadataResponse, edmx] = result;
       const metadataBody = await metadataResponse.text();
       const headers = convertBasicHeaders(convertToNodeHeaders(metadataResponse.headers));
-      headers["content-type"] = "application/xml";
       delete headers["content-encoding"];
       let body;
       if (metadataResponse.ok || metadataResponse.status === 304) {
+        headers["content-type"] = "application/xml";
         if (cacheMetadata === "disk") {
           body = await fs.promises.readFile(edmx, "utf8");
         } else if (cacheMetadata === "stream") {

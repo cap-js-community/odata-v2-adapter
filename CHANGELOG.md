@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Fix content-type for failing $metadata call
 
 ## Version 1.14.0 - 2025-01-07
 
