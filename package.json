@@ -71,7 +71,7 @@
     "@cap-js/postgres": "^1.10.5",
     "@cap-js/sqlite": "^1.7.8",
     "@eslint/js": "^9.17.0",
-    "@sap/cds": "^8.6.0",
+    "@sap/cds": "^8.6.1",
     "@sap/cds-dk": "^8.6.0",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
