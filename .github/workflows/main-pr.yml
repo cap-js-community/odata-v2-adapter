@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-      - run: npm ci --package-lock
+      - run: npm ci
       - run: npm test
         env:
           HANA_DB_CREDENTIALS: ${{secrets.HANA_DB_CREDENTIALS}}
@@ -45,7 +45,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-      - run: npm ci --package-lock
+      - run: npm ci
       - run: npm run test:external
 
   lint:
@@ -56,5 +56,5 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci --package-lock
+      - run: npm ci
       - run: npm run lint:ci

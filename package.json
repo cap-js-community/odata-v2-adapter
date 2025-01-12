@@ -53,7 +53,7 @@
     "eslint:ci": "eslint .",
     "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --log-level error",
     "prettier:ci": "prettier \"**/*.{js,json,md,yml,yaml}\" --check",
-    "upgrade-lock": "rm -rf package-lock.json node_modules && npm i --package-lock=true",
+    "upgrade-lock": "rm -rf package-lock.json node_modules && npm i",
     "prepareRelease": "npm prune --production",
     "audit": "npm audit --only=prod"
   },
