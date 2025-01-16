@@ -114,6 +114,8 @@ const cov2ap = require("@cap-js-community/odata-v2-adapter");
 cov2ap.singleton();
 ```
 
+> `@sap/cds` is a mandatory dependency and needs to be available as module.
+
 ### Before Middlewares
 
 Before middleware routes can be registered on the OData V2 adapter for CDS singleton, to be executed before the main route processing.
@@ -151,8 +153,10 @@ cds.on("bootstrap", (app) => {
 });
 ```
 
-### Custom Server
+### Custom Bootstrap
 
+- Deactivate bootstrap via CDS plugin:
+  - Set `cds.cov2ap.plugin: false` in `package.json`
 - Enhance or create `./srv/server.js`:
   ```js
   const cds = require("@sap/cds");
@@ -160,6 +164,8 @@ cds.on("bootstrap", (app) => {
   cds.on("bootstrap", (app) => app.use(cov2ap()));
   module.exports = cds.server;
   ```
+
+> `@sap/cds` is a mandatory dependency and needs to be available as module.
 
 ### Logging
 
@@ -333,9 +339,9 @@ cds.on(
 
 ### Build Task
 
-CDS OData V2 adapter includes an CDS build task, that allows to prepare the OData V2 EDMX files for MTX sidecar app.
-The build task is automatically active, in case project is running in multi-tenant context including MTX sidecar.  
-It can be deactivated using option `cds.cov2ap.build: false`.
+CDS OData V2 adapter includes an CDS build task, that allows to prepare the OData V2 EDMX files for server and MTX sidecar app.
+The build task is only available when adapter is bootstrapped via CDS plugin mechanism (default).
+It is then automatically active but can be deactivated using option `cds.cov2ap.build: false`.
 
 ### Unit-Tests
 
@@ -424,7 +430,7 @@ OData Batch (`$batch`) calls with content type `multipart/mixed`.
 `@sap/approuter` now support out-of-the-box compression for OData $batch calls with `multipart/mixed`.
 It's disabled by default, but can be enabled using option [compressResponseMixedTypeContent](https://www.npmjs.com/package/@sap/approuter#compression-property).
 
-## Custom Bootstrap
+## Custom Serving
 
 ### CAP Node.js Custom
 
@@ -458,7 +464,7 @@ const port = process.env.PORT || 4004;
   - OData V2 service will be available at http://localhost:4004/odata/v2/<service-path>
   - OData V4 service will be available at http://localhost:4004/odata/v4/<service-path>
 
-Note that `@sap/cds` is a peer dependency and needs to be available as module as well.
+> `@sap/cds` is a mandatory dependency and needs to be available as module.
 
 ### CAP Java Custom
 
@@ -497,6 +503,8 @@ const port = process.env.PORT || 4004;
 - Run `node srv/index` from the project root to start the server:
   - OData V2 service will be available at http://localhost:4004/odata/v2/<odata-v4-service-path>
   - OData V4 service shall be available e.g. at http://localhost:8080/<odata-v4-service-path>
+
+> `@sap/cds` is a mandatory dependency and needs to be available as module.
 
 #### Additional Considerations
 
