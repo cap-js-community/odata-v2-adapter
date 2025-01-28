@@ -67,16 +67,16 @@
   },
   "devDependencies": {
     "@cap-js-community/odata-v2-adapter": "./",
-    "@cap-js/hana": "^1.5.2",
-    "@cap-js/postgres": "^1.10.5",
-    "@cap-js/sqlite": "^1.7.8",
-    "@eslint/js": "^9.17.0",
-    "@sap/cds": "^8.6.1",
-    "@sap/cds-dk": "^8.6.0",
+    "@cap-js/hana": "^1.6.0",
+    "@cap-js/postgres": "^1.11.0",
+    "@cap-js/sqlite": "^1.8.0",
+    "@eslint/js": "^9.19.0",
+    "@sap/cds": "^8.7.0",
+    "@sap/cds-dk": "^8.7.0",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "compression": "^1.7.5",
-    "eslint": "^9.17.0",
+    "eslint": "^9.19.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-jest": "^28.10.0",
     "eslint-plugin-n": "^17.15.1",
@@ -84,7 +84,7 @@
     "prettier": "^3.4.2",
     "supertest": "^7.0.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.21.0"
+    "typescript-eslint": "^8.22.0"
   },
   "license": "Apache-2.0",
   "repository": {
