@@ -45,7 +45,11 @@ const UnsupportedDraftFilterRegex =
 const DataTypeMap = {
   "cds.UUID": { v2: `guid'$1'`, v4: UUIDLikeRegex },
   // "cds.Boolean" - no transformation
+  // "cds.UInt8" - no transformation
+  // "cds.Int16" - no transformation
+  // "cds.Int32" - no transformation
   // "cds.Integer" - no transformation
+  "cds.Int64": { v2: `$1L`, v4: /([-]?[0-9]+?)L/gi },
   "cds.Integer64": { v2: `$1L`, v4: /([-]?[0-9]+?)L/gi },
   "cds.Decimal": { v2: `$1m`, v4: /([-]?[0-9]+?\.?[0-9]*)m/gi },
   "cds.DecimalFloat": { v2: `$1f`, v4: /([-]?[0-9]+?\.?[0-9]*)f/gi },
@@ -96,6 +100,7 @@ const ODataType = {
   "cds.Int64": "Edm.Int64",
   "cds.Integer64": "Edm.Int64",
   "cds.Decimal": "Edm.Decimal",
+  "cds.DecimalFloat": "Edm.Decimal",
   "cds.Double": "Edm.Double",
   "cds.Date": "Edm.DateTime",
   "cds.Time": "Edm.Time",
@@ -2720,9 +2725,9 @@ function cov2ap(options = {}) {
       } else if (value === "false") {
         value = false;
       }
-    } else if (["cds.Integer"].includes(type)) {
+    } else if (["cds.UInt8", "cds.Int16", "cds.Int32", "cds.Integer"].includes(type)) {
       value = parseInt(value, 10);
-    } else if (["cds.Integer64", "cds.Decimal", "cds.DecimalFloat"].includes(type)) {
+    } else if (["cds.Int64", "cds.Integer64", "cds.Decimal", "cds.DecimalFloat"].includes(type)) {
       value = ieee754Compatible || contentTypeIEEE754Compatible ? `${value}` : parseFloat(value);
     } else if (["cds.Double"].includes(type)) {
       value = parseFloat(value);
@@ -3746,7 +3751,17 @@ function cov2ap(options = {}) {
             aggregationType = `cds.${aggregationType}`;
           }
           if (
-            ["cds.Integer", "cds.Integer64", "cds.Double", "cds.Decimal", "cds.DecimalFloat"].includes(aggregationType)
+            [
+              "cds.UInt8",
+              "cds.Int16",
+              "cds.Int32",
+              "cds.Integer",
+              "cds.Int64",
+              "cds.Integer64",
+              "cds.Double",
+              "cds.Decimal",
+              "cds.DecimalFloat",
+            ].includes(aggregationType)
           ) {
             if (value === null || value === "null") {
               value = 0;
@@ -3765,7 +3780,7 @@ function cov2ap(options = {}) {
           const element = req.context.$apply.value.find((entry) => {
             return entry.name === name;
           });
-          if (element && elementType(element, req) === "cds.Integer") {
+          if (element && ["cds.UInt8", "cds.Int16", "cds.Int32", "cds.Integer"].includes(elementType(element, req))) {
             const aggregation =
               element["@Aggregation.default"] || element["@Aggregation.Default"] || element["@DefaultAggregation"];
             const aggregationName = aggregation ? aggregation["#"] || aggregation : DefaultAggregation;
@@ -3880,7 +3895,7 @@ function cov2ap(options = {}) {
     }
     const contentType = headers["content-type"];
     const contentTypeIEEE754Compatible = contentType && contentType.includes(IEEE754Compatible);
-    if (["cds.Decimal", "cds.DecimalFloat", "cds.Double", "cds.Integer64"].includes(type)) {
+    if (["cds.Decimal", "cds.DecimalFloat", "cds.Double", "cds.Int64", "cds.Integer64"].includes(type)) {
       value = ieee754Compatible || contentTypeIEEE754Compatible ? `${value}` : parseFloat(value);
     } else if (!isoDate && !definition["@cov2ap.isoDate"] && ["cds.Date"].includes(type)) {
       value = `/Date(${new Date(value).getTime()})/`;

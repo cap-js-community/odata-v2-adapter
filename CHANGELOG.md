@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Fix content-type for failing $metadata call
+- Update supported CDS types for OData V2
 
 ## Version 1.14.0 - 2025-01-07
 
