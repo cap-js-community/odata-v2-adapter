@@ -3780,19 +3780,28 @@ function cov2ap(options = {}) {
           const element = req.context.$apply.value.find((entry) => {
             return entry.name === name;
           });
-          if (element && ["cds.UInt8", "cds.Int16", "cds.Int32", "cds.Integer"].includes(elementType(element, req))) {
-            const aggregation =
-              element["@Aggregation.default"] || element["@Aggregation.Default"] || element["@DefaultAggregation"];
-            const aggregationName = aggregation ? aggregation["#"] || aggregation : DefaultAggregation;
-            const aggregationFunction = aggregationName ? AggregationMap[aggregationName.toUpperCase()] : undefined;
+          if (element) {
+            const type = elementType(element, req);
+            const contentType = headers["content-type"];
+            const contentTypeIEEE754Compatible = contentType && contentType.includes(IEEE754Compatible);
             if (
-              aggregationType === "cds.Decimal" &&
-              aggregationFunction &&
-              ![AggregationMap.AVG].includes(aggregationFunction)
+              ["cds.UInt8", "cds.Int16", "cds.Int32", "cds.Integer"].includes(type) ||
+              (!(ieee754Compatible || contentTypeIEEE754Compatible) &&
+                ["cds.Decimal", "cds.DecimalFloat", "cds.Double", "cds.Int64", "cds.Integer64"].includes(type))
             ) {
-              const floatValue = parseFloat(aggregationValue);
-              if (aggregationValue === `${floatValue}`) {
-                aggregationValue = floatValue;
+              const aggregation =
+                element["@Aggregation.default"] || element["@Aggregation.Default"] || element["@DefaultAggregation"];
+              const aggregationName = aggregation ? aggregation["#"] || aggregation : DefaultAggregation;
+              const aggregationFunction = aggregationName ? AggregationMap[aggregationName.toUpperCase()] : undefined;
+              if (
+                aggregationType === "cds.Decimal" &&
+                aggregationFunction &&
+                ![AggregationMap.AVG].includes(aggregationFunction)
+              ) {
+                const floatValue = parseFloat(aggregationValue);
+                if (aggregationValue === `${floatValue}`) {
+                  aggregationValue = floatValue;
+                }
               }
             }
           }
