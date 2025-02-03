@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Specific logger component for http proxy middleware
 
 ## Version 1.14.1 - 2025-02-03
 

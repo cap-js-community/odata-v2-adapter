@@ -751,7 +751,7 @@ function cov2ap(options = {}) {
         proxyReq: convertProxyRequest,
         proxyRes: convertProxyResponse,
       },
-      logger: cds.log("cov2ap"),
+      logger: cds.log("cov2ap/hpm"),
     });
     router.use(`/${path}`, routeBeforeRequest);
     router.use(`/${path}`, routeInitRequest);
