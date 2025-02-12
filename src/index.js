@@ -4295,6 +4295,9 @@ function cov2ap(options = {}) {
     if (data) {
       if (data.results) {
         xmlBody += `<feed${namespace || ""}>`;
+        if (data.__count !== undefined) {
+          xmlBody += `<m:count>${data.__count}</m:count>`;
+        }
         xmlBody += `<title type="text">${localName(definition, req)}</title>`;
         xmlBody += `<id>${entityUriCollection(definition, req)}</id>`;
         xmlBody += `<updated>${req.now.toISOString()}</updated>`;

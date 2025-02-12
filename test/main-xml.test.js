@@ -74,6 +74,16 @@ describe("main-xml", () => {
     expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
     expect(response.text).toMatchSnapshot();
 
+    response = await util.callRead(request, "/odata/v2/main/Header?$inlinecount=allpages&$format=atom");
+    expect(response.text).toBeDefined();
+    response.text = cleanResponse(response.text);
+    expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
+    expect(
+      response.text.includes(
+        `<feed xml:base="odata/v2/main/" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom"><m:count>7</m:count>`,
+      ),
+    ).toBe(true);
+
     response = await util.callRead(request, "/odata/v2/main/Header(guid'e0582b6a-6d93-46d9-bd28-98723a285d40')", {
       accept: "application/xml",
     });

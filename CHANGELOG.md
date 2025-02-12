@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Specific logger component for http proxy middleware
+- Expose `count` in response for `Atom (XML)` format
 
 ## Version 1.14.1 - 2025-02-03
 
@@ -451,7 +452,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Atom format fixes
+- `Atom (XML)` format fixes
 - Trim spaces for filter function parameter transformations
 - Allow passing proxy options as command line env (`camelCase` to `snake_case`, escape `_` by doubling)
 
