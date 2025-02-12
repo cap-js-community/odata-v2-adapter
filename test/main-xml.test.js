@@ -94,6 +94,18 @@ describe("main-xml", () => {
 
     response = await util.callRead(
       request,
+      "/odata/v2/main/Header(guid'e0582b6a-6d93-46d9-bd28-98723a285d40')?$select=name,description,country,currency",
+      {
+        accept: "application/xml",
+      },
+    );
+    expect(response.text).toBeDefined();
+    response.text = cleanResponse(response.text);
+    expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
+    expect(response.text).toMatchSnapshot();
+
+    response = await util.callRead(
+      request,
       "/odata/v2/main/Header(guid'e0582b6a-6d93-46d9-bd28-98723a285d40')?$expand=Items",
       {
         accept: "application/xml",
