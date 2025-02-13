@@ -194,6 +194,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} [options.cacheDefinitions] Specifies if the definition elements are cached. Default is true.
  * @param {string} [options.cacheMetadata] Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is 'memory'.
  * @param {string} [options.registerOnListening] Routes are registered on CDS `listening` event instead of registering routes immediately. Default is true.
+ * @param {boolean} [options.excludeNonSelectedKeys] Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is 'false'.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
@@ -277,6 +278,7 @@ function cov2ap(options = {}) {
   const cacheDefinitions = optionWithFallback("cacheDefinitions", true);
   const cacheMetadata = optionWithFallback("cacheMetadata", "memory");
   const registerOnListening = optionWithFallback("registerOnListening", true);
+  const excludeNonSelectedKeys = optionWithFallback("excludeNonSelectedKeys", false);
 
   if (cds.env.protocols) {
     cds.env.protocols["odata-v2"] = {
@@ -3599,6 +3601,7 @@ function cov2ap(options = {}) {
       convertDataTypesToV2(data, headers, definition, elements, proxyBody, req);
       convertAggregation(data, headers, definition, elements, proxyBody, req);
       filterParameters(data, headers, definition, elements, proxyBody, req);
+      removeNonSelectedKeys(data, headers, definition, elements, proxyBody, req, selects);
     });
   }
 
@@ -3860,6 +3863,21 @@ function cov2ap(options = {}) {
         }
       });
     }
+  }
+
+  function removeNonSelectedKeys(data, headers, definition, elements, body, req, selects) {
+    if (!excludeNonSelectedKeys) {
+      return;
+    }
+    Object.keys(data).forEach((key) => {
+      const element = elements[key];
+      if (!element) {
+        return;
+      }
+      if (element.key && selects.length > 0 && !selects.includes(element.name)) {
+        delete data[element.name];
+      }
+    });
   }
 
   function replaceConvertDataTypeToV2(value, type, definition, headers = {}) {

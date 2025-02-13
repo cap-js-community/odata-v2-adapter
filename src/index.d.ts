@@ -185,4 +185,9 @@ type Options = {
    * Routes are registered on CDS `listening` event instead of registering routes immediately. Default is true.
    */
   registerOnListening?: boolean | true;
+
+  /**
+   * Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is `false`.
+   */
+  excludeNonSelectedKeys?: boolean | false;
 };

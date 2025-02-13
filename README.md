@@ -84,6 +84,7 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **cacheDefinitions**: Specifies if the definition elements are cached. Default is `true`.
 - **cacheMetadata**: Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is `'memory'`.
 - **registerOnListening**: Routes are registered on CDS `listening` event instead of registering routes immediately. Default is `true`.
+- **excludeNonSelectedKeys**: Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is `false`.
 
 > All OData V2 adapter for CDS options can also be specified as part of CDS project-specific configuration
 > under section `cds.cov2ap` and accessed during runtime via `cds.env.cov2ap`.
