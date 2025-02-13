@@ -86,16 +86,18 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **registerOnListening**: Routes are registered on CDS `listening` event instead of registering routes immediately. Default is `true`.
 - **excludeNonSelectedKeys**: Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is `false`.
 
-> All OData V2 adapter for CDS options can also be specified as part of CDS project-specific configuration
-> under section `cds.cov2ap` and accessed during runtime via `cds.env.cov2ap`.
+### CDS Env
 
-> Options can also be passed as command line environment variable, by converting the camel-cased option name to snake-case.
-> Underscores (`_`) need then to be escaped as double underscore (`__`) when provided via command line environment variable.
->
-> Example:
->
-> - path => CDS_COV2AP_PATH=odatav2
-> - quoteSearch => quote_search => CDS_COV2AP_QUOTE\_\_SEARCH=false
+All OData V2 adapter for CDS options can be specified as part of CDS project-specific configuration
+under section `cds.cov2ap` and accessed during runtime via `cds.env.cov2ap`.
+
+Options can also be passed as command line environment variable, by converting the camel-cased option name to snake-case.
+Underscores (`_`) need then to be escaped as double underscore (`__`) when provided via command line environment variable.
+
+**Examples:**
+
+- `path` => `CDS_COV2AP_PATH=odatav2`
+- `quoteSearch` => `quote_search` => `CDS_COV2AP_QUOTE__SEARCH=false`
 
 ## Documentation
 
