@@ -40,8 +40,8 @@
 
 - Run `npm add @cap-js-community/odata-v2-adapter` in `@sap/cds` project
 - Execute `cds-serve` to start server
-  - OData V2 service is available at http://localhost:4004/odata/v2/<service-path>
-  - OData V4 service is available at http://localhost:4004/odata/v4/<service-path>
+  - OData V2 service is available at http://localhost:4004/odata/v2/&lt;service-path>
+  - OData V4 service is available at http://localhost:4004/odata/v4/&lt;service-path>
 
 ## Options
 
