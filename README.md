@@ -40,8 +40,8 @@
 
 - Run `npm add @cap-js-community/odata-v2-adapter` in `@sap/cds` project
 - Execute `cds-serve` to start server
-  - OData V2 service is available at http://localhost:4004/odata/v2/<service-path\>
-  - OData V4 service is available at http://localhost:4004/odata/v4/<service-path\>
+  - OData V2 service is available at `http://localhost:4004/odata/v2/<service>`
+  - OData V4 service is available at `http://localhost:4004/odata/v4/<service>`
 
 ## Options
 
@@ -464,8 +464,8 @@ const port = process.env.PORT || 4004;
 ```
 
 - Run `node srv/index` from the project root to start the server:
-  - OData V2 service will be available at http://localhost:4004/odata/v2/<service-path>
-  - OData V4 service will be available at http://localhost:4004/odata/v4/<service-path>
+  - OData V2 service will be available at `http://localhost:4004/odata/v2/<service-path>`
+  - OData V4 service will be available at `http://localhost:4004/odata/v4/<service-path>`
 
 > `@sap/cds` is a mandatory dependency and needs to be available as module.
 
@@ -504,8 +504,8 @@ const port = process.env.PORT || 4004;
 ```
 
 - Run `node srv/index` from the project root to start the server:
-  - OData V2 service will be available at http://localhost:4004/odata/v2/<odata-v4-service-path>
-  - OData V4 service shall be available e.g. at http://localhost:8080/<odata-v4-service-path>
+  - OData V2 service will be available at `http://localhost:4004/odata/v2/<odata-v4-service-path>`
+  - OData V4 service shall be available e.g. at `http://localhost:8080/<odata-v4-service-path>`
 
 > `@sap/cds` is a mandatory dependency and needs to be available as module.
 
