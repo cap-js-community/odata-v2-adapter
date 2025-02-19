@@ -1,11 +1,11 @@
-# @cap-js-community/odata-v2-adapter (cov2ap)
+# OData V2 Adapter for CDS
 
 [![npm version](https://img.shields.io/npm/v/@cap-js-community/odata-v2-adapter)](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter)
 [![monthly downloads](https://img.shields.io/npm/dm/@cap-js-community/odata-v2-adapter)](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter)
 [![REUSE status](https://api.reuse.software/badge/github.com/cap-js-community/odata-v2-adapter)](https://api.reuse.software/info/github.com/cap-js-community/odata-v2-adapter)
 [![Main CI](https://github.com/cap-js-community/odata-v2-adapter/actions/workflows/main-ci.yml/badge.svg)](https://github.com/cap-js-community/odata-v2-adapter/commits/main)
 
-### [OData V2 Adapter for CDS](https://www.npmjs.com/package/@cap-js-community/odata-v2-adapter)
+## About this Project
 
 > Exposes a full-fledged OData V2 service, converting OData V2 requests to CDS OData V4 service calls and responses back.
 > Runs in context of the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
@@ -14,7 +14,7 @@
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
+- [Requirements and Setup](#getting-started)
 - [Options](#options)
 - [Documentation](#documentation)
   - [Singleton](#singleton)
@@ -36,7 +36,7 @@
 - [Code of Conduct](#code-of-conduct)
 - [Licensing](#licensing)
 
-## Getting Started
+## Requirements and Setup
 
 - Run `npm add @cap-js-community/odata-v2-adapter` in `@sap/cds` project
 - Execute `cds-serve` to start server
