@@ -7,7 +7,7 @@
 
 ## About this Project
 
-Exposes a full-fledged [OData V2](https://www.odata.org/documentation/odata-version-2-0/overview/) service, 
+Exposes a full-fledged [OData V2](https://www.odata.org/documentation/odata-version-2-0/overview/) service,
 converting OData V2 requests to CDS [OData V4](https://www.odata.org/documentation/) service calls and responses back.
 Runs in context of the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
 using CDS Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds) or CDS Java modules
