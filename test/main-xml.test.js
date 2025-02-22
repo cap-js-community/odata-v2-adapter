@@ -4,8 +4,14 @@ const cds = require("@sap/cds");
 const supertest = require("supertest");
 // eslint-disable-next-line no-restricted-modules
 const fs = require("fs");
+const xml2js = require("xml2js");
 
 const util = require("./_env/util/request");
+
+const xmlParser = new xml2js.Parser({
+  async: false,
+  tagNameProcessors: [xml2js.processors.stripPrefix],
+});
 
 cds.test(__dirname + "/_env");
 
@@ -359,11 +365,38 @@ describe("main-xml", () => {
     expect(first.contentTransferEncoding).toEqual("binary");
   });
 
-  function cleanResponse(text) {
-    return text
-      .replace(/http:\/\/localhost:(\d*)\//g, "")
-      .replace(/<updated>.*?<\/updated>/g, "<updated/>")
-      .replace(/<d:createdAt .*?>.*?<\/d:createdAt>/g, "<d:createdAt/>")
-      .replace(/<d:modifiedAt .*?>.*?<\/d:modifiedAt>/g, "<d:modifiedAt/>");
-  }
+  it("Request with XML entities", async () => {
+    let payload = fs.readFileSync(__dirname + "/_env/util/atom/Atom-POST-Escaped.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "");
+    let response = await util.callWrite(request, "/odata/v2/main/Header", payload, false, {
+      accept: "application/xml",
+      "content-type": "application/atom+xml",
+    });
+    expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
+    response.text = cleanResponse(response.text);
+    expect(response.text).toMatchSnapshot();
+    let body;
+    xmlParser.parseString(response.text, (err, xml) => {
+      if (err) {
+        throw err;
+      }
+      body = xml;
+    });
+    const ID = body.entry.content[0].properties[0].ID[0]._;
+    response = await util.callRead(request, `/odata/v2/main/Header(guid'${ID}')`, {
+      accept: "application/xml",
+    });
+    expect(response.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
+    response.text = cleanResponse(response.text);
+    expect(response.text.includes("&lt;&gt;&amp;&apos;&quot;")).toBe(true);
+    expect(response.text).toMatchSnapshot();
+  });
 });
+
+function cleanResponse(text) {
+  return text
+    .replace(/http:\/\/localhost:(\d*)\//g, "")
+    .replace(/<updated>.*?<\/updated>/g, "<updated/>")
+    .replace(/<d:createdAt .*?>.*?<\/d:createdAt>/g, "<d:createdAt/>")
+    .replace(/<d:modifiedAt .*?>.*?<\/d:modifiedAt>/g, "<d:modifiedAt/>");
+}

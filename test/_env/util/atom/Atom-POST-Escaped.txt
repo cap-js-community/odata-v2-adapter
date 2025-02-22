@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<entry xml:base="http://localhost:4004/odata/v2/main/" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom">
+    <author>
+        <name />
+    </author>
+    <category term="test.MainService.Header" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+    <content type="application/xml">
+        <m:properties>
+            <d:ID>4a9b66b4-3f99-4f69-8025-943c91174cf3</d:ID>
+            <d:name m:type="Edm.String">Test Create &lt;&gt;&amp;&apos;&quot;</d:name>
+            <d:description m:null="true" />
+        </m:properties>
+    </content>
+</entry>

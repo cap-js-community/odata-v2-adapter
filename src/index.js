@@ -4389,6 +4389,8 @@ function cov2ap(options = {}) {
             const date = match && match.pop();
             if (date) {
               value = new Date(parseInt(date.split("+")[0])).toISOString().slice(0, 19); // Cut millis
+            } else {
+              value = escapeXMLEntities(value);
             }
             xmlBody += `<d:${key} m:type="${ODataType[type]}">${value}</d:${key}>`;
           }
@@ -4490,6 +4492,22 @@ function cov2ap(options = {}) {
         contentType.startsWith("text/xml") ||
         contentType.startsWith("text/html"))
     );
+  }
+
+  function escapeXMLEntities(value) {
+    if (!value || typeof value !== "string") {
+      return value;
+    }
+    const escapeEntityMap = {
+      "<": "&lt;",
+      ">": "&gt;",
+      "&": "&amp;",
+      "'": "&apos;",
+      '"': "&quot;",
+    };
+    return value.replace(/[<>&'"]/g, function (char) {
+      return escapeEntityMap[char] || char;
+    });
   }
 
   function isMultipartMixed(contentType) {
