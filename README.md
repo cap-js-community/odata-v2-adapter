@@ -398,7 +398,7 @@ SAP Fiori Elements V2 examples:
 Examples can be tested as follows:
 
 - Start server:
-  - SQLite based: `npm start`
+  - SQLite based: `npm run start:sqlite`
   - HANA based: `npm run start:hana`
   - Postgres based: `npm run start:postgres`
 - Open Fiori Launchpad: http://localhost:4004/flp.html
