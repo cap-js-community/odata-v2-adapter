@@ -2744,13 +2744,15 @@ function cov2ap(options = {}) {
       if (ticksAndOffset !== undefined && ticksAndOffset !== null) {
         value = new Date(calculateTicksOffsetSum(ticksAndOffset)).toISOString(); // always UTC
       }
-      if (["cds.DateTime"].includes(type)) {
-        value = value.slice(0, 19) + "Z"; // Cut millis
-      } else if (["cds.Date"].includes(type)) {
-        value = value.slice(0, 10); // Cut time
-      } else if (["cds.Timestamp"].includes(type)) {
-        if (!value.endsWith("Z")) {
-          value += "Z";
+      if (value) {
+        if (["cds.DateTime"].includes(type)) {
+          value = value.slice(0, 19) + "Z"; // Cut millis
+        } else if (["cds.Date"].includes(type)) {
+          value = value.slice(0, 10); // Cut time
+        } else if (["cds.Timestamp"].includes(type)) {
+          if (!value.endsWith("Z")) {
+            value += "Z";
+          }
         }
       }
     }
@@ -3925,9 +3927,9 @@ function cov2ap(options = {}) {
     if (["cds.Decimal", "cds.DecimalFloat", "cds.Double", "cds.Int64", "cds.Integer64"].includes(type)) {
       value = ieee754Compatible || contentTypeIEEE754Compatible ? `${value}` : parseFloat(value);
     } else if (!isoDate && !definition["@cov2ap.isoDate"] && ["cds.Date"].includes(type)) {
-      value = `/Date(${new Date(value).getTime()})/`;
+      value = value === "" ? "" : `/Date(${new Date(value).getTime()})/`;
     } else if (!isoTime && !definition["@cov2ap.isoTime"] && ["cds.Time"].includes(type)) {
-      value = convertToDayTimeDuration(value);
+      value = value === "" ? "" : convertToDayTimeDuration(value);
     } else if (
       !isoDateTime &&
       !definition["@cov2ap.isoDateTime"] &&
@@ -3935,7 +3937,7 @@ function cov2ap(options = {}) {
       !definition["@cov2ap.isoDateTimeOffset"] &&
       ["cds.DateTime"].includes(type)
     ) {
-      value = `/Date(${new Date(value).getTime()}+0000)/`; // always UTC
+      value = value === "" || value === "Z" ? "" : `/Date(${new Date(value).getTime()}+0000)/`; // always UTC
     } else if (
       !isoTimestamp &&
       !definition["@cov2ap.isoTimestamp"] &&
@@ -3943,7 +3945,7 @@ function cov2ap(options = {}) {
       !definition["@cov2ap.isoDateTimeOffset"] &&
       ["cds.Timestamp"].includes(type)
     ) {
-      value = `/Date(${new Date(value).getTime()}+0000)/`; // always UTC
+      value = value === "" || value === "Z" ? "" : `/Date(${new Date(value).getTime()}+0000)/`; // always UTC
     }
     return value;
   }

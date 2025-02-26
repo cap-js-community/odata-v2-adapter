@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Expose `count` in response for `Atom (XML)` format
 - Escape XML entities in values for `Atom (XML)` format
 - Option `excludeNonSelectedKeys: true` to exclude non-selected keys from response (OData V4 auto-includes keys)
+- Serialize date with empty value correctly
 
 ## Version 1.14.1 - 2025-02-03
 

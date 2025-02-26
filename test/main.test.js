@@ -4133,37 +4133,38 @@ describe("main", () => {
   });
 
   it("GET entity with array structures", async () => {
-    let response = await util.callRead(request, `/odata/v2/main/HeaderStructure`);
-    expect(response.body.d.results).toMatchObject([
-      {
-        ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
-        date: "/Date(1681819200000+0000)/",
-        // cds.odata.structs: false
-        step_quantity: 1,
-        step_startDate: "/Date(1681819200000+0000)/",
-        step_endDate: "/Date(1681819200000+0000)/",
-        // cds.odata.structs: true
-        /*step: {
+    let response = await util.callRead(
+      request,
+      `/odata/v2/main/HeaderStructure(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+    );
+    expect(response.body.d).toMatchObject({
+      ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+      date: "/Date(1681819200000+0000)/",
+      // cds.odata.structs: false
+      step_quantity: 1,
+      step_startDate: "/Date(1681819200000+0000)/",
+      step_endDate: "/Date(1681819200000+0000)/",
+      // cds.odata.structs: true
+      /*step: {
           quantity: 1,
           startDate: "/Date(1681819200000+0000)/",
           endDate: "/Date(1681819200000+0000)/"
         },*/
-        phases: [
-          {
-            quantity: 1,
-            startDate: "/Date(1681819200000+0000)/",
-            endDate: "/Date(1681819200000+0000)/",
-          },
-        ],
-        __metadata: {
-          type: "test.MainService.HeaderStructure",
-          uri: `http://${response.request.host.replace(
-            "127.0.0.1",
-            "localhost",
-          )}/odata/v2/main/HeaderStructure(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+      phases: [
+        {
+          quantity: 1,
+          startDate: "/Date(1681819200000+0000)/",
+          endDate: "/Date(1681819200000+0000)/",
         },
+      ],
+      __metadata: {
+        type: "test.MainService.HeaderStructure",
+        uri: `http://${response.request.host.replace(
+          "127.0.0.1",
+          "localhost",
+        )}/odata/v2/main/HeaderStructure(guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
       },
-    ]);
+    });
   });
 
   it("POST entity with array structures", async () => {
@@ -4362,6 +4363,63 @@ describe("main", () => {
       d: {
         unboundStructAction: true,
       },
+    });
+  });
+
+  it("POST entity empty value date", async () => {
+    /*await expect(
+      util.callWrite(request, `/odata/v2/main/HeaderStructure`, {
+        date: "",
+      }),
+    ).rejects.toThrow(new Error(""));*/
+    let response = await util.callRead(
+      request,
+      `/odata/v2/main/HeaderStructure(guid'46a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+    );
+    delete response.body.d.__metadata;
+    expect(response.body.d).toMatchObject({
+      ID: "46a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+      date: null,
+      step_quantity: 1,
+      step_startDate: "/Date(1681819200000+0000)/",
+      step_endDate: "/Date(1681819200000+0000)/",
+      phases: [
+        {
+          quantity: 1,
+          startDate: "/Date(1681819200000+0000)/",
+          endDate: "/Date(1681819200000+0000)/",
+          __metadata: {},
+        },
+      ],
+    });
+    const tx = cds.tx();
+    await tx.run(
+      UPDATE.entity("test.HeaderStructure")
+        .set({
+          date: "",
+        })
+        .where({ ID: "46a0b287-eae5-46f7-80a8-f3eb2f9bb328" }),
+    );
+    await tx.commit();
+    response = await util.callRead(
+      request,
+      `/odata/v2/main/HeaderStructure(guid'46a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+    );
+    delete response.body.d.__metadata;
+    expect(response.body.d).toMatchObject({
+      ID: "46a0b287-eae5-46f7-80a8-f3eb2f9bb328",
+      date: "",
+      step_quantity: 1,
+      step_startDate: "/Date(1681819200000+0000)/",
+      step_endDate: "/Date(1681819200000+0000)/",
+      phases: [
+        {
+          quantity: 1,
+          startDate: "/Date(1681819200000+0000)/",
+          endDate: "/Date(1681819200000+0000)/",
+          __metadata: {},
+        },
+      ],
     });
   });
 });
