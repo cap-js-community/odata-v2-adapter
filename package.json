@@ -66,11 +66,11 @@
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
-    "@cap-js/cds-test": "^0.2.0",
     "@cap-js-community/odata-v2-adapter": "./",
+    "@cap-js/cds-test": "^0.2.0",
     "@cap-js/hana": "^1.6.1",
     "@cap-js/postgres": "^1.11.1",
-    "@cap-js/sqlite": "^1.8.0",
+    "@cap-js/sqlite": "^1.9.0",
     "@eslint/js": "^9.21.0",
     "@sap/cds": "^8.8.0",
     "@sap/cds-dk": "^8.8.0",
