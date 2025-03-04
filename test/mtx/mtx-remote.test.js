@@ -38,6 +38,7 @@ describe("mtx", () => {
   });
 
   it("MTX $metadata (remote)", async () => {
+    cds.env.requires.auth.users.alice.tenant = "t1";
     fetch.mockImplementation((url) => {
       if (url.endsWith("/main/") || url.includes("/metadata/edmx")) {
         return {

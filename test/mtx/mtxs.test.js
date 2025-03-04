@@ -70,6 +70,7 @@ describe("mtxs", () => {
 
   it("MTXS $metadata", async () => {
     cds.env.requires.multitenancy = true;
+    cds.env.requires.auth.users.alice.tenant = "t1";
     cds.env.requires["cds.xt.ModelProviderService"] = true;
     const response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
@@ -84,6 +85,7 @@ describe("mtxs", () => {
 
   it("MTXS event emitter", async () => {
     cds.env.requires.multitenancy = true;
+    cds.env.requires.auth.users.alice.tenant = "t1";
     cds.env.requires["cds.xt.ModelProviderService"] = true;
     clearCache();
     await util.callRead(request, "/odata/v2/main/Header", {

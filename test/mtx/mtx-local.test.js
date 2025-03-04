@@ -86,6 +86,7 @@ describe("mtx", () => {
 
   it("MTX $metadata (local)", async () => {
     cds.env.requires.multitenancy = true;
+    cds.env.requires.auth.users.alice.tenant = "t1";
     const response = await util.callRead(request, "/odata/v2/main/$metadata", {
       accept: "application/xml",
       Authorization: authorization,
@@ -101,6 +102,7 @@ describe("mtx", () => {
     const consoleSpy = jest.spyOn(console, "error");
 
     cds.env.requires.multitenancy = true;
+    cds.env.requires.auth.users.alice.tenant = "t1";
 
     clearCache();
     errorExtended = true;
@@ -164,6 +166,7 @@ describe("mtx", () => {
 
   it("MTX event emitter", async () => {
     cds.env.requires.multitenancy = true;
+    cds.env.requires.auth.users.alice.tenant = "t1";
     clearCache();
     await util.callRead(request, "/odata/v2/main/Header", {
       accept: "application/xml",
