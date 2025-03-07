@@ -1,6 +1,9 @@
 # This workflow will publish any new release to the npmjs registry
 
 name: Publish
+permissions:
+  contents: write
+  pull-requests: write
 
 on:
   release:

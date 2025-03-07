@@ -2,6 +2,9 @@
 # This workflow will protect the main branch by testing and linting new PRs and commits
 
 name: Main CI
+permissions:
+  contents: read
+  pull-requests: write
 
 # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push
 on:
