@@ -6,7 +6,7 @@
   "engines": {
     "node": ">=18"
   },
-  "author": "Oliver Klemenz <oklemenz@gmail.com>, Richard Lindner <rlindner81@gmail.com>",
+  "author": "Oliver Klemenz <oliver.klemenz@sap.com>, Richard Lindner <richard.lindner@sap.com>",
   "keywords": [
     "COV2AP",
     "CAP",
