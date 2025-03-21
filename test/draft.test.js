@@ -1226,7 +1226,6 @@ describe("draft", () => {
     });
     response = await util.callRead(request, `/odata/v2/draft/DraftAdministrativeData(guid'${draftUUID}')`);
     expect(response.body).toBeDefined;
-    // TODO: Fix with #16770
     expect(response.body).toEqual({
       error: {
         code: "500",
