@@ -1228,14 +1228,14 @@ describe("draft", () => {
     expect(response.body).toBeDefined;
     expect(response.body).toEqual({
       error: {
-        code: "500",
+        code: "400",
         innererror: {
           errordetails: [
             {
-              code: "500",
+              code: "400",
               message: {
                 lang: "en",
-                value: "Invalid draft request",
+                value: "INVALID_DRAFT_REQUEST",
               },
               severity: "error",
               target: "/#TRANSIENT#",
@@ -1244,7 +1244,7 @@ describe("draft", () => {
         },
         message: {
           lang: "en",
-          value: "Invalid draft request",
+          value: "INVALID_DRAFT_REQUEST",
         },
         severity: "error",
         target: "/#TRANSIENT#",
