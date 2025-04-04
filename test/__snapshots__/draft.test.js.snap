@@ -160,7 +160,7 @@ exports[`draft GET $metadata 1`] = `
         <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
         <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
         <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
-        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.Header_DraftAdministrativeData" FromRole="Header" ToRole="DraftAdministrativeData" sap:filterable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.Header_DraftAdministrativeData" FromRole="Header" ToRole="DraftAdministrativeData"/>
         <Property Name="DraftAdministrativeData_DraftUUID" Type="Edm.Guid"/>
         <NavigationProperty Name="SiblingEntity" Relationship="test.DraftService.Header_SiblingEntity" FromRole="Header" ToRole="Header1"/>
       </EntityType>
@@ -185,7 +185,7 @@ exports[`draft GET $metadata 1`] = `
         <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
         <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
         <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
-        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.HeaderItem_DraftAdministrativeData" FromRole="HeaderItem" ToRole="DraftAdministrativeData" sap:filterable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.HeaderItem_DraftAdministrativeData" FromRole="HeaderItem" ToRole="DraftAdministrativeData"/>
         <Property Name="DraftAdministrativeData_DraftUUID" Type="Edm.Guid"/>
         <NavigationProperty Name="SiblingEntity" Relationship="test.DraftService.HeaderItem_SiblingEntity" FromRole="HeaderItem" ToRole="HeaderItem1"/>
       </EntityType>
@@ -202,7 +202,7 @@ exports[`draft GET $metadata 1`] = `
         <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
         <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
         <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
-        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.HeaderLine_DraftAdministrativeData" FromRole="HeaderLine" ToRole="DraftAdministrativeData" sap:filterable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.HeaderLine_DraftAdministrativeData" FromRole="HeaderLine" ToRole="DraftAdministrativeData"/>
         <Property Name="DraftAdministrativeData_DraftUUID" Type="Edm.Guid"/>
         <NavigationProperty Name="SiblingEntity" Relationship="test.DraftService.HeaderLine_SiblingEntity" FromRole="HeaderLine" ToRole="HeaderLine1"/>
       </EntityType>
@@ -231,7 +231,7 @@ exports[`draft GET $metadata 1`] = `
         <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
         <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
         <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
-        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.Header_texts_DraftAdministrativeData" FromRole="Header_texts" ToRole="DraftAdministrativeData" sap:filterable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.Header_texts_DraftAdministrativeData" FromRole="Header_texts" ToRole="DraftAdministrativeData"/>
         <Property Name="DraftAdministrativeData_DraftUUID" Type="Edm.Guid"/>
         <NavigationProperty Name="SiblingEntity" Relationship="test.DraftService.Header_texts_SiblingEntity" FromRole="Header_texts" ToRole="Header_texts1"/>
       </EntityType>
@@ -247,7 +247,7 @@ exports[`draft GET $metadata 1`] = `
         <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
         <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
         <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
-        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.HeaderItem_texts_DraftAdministrativeData" FromRole="HeaderItem_texts" ToRole="DraftAdministrativeData" sap:filterable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.HeaderItem_texts_DraftAdministrativeData" FromRole="HeaderItem_texts" ToRole="DraftAdministrativeData"/>
         <Property Name="DraftAdministrativeData_DraftUUID" Type="Edm.Guid"/>
         <NavigationProperty Name="SiblingEntity" Relationship="test.DraftService.HeaderItem_texts_SiblingEntity" FromRole="HeaderItem_texts" ToRole="HeaderItem_texts1"/>
       </EntityType>
