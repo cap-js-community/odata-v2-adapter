@@ -160,11 +160,11 @@ function convertToNodeHeaders(webHeaders) {
  * The OData V2 adapter for CDS instantiates an Express router. The following options are available:
  * @param {object} [options] OData V2 adapter for CDS options object.
  * @param {string} [options.base] Base path under which the service is reachable. Default is ''.
- * @param {string} [options.path] Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
+ * @param {string} [options.path] Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS < 7 or `middlewares` deactivated.
  * @param {string|string[]|object} [options.model] CDS service model (path(s) or CSN). Default is 'all'.
  * @param {number} [options.port] Target port which points to OData V4 backend port. Default is process.env.PORT or 4004.
  * @param {string} [options.target] Target which points to OData V4 backend host:port. Use 'auto' to infer the target from server url after listening. Default is e.g. 'auto'.
- * @param {string} [options.targetPath] Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
+ * @param {string} [options.targetPath] Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS < 7 or `middlewares` deactivated.
  * @param {object} [options.services] Service mapping object from url path name to service name. Default is {}.
  * @param {boolean} [options.mtxRemote] CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is false.
  * @param {string} [options.mtxEndpoint] Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (classic MTX only). Default is '/mtx/v1'.
@@ -176,7 +176,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} [options.isoDateTime] Use ISO 8601 format for type cds.DateTime (Edm.DateTimeOffset). Default is false.
  * @param {boolean} [options.isoTimestamp] Use ISO 8601 format for type cds.Timestamp (Edm.DateTimeOffset). Default is false.
  * @param {boolean} [options.isoDateTimeOffset] Use ISO 8601 format for type Edm.DateTimeOffset (cds.DateTime, cds.Timestamp). Default is false.
- * @param {string} [options.bodyParserLimit] Request and response body parser size limit. Default is '100mb'.
+ * @param {string} [options.bodyParserLimit] Request and response body parser size limit. Default is cds.server.body_parser.limit or '100mb'.
  * @param {boolean} [options.returnCollectionNested] Collection of entity type is returned nested into a results section. Default is true.
  * @param {boolean} [options.returnComplexNested] Function import return structure of complex type (non collection) is nested using function import name. Default is true.
  * @param {boolean} [options.returnPrimitiveNested] Function import return structure of primitive type (non collection) is nested using function import name. Default is true.
@@ -260,7 +260,7 @@ function cov2ap(options = {}) {
   const isoDateTime = optionWithFallback("isoDateTime", false);
   const isoTimestamp = optionWithFallback("isoTimestamp", false);
   const isoDateTimeOffset = optionWithFallback("isoDateTimeOffset", false);
-  const bodyParserLimit = optionWithFallback("bodyParserLimit", "100mb");
+  const bodyParserLimit = optionWithFallback("bodyParserLimit", cds.env.server?.body_parser?.limit ?? "100mb");
   const returnCollectionNested = optionWithFallback("returnCollectionNested", true);
   const returnComplexNested = optionWithFallback("returnComplexNested", true);
   const returnPrimitiveNested = optionWithFallback("returnPrimitiveNested", true);

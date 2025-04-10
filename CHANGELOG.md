@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Body parser limit defaults to `cds.server.body_parser.limit`
 
 ## Version 1.14.3 - 2025-04-02
 

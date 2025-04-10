@@ -17,7 +17,7 @@ type Options = {
   base?: string | "";
 
   /**
-   * Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
+   * Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS < 7 or `middlewares` deactivated.
    */
   path?: string | "odata/v2";
 
@@ -37,7 +37,7 @@ type Options = {
   target?: string | "auto" | "http://localhost:4004";
 
   /**
-   * Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
+   * Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS < 7 or `middlewares` deactivated.
    */
   targetPath?: string | "odata/v4";
 
@@ -97,9 +97,9 @@ type Options = {
   isoDateTimeOffset?: boolean | false;
 
   /**
-   * Request and response body parser size limit. Default is '100mb'.
+   * Request and response body parser size limit. Default is cds.server.body_parser.limit or '100mb'.
    */
-  bodyParserLimit?: string | "100mb";
+  bodyParserLimit?: string;
 
   /**
    * Collection of entity type is returned nested into a results section. Default is true.

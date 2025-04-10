@@ -51,11 +51,11 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **plugin**: OData V2 adapter is instantiated as part of CDS plugin. Default is `true`.
 - **build**: In case of plugin scenario, a build step is registered to prepare the OData V2 metadata. Default is `true`.
 - **base**: Base path under which the service is reachable. Default is `''`.
-- **path**: Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS <7 or `middlewares` deactivated.
+- **path**: Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS < 7 or `middlewares` deactivated.
 - **model**: CDS service model (path(s) or CSN). Default is `'all'`.
 - **port**: Target port which points to OData V4 backend port. Default is process.env.PORT or `4004`.
 - **target**: Target which points to OData V4 backend host:port. Use `'auto'` to infer the target from server url after listening. Default is e.g. `'auto'`.
-- **targetPath**: Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS <7 or `middlewares` deactivated.
+- **targetPath**: Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS < 7 or `middlewares` deactivated.
 - **services**: Service mapping object from url path name to service name. Default is `{}`.
 - **mtxRemote**: CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is `false`.
 - **mtxEndpoint**: Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (classic MTX only). Default is `'/mtx/v1'`.
@@ -67,7 +67,7 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **isoDateTime**: Use ISO 8601 format for type cds.DateTime (Edm.DateTimeOffset). Default is `false`.
 - **isoTimestamp**: Use ISO 8601 format for type cds.Timestamp (Edm.DateTimeOffset). Default is `false`.
 - **isoDateTimeOffset**: Use ISO 8601 format for type Edm.DateTimeOffset (cds.DateTime, cds.Timestamp). Default is `false`.
-- **bodyParserLimit**: Request and response body parser size limit. Default is `'100mb'`.
+- **bodyParserLimit**: Request and response body parser size limit. Default is `cds.server.body_parser.limit` or `'100mb'`.
 - **returnCollectionNested**: Collection of entity type is returned nested into a results section. Default is `true`.
 - **returnComplexNested**: Function import return structure of complex type (non collection) is nested using function import name. Default is `true`.
 - **returnPrimitiveNested**: Function import return structure of primitive type (non collection) is nested using function import name. Default is `true`.
