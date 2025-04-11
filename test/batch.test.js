@@ -281,7 +281,13 @@ describe("batch", () => {
     expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
-    const [[first, second]] = responses;
+    let [[first, second]] = responses;
+    // order of requests in changeset can vary
+    if (first.body.d.ID !== id) {
+      let temp = first
+      first = second
+      second = temp
+    }
     expect(first.statusCode).toEqual(200);
     expect(first.contentId).toEqual("1");
     expect(first.contentTransferEncoding).toEqual("binary");
@@ -317,7 +323,13 @@ describe("batch", () => {
     expect(response.statusCode).toEqual(202);
     const responses = util.splitMultipartResponse(response.body);
     expect(responses.length).toEqual(1);
-    const [[first, second]] = responses;
+    let [[first, second]] = responses;
+    // order of requests in changeset can vary
+    if (first.body.d.ID !== id) {
+      let temp = first
+      first = second
+      second = temp
+    }
     expect(first.statusCode).toEqual(200);
     expect(first.contentId).toEqual("1");
     expect(first.contentTransferEncoding).toEqual("binary");
