@@ -26,14 +26,14 @@
     },
     "requires": {
       "db": {
-        "kind": "better-sqlite",
+        "kind": "sqlite",
         "credentials": {
-          "database": ":memory:"
+          "url": ":memory:"
         },
         "[testdb]": {
-          "kind": "better-sqlite",
+          "kind": "sqlite",
           "credentials": {
-            "database": "test.sqlite"
+            "url": "test.sqlite"
           }
         }
       }
