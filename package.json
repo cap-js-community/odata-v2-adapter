@@ -71,13 +71,13 @@
     "@cap-js/hana": "^1.9.0",
     "@cap-js/postgres": "^1.14.0",
     "@cap-js/sqlite": "^1.11.0",
-    "@eslint/js": "^9.25.1",
+    "@eslint/js": "^9.26.0",
     "@sap/cds": "^8.9.2",
-    "@sap/cds-dk": "^8.9.2",
+    "@sap/cds-dk": "^8.9.3",
     "@types/express": "^5.0.1",
     "@types/jest": "^29.5.14",
     "compression": "^1.8.0",
-    "eslint": "^9.25.1",
+    "eslint": "^9.26.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-jest": "^28.11.0",
     "eslint-plugin-n": "^17.17.0",
@@ -85,7 +85,7 @@
     "prettier": "^3.5.3",
     "supertest": "^7.1.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.31.0"
+    "typescript-eslint": "^8.31.1"
   },
   "license": "Apache-2.0",
   "repository": {
