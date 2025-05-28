@@ -69,7 +69,7 @@
     "@cap-js-community/odata-v2-adapter": "./",
     "@cap-js/cds-test": "^0.3.0",
     "@cap-js/hana": "^1.9.0",
-    "@cap-js/postgres": "^1.14.0",
+    "@cap-js/postgres": "^2.0.0",
     "@cap-js/sqlite": "^1.11.0",
     "@eslint/js": "^9.26.0",
     "@sap/cds": "^8.9.3",
