@@ -195,8 +195,8 @@ module.exports = (srv) => {
   srv.on("boundErrorFunction", Header, async (req) => {
     const error = new Error("An error occurred");
     error.code = "ERR01";
-    error.target = `Header(ID=${req.params[0]},IsActiveEntity=false)/name`;
-    error["@Common.additionalTargets"] = [`Header(ID=${req.params[0]},IsActiveEntity=false)/description`];
+    error.target = `Header(ID=${req.params[0].ID},IsActiveEntity=false)/name`;
+    error["@Common.additionalTargets"] = [`Header(ID=${req.params[0].ID},IsActiveEntity=false)/description`];
     error.message = "An error occurred";
     error.severity = 4;
     error["@Common.numericSeverity"] = 4;
@@ -217,8 +217,8 @@ module.exports = (srv) => {
   srv.on("boundWarningFunction", Header, async (req) => {
     const info1 = new Error("This is a warning");
     info1.code = "WARN01";
-    info1.target = `Header(ID=${req.params[0]},IsActiveEntity=false)/name`;
-    info1["@Common.additionalTargets"] = [`Header(ID=${req.params[0]},IsActiveEntity=false)/description`];
+    info1.target = `Header(ID=${req.params[0].ID},IsActiveEntity=false)/name`;
+    info1["@Common.additionalTargets"] = [`Header(ID=${req.params[0].ID},IsActiveEntity=false)/description`];
     info1.message = "An Warning occurred";
     info1.numericSeverity = 3;
     info1["@Core.ContentID"] = "1";

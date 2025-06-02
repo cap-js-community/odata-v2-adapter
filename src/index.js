@@ -4765,9 +4765,15 @@ function cov2ap(options = {}) {
   }
 
   function determineLocale(req) {
-    let locale = cds.env.i18n && cds.env.i18n.default_language;
+    let locale;
     try {
-      locale = require("@sap/cds/lib/req/locale")(req);
+      // CDS 9
+      locale = cds.i18n.locale?.header?.(req);
+      // CDS <= 8
+      if (!locale) {
+        // eslint-disable-next-line n/no-missing-require
+        locale = require("@sap/cds/lib/req/locale")(req);
+      }
     } catch {
       try {
         // CDS 3
@@ -4780,7 +4786,7 @@ function cov2ap(options = {}) {
     if (locale && locale.length >= 2) {
       locale = locale.substring(0, 2).toLowerCase() + locale.slice(2);
     }
-    return locale || "en";
+    return locale || cds.env.i18n?.default_language || "en";
   }
 
   const isObject = (object) => {

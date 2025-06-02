@@ -3606,7 +3606,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
-        code: "400",
+        code: "ASSERT_DATA_TYPE",
         message: {
           lang: "en",
           value: "Value 0123456789a is not a valid String(10)",
@@ -3616,7 +3616,7 @@ describe("main", () => {
         innererror: {
           errordetails: [
             {
-              code: "400",
+              code: "ASSERT_DATA_TYPE",
               message: {
                 lang: "en",
                 value: "Value 0123456789a is not a valid String(10)",
@@ -3632,7 +3632,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
-        code: "400",
+        code: "ASSERT_DATA_TYPE",
         message: {
           lang: "en",
           value: "Value 0123456789a is not a valid String(10)",
@@ -3642,7 +3642,7 @@ describe("main", () => {
         innererror: {
           errordetails: [
             {
-              code: "400",
+              code: "ASSERT_DATA_TYPE",
               message: {
                 lang: "en",
                 value: "Value 0123456789a is not a valid String(10)",
@@ -3672,7 +3672,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
-        code: "400",
+        code: "ASSERT_DATA_TYPE",
         message: {
           lang: "en",
           value: 'Value "01234\n5678" is not a valid String(10)',
@@ -3682,7 +3682,7 @@ describe("main", () => {
         innererror: {
           errordetails: [
             {
-              code: "400",
+              code: "ASSERT_DATA_TYPE",
               message: {
                 lang: "en",
                 value: 'Value "01234\n5678" is not a valid String(10)',
@@ -3698,7 +3698,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
-        code: "400",
+        code: "ASSERT_DATA_TYPE",
         message: {
           lang: "en",
           value: "Value 01234\n56789 is not a valid String(10)",
@@ -3708,7 +3708,7 @@ describe("main", () => {
         innererror: {
           errordetails: [
             {
-              code: "400",
+              code: "ASSERT_DATA_TYPE",
               message: {
                 lang: "en",
                 value: "Value 01234\n56789 is not a valid String(10)",
@@ -3752,7 +3752,7 @@ describe("main", () => {
     expect(response.statusCode).toEqual(400);
     expect(response.body).toMatchObject({
       error: {
-        code: "400",
+        code: "ASSERT_DATA_TYPE",
         message: {
           lang: "en",
           value: 'Value """""\n""""" is not a valid String(10)',
@@ -3762,7 +3762,7 @@ describe("main", () => {
         innererror: {
           errordetails: [
             {
-              code: "400",
+              code: "ASSERT_DATA_TYPE",
               message: {
                 lang: "en",
                 value: 'Value """""\n""""" is not a valid String(10)',
@@ -3830,7 +3830,7 @@ describe("main", () => {
   });
 
   it("GET localized service entity", async () => {
-    let response = await util.callRead(request, "/odata/v2/main/LocalizedEntity");
+    let response = await util.callRead(request, "/odata/v2/main/LocalizedEntity", { "Accept-Language": "de" });
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -3865,7 +3865,7 @@ describe("main", () => {
       },
     });
     const id = response.body.d.results[0].ID;
-    response = await util.callRead(request, `/odata/v2/main/LocalizedEntity(guid'${id}')`);
+    response = await util.callRead(request, `/odata/v2/main/LocalizedEntity(guid'${id}')`, { "Accept-Language": "de" });
     expect(response.body).toMatchObject({
       d: {
         ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
@@ -3900,7 +3900,7 @@ describe("main", () => {
       d: {
         results: [
           {
-            locale: "en",
+            locale: "de",
             ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
             name: "Test-DE",
             __metadata: {
@@ -3908,7 +3908,7 @@ describe("main", () => {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
                 "localhost",
-              )}/odata/v2/main/LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+              )}/odata/v2/main/LocalizedEntity_texts(locale='de',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
             },
           },
         ],
@@ -3916,12 +3916,12 @@ describe("main", () => {
     });
     response = await util.callRead(
       request,
-      "/odata/v2/main/LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')",
+      "/odata/v2/main/LocalizedEntity_texts(locale='de',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')",
     );
     expect(response.statusCode).toEqual(405);
     expect(response.body).toMatchObject({
       error: {
-        code: "405",
+        code: "ENTITY_IS_AUTOEXPOSED",
         message: {
           lang: "en",
           value: 'Entity "test.MainService.LocalizedEntity.texts" is not explicitly exposed as part of the service',
@@ -3931,7 +3931,7 @@ describe("main", () => {
         innererror: {
           errordetails: [
             {
-              code: "405",
+              code: "ENTITY_IS_AUTOEXPOSED",
               message: {
                 lang: "en",
                 value:
@@ -3947,7 +3947,7 @@ describe("main", () => {
   });
 
   it("GET localized service entity with scoped name", async () => {
-    let response = await util.callRead(request, "/odata/v2/main/context_LocalizedEntity");
+    let response = await util.callRead(request, "/odata/v2/main/context_LocalizedEntity", { "Accept-Language": "de" });
     expect(response.body).toMatchObject({
       d: {
         results: [
@@ -3982,7 +3982,9 @@ describe("main", () => {
       },
     });
     const id = response.body.d.results[0].ID;
-    response = await util.callRead(request, `/odata/v2/main/context_LocalizedEntity(guid'${id}')`);
+    response = await util.callRead(request, `/odata/v2/main/context_LocalizedEntity(guid'${id}')`, {
+      "Accept-Language": "de",
+    });
     expect(response.body).toMatchObject({
       d: {
         ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
@@ -4017,7 +4019,7 @@ describe("main", () => {
       d: {
         results: [
           {
-            locale: "en",
+            locale: "de",
             ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
             name: "Test-DE",
             __metadata: {
@@ -4025,7 +4027,7 @@ describe("main", () => {
               uri: `http://${response.request.host.replace(
                 "127.0.0.1",
                 "localhost",
-              )}/odata/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+              )}/odata/v2/main/context_LocalizedEntity_texts(locale='de',ID=guid'36a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
             },
           },
         ],
@@ -4033,11 +4035,11 @@ describe("main", () => {
     });
     response = await util.callRead(
       request,
-      `/odata/v2/main/context_LocalizedEntity(guid'${id}')/texts(locale='en',ID=guid'${id}')`,
+      `/odata/v2/main/context_LocalizedEntity(guid'${id}')/texts(locale='de',ID=guid'${id}')`,
     );
     expect(response.body).toMatchObject({
       d: {
-        locale: "en",
+        locale: "de",
         ID: "36a0b287-eae5-46f7-80a8-f3eb2f9bb328",
         name: "Test-DE",
         __metadata: {
@@ -4045,7 +4047,7 @@ describe("main", () => {
           uri: `http://${response.request.host.replace(
             "127.0.0.1",
             "localhost",
-          )}/odata/v2/main/context_LocalizedEntity_texts(locale='en',ID=guid'${id}')`,
+          )}/odata/v2/main/context_LocalizedEntity_texts(locale='de',ID=guid'${id}')`,
         },
       },
     });
