@@ -4775,13 +4775,16 @@ function cov2ap(options = {}) {
         locale = require("@sap/cds/lib/req/locale")(req);
       }
     } catch {
-      try {
-        // CDS 3
+      // Fallback
+    }
+    try {
+      // CDS 3
+      if (!locale) {
         // eslint-disable-next-line n/no-missing-require
         locale = require("@sap/cds-runtime/lib/cds-services/adapter/utils/locale")({ req });
-      } catch {
-        // Default
       }
+    } catch {
+      // Fallback
     }
     if (locale && locale.length >= 2) {
       locale = locale.substring(0, 2).toLowerCase() + locale.slice(2);
