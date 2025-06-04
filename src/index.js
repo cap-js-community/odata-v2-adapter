@@ -242,10 +242,10 @@ function cov2ap(options = {}) {
 
   const metadataCache = {};
   const base = optionWithFallback("base", "");
-  const path = optionWithFallback("path", oDataV2RelativePath);
+  const path = trimLeadingSlash(optionWithFallback("path", oDataV2RelativePath));
   const sourcePath = `${base ? "/" + base : ""}/${path}`;
-  const targetPath = optionWithFallback("targetPath", oDataV4RelativePath);
-  const rewritePath = `${base ? "/" + base : ""}${targetPath ? "/" : ""}${targetPath}`;
+  const targetPath = trimLeadingSlash(optionWithFallback("targetPath", oDataV4RelativePath));
+  const rewritePath = `${base ? "/" + base : ""}${targetPath ? "/" + targetPath : ""}`;
   let port = optionWithFallback("port", process.env.PORT || DefaultPort);
   const defaultTarget = `http://${DefaultHost}:${port}`;
   let target = optionWithFallback("target", "auto");
@@ -5043,6 +5043,13 @@ function cov2ap(options = {}) {
     }
     return headers;
   };
+
+  function trimLeadingSlash(path) {
+    if (path && path.startsWith("/")) {
+      return path.substring(1);
+    }
+    return path;
+  }
 
   function traceRequest(req, name, method, url, headers, body) {
     const LOG = cds.log("cov2ap");

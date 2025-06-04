@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Paths with leading slash `/` are handled resiliently
 
 ## Version 1.15.0 - 2025-06-03
 
