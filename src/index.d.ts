@@ -190,4 +190,9 @@ type Options = {
    * Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is `false`.
    */
   excludeNonSelectedKeys?: boolean | false;
+
+  /**
+   * Object to be passed to http(s) request (see Node's https agent and http agent objects). Default is 'null'.
+   */
+  httpAgent?: object | null;
 };

@@ -195,6 +195,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} [options.cacheMetadata] Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is 'memory'.
  * @param {string} [options.registerOnListening] Routes are registered on CDS `listening` event instead of registering routes immediately. Default is true.
  * @param {boolean} [options.excludeNonSelectedKeys] Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is 'false'.
+ * @param {Object} [options.httpAgent] Object to be passed to http(s).request (see Node's https agent and http agent objects). Default is 'null'.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
@@ -279,6 +280,7 @@ function cov2ap(options = {}) {
   const cacheMetadata = optionWithFallback("cacheMetadata", "memory");
   const registerOnListening = optionWithFallback("registerOnListening", true);
   const excludeNonSelectedKeys = optionWithFallback("excludeNonSelectedKeys", false);
+  const httpAgent = optionWithFallback("httpAgent", null);
 
   if (cds.env.protocols) {
     cds.env.protocols["odata-v2"] = {
@@ -452,6 +454,7 @@ function cov2ap(options = {}) {
 
       const result = await Promise.all([
         fetch(serviceUrl, {
+          agent: httpAgent,
           method: "GET",
           headers: {
             ...propagateHeaders(req),
@@ -652,6 +655,7 @@ function cov2ap(options = {}) {
         const postBody = JSON.stringify(body);
         postHeaders["content-length"] = postBody.length;
         const response = await fetch(postUrl, {
+          agent: httpAgent,
           method: "POST",
           headers: postHeaders,
           body: postBody,
@@ -745,6 +749,7 @@ function cov2ap(options = {}) {
 
   function bindRoutes() {
     const routeMiddleware = createProxyMiddleware({
+      agent: httpAgent,
       target: `${target}${rewritePath}`,
       changeOrigin: true,
       selfHandleResponse: true,
@@ -1006,6 +1011,7 @@ function cov2ap(options = {}) {
       req.tenant,
       async (tenant) => {
         const response = await fetch(`${mtxBasePath}/metadata/csn/${tenant}`, {
+          agent: httpAgent,
           method: "GET",
           headers: propagateHeaders(req),
         });
@@ -1018,6 +1024,7 @@ function cov2ap(options = {}) {
         const response = await fetch(
           `${mtxBasePath}/metadata/edmx/${tenant}?name=${service}&language=${locale}&odataVersion=v2`,
           {
+            agent: httpAgent,
             method: "GET",
             headers: propagateHeaders(req),
           },
@@ -3005,6 +3012,7 @@ function cov2ap(options = {}) {
           findElementByAnnotation(context.definitionElements, "@Core.IsUrl");
         if (urlElement) {
           const mediaResponse = await fetch(target + parts.join("/"), {
+            agent: httpAgent,
             method: "GET",
             headers: propagateHeaders(req, {
               accept: "application/json",
@@ -3019,6 +3027,7 @@ function cov2ap(options = {}) {
             if (mediaReadLink) {
               try {
                 const mediaResponse = await fetch(mediaReadLink, {
+                  agent: httpAgent,
                   method: "GET",
                   headers: propagateHeaders(req),
                 });
@@ -3051,6 +3060,7 @@ function cov2ap(options = {}) {
                 findElementValueByAnnotation(context.definitionElements, "@Common.ContentDisposition.Type") ||
                 contentDisposition;
               const response = await fetch(target + [...parts, contentDispositionFilenameElement, "$value"].join("/"), {
+                agent: httpAgent,
                 method: "GET",
                 headers: propagateHeaders(req, {
                   accept: "application/json,*/*",
