@@ -63,6 +63,7 @@
     "express": "^4.21.2",
     "express-fileupload": "^1.5.1",
     "http-proxy-middleware": "^3.0.5",
+    "node-fetch": "^2.7.0",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
@@ -73,7 +74,7 @@
     "@cap-js/sqlite": "^2.0.1",
     "@eslint/js": "^9.29.0",
     "@sap/cds": "^9.0.4",
-    "@sap/cds-dk": "^9.0.5",
+    "@sap/cds-dk": "^9.0.6",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "compression": "^1.8.0",
@@ -82,7 +83,7 @@
     "eslint-plugin-jest": "^29.0.1",
     "eslint-plugin-n": "^17.20.0",
     "jest": "^30.0.2",
-    "prettier": "^3.5.3",
+    "prettier": "^3.6.0",
     "supertest": "^7.1.1",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.1"

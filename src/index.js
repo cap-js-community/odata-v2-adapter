@@ -9,6 +9,7 @@ const fs = require("fs");
 const fsPath = require("path");
 const URL = require("url");
 const { pipeline } = require("stream");
+const fetch = require("node-fetch");
 const express = require("express");
 const expressFileUpload = require("express-fileupload");
 const cds = require("@sap/cds");

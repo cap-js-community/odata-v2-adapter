@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Use `node-fetch` to support http(s) agent
 
 ## Version 1.15.1 - 2025-06-05
 
