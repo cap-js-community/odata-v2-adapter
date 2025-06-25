@@ -4297,7 +4297,7 @@ describe("main", () => {
     response = await util.callWrite(request, `/odata/v2/main/User_Pay?ID=guid'${id}'&cost=5454m`);
     expect(response.statusCode).toEqual(204);
     response = await util.callWrite(request, `/odata/v2/main/User_Pay?cost=5454m`);
-    expect(response.statusCode).toEqual(404);
+    expect(response.statusCode).toEqual(400);
   });
 
   it("Header 'odata-version' is removed", async () => {
