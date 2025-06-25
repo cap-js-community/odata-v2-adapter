@@ -862,20 +862,20 @@ describe("analytics", () => {
     response = await util.callWrite(request, `/odata/v2/analytics/Book_order?ID__=${ID__}&number=5`);
     expect(response.body).toMatchObject({
       error: {
-        code: "404",
+        code: "400",
         message: {
           lang: "en",
-          value: "Invalid resource path \"test.AnalyticsService.Book(author='Catweazle',genre_ID=undefined)\"",
+          value: "Invalid value: undefined",
         },
         severity: "error",
         target: "/#TRANSIENT#",
         innererror: {
           errordetails: [
             {
-              code: "404",
+              code: "400",
               message: {
                 lang: "en",
-                value: "Invalid resource path \"test.AnalyticsService.Book(author='Catweazle',genre_ID=undefined)\"",
+                value: "Invalid value: undefined",
               },
               severity: "error",
               target: "/#TRANSIENT#",
