@@ -158,6 +158,21 @@ cds.on("bootstrap", (app) => {
 });
 ```
 
+#### Dynamic HTTP Agent
+
+Using before middlewares a dynamic HTTP(s) agent can be registered via `req.agent` as follows:
+
+```js
+const cds = require("@sap/cds");
+
+cds.on("bootstrap", (app) => {
+  cds.cov2ap.before = (req, res, next) => {
+    req.agent = // ... assign http(s) agent
+    next();
+  };
+});
+```
+
 ### Custom Bootstrap
 
 - Deactivate bootstrap via CDS plugin:

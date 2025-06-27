@@ -14,7 +14,7 @@ const express = require("express");
 const expressFileUpload = require("express-fileupload");
 const cds = require("@sap/cds");
 const { promisify } = require("util");
-const { createProxyMiddleware } = require("http-proxy-middleware");
+const { HttpProxyMiddleware } = require("http-proxy-middleware/dist/http-proxy-middleware");
 const bodyParser = require("body-parser");
 require("body-parser-xml")(bodyParser);
 const xml2js = require("xml2js");
@@ -281,7 +281,7 @@ function cov2ap(options = {}) {
   const cacheMetadata = optionWithFallback("cacheMetadata", "memory");
   const registerOnListening = optionWithFallback("registerOnListening", true);
   const excludeNonSelectedKeys = optionWithFallback("excludeNonSelectedKeys", false);
-  const httpAgent = optionWithFallback("httpAgent", null);
+  const httpAgent = optionWithFallback("httpAgent", undefined);
 
   if (cds.env.protocols) {
     cds.env.protocols["odata-v2"] = {
@@ -455,7 +455,7 @@ function cov2ap(options = {}) {
 
       const result = await Promise.all([
         fetch(serviceUrl, {
-          agent: httpAgent,
+          agent: req.agent || httpAgent,
           method: "GET",
           headers: {
             ...propagateHeaders(req),
@@ -656,7 +656,7 @@ function cov2ap(options = {}) {
         const postBody = JSON.stringify(body);
         postHeaders["content-length"] = postBody.length;
         const response = await fetch(postUrl, {
-          agent: httpAgent,
+          agent: req.agent || httpAgent,
           method: "POST",
           headers: postHeaders,
           body: postBody,
@@ -749,7 +749,14 @@ function cov2ap(options = {}) {
   }
 
   function bindRoutes() {
-    const routeMiddleware = createProxyMiddleware({
+    router.use(`/${path}`, routeBeforeRequest);
+    router.use(`/${path}`, routeInitRequest);
+    router.get(`/${path}/*\\$metadata`, routeGetMetadata);
+    router.use(`/${path}`, routeBodyParser, routeSetContext, routeFileUpload, createHttpProxyMiddleware());
+  }
+
+  function createHttpProxyMiddleware() {
+    const routeMiddleware = new HttpProxyMiddleware({
       agent: httpAgent,
       target: `${target}${rewritePath}`,
       changeOrigin: true,
@@ -761,10 +768,13 @@ function cov2ap(options = {}) {
       },
       logger: cds.log("cov2ap/hpm"),
     });
-    router.use(`/${path}`, routeBeforeRequest);
-    router.use(`/${path}`, routeInitRequest);
-    router.get(`/${path}/*\\$metadata`, routeGetMetadata);
-    router.use(`/${path}`, routeBodyParser, routeSetContext, routeFileUpload, routeMiddleware);
+    const basePrepareProxyRequest = routeMiddleware.prepareProxyRequest;
+    routeMiddleware.prepareProxyRequest = async function (req) {
+      const newProxyOptions = await basePrepareProxyRequest(req);
+      newProxyOptions.agent ??= req.agent || httpAgent;
+      return newProxyOptions;
+    };
+    return routeMiddleware.middleware;
   }
 
   if (registerOnListening) {
@@ -1012,7 +1022,7 @@ function cov2ap(options = {}) {
       req.tenant,
       async (tenant) => {
         const response = await fetch(`${mtxBasePath}/metadata/csn/${tenant}`, {
-          agent: httpAgent,
+          agent: req.agent || httpAgent,
           method: "GET",
           headers: propagateHeaders(req),
         });
@@ -1025,7 +1035,7 @@ function cov2ap(options = {}) {
         const response = await fetch(
           `${mtxBasePath}/metadata/edmx/${tenant}?name=${service}&language=${locale}&odataVersion=v2`,
           {
-            agent: httpAgent,
+            agent: req.agent || httpAgent,
             method: "GET",
             headers: propagateHeaders(req),
           },
@@ -3013,7 +3023,7 @@ function cov2ap(options = {}) {
           findElementByAnnotation(context.definitionElements, "@Core.IsUrl");
         if (urlElement) {
           const mediaResponse = await fetch(target + parts.join("/"), {
-            agent: httpAgent,
+            agent: req.agent || httpAgent,
             method: "GET",
             headers: propagateHeaders(req, {
               accept: "application/json",
@@ -3028,7 +3038,7 @@ function cov2ap(options = {}) {
             if (mediaReadLink) {
               try {
                 const mediaResponse = await fetch(mediaReadLink, {
-                  agent: httpAgent,
+                  agent: req.agent || httpAgent,
                   method: "GET",
                   headers: propagateHeaders(req),
                 });
@@ -3061,7 +3071,7 @@ function cov2ap(options = {}) {
                 findElementValueByAnnotation(context.definitionElements, "@Common.ContentDisposition.Type") ||
                 contentDisposition;
               const response = await fetch(target + [...parts, contentDispositionFilenameElement, "$value"].join("/"), {
-                agent: httpAgent,
+                agent: req.agent || httpAgent,
                 method: "GET",
                 headers: propagateHeaders(req, {
                   accept: "application/json,*/*",
