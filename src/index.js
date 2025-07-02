@@ -2059,7 +2059,9 @@ function cov2ap(options = {}) {
           const type = elementType(element, req);
           if (!(type === "cds.Composition" || type === "cds.Association")) {
             const value = queryOptions[name];
-            result.push(`${name}=${quoteParameter(element, encodeURIComponent(value), req)}`);
+            if (value !== undefined) {
+              result.push(`${name}=${quoteParameter(element, encodeURIComponent(value), req)}`);
+            }
             delete url.query[name];
           }
           return result;

@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Query parameter value `undefined` is not passed on
 
 ## Version 1.15.2 - 2025-07-01
 

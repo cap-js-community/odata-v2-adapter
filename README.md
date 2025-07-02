@@ -167,7 +167,7 @@ const cds = require("@sap/cds");
 
 cds.on("bootstrap", (app) => {
   cds.cov2ap.before = (req, res, next) => {
-    req.agent = new http.Agent({});
+    req.agent = new https.Agent({});
     next();
   };
 });

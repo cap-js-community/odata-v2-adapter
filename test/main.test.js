@@ -4297,7 +4297,31 @@ describe("main", () => {
     response = await util.callWrite(request, `/odata/v2/main/User_Pay?ID=guid'${id}'&cost=5454m`);
     expect(response.statusCode).toEqual(204);
     response = await util.callWrite(request, `/odata/v2/main/User_Pay?cost=5454m`);
-    expect(response.statusCode).toEqual(404);
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toMatchObject({
+      error: {
+        message: {
+          lang: "en",
+          value: 'Key "ID" is missing for entity "test.MainService.User"',
+        },
+        code: "400",
+        severity: "error",
+        target: "/#TRANSIENT#",
+        innererror: {
+          errordetails: [
+            {
+              message: {
+                lang: "en",
+                value: 'Key "ID" is missing for entity "test.MainService.User"',
+              },
+              code: "400",
+              severity: "error",
+              target: "/#TRANSIENT#",
+            },
+          ],
+        },
+      },
+    });
   });
 
   it("Header 'odata-version' is removed", async () => {
