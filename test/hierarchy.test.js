@@ -36,7 +36,7 @@ describe("hierarchy", () => {
             drillState: "expanded",
             hierarchyLevel: 0,
             nodeID: 1,
-            parentNodeID: "null",
+            parentNodeID: null,
           },
           {
             __metadata: {
@@ -47,7 +47,7 @@ describe("hierarchy", () => {
             drillState: "expanded",
             hierarchyLevel: 0,
             nodeID: 2,
-            parentNodeID: "null",
+            parentNodeID: null,
           },
           {
             __metadata: {
@@ -58,7 +58,7 @@ describe("hierarchy", () => {
             drillState: "expanded",
             hierarchyLevel: 0,
             nodeID: 3,
-            parentNodeID: "null",
+            parentNodeID: null,
           },
         ],
       },
@@ -122,7 +122,7 @@ describe("hierarchy", () => {
             drillState: "expanded",
             hierarchyLevel: 0,
             nodeID: 1,
-            parentNodeID: "null",
+            parentNodeID: null,
           },
         ],
       },
