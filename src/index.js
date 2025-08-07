@@ -665,7 +665,7 @@ function cov2ap(options = {}) {
         const responseHeaders = convertToNodeHeaders(response.headers);
         if (!response.ok) {
           try {
-            await pipeline(req, fs.createWriteStream("/dev/null"));
+            await pipeline(req, fs.createWriteStream(os.devNull));
           } catch (error) {
             logError(req, "MediaStream", error);
           }
