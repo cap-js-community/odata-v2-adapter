@@ -8,7 +8,7 @@ const os = require("os");
 const fs = require("fs");
 const fsPath = require("path");
 const URL = require("url");
-const { pipeline } = require("stream");
+const { pipeline } = require("stream/promises");
 const fetch = require("node-fetch");
 const express = require("express");
 const expressFileUpload = require("express-fileupload");
@@ -664,6 +664,11 @@ function cov2ap(options = {}) {
         const responseBody = await response.json();
         const responseHeaders = convertToNodeHeaders(response.headers);
         if (!response.ok) {
+          try {
+            await pipeline(req, fs.createWriteStream("/dev/null"));
+          } catch (error) {
+            logError(req, "MediaStream", error);
+          }
           res
             .status(response.status)
             .set({
@@ -3099,10 +3104,8 @@ function cov2ap(options = {}) {
     Object.entries(headers).forEach(([name, value]) => {
       res.setHeader(name, value);
     });
-    pipeline(streamRes, res, (err) => {
-      if (err) {
-        logWarn(req, "StreamResponse", err);
-      }
+    pipeline(streamRes, res).catch((err) => {
+      logWarn(req, "StreamResponse", err);
     });
 
     // Trace
@@ -4252,10 +4255,8 @@ function cov2ap(options = {}) {
       res.status(statusCode);
       if (body && statusCode !== 204) {
         if (body.pipe) {
-          pipeline(body, res, (err) => {
-            if (err) {
-              logWarn(req, "MetadataStream", err);
-            }
+          pipeline(body, res).catch((err) => {
+            logWarn(req, "MetadataStream", err);
           });
         } else {
           res.write(body);
