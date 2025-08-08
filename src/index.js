@@ -613,6 +613,14 @@ function cov2ap(options = {}) {
       return next();
     }
 
+    async function consumeStreamToDevNull(req) {
+      try {
+        await pipeline(req, fs.createWriteStream(os.devNull));
+      } catch (error) {
+        logError(req, "MediaStream", error);
+      }
+    }
+
     const handleMediaEntity = async (contentType, filename, headers = {}) => {
       try {
         contentType = contentType || "application/octet-stream";
@@ -664,11 +672,7 @@ function cov2ap(options = {}) {
         const responseBody = await response.json();
         const responseHeaders = convertToNodeHeaders(response.headers);
         if (!response.ok) {
-          try {
-            await pipeline(req, fs.createWriteStream(os.devNull));
-          } catch (error) {
-            logError(req, "MediaStream", error);
-          }
+          await consumeStreamToDevNull(req);
           res
             .status(response.status)
             .set({
@@ -694,6 +698,7 @@ function cov2ap(options = {}) {
 
         next();
       } catch (err) {
+        await consumeStreamToDevNull(req);
         // Error
         logError(req, "FileUpload", err);
         res.status(500).send("Internal Server Error");
