@@ -197,6 +197,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} [options.registerOnListening] Routes are registered on CDS `listening` event instead of registering routes immediately. Default is true.
  * @param {boolean} [options.excludeNonSelectedKeys] Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is 'false'.
  * @param {Object} [options.httpAgent] Object to be passed to http(s).request (see Node's https agent and http agent objects). Default is 'null'.
+ * @param {boolean} [options.jsonDateOffset] JSON date serialization includes timezone offset. Default is 'true'.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
@@ -262,7 +263,10 @@ function cov2ap(options = {}) {
   const isoDateTime = optionWithFallback("isoDateTime", false);
   const isoTimestamp = optionWithFallback("isoTimestamp", false);
   const isoDateTimeOffset = optionWithFallback("isoDateTimeOffset", false);
-  const bodyParserLimit = optionWithFallback("bodyParserLimit", cds.env.server?.body_parser?.limit ?? "100mb");
+  const bodyParserLimit = optionWithFallback(
+    "bodyParserLimit",
+    (cds.env.server && cds.env.server.body_parser && cds.env.server.body_parser.limit) ?? "100mb",
+  );
   const returnCollectionNested = optionWithFallback("returnCollectionNested", true);
   const returnComplexNested = optionWithFallback("returnComplexNested", true);
   const returnPrimitiveNested = optionWithFallback("returnPrimitiveNested", true);
@@ -282,6 +286,7 @@ function cov2ap(options = {}) {
   const registerOnListening = optionWithFallback("registerOnListening", true);
   const excludeNonSelectedKeys = optionWithFallback("excludeNonSelectedKeys", false);
   const httpAgent = optionWithFallback("httpAgent", undefined);
+  const jsonDateOffset = optionWithFallback("jsonDateOffset", true);
 
   if (cds.env.protocols) {
     cds.env.protocols["odata-v2"] = {
@@ -3170,6 +3175,10 @@ function cov2ap(options = {}) {
   }
 
   function convertMessages(body, headers, definition, req) {
+    if (!headers["sap-messages"] && body && body.DraftMessages && body.DraftMessages.length > 0) {
+      headers["sap-messages"] = JSON.stringify(body.DraftMessages);
+      delete body.DraftMessages;
+    }
     if (headers["sap-messages"]) {
       let messages = JSON.parse(headers["sap-messages"]);
       if (messages && messages.length > 0) {
@@ -3968,7 +3977,8 @@ function cov2ap(options = {}) {
       !definition["@cov2ap.isoDateTimeOffset"] &&
       ["cds.DateTime"].includes(type)
     ) {
-      value = value === "" || value === "Z" ? "" : `/Date(${new Date(value).getTime()}+0000)/`; // always UTC
+      value =
+        value === "" || value === "Z" ? "" : `/Date(${new Date(value).getTime()}${jsonDateOffset ? "+0000" : ""})/`; // always UTC
     } else if (
       !isoTimestamp &&
       !definition["@cov2ap.isoTimestamp"] &&
@@ -3976,7 +3986,8 @@ function cov2ap(options = {}) {
       !definition["@cov2ap.isoDateTimeOffset"] &&
       ["cds.Timestamp"].includes(type)
     ) {
-      value = value === "" || value === "Z" ? "" : `/Date(${new Date(value).getTime()}+0000)/`; // always UTC
+      value =
+        value === "" || value === "Z" ? "" : `/Date(${new Date(value).getTime()}${jsonDateOffset ? "+0000" : ""})/`; // always UTC
     }
     return value;
   }
@@ -4797,7 +4808,7 @@ function cov2ap(options = {}) {
     let locale;
     try {
       // CDS 9
-      locale = cds.i18n.locale?.header?.(req);
+      locale = cds.i18n.locale && cds.i18n.locale.header && cds.i18n.locale.header(req);
       // CDS <= 8
       if (!locale) {
         // eslint-disable-next-line n/no-missing-require
@@ -4818,7 +4829,7 @@ function cov2ap(options = {}) {
     if (locale && locale.length >= 2) {
       locale = locale.substring(0, 2).toLowerCase() + locale.slice(2);
     }
-    return locale || cds.env.i18n?.default_language || "en";
+    return locale || (cds.env.i18n && cds.env.i18n.default_language) || "en";
   }
 
   const isObject = (object) => {

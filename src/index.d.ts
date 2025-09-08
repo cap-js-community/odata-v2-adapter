@@ -195,4 +195,9 @@ type Options = {
    * Object to be passed to http(s) request (see Node's https agent and http agent objects). Default is 'null'.
    */
   httpAgent?: object | null;
+
+  /**
+   * JSON date serialization includes timezone offset. Default is `true`.
+   */
+  jsonDateOffset?: boolean | true;
 };

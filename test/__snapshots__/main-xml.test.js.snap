@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`main-xml GET batch request 1`] = `"<?xml version="1.0" encoding="utf-8" standalone="yes"?><feed xml:base="odata/v2/main/" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom"><m:count>1</m:count><title type="text">Header</title><id>odata/v2/main/Header</id><updated/><link rel="self" title="Header" href="odata/v2/main/Header" /><entry><id>odata/v2/main/Header(guid'e0582b6a-6d93-46d9-bd28-98723a285d40')</id><title type="text"></title><updated/><author><name /></author><link rel="edit" title="Header" href="odata/v2/main/Header(guid'e0582b6a-6d93-46d9-bd28-98723a285d40')" /><category term="test.MainService.Header" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" /><content type="application/xml"><m:properties><d:stock m:type="Edm.Int32">11</d:stock><d:name m:type="Edm.String">Header</d:name><d:ID m:type="Edm.Guid">e0582b6a-6d93-46d9-bd28-98723a285d40</d:ID></m:properties></content></entry></feed>"`;
 

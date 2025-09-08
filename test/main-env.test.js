@@ -8,6 +8,7 @@ const util = require("./_env/util/request");
 cds.test(__dirname + "/_env");
 
 cds.env.cov2ap.excludeNonSelectedKeys = true;
+cds.env.cov2ap.jsonDateOffset = false;
 
 let request;
 
@@ -48,5 +49,16 @@ describe("main-env", () => {
     expect(response.body.d.__metadata.uri.includes(`Header(guid'${ID}')`)).toBe(true);
     expect(response.body.d.Items.results[0].ID).not.toBeDefined();
     expect(response.body.d.Items.results[0].__metadata.uri.includes(`HeaderItem(guid'${itemID}')`)).toBe(true);
+  });
+
+  it("Suppress JSON date offset", async () => {
+    const response = await util.callRead(
+      request,
+      `/odata/v2/main/HeaderStructure(guid'46a0b287-eae5-46f7-80a8-f3eb2f9bb328')`,
+    );
+    expect(response.body.d).toMatchObject({
+      step_startDate: "/Date(1681819200000)/",
+      step_endDate: "/Date(1681819200000)/",
+    });
   });
 });

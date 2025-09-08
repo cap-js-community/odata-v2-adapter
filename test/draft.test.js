@@ -9,6 +9,9 @@ const util = require("./_env/util/request");
 
 cds.test(__dirname + "/_env");
 
+// OData V2 does not support draft messages
+cds.env.fiori.draft_messages = false;
+
 let request;
 
 describe("draft", () => {
@@ -1036,7 +1039,7 @@ describe("draft", () => {
     });
   });
 
-  it("Tests transientOnly", async () => {
+  it("Tests draft messages - update", async () => {
     let response = await util.callWrite(request, "/odata/v2/draft/Header", {
       name: "Test Create",
     });
@@ -1069,7 +1072,61 @@ describe("draft", () => {
           code: "WARN01",
           message: "An Warning occurred 1",
           severity: "warning",
-          target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+          target: "/Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
+        },
+        {
+          code: "WARN02",
+          message: "An Warning occurred 2",
+          severity: "warning",
+          target: "/#TRANSIENT#",
+        },
+        {
+          code: "WARN03",
+          message: "An Warning occurred 3",
+          severity: "warning",
+          target: "/#TRANSIENT#/Header",
+        },
+      ],
+      message: "All good!",
+      severity: "success",
+      target: "name",
+    });
+  });
+
+  it("Tests draft messages - transientOnly", async () => {
+    let response = await util.callWrite(request, "/odata/v2/draft/Header", {
+      name: "Test Create",
+    });
+    expect(response.statusCode).toEqual(201);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    const id = response.body.d.ID;
+    let etag = response.body.d.__metadata.etag;
+
+    response = await util.callWrite(
+      request,
+      `/odata/v2/draft/Header(ID=guid'${id}',IsActiveEntity=false)`,
+      {
+        name: "Test Create - Update 1",
+      },
+      true,
+      {
+        "If-Match": etag,
+      },
+    );
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toBeDefined();
+    expect(response.body.d).toBeDefined();
+    etag = response.body.d.__metadata.etag;
+
+    expect(JSON.parse(response.headers["sap-message"])).toEqual({
+      code: "INFO",
+      details: [
+        {
+          code: "WARN01",
+          message: "An Warning occurred 1",
+          severity: "warning",
+          target: "/Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
         },
         {
           code: "WARN02",
@@ -1146,7 +1203,7 @@ describe("draft", () => {
     });
   });
 
-  it("Tests transientOnly (batch)", async () => {
+  it("Tests draft messages - transientOnly (batch)", async () => {
     let response = await util.callWrite(request, "/odata/v2/draft/Header", {
       name: "Test Create",
     });

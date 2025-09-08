@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Consume file upload stream in error case
+- Option `jsonDateOffset: false` to suppress timezone offset in JSON date serialization
+- Draft messages are not (yet) supported for OData V2 
 
 ## Version 1.15.3 - 2025-08-04
 

@@ -87,6 +87,7 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **registerOnListening**: Routes are registered on CDS `listening` event instead of registering routes immediately. Default is `true`.
 - **excludeNonSelectedKeys**: Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is `false`.
 - **httpAgent**: Object to be passed to http(s) request (see Node's https agent and http agent objects). Default is `null`.
+- **jsonDateOffset**: JSON date serialization includes timezone offset. Default is `true`.
 
 ### CDS Env
 

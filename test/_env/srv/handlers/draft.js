@@ -39,7 +39,7 @@ module.exports = (srv) => {
   srv.after("UPDATE", Header.drafts, (data, req) => {
     const info1 = new Error("This is a Warning 1");
     info1.code = "WARN01";
-    info1.target = "Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name";
+    info1.target = "/Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name";
     info1.message = "An Warning occurred 1";
     info1.numericSeverity = 3;
     req.info(info1);
