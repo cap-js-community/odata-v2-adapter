@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Consume file upload stream in error case
 - Option `jsonDateOffset: false` to suppress timezone offset in JSON date serialization
-- Draft messages are not (yet) supported for OData V2 
+- Draft messages are not (yet) supported for OData V2
+- Projects using CDS OData V2 Adapter need to set `cds.fiori.draft_messages: false`
 
 ## Version 1.15.3 - 2025-08-04
 
