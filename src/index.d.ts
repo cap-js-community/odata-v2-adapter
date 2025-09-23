@@ -47,12 +47,12 @@ type Options = {
   services?: [string, string] | object;
 
   /**
-   * CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is false.
+   * CDS model is retrieved remotely via MTX endpoint for a multitenant scenario (classic MTX only). Default is false.
    */
   mtxRemote?: boolean | false;
 
   /**
-   * Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (classic MTX only). Default is '/mtx/v1'.
+   * Endpoint to retrieve MTX metadata when the option 'mtxRemote' is active (classic MTX only). Default is '/mtx/v1'.
    */
   mtxEndpoint?: string | "/mtx/v1";
 
@@ -102,37 +102,37 @@ type Options = {
   bodyParserLimit?: string;
 
   /**
-   * Collection of entity type is returned nested into a results section. Default is true.
+   * Collection of entity types is returned nested into a results section. Default is true.
    */
   returnCollectionNested?: boolean | true;
 
   /**
-   * Function import return structure of complex type (non collection) is nested using function import name. Default is true.
+   * Function import return structure of complex type (non collection) is nested using the function import name. Default is true.
    */
   returnComplexNested?: boolean | true;
 
   /**
-   * Function import return structure of primitive type (non collection) is nested using function import name. Default is true.
+   * Function import return structure of primitive type (non collection) is nested using the function import name. Default is true.
    */
   returnPrimitiveNested?: boolean | true;
 
   /**
-   * Function import return value of primitive type is rendered as plain JSON value. Default is true.
+   * Function import return value of a primitive type is rendered as a plain JSON value. Default is true.
    */
   returnPrimitivePlain?: boolean | true;
 
   /**
-   * Specifies the message target default, if target is undefined. Default is '/#TRANSIENT#'.
+   * Specifies the message target default, if the target is undefined. Default is '/#TRANSIENT#'.
    */
   messageTargetDefault?: string | "/#TRANSIENT#";
 
   /**
-   * Transforms search functions i.e. substringof, startswith, endswith to case-insensitive variant. Default is false.
+   * Transforms search functions i.e., substringof, startswith, endswith to case-insensitive variant. Default is false.
    */
   caseInsensitive?: boolean | false;
 
   /**
-   * Propagates root error or message always to details section. Default is false.
+   * Propagates root error or message always to a details section. Default is false.
    */
   propagateMessageToDetails?: boolean | false;
 
@@ -147,7 +147,7 @@ type Options = {
   calcContentDisposition?: boolean | false;
 
   /**
-   * Specifies if search expression is quoted automatically. Default is true.
+   * Specifies if a search expression is quoted automatically. Default is true.
    */
   quoteSearch?: boolean | true;
 
@@ -177,7 +177,7 @@ type Options = {
   cacheDefinitions?: boolean | true;
 
   /**
-   * Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is 'memory'.
+   * Specifies the caching and provisioning strategy of metadata (e.g., edmx) (memory, disk, stream). Default is 'memory'.
    */
   cacheMetadata?: string | "memory" | "disk" | "stream";
 

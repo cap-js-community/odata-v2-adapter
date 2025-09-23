@@ -167,8 +167,8 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} [options.target] Target which points to OData V4 backend host:port. Use 'auto' to infer the target from server url after listening. Default is e.g. 'auto'.
  * @param {string} [options.targetPath] Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS < 7 or `middlewares` deactivated.
  * @param {object} [options.services] Service mapping object from url path name to service name. Default is {}.
- * @param {boolean} [options.mtxRemote] CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is false.
- * @param {string} [options.mtxEndpoint] Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (classic MTX only). Default is '/mtx/v1'.
+ * @param {boolean} [options.mtxRemote] CDS model is retrieved remotely via MTX endpoint for a multitenant scenario (classic MTX only). Default is false.
+ * @param {string} [options.mtxEndpoint] Endpoint to retrieve MTX metadata when the option 'mtxRemote' is active (classic MTX only). Default is '/mtx/v1'.
  * @param {boolean} [options.ieee754Compatible] Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is true.
  * @param {number} [options.fileUploadSizeLimit] File upload file size limit (in bytes) for multipart/form-data requests. Default is 10485760 (10 MB).
  * @param {boolean} [options.continueOnError] Indicates to OData V4 backend to continue on error. Default is false.
@@ -178,22 +178,22 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} [options.isoTimestamp] Use ISO 8601 format for type cds.Timestamp (Edm.DateTimeOffset). Default is false.
  * @param {boolean} [options.isoDateTimeOffset] Use ISO 8601 format for type Edm.DateTimeOffset (cds.DateTime, cds.Timestamp). Default is false.
  * @param {string} [options.bodyParserLimit] Request and response body parser size limit. Default is cds.server.body_parser.limit or '100mb'.
- * @param {boolean} [options.returnCollectionNested] Collection of entity type is returned nested into a results section. Default is true.
- * @param {boolean} [options.returnComplexNested] Function import return structure of complex type (non collection) is nested using function import name. Default is true.
- * @param {boolean} [options.returnPrimitiveNested] Function import return structure of primitive type (non collection) is nested using function import name. Default is true.
- * @param {boolean} [options.returnPrimitivePlain] Function import return value of primitive type is rendered as plain JSON value. Default is true.
- * @param {string} [options.messageTargetDefault] Specifies the message target default, if target is undefined. Default is '/#TRANSIENT#'.
- * @param {boolean} [options.caseInsensitive] Transforms search functions i.e. substringof, startswith, endswith to case-insensitive variant. Default is false.
- * @param {boolean} [options.propagateMessageToDetails] Propagates root error or message always to details section. Default is false.
+ * @param {boolean} [options.returnCollectionNested] Collection of entity types is returned nested into a results section. Default is true.
+ * @param {boolean} [options.returnComplexNested] Function import return structure of complex type (non collection) is nested using the function import name. Default is true.
+ * @param {boolean} [options.returnPrimitiveNested] Function import return structure of primitive type (non collection) is nested using the function import name. Default is true.
+ * @param {boolean} [options.returnPrimitivePlain] Function import return value of a primitive type is rendered as a plain JSON value. Default is true.
+ * @param {string} [options.messageTargetDefault] Specifies the message target default, if the target is undefined. Default is '/#TRANSIENT#'.
+ * @param {boolean} [options.caseInsensitive] Transforms search functions i.e., substringof, startswith, endswith to case-insensitive variant. Default is false.
+ * @param {boolean} [options.propagateMessageToDetails] Propagates root error or message always to a details section. Default is false.
  * @param {boolean} [options.contentDisposition] Default content disposition for media streams (inline, attachment), if not available or calculated. Default is 'attachment'.
  * @param {boolean} [options.calcContentDisposition] Calculate content disposition for media streams even if already available. Default is false.
- * @param {boolean} [options.quoteSearch] Specifies if search expression is quoted automatically. Default is true.
+ * @param {boolean} [options.quoteSearch] Specifies if a search expression is quoted automatically. Default is true.
  * @param {boolean} [options.fixDraftRequests] Specifies if unsupported draft requests are converted to a working version. Default is false.
  * @param {string} [options.changesetDeviationLogLevel] Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is 'info'.
  * @param {string} [options.defaultFormat] Specifies the default entity response format (json, atom). Default is 'json'.
  * @param {boolean} [options.processForwardedHeaders] Specifies if 'x-forwarded' headers are processed. Default is true.
  * @param {boolean} [options.cacheDefinitions] Specifies if the definition elements are cached. Default is true.
- * @param {string} [options.cacheMetadata] Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is 'memory'.
+ * @param {string} [options.cacheMetadata] Specifies the caching and provisioning strategy of metadata (e.g., edmx) (memory, disk, stream). Default is 'memory'.
  * @param {string} [options.registerOnListening] Routes are registered on CDS `listening` event instead of registering routes immediately. Default is true.
  * @param {boolean} [options.excludeNonSelectedKeys] Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is 'false'.
  * @param {Object} [options.httpAgent] Object to be passed to http(s).request (see Node's https agent and http agent objects). Default is 'null'.

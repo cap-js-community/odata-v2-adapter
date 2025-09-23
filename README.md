@@ -9,7 +9,7 @@
 
 Exposes a full-fledged [OData V2](https://www.odata.org/documentation/odata-version-2-0/overview/) service,
 converting OData V2 requests to CDS [OData V4](https://www.odata.org/documentation/) service calls and responses back.
-Runs in context of the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
+Runs in the context of the [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
 using CDS Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds) or CDS Java modules
 [com.sap.cds](https://mvnrepository.com/artifact/com.sap.cds).
 
@@ -20,7 +20,7 @@ using CDS Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds) or C
 - [Documentation](#documentation)
   - [Singleton](#singleton)
   - [Before Middlewares](#before-middlewares)
-  - [Custom Server](#custom-server)
+  - [Custom Server](#custom-bootstrap)
   - [Logging](#logging)
   - [CDS Annotations](#cds-annotations)
   - [CDS Modeling Restrictions](#cds-modeling-restrictions)
@@ -48,8 +48,8 @@ using CDS Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds) or C
 
 The OData V2 adapter for CDS instantiates an Express router. The following options are available:
 
-- **plugin**: OData V2 adapter is instantiated as part of CDS plugin. Default is `true`.
-- **build**: In case of plugin scenario, a build step is registered to prepare the OData V2 metadata. Default is `true`.
+- **plugin**: OData V2 adapter is instantiated as part of the CDS plugin. Default is `true`.
+- **build**: In case of a plugin scenario, a build step is registered to prepare the OData V2 metadata. Default is `true`.
 - **base**: Base path under which the service is reachable. Default is `''`.
 - **path**: Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS < 7 or `middlewares` deactivated.
 - **model**: CDS service model (path(s) or CSN). Default is `'all'`.
@@ -57,8 +57,8 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **target**: Target which points to OData V4 backend host:port. Use `'auto'` to infer the target from server url after listening. Default is e.g. `'auto'`.
 - **targetPath**: Target path to which is redirected. Default is `'odata/v4'`. Default path is `''` for CDS < 7 or `middlewares` deactivated.
 - **services**: Service mapping object from url path name to service name. Default is `{}`.
-- **mtxRemote**: CDS model is retrieved remotely via MTX endpoint for multitenant scenario (classic MTX only). Default is `false`.
-- **mtxEndpoint**: Endpoint to retrieve MTX metadata when option 'mtxRemote' is active (classic MTX only). Default is `'/mtx/v1'`.
+- **mtxRemote**: CDS model is retrieved remotely via MTX endpoint for a multitenant scenario (classic MTX only). Default is `false`.
+- **mtxEndpoint**: Endpoint to retrieve MTX metadata when the option 'mtxRemote' is active (classic MTX only). Default is `'/mtx/v1'`.
 - **ieee754Compatible**: Edm.Decimal and Edm.Int64 are serialized IEEE754 compatible. Default is `true`.
 - **fileUploadSizeLimit**: File upload file size limit (in bytes) for multipart/form-data requests. Default is `10485760` (10 MB).
 - **continueOnError**: Indicates to OData V4 backend to continue on error. Default is `false`.
@@ -68,22 +68,22 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **isoTimestamp**: Use ISO 8601 format for type cds.Timestamp (Edm.DateTimeOffset). Default is `false`.
 - **isoDateTimeOffset**: Use ISO 8601 format for type Edm.DateTimeOffset (cds.DateTime, cds.Timestamp). Default is `false`.
 - **bodyParserLimit**: Request and response body parser size limit. Default is `cds.server.body_parser.limit` or `'100mb'`.
-- **returnCollectionNested**: Collection of entity type is returned nested into a results section. Default is `true`.
-- **returnComplexNested**: Function import return structure of complex type (non collection) is nested using function import name. Default is `true`.
-- **returnPrimitiveNested**: Function import return structure of primitive type (non collection) is nested using function import name. Default is `true`.
-- **returnPrimitivePlain**: Function import return value of primitive type is rendered as plain JSON value. Default is `true`.
-- **messageTargetDefault**: Specifies the message target default, if target is undefined. Default is `'/#TRANSIENT#'`.
-- **caseInsensitive**: Transforms search functions i.e. substringof, startswith, endswith to case-insensitive variant. Default is `false`.
-- **propagateMessageToDetails**: Propagates root error or message always to details section. Default is `false`.
+- **returnCollectionNested**: Collection of entity types is returned nested into a results section. Default is `true`.
+- **returnComplexNested**: Function import return structure of complex type (non collection) is nested using the function import name. Default is `true`.
+- **returnPrimitiveNested**: Function import return structure of primitive type (non collection) is nested using the function import name. Default is `true`.
+- **returnPrimitivePlain**: Function import return value of a primitive type is rendered as a plain JSON value. Default is `true`.
+- **messageTargetDefault**: Specifies the message target default, if the target is undefined. Default is `'/#TRANSIENT#'`.
+- **caseInsensitive**: Transforms search functions i.e., substringof, startswith, endswith to case-insensitive variant. Default is `false`.
+- **propagateMessageToDetails**: Propagates root error or message always to a details section. Default is `false`.
 - **contentDisposition**: Default content disposition for media streams (inline, attachment), if not available or calculated. Default is `'attachment'`.
 - **calcContentDisposition**: Calculate content disposition for media streams even if already available. Default is `false`.
-- **quoteSearch**: Specifies if search expression is quoted automatically. Default is `true`.
+- **quoteSearch**: Specifies if a search expression is quoted automatically. Default is `true`.
 - **fixDraftRequests**: Specifies if unsupported draft requests are converted to a working version. Default is `false`.
 - **changesetDeviationLogLevel**: Log level of batch changeset content-id deviation logs (none, debug, info, warn, error). Default is `'info'`.
 - **defaultFormat**: Specifies the default entity response format (json, atom). Default is `'json'`.
 - **processForwardedHeaders**: Specifies if `x-forwarded` headers are processed. Default is `true`.
 - **cacheDefinitions**: Specifies if the definition elements are cached. Default is `true`.
-- **cacheMetadata**: Specifies the caching and provisioning strategy of metadata (e.g. edmx) (memory, disk, stream). Default is `'memory'`.
+- **cacheMetadata**: Specifies the caching and provisioning strategy of metadata (e.g., edmx) (memory, disk, stream). Default is `'memory'`.
 - **registerOnListening**: Routes are registered on CDS `listening` event instead of registering routes immediately. Default is `true`.
 - **excludeNonSelectedKeys**: Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is `false`.
 - **httpAgent**: Object to be passed to http(s) request (see Node's https agent and http agent objects). Default is `null`.
@@ -94,7 +94,7 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 All OData V2 adapter for CDS options can be specified as part of CDS project-specific configuration
 under section `cds.cov2ap` and accessed during runtime via `cds.env.cov2ap`.
 
-Options can also be passed as command line environment variable, by converting the camel-cased option name to snake-case.
+Options can also be passed as command line environment variable, by converting the camel-cased option name to a snake-case.
 Underscores (`_`) need then to be escaped as double underscore (`__`) when provided via command line environment variable.
 
 **Examples:**
@@ -106,14 +106,14 @@ Underscores (`_`) need then to be escaped as double underscore (`__`) when provi
 
 ### Singleton
 
-CDS OData V2 adapter is instantiated via CDS plugin as singleton, which is exposed at:
+CDS OData V2 adapter is instantiated via the CDS plugin as a singleton, which is exposed at:
 
 ```js
 const cds = require("@sap/cds");
 cds.cov2ap;
 ```
 
-The singleton can also be instantiated manually and accessed in custom server via:
+The singleton can also be instantiated manually and accessed in a custom server via:
 
 ```js
 const cov2ap = require("@cap-js-community/odata-v2-adapter");
@@ -125,7 +125,7 @@ cov2ap.singleton();
 ### Before Middlewares
 
 Before middleware routes can be registered on the OData V2 adapter for CDS singleton, to be executed before the main route processing.
-The before middleware routes can be registered as single function or as array of route functions.
+The before middleware routes can be registered as a single function or as an array of route functions.
 
 Single before route can be registered as follows:
 
@@ -161,7 +161,7 @@ cds.on("bootstrap", (app) => {
 
 #### Dynamic HTTP Agent
 
-Using before middlewares a dynamic HTTP(s) agent can be registered via `req.agent` as follows:
+Using before middlewares, a dynamic HTTP(s) agent can be registered via `req.agent` as follows:
 
 ```js
 const cds = require("@sap/cds");
@@ -190,7 +190,7 @@ cds.on("bootstrap", (app) => {
 
 ### Logging
 
-Logging is based on [cds.log](https://cap.cloud.sap/docs/node.js/cds-log), therefore CDS logging configurations apply.
+Logging is based on [cds.log](https://cap.cloud.sap/docs/node.js/cds-log), therefore, CDS logging configurations apply.
 
 #### Logging Modules
 
@@ -200,7 +200,7 @@ Logging is based on [cds.log](https://cap.cloud.sap/docs/node.js/cds-log), there
 
 #### Kibana Logging
 
-In order to enable Kibana friendly logging for `cds.log`
+To enable Kibana friendly logging for `cds.log`
 feature toggle `cds.features.kibana_formatter: true` needs to be set.
 
 #### Debug Mode
@@ -216,7 +216,7 @@ Debug log level can be activated
 - via command line environment variable: `CDS_LOG_LEVELS_COV2AP=debug`
 - via `cds.env` in code: `cds.env.log.levels.cov2ap = "debug"`
 
-Details on how to set CDS environment can be found at [cds.env](https://cap.cloud.sap/docs/node.js/cds-env).
+Details on how to set a CDS environment can be found at [cds.env](https://cap.cloud.sap/docs/node.js/cds-env).
 
 #### Log Levels
 
@@ -267,7 +267,7 @@ Logging can be configured to respect the following log levels:
 
 ### CDS Annotations
 
-The following OData V2 adapter for CDS specific annotations are supported:
+The following OData V2 adapter for CDS-specific annotations is supported:
 
 **Service Level**:
 
@@ -278,7 +278,7 @@ The following OData V2 adapter for CDS specific annotations are supported:
 **Entity Level**:
 
 - `@cov2ap.analytics: false`: Suppress analytics conversion for the annotated entity, if set to `false`.
-- `@cov2ap.analytics.skipForKey`: Suppress analytical conversion for the annotated entity, if all dimension key elements are requested
+- `@cov2ap.analytics.skipForKey`: Suppress analytical conversion for the annotated entity if all dimension key elements are requested
 - `@cov2ap.deltaResponse: 'timestamp'`: Delta response '\_\_delta' is added to response data of annotated entity with current timestamp information.
 - `@cov2ap.isoTime`: Values of type cds.Time (Edm.Time) are represented in ISO 8601 format for annotated entity.
 - `@cov2ap.isoDate`: Values of type cds.Date (Edm.DateTime) are represented in ISO 8601 format for annotated entity.
@@ -288,14 +288,14 @@ The following OData V2 adapter for CDS specific annotations are supported:
 
 **Entity Element Level**:
 
-- `@Core.ContentDisposition.Filename: <element>`: Specifies entity element, representing the filename during file upload/download.
+- `@Core.ContentDisposition.Filename: <element>`: Specifies an entity element, representing the filename during file upload/download.
 - `@Core.ContentDisposition.Type: '<value>'`: Controls the content disposition behavior in client/browser (`inline` or `attachment`).
-- `@cov2ap.headerDecode: [...]`: Array of sequential decoding procedures ('uri', 'uriComponent', 'base64') used for media entity upload header.
+- `@cov2ap.headerDecode: [...]`: Array of sequential decoding procedures ('uri,' 'uriComponent,' 'base64') used for media entity upload header.
 
 ### CDS Modeling Restrictions
 
 CDS project configuration `cds.odata.version` shall be set to `v4`, as OData V2 maps to OData V4.
-CDS supports modelling features that are not compatible with OData V2 standard:
+CDS supports modeling features that are not compatible with OData V2 standard:
 
 - **Singletons**: Usage of annotation `@odata.singleton` is not supported in combination with OData V2
 - **Structured Types**: Usage of `cds.odata.structs: true` is not supported in combination with OData V2
@@ -303,12 +303,12 @@ CDS supports modelling features that are not compatible with OData V2 standard:
 - **Arrayed Types**: Usages of `array of` or `many` in entity element definitions lead to CDS compilation error: `Element must not be an "array of" for OData V2`
 - **Managed Compositions**: The usage of managed composition (currently) produces Format Exception in Fiori Elements V2 for Date/Time data types
 
-To provide an OData V2 service based on the OData V2 adapter for CDS, those CDS modelling features must not be used.
-In general any CDS OData API flavor must not be used in combination with OData V2 adapter for CDS.
+To provide an OData V2 service based on the OData V2 adapter for CDS, those CDS modeling features must not be used.
+In general, any CDS OData API flavor must not be used in combination with OData V2 adapter for CDS.
 
-Per default, those modelling incompatibilities are reported as `Warning` and will not stop the compilation.
+Per default, those modeling incompatibilities are reported as `Warning` and will not stop the compilation.
 The resulting EDMX V2 may be invalid and not processable by an OData V2 client. To prevent this situation and fail
-early to detect modelling incompatibilities, the severity for respective codes can be increased to `Error`,
+early to detect modeling incompatibilities, the severity for respective codes can be increased to `Error`,
 by setting the following environment variables:
 
 ```json
@@ -334,7 +334,7 @@ To come around this situation, trigger a `cds build` during development time, th
 Point your Cloud Foundry deployment of the OData V2 adapter for CDS to the folder `gen/srv` (using manifest.json or MTA), so that
 the CDS models can be found via file `srv/csn.json`, during runtime execution on Cloud Foundry.
 
-Make sure, that all i18n property files reside next to the `csn.json` in a `i18n` or `_i18n` folder, to be detected by localization.
+Make sure that all i18n property files reside next to the `csn.json` in a `i18n` or `_i18n` folder, to be detected by localization.
 
 ### Multitenancy, Feature Toggles and Extensibility (MTX)
 
@@ -342,9 +342,9 @@ OData V2 adapter for CDS supports multitenant scenarios. Basic extensibility is 
 [CDS MTX](https://www.npmjs.com/package/@sap/cds-mtx) module. More advanced extensibility scenarios and feature toggles
 are supported in combination with the [CDS Streamlined MTX services](https://www.npmjs.com/package/@sap/cds-mtxs).
 
-In order to provide the feature toggle vector to be used to build-up the corresponding `CSN` and `EDMX` metadata documents,
-the Express request object `req` needs to enhanced by feature definitions.
-To add support for a specific feature toggles management you can add a simple Express middleware as follows, for example, in your `server.js`:
+To provide the feature toggle vector to be used to build up the corresponding `CSN` and `EDMX` metadata documents,
+the Express request object `req` needs to enhance by feature definitions.
+To add support for a specific feature toggles management, you can add simple Express middleware as follows, for example, in your `server.js`:
 
 ```js
 const cds = require("@sap/cds");
@@ -360,8 +360,8 @@ cds.on(
 
 ### Build Task
 
-CDS OData V2 adapter includes an CDS build task, that allows to prepare the OData V2 EDMX files for server and MTX sidecar app.
-The build task is only available when adapter is bootstrapped via CDS plugin mechanism (default).
+CDS OData V2 adapter includes an CDS build task that allows preparing the OData V2 EDMX files for server and MTX sidecar app.
+The build task is only available when the adapter is bootstrapped via the CDS plugin mechanism (default).
 It is then automatically active but can be deactivated using option `cds.cov2ap.build: false`.
 
 ### Unit-Tests
@@ -369,7 +369,7 @@ It is then automatically active but can be deactivated using option `cds.cov2ap.
 This repository comes with a suite of unit-tests covering the complete proxy implementation.
 The tests can be executed as follows:
 
-- SQLite based:
+- SQLite-based:
   - `npm run test:unit` ([source](test))
 - HANA based:
   - Place HANA credentials at `test-hana/_env/db/default-services.json` in format:
@@ -384,7 +384,7 @@ The tests can be executed as follows:
     ```
   - Deploy HANA (root dir): `npm run deploy:hana`
   - Run tests (root dir): `npm run test:hana` ([source](test-hana))
-- Postgres based:
+- Postgres-based:
   - Start Postgres on port `5432`
   - Assure default configuration is available (user, password, database) is set to `postgres`
   - Deploy HANA (root dir): `npm run deploy:postgres`
@@ -400,16 +400,16 @@ The OData V2 service provided by the OData V2 adapter for CDS can be used to ser
 
 SAP Fiori Elements V2 examples:
 
-- SQLite based:
+- SQLite-based:
   - **Analytics**: Analytical List Page app ([source](test/_env/app/analytics))
   - **Basic Edit**: Basic editing app ([source](test/_env/app/basic))
   - **Draft Edit**: Draft supported editing app ([source](test/_env/app/draft))
-  - **Hierarchy**: Hierarchical display of data in tree table ([source](test/_env/app/hierarchy))
+  - **Hierarchy**: Hierarchical display of data in a tree table ([source](test/_env/app/hierarchy))
   - **Overview**: Overview Page app ([source](test/_env/app/overview))
   - **XML**: Basic app (Atom format) ([source](test/_env/app/xml))
 - HANA based:
   - **Parameters**: Parameterized entity app ([source](test-hana/_env/app/parameters))
-- Postgres based:
+- Postgres-based:
   - **Basic Edit**: Basic editing app ([source](test-postgres/_env/app/basic))
 
 Examples can be tested as follows:
@@ -423,7 +423,7 @@ Examples can be tested as follows:
 ### Compression Support
 
 Response compressions can be enabled, by registering the `compression` Node.js
-module in Express app at bootstrap time, e.g. in `srv/server.js`:
+module in Express app at bootstrap time, e.g., in `srv/server.js`:
 
 ```js
 const cds = require("@sap/cds");
@@ -449,7 +449,7 @@ OData Batch (`$batch`) calls with content type `multipart/mixed`.
 #### Approuter Compression
 
 `@sap/approuter` now support out-of-the-box compression for OData $batch calls with `multipart/mixed`.
-It's disabled by default, but can be enabled using option [compressResponseMixedTypeContent](https://www.npmjs.com/package/@sap/approuter#compression-property).
+It's disabled by default but can be enabled using option [compressResponseMixedTypeContent](https://www.npmjs.com/package/@sap/approuter#compression-property).
 
 ## Custom Serving
 
@@ -523,7 +523,7 @@ const port = process.env.PORT || 4004;
 
 - Run `node srv/index` from the project root to start the server:
   - OData V2 service will be available at `http://localhost:4004/odata/v2/<odata-v4-service-path>`
-  - OData V4 service shall be available e.g. at `http://localhost:8080/<odata-v4-service-path>`
+  - OData V4 service shall be available e.g., at `http://localhost:8080/<odata-v4-service-path>`
 
 > `@sap/cds` is a mandatory dependency and needs to be available as module.
 
@@ -531,16 +531,16 @@ const port = process.env.PORT || 4004;
 
 - A deployed version of OData V2 adapter for CDS shall have option `target` set to the deployed OData V4 backend URL.
   This can be retrieved from the Cloud Foundry environment using `process.env`, for example,
-  from the `destinations` environment variable. Locally e.g. http://localhost:8080 can be used.
-- In option `services`, every OData V4 service URL path needs to mapped to
+  from the `destinations` environment variable. Locally, e.g., http://localhost:8080 can be used.
+- In option `services`, every OData V4 service URL path needs to map to
   the corresponding fully qualified CDS service name, e.g. `"/odata/v4/MainService/": "test.MainService"`,
-  to establish the back-link connection between OData URL and its CDS service.
-- Make sure, that your CDS models are also available in the project.
+  to establish the backlink connection between OData URL and its CDS service.
+- Make sure that your CDS models are also available in the project.
   Those reside either in `db`, `srv`, `add` folders, or a compiled (untransformed) `srv.json` is provided.
   This can be generated by using the following command: `cds srv -s all -o .`
-- Alternatively, a `cds build` can be triggered as described in section "Cloud Foundry Deployment".
+- Alternatively, a `cds build` can be triggered as described in section "Cloud Foundry Deployment."
 - If not detected automatically, the model path can be set with option `model` (especially if `csn.json`/`srv.json` option is used).
-- Make sure, that all i18n property files reside next to the `csn.json` in a `i18n` or `_i18n` folder, to be detected by localization.
+- Make sure that all i18n property files reside next to the `csn.json` in a `i18n` or `_i18n` folder, to be detected by localization.
 - In a multitenant scenario in combination with a standalone app, the CDS model can be retrieved remotely via MTX endpoint (`mtxEndpoint`) by setting option `mtxRemote: true`.
 - Option `mtxEndpoint` can be specified as absolute url (starting with `http://` or `https://`), to be able to address MTX Sidecar
   possibly available under a target different from OData v4 backend URL. If not specified absolutely, `target` is prepended to `mtxEndpoint`.
@@ -553,7 +553,7 @@ const port = process.env.PORT || 4004;
   - Metadata: `http://localhost:4004/odata/v2/main/$metadata`
   - Data: `http://localhost:4004/odata/v2/main/Header?$expand=Items`
 
-For more details see [CONTRIBUTION](CONTRIBUTING.md) guide.
+For more details see [the CONTRIBUTION](CONTRIBUTING.md) guide.
 
 ## Features
 
@@ -595,7 +595,7 @@ For more details see [CONTRIBUTION](CONTRIBUTING.md) guide.
 
 ## Support, Feedback, Contributing
 
-This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/cap-js-community/odata-v2-adapter/issues). Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
+This project is open to feature requests/suggestions, bug reports, etc. via [GitHub issues](https://github.com/cap-js-community/odata-v2-adapter/issues). Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
 
 ## Code of Conduct
 
