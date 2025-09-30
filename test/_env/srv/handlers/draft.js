@@ -18,7 +18,7 @@ module.exports = (srv) => {
     req.info(info2);
   });
 
-  srv.after("SAVE", Header.drafts, (data, req) => {
+  srv.after(["CREATE", "UPDATE"], Header.drafts, (data, req) => {
     const info = new Error("Success");
     info.code = "INFO";
     info.target = "name";
