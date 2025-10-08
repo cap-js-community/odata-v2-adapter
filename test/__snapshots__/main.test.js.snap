@@ -422,13 +422,13 @@ exports[`main GET $metadata 1`] = `
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="cost" Type="Edm.Decimal" Precision="10" Scale="2" Mode="In" Nullable="true"/>
         </FunctionImport>
-        <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
-        <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
-        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
         <EntitySet Name="HeaderItem_texts" EntityType="test.MainService.HeaderItem_texts"/>
+        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
+        <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
+        <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
         <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
         <FunctionImport Name="unboundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST">
@@ -894,30 +894,6 @@ exports[`main GET $metadata 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="cost" Type="Edm.Decimal" Precision="10" Scale="2"/>
       </EntityType>
-      <EntityType Name="context_Name_space_v2">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="name" Type="Edm.String"/>
-      </EntityType>
-      <EntityType Name="context_LocalizedEntity">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="name" Type="Edm.String"/>
-        <NavigationProperty Name="texts" Relationship="test.MainService.context_LocalizedEntity_texts_1" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
-        <NavigationProperty Name="localized" Relationship="test.MainService.context_LocalizedEntity_localized" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
-      </EntityType>
       <EntityType Name="Country_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -938,15 +914,6 @@ exports[`main GET $metadata 1`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
       </EntityType>
-      <EntityType Name="Header_texts">
-        <Key>
-          <PropertyRef Name="ID_texts"/>
-        </Key>
-        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
-        <Property Name="ID" Type="Edm.Guid"/>
-        <Property Name="description" Type="Edm.String"/>
-      </EntityType>
       <EntityType Name="HeaderItem_texts">
         <Key>
           <PropertyRef Name="ID_texts"/>
@@ -956,6 +923,26 @@ exports[`main GET $metadata 1`] = `
         <Property Name="ID" Type="Edm.Guid"/>
         <Property Name="description" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="Header_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_Name_space_v2">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="LocalizedEntity_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -964,6 +951,19 @@ exports[`main GET $metadata 1`] = `
         <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_LocalizedEntity">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.context_LocalizedEntity_texts_1" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.context_LocalizedEntity_localized" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
       </EntityType>
       <EntityType Name="context_LocalizedEntity_texts">
         <Key>
@@ -1683,6 +1683,44 @@ exports[`main GET $metadata 1`] = `
       <Annotations Target="test.MainService.User/cost" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.Computed" Bool="true"/>
       </Annotations>
+      <Annotations Target="test.MainService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Country/Region Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Currency Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
       <Annotations Target="test.MainService.context_Name_space_v2/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
@@ -1714,6 +1752,12 @@ exports[`main GET $metadata 1`] = `
         <Annotation Term="Core.Description" String="User's unique ID"/>
         <Annotation Term="Common.Label" String="Changed By"/>
       </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity_texts/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="test.MainService.context_LocalizedEntity/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
@@ -1744,50 +1788,6 @@ exports[`main GET $metadata 1`] = `
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="User's unique ID"/>
         <Annotation Term="Common.Label" String="Changed By"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Name"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Description"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Country/Region Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Name"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Description"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Currency Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.LocalizedEntity_texts/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.context_LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Language Code"/>
@@ -1968,13 +1968,13 @@ exports[`main GET $metadata localized 1`] = `
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="cost" Type="Edm.Decimal" Precision="10" Scale="2" Mode="In" Nullable="true"/>
         </FunctionImport>
-        <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
-        <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
-        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
         <EntitySet Name="HeaderItem_texts" EntityType="test.MainService.HeaderItem_texts"/>
+        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
+        <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
+        <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
         <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
         <FunctionImport Name="unboundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST">
@@ -2440,30 +2440,6 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="cost" Type="Edm.Decimal" Precision="10" Scale="2"/>
       </EntityType>
-      <EntityType Name="context_Name_space_v2">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="name" Type="Edm.String"/>
-      </EntityType>
-      <EntityType Name="context_LocalizedEntity">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="name" Type="Edm.String"/>
-        <NavigationProperty Name="texts" Relationship="test.MainService.context_LocalizedEntity_texts_1" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
-        <NavigationProperty Name="localized" Relationship="test.MainService.context_LocalizedEntity_localized" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
-      </EntityType>
       <EntityType Name="Country_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -2484,15 +2460,6 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
       </EntityType>
-      <EntityType Name="Header_texts">
-        <Key>
-          <PropertyRef Name="ID_texts"/>
-        </Key>
-        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
-        <Property Name="ID" Type="Edm.Guid"/>
-        <Property Name="description" Type="Edm.String"/>
-      </EntityType>
       <EntityType Name="HeaderItem_texts">
         <Key>
           <PropertyRef Name="ID_texts"/>
@@ -2502,6 +2469,26 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="ID" Type="Edm.Guid"/>
         <Property Name="description" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="Header_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_Name_space_v2">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="LocalizedEntity_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -2510,6 +2497,19 @@ exports[`main GET $metadata localized 1`] = `
         <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_LocalizedEntity">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.context_LocalizedEntity_texts_1" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.context_LocalizedEntity_localized" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
       </EntityType>
       <EntityType Name="context_LocalizedEntity_texts">
         <Key>
@@ -3229,6 +3229,44 @@ exports[`main GET $metadata localized 1`] = `
       <Annotations Target="test.MainService.User/cost" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.Computed" Bool="true"/>
       </Annotations>
+      <Annotations Target="test.MainService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Beschreibung"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Länder-/Regionscode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Beschreibung"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Währungscode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
       <Annotations Target="test.MainService.context_Name_space_v2/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
@@ -3260,6 +3298,12 @@ exports[`main GET $metadata localized 1`] = `
         <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
         <Annotation Term="Common.Label" String="Geändert von"/>
       </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity_texts/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="test.MainService.context_LocalizedEntity/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
@@ -3290,50 +3334,6 @@ exports[`main GET $metadata localized 1`] = `
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
         <Annotation Term="Common.Label" String="Geändert von"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Sprachencode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Name"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Beschreibung"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Länder-/Regionscode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Sprachencode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Name"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Beschreibung"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Währungscode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Sprachencode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Sprachencode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Sprachencode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.LocalizedEntity_texts/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.context_LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Sprachencode"/>
@@ -3514,13 +3514,13 @@ exports[`main GET $metadata localized 2`] = `
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="cost" Type="Edm.Decimal" Precision="10" Scale="2" Mode="In" Nullable="true"/>
         </FunctionImport>
-        <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
-        <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
-        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
         <EntitySet Name="HeaderItem_texts" EntityType="test.MainService.HeaderItem_texts"/>
+        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
+        <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
+        <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
         <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
         <FunctionImport Name="unboundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST">
@@ -3986,30 +3986,6 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="cost" Type="Edm.Decimal" Precision="10" Scale="2"/>
       </EntityType>
-      <EntityType Name="context_Name_space_v2">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="name" Type="Edm.String"/>
-      </EntityType>
-      <EntityType Name="context_LocalizedEntity">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="name" Type="Edm.String"/>
-        <NavigationProperty Name="texts" Relationship="test.MainService.context_LocalizedEntity_texts_1" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
-        <NavigationProperty Name="localized" Relationship="test.MainService.context_LocalizedEntity_localized" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
-      </EntityType>
       <EntityType Name="Country_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -4030,15 +4006,6 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
       </EntityType>
-      <EntityType Name="Header_texts">
-        <Key>
-          <PropertyRef Name="ID_texts"/>
-        </Key>
-        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
-        <Property Name="ID" Type="Edm.Guid"/>
-        <Property Name="description" Type="Edm.String"/>
-      </EntityType>
       <EntityType Name="HeaderItem_texts">
         <Key>
           <PropertyRef Name="ID_texts"/>
@@ -4048,6 +4015,26 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="ID" Type="Edm.Guid"/>
         <Property Name="description" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="Header_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_Name_space_v2">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="LocalizedEntity_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -4056,6 +4043,19 @@ exports[`main GET $metadata localized 2`] = `
         <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_LocalizedEntity">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.context_LocalizedEntity_texts_1" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.context_LocalizedEntity_localized" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
       </EntityType>
       <EntityType Name="context_LocalizedEntity_texts">
         <Key>
@@ -4775,6 +4775,44 @@ exports[`main GET $metadata localized 2`] = `
       <Annotations Target="test.MainService.User/cost" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.Computed" Bool="true"/>
       </Annotations>
+      <Annotations Target="test.MainService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Beschreibung"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Länder-/Regionscode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Beschreibung"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Währungscode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
       <Annotations Target="test.MainService.context_Name_space_v2/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
@@ -4806,6 +4844,12 @@ exports[`main GET $metadata localized 2`] = `
         <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
         <Annotation Term="Common.Label" String="Geändert von"/>
       </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sprachencode"/>
+      </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity_texts/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="test.MainService.context_LocalizedEntity/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
@@ -4836,50 +4880,6 @@ exports[`main GET $metadata localized 2`] = `
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
         <Annotation Term="Common.Label" String="Geändert von"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Sprachencode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Name"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Beschreibung"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Länder-/Regionscode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Sprachencode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Name"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Beschreibung"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Währungscode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Sprachencode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Sprachencode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Sprachencode"/>
-      </Annotations>
-      <Annotations Target="test.MainService.LocalizedEntity_texts/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.context_LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Sprachencode"/>
@@ -5060,13 +5060,13 @@ exports[`main GET $metadata with propagated headers 1`] = `
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="cost" Type="Edm.Decimal" Precision="10" Scale="2" Mode="In" Nullable="true"/>
         </FunctionImport>
-        <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
-        <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
-        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
         <EntitySet Name="HeaderItem_texts" EntityType="test.MainService.HeaderItem_texts"/>
+        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
+        <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
+        <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
         <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
         <FunctionImport Name="unboundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST">
@@ -5532,30 +5532,6 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="cost" Type="Edm.Decimal" Precision="10" Scale="2"/>
       </EntityType>
-      <EntityType Name="context_Name_space_v2">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="name" Type="Edm.String"/>
-      </EntityType>
-      <EntityType Name="context_LocalizedEntity">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="name" Type="Edm.String"/>
-        <NavigationProperty Name="texts" Relationship="test.MainService.context_LocalizedEntity_texts_1" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
-        <NavigationProperty Name="localized" Relationship="test.MainService.context_LocalizedEntity_localized" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
-      </EntityType>
       <EntityType Name="Country_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -5576,15 +5552,6 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
       </EntityType>
-      <EntityType Name="Header_texts">
-        <Key>
-          <PropertyRef Name="ID_texts"/>
-        </Key>
-        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
-        <Property Name="ID" Type="Edm.Guid"/>
-        <Property Name="description" Type="Edm.String"/>
-      </EntityType>
       <EntityType Name="HeaderItem_texts">
         <Key>
           <PropertyRef Name="ID_texts"/>
@@ -5594,6 +5561,26 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="ID" Type="Edm.Guid"/>
         <Property Name="description" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="Header_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_Name_space_v2">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="LocalizedEntity_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -5602,6 +5589,19 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_LocalizedEntity">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.context_LocalizedEntity_texts_1" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.context_LocalizedEntity_localized" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
       </EntityType>
       <EntityType Name="context_LocalizedEntity_texts">
         <Key>
@@ -6321,6 +6321,44 @@ exports[`main GET $metadata with propagated headers 1`] = `
       <Annotations Target="test.MainService.User/cost" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.Computed" Bool="true"/>
       </Annotations>
+      <Annotations Target="test.MainService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Country/Region Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Currency Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
       <Annotations Target="test.MainService.context_Name_space_v2/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
@@ -6352,6 +6390,12 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Annotation Term="Core.Description" String="User's unique ID"/>
         <Annotation Term="Common.Label" String="Changed By"/>
       </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity_texts/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="test.MainService.context_LocalizedEntity/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
@@ -6382,50 +6426,6 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="User's unique ID"/>
         <Annotation Term="Common.Label" String="Changed By"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Name"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Description"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Country/Region Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Name"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Description"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Currency Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.LocalizedEntity_texts/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.context_LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Language Code"/>
@@ -6606,13 +6606,13 @@ exports[`main GET $metadata with query options 1`] = `
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="cost" Type="Edm.Decimal" Precision="10" Scale="2" Mode="In" Nullable="true"/>
         </FunctionImport>
-        <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
-        <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="Country_texts" EntityType="test.MainService.Country_texts"/>
         <EntitySet Name="Currency_texts" EntityType="test.MainService.Currency_texts"/>
-        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
         <EntitySet Name="HeaderItem_texts" EntityType="test.MainService.HeaderItem_texts"/>
+        <EntitySet Name="Header_texts" EntityType="test.MainService.Header_texts"/>
+        <EntitySet Name="context_Name_space_v2" EntityType="test.MainService.context_Name_space_v2"/>
         <EntitySet Name="LocalizedEntity_texts" EntityType="test.MainService.LocalizedEntity_texts"/>
+        <EntitySet Name="context_LocalizedEntity" EntityType="test.MainService.context_LocalizedEntity"/>
         <EntitySet Name="context_LocalizedEntity_texts" EntityType="test.MainService.context_LocalizedEntity_texts"/>
         <EntitySet Name="Orders_Items" EntityType="test.MainService.Orders_Items"/>
         <FunctionImport Name="unboundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST">
@@ -7078,30 +7078,6 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="name" Type="Edm.String"/>
         <Property Name="cost" Type="Edm.Decimal" Precision="10" Scale="2"/>
       </EntityType>
-      <EntityType Name="context_Name_space_v2">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="name" Type="Edm.String"/>
-      </EntityType>
-      <EntityType Name="context_LocalizedEntity">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
-        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="name" Type="Edm.String"/>
-        <NavigationProperty Name="texts" Relationship="test.MainService.context_LocalizedEntity_texts_1" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
-        <NavigationProperty Name="localized" Relationship="test.MainService.context_LocalizedEntity_localized" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
-      </EntityType>
       <EntityType Name="Country_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -7122,15 +7098,6 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
       </EntityType>
-      <EntityType Name="Header_texts">
-        <Key>
-          <PropertyRef Name="ID_texts"/>
-        </Key>
-        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
-        <Property Name="ID" Type="Edm.Guid"/>
-        <Property Name="description" Type="Edm.String"/>
-      </EntityType>
       <EntityType Name="HeaderItem_texts">
         <Key>
           <PropertyRef Name="ID_texts"/>
@@ -7140,6 +7107,26 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="ID" Type="Edm.Guid"/>
         <Property Name="description" Type="Edm.String"/>
       </EntityType>
+      <EntityType Name="Header_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_Name_space_v2">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+      </EntityType>
       <EntityType Name="LocalizedEntity_texts">
         <Key>
           <PropertyRef Name="locale"/>
@@ -7148,6 +7135,19 @@ exports[`main GET $metadata with query options 1`] = `
         <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="name" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="context_LocalizedEntity">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String"/>
+        <NavigationProperty Name="texts" Relationship="test.MainService.context_LocalizedEntity_texts_1" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
+        <NavigationProperty Name="localized" Relationship="test.MainService.context_LocalizedEntity_localized" FromRole="context_LocalizedEntity" ToRole="context_LocalizedEntity_texts"/>
       </EntityType>
       <EntityType Name="context_LocalizedEntity_texts">
         <Key>
@@ -7867,6 +7867,44 @@ exports[`main GET $metadata with query options 1`] = `
       <Annotations Target="test.MainService.User/cost" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.Computed" Bool="true"/>
       </Annotations>
+      <Annotations Target="test.MainService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Country/Region Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Currency Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
       <Annotations Target="test.MainService.context_Name_space_v2/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
@@ -7898,6 +7936,12 @@ exports[`main GET $metadata with query options 1`] = `
         <Annotation Term="Core.Description" String="User's unique ID"/>
         <Annotation Term="Common.Label" String="Changed By"/>
       </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.MainService.LocalizedEntity_texts/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
       <Annotations Target="test.MainService.context_LocalizedEntity/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
@@ -7928,50 +7972,6 @@ exports[`main GET $metadata with query options 1`] = `
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="User's unique ID"/>
         <Annotation Term="Common.Label" String="Changed By"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Name"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Description"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Country_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Country/Region Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Name"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Description"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Currency_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Text" Path="name"/>
-        <Annotation Term="Common.Label" String="Currency Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderItem_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.MainService.HeaderItem_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.MainService.LocalizedEntity_texts/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.MainService.context_LocalizedEntity_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Language Code"/>

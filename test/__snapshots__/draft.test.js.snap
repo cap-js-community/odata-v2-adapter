@@ -51,14 +51,14 @@ exports[`draft GET $metadata 1`] = `
           <Parameter Name="SideEffectsQualifier" Type="Edm.String" Mode="In" Nullable="true"/>
         </FunctionImport>
         <EntitySet Name="DraftAdministrativeData" EntityType="test.DraftService.DraftAdministrativeData"/>
-        <EntitySet Name="Header_texts" EntityType="test.DraftService.Header_texts"/>
-        <FunctionImport Name="Header_texts_draftPrepare" EntitySet="Header_texts" ReturnType="test.DraftService.Header_texts" m:HttpMethod="POST" sap:action-for="test.DraftService.Header_texts">
+        <EntitySet Name="HeaderItem_texts" EntityType="test.DraftService.HeaderItem_texts"/>
+        <FunctionImport Name="HeaderItem_texts_draftPrepare" EntitySet="HeaderItem_texts" ReturnType="test.DraftService.HeaderItem_texts" m:HttpMethod="POST" sap:action-for="test.DraftService.HeaderItem_texts">
           <Parameter Name="ID_texts" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" Mode="In"/>
           <Parameter Name="SideEffectsQualifier" Type="Edm.String" Mode="In" Nullable="true"/>
         </FunctionImport>
-        <EntitySet Name="HeaderItem_texts" EntityType="test.DraftService.HeaderItem_texts"/>
-        <FunctionImport Name="HeaderItem_texts_draftPrepare" EntitySet="HeaderItem_texts" ReturnType="test.DraftService.HeaderItem_texts" m:HttpMethod="POST" sap:action-for="test.DraftService.HeaderItem_texts">
+        <EntitySet Name="Header_texts" EntityType="test.DraftService.Header_texts"/>
+        <FunctionImport Name="Header_texts_draftPrepare" EntitySet="Header_texts" ReturnType="test.DraftService.Header_texts" m:HttpMethod="POST" sap:action-for="test.DraftService.Header_texts">
           <Parameter Name="ID_texts" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" Mode="In"/>
           <Parameter Name="SideEffectsQualifier" Type="Edm.String" Mode="In" Nullable="true"/>
@@ -119,14 +119,6 @@ exports[`draft GET $metadata 1`] = `
           <End Role="HeaderLine" EntitySet="HeaderLine"/>
           <End Role="HeaderLine1" EntitySet="HeaderLine"/>
         </AssociationSet>
-        <AssociationSet Name="Header_texts_DraftAdministrativeData" Association="test.DraftService.Header_texts_DraftAdministrativeData">
-          <End Role="Header_texts" EntitySet="Header_texts"/>
-          <End Role="DraftAdministrativeData" EntitySet="DraftAdministrativeData"/>
-        </AssociationSet>
-        <AssociationSet Name="Header_texts_SiblingEntity" Association="test.DraftService.Header_texts_SiblingEntity">
-          <End Role="Header_texts" EntitySet="Header_texts"/>
-          <End Role="Header_texts1" EntitySet="Header_texts"/>
-        </AssociationSet>
         <AssociationSet Name="HeaderItem_texts_DraftAdministrativeData" Association="test.DraftService.HeaderItem_texts_DraftAdministrativeData">
           <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
           <End Role="DraftAdministrativeData" EntitySet="DraftAdministrativeData"/>
@@ -134,6 +126,14 @@ exports[`draft GET $metadata 1`] = `
         <AssociationSet Name="HeaderItem_texts_SiblingEntity" Association="test.DraftService.HeaderItem_texts_SiblingEntity">
           <End Role="HeaderItem_texts" EntitySet="HeaderItem_texts"/>
           <End Role="HeaderItem_texts1" EntitySet="HeaderItem_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Header_texts_DraftAdministrativeData" Association="test.DraftService.Header_texts_DraftAdministrativeData">
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+          <End Role="DraftAdministrativeData" EntitySet="DraftAdministrativeData"/>
+        </AssociationSet>
+        <AssociationSet Name="Header_texts_SiblingEntity" Association="test.DraftService.Header_texts_SiblingEntity">
+          <End Role="Header_texts" EntitySet="Header_texts"/>
+          <End Role="Header_texts1" EntitySet="Header_texts"/>
         </AssociationSet>
       </EntityContainer>
       <EntityType Name="Header">
@@ -219,22 +219,6 @@ exports[`draft GET $metadata 1`] = `
         <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
         <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
       </EntityType>
-      <EntityType Name="Header_texts">
-        <Key>
-          <PropertyRef Name="ID_texts"/>
-          <PropertyRef Name="IsActiveEntity"/>
-        </Key>
-        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
-        <Property Name="ID" Type="Edm.Guid"/>
-        <Property Name="description" Type="Edm.String"/>
-        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
-        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
-        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
-        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.Header_texts_DraftAdministrativeData" FromRole="Header_texts" ToRole="DraftAdministrativeData"/>
-        <Property Name="DraftAdministrativeData_DraftUUID" Type="Edm.Guid"/>
-        <NavigationProperty Name="SiblingEntity" Relationship="test.DraftService.Header_texts_SiblingEntity" FromRole="Header_texts" ToRole="Header_texts1"/>
-      </EntityType>
       <EntityType Name="HeaderItem_texts">
         <Key>
           <PropertyRef Name="ID_texts"/>
@@ -250,6 +234,22 @@ exports[`draft GET $metadata 1`] = `
         <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.HeaderItem_texts_DraftAdministrativeData" FromRole="HeaderItem_texts" ToRole="DraftAdministrativeData"/>
         <Property Name="DraftAdministrativeData_DraftUUID" Type="Edm.Guid"/>
         <NavigationProperty Name="SiblingEntity" Relationship="test.DraftService.HeaderItem_texts_SiblingEntity" FromRole="HeaderItem_texts" ToRole="HeaderItem_texts1"/>
+      </EntityType>
+      <EntityType Name="Header_texts">
+        <Key>
+          <PropertyRef Name="ID_texts"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="ID_texts" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="locale" Type="Edm.String" MaxLength="14"/>
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Relationship="test.DraftService.Header_texts_DraftAdministrativeData" FromRole="Header_texts" ToRole="DraftAdministrativeData"/>
+        <Property Name="DraftAdministrativeData_DraftUUID" Type="Edm.Guid"/>
+        <NavigationProperty Name="SiblingEntity" Relationship="test.DraftService.Header_texts_SiblingEntity" FromRole="Header_texts" ToRole="Header_texts1"/>
       </EntityType>
       <ComplexType Name="Result">
         <Property Name="name" Type="Edm.String"/>
@@ -344,22 +344,6 @@ exports[`draft GET $metadata 1`] = `
         <End Role="HeaderLine" Type="test.DraftService.HeaderLine" Multiplicity="*"/>
         <End Role="HeaderLine1" Type="test.DraftService.HeaderLine" Multiplicity="0..1"/>
       </Association>
-      <Association Name="Header_texts_DraftAdministrativeData">
-        <End Role="Header_texts" Type="test.DraftService.Header_texts" Multiplicity="*"/>
-        <End Role="DraftAdministrativeData" Type="test.DraftService.DraftAdministrativeData" Multiplicity="0..1"/>
-        <ReferentialConstraint>
-          <Principal Role="DraftAdministrativeData">
-            <PropertyRef Name="DraftUUID"/>
-          </Principal>
-          <Dependent Role="Header_texts">
-            <PropertyRef Name="DraftAdministrativeData_DraftUUID"/>
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
-      <Association Name="Header_texts_SiblingEntity">
-        <End Role="Header_texts" Type="test.DraftService.Header_texts" Multiplicity="*"/>
-        <End Role="Header_texts1" Type="test.DraftService.Header_texts" Multiplicity="0..1"/>
-      </Association>
       <Association Name="HeaderItem_texts_DraftAdministrativeData">
         <End Role="HeaderItem_texts" Type="test.DraftService.HeaderItem_texts" Multiplicity="*"/>
         <End Role="DraftAdministrativeData" Type="test.DraftService.DraftAdministrativeData" Multiplicity="0..1"/>
@@ -375,6 +359,22 @@ exports[`draft GET $metadata 1`] = `
       <Association Name="HeaderItem_texts_SiblingEntity">
         <End Role="HeaderItem_texts" Type="test.DraftService.HeaderItem_texts" Multiplicity="*"/>
         <End Role="HeaderItem_texts1" Type="test.DraftService.HeaderItem_texts" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Header_texts_DraftAdministrativeData">
+        <End Role="Header_texts" Type="test.DraftService.Header_texts" Multiplicity="*"/>
+        <End Role="DraftAdministrativeData" Type="test.DraftService.DraftAdministrativeData" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="DraftAdministrativeData">
+            <PropertyRef Name="DraftUUID"/>
+          </Principal>
+          <Dependent Role="Header_texts">
+            <PropertyRef Name="DraftAdministrativeData_DraftUUID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Header_texts_SiblingEntity">
+        <End Role="Header_texts" Type="test.DraftService.Header_texts" Multiplicity="*"/>
+        <End Role="Header_texts1" Type="test.DraftService.Header_texts" Multiplicity="0..1"/>
       </Association>
       <Annotations Target="test.DraftService.Header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Identification">
@@ -692,34 +692,6 @@ exports[`draft GET $metadata 1`] = `
         <Annotation Term="UI.Hidden" Bool="true"/>
         <Annotation Term="Common.Label" String="Draft In Process By Me"/>
       </Annotations>
-      <Annotations Target="test.DraftService.EntityContainer/Header_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.DraftNode">
-          <Record Type="Common.DraftNodeType">
-            <PropertyValue Property="PreparationAction" String="test.DraftService.EntityContainer/Header_texts_draftPrepare"/>
-          </Record>
-        </Annotation>
-      </Annotations>
-      <Annotations Target="test.DraftService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.DraftService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="Common.Label" String="Language Code"/>
-      </Annotations>
-      <Annotations Target="test.DraftService.Header_texts/IsActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="UI.Hidden" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.DraftService.Header_texts/HasActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="UI.Hidden" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.DraftService.Header_texts/HasDraftEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="UI.Hidden" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.DraftService.Header_texts/DraftAdministrativeData" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="UI.Hidden" Bool="true"/>
-      </Annotations>
-      <Annotations Target="test.DraftService.Header_texts/DraftAdministrativeData_DraftUUID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-        <Annotation Term="UI.Hidden" Bool="true"/>
-      </Annotations>
       <Annotations Target="test.DraftService.EntityContainer/HeaderItem_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.DraftNode">
           <Record Type="Common.DraftNodeType">
@@ -746,6 +718,34 @@ exports[`draft GET $metadata 1`] = `
         <Annotation Term="UI.Hidden" Bool="true"/>
       </Annotations>
       <Annotations Target="test.DraftService.HeaderItem_texts/DraftAdministrativeData_DraftUUID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.EntityContainer/Header_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.DraftNode">
+          <Record Type="Common.DraftNodeType">
+            <PropertyValue Property="PreparationAction" String="test.DraftService.EntityContainer/Header_texts_draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header_texts/ID_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header_texts/locale" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Language Code"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header_texts/IsActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header_texts/HasActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header_texts/HasDraftEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header_texts/DraftAdministrativeData" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="test.DraftService.Header_texts/DraftAdministrativeData_DraftUUID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Hidden" Bool="true"/>
       </Annotations>
     </Schema>
