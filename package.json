@@ -74,7 +74,7 @@
     "@cap-js/sqlite": "^2.0.3",
     "@eslint/js": "^9.37.0",
     "@sap/cds": "^9.4.2",
-    "@sap/cds-dk": "^9.3.0",
+    "@sap/cds-dk": "^9.4.1",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "compression": "^1.8.1",
