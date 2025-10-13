@@ -73,7 +73,7 @@
     "@cap-js/postgres": "^2.0.5",
     "@cap-js/sqlite": "^2.0.3",
     "@eslint/js": "^9.37.0",
-    "@sap/cds": "^9.4.2",
+    "@sap/cds": "^9.4.3",
     "@sap/cds-dk": "^9.4.1",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
@@ -91,6 +91,6 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cap-js-community/odata-v2-adapter.git"
+    "url": "git+https://github.com/cap-js-community/odata-v2-adapter.git"
   }
 }

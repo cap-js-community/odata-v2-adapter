@@ -5,11 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.15.5 - 2025-11-xx
+## Version 1.15.5 - 2025-10-13
 
 ### Fixed
 
-- tbd
+- Trusted publishing
 
 ## Version 1.15.4 - 2025-09-08
 
