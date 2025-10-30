@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = (srv) => {
-  const { Book } = srv.entities("test.AnalyticsService");
+  const { Book } = srv.entities;
 
   srv.on("order", Book, async (req) => {
     return {

@@ -3,7 +3,7 @@
 const cds = require("@sap/cds");
 
 module.exports = (srv) => {
-  const { Header, HeaderStream, Book, User } = srv.entities("test.MainService");
+  const { Header, HeaderStream, Book, User } = srv.entities;
 
   srv.after("READ", Header, async (data, req) => {
     if (req.http.req.url.includes("patch=true")) {
