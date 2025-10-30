@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = (srv) => {
-  const { PlannedTasks } = srv.entities("todo.TodoService");
+  const { PlannedTasks } = srv.entities;
 
   srv.on("boundAction", PlannedTasks, async (req) => {
     return req.params[0];
