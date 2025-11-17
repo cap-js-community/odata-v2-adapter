@@ -21,6 +21,10 @@ module.exports = (srv) => {
     };
   });
 
+  srv.on("boundEchoAction", Header, async (req) => {
+    return req.data;
+  })
+
   srv.on("boundMassAction", Header, async (req) => {
     return req.data.ids.map((id, index) => {
       return {
