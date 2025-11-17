@@ -391,6 +391,18 @@ describe("batch", () => {
     expect(second.contentTransferEncoding).toEqual("binary");
   });
 
+  it("POST bound action request", async () => {
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-BoundEchoAction.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    let response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+    const responses = util.splitMultipartResponse(response.body);
+    expect(responses.length).toEqual(1);
+    expect(responses.filter((response) => response.statusCode === 200).length).toEqual(1);
+    const [first] = responses;
+    expect(first.body.d.Header_boundEchoAction.name).toEqual(null)
+  });
+
   it("GET with x-forwarded headers", async () => {
     let response = await util.callWrite(request, "/odata/v2/main/Header", {
       name: "Test %22",

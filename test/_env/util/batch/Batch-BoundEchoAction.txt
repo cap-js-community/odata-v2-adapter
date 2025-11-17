@@ -1,0 +1,8 @@
+--boundary
+Content-Type: application/http
+
+POST Header_boundEchoAction?ID=e0582b6a-6d93-46d9-bd28-98723a285d40&name=null&code=abc2&age=2 HTTP/1.1
+Content-Type: application/json
+
+
+--boundary--

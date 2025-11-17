@@ -223,6 +223,7 @@ service MainService {
     entity Currency as projection on common.Currencies;
 
     entity Header as projection on test.Header actions {
+        action boundEchoAction(name: String, code: String, age: Integer) returns Result;
         action boundAction(num: Integer, text: String) returns Result;
         action boundMassAction(ids: array of String) returns array of Result;
         action boundActionInline(num: Integer, text: String) returns {
