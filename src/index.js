@@ -443,7 +443,7 @@ function cov2ap(options = {}) {
     const urlPath = targetUrl(req.originalUrl);
     try {
       const metadataUrl = URL.parse(urlPath, true);
-      let metadataPath = metadataUrl.pathname.substring(0, metadataUrl.pathname.length - 9);
+      let metadataPath = metadataUrl.pathname;
 
       const { csn } = await getMetadata(req);
       req.csn = csn;
@@ -464,7 +464,6 @@ function cov2ap(options = {}) {
           method: "GET",
           headers: {
             ...propagateHeaders(req),
-            accept: "application/json",
           },
         }),
         (async () => {

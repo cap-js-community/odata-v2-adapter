@@ -78,6 +78,36 @@ describe("main", () => {
     expect(response.text).toMatchSnapshot();
   });
 
+  it("GET $metadata etag", async () => {
+    let response = await util.callRead(request, "/odata/v2/main/$metadata", {
+      "accept-language": "en_US",
+    });
+    expect(response.status).toBe(200);
+    expect(response.body).toBeDefined();
+    expect(response.text).toMatchSnapshot();
+    const etag = response.headers["etag"];
+    expect(response.text).toContain("Currency Code");
+
+    response = await util.callRead(request, "/odata/v2/main/$metadata", {
+      "if-none-match": etag,
+      "accept-language": "en_US",
+    });
+    expect(response.status).toBe(304);
+    expect(response.body).toBeDefined();
+    expect(response.text).toBe("");
+    expect(response.headers["etag"]).toEqual(etag);
+
+    response = await util.callRead(request, "/odata/v2/main/$metadata", {
+      "if-none-match": etag,
+      "accept-language": "de_DE",
+    });
+    expect(response.status).toBe(200);
+    expect(response.body).toBeDefined();
+    expect(response.text).toMatchSnapshot();
+    expect(response.headers["etag"]).not.toEqual(etag);
+    expect(response.text).toContain("Währungscode");
+  });
+
   it("GET $metadata with query options", async () => {
     const response = await util.callRead(request, "/odata/v2/main/$metadata?sap-value-list=none&sap-language=EN", {
       accept: "application/xml",
