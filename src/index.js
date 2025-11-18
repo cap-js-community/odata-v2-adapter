@@ -2125,17 +2125,20 @@ function cov2ap(options = {}) {
           const element = definition.params && definition.params[name];
           if (element) {
             let value = queryOptions[name];
-            if (Array.isArray(value)) {
-              value = value.map((entry) => {
-                return unescapeSingleQuote(element, unquoteParameter(element, entry, req), req);
-              });
-            } else {
-              value = unescapeSingleQuote(element, unquoteParameter(element, value, req), req);
-              if (element.items && element.items.type) {
-                value = [value];
+            const isNull = value === "null";
+            if (!isNull) {
+              if (Array.isArray(value)) {
+                value = value.map((entry) => {
+                  return unescapeSingleQuote(element, unquoteParameter(element, entry, req), req);
+                });
+              } else {
+                value = unescapeSingleQuote(element, unquoteParameter(element, value, req), req);
+                if (element.items && element.items.type) {
+                  value = [value];
+                }
               }
             }
-            req.context.bodyParameters[name] = value;
+            req.context.bodyParameters[name] = isNull ? null : value;
             delete url.query[name];
           }
         }

@@ -280,6 +280,12 @@ exports[`main GET $metadata 1`] = `
         <EntitySet Name="Country" EntityType="test.MainService.Country"/>
         <EntitySet Name="Currency" EntityType="test.MainService.Currency"/>
         <EntitySet Name="Header" EntityType="test.MainService.Header"/>
+        <FunctionImport Name="Header_boundEchoAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="name" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="code" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="age" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="Header_boundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
@@ -1826,6 +1832,12 @@ exports[`main GET $metadata etag 1`] = `
         <EntitySet Name="Country" EntityType="test.MainService.Country"/>
         <EntitySet Name="Currency" EntityType="test.MainService.Currency"/>
         <EntitySet Name="Header" EntityType="test.MainService.Header"/>
+        <FunctionImport Name="Header_boundEchoAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="name" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="code" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="age" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="Header_boundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
@@ -3372,6 +3384,12 @@ exports[`main GET $metadata etag 2`] = `
         <EntitySet Name="Country" EntityType="test.MainService.Country"/>
         <EntitySet Name="Currency" EntityType="test.MainService.Currency"/>
         <EntitySet Name="Header" EntityType="test.MainService.Header"/>
+        <FunctionImport Name="Header_boundEchoAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="name" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="code" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="age" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="Header_boundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
@@ -4918,6 +4936,12 @@ exports[`main GET $metadata localized 1`] = `
         <EntitySet Name="Country" EntityType="test.MainService.Country"/>
         <EntitySet Name="Currency" EntityType="test.MainService.Currency"/>
         <EntitySet Name="Header" EntityType="test.MainService.Header"/>
+        <FunctionImport Name="Header_boundEchoAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="name" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="code" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="age" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="Header_boundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
@@ -6464,6 +6488,12 @@ exports[`main GET $metadata localized 2`] = `
         <EntitySet Name="Country" EntityType="test.MainService.Country"/>
         <EntitySet Name="Currency" EntityType="test.MainService.Currency"/>
         <EntitySet Name="Header" EntityType="test.MainService.Header"/>
+        <FunctionImport Name="Header_boundEchoAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="name" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="code" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="age" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="Header_boundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
@@ -8010,6 +8040,12 @@ exports[`main GET $metadata with propagated headers 1`] = `
         <EntitySet Name="Country" EntityType="test.MainService.Country"/>
         <EntitySet Name="Currency" EntityType="test.MainService.Currency"/>
         <EntitySet Name="Header" EntityType="test.MainService.Header"/>
+        <FunctionImport Name="Header_boundEchoAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="name" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="code" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="age" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="Header_boundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>
@@ -9556,6 +9592,12 @@ exports[`main GET $metadata with query options 1`] = `
         <EntitySet Name="Country" EntityType="test.MainService.Country"/>
         <EntitySet Name="Currency" EntityType="test.MainService.Currency"/>
         <EntitySet Name="Header" EntityType="test.MainService.Header"/>
+        <FunctionImport Name="Header_boundEchoAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="name" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="code" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="age" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="Header_boundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>

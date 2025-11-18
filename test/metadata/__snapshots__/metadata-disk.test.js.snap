@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`main GET $metadata 1`] = `"90489"`;
+exports[`main GET $metadata 1`] = `"90979"`;
 
 exports[`main GET $metadata 2`] = `
 "<?xml version="1.0" encoding="utf-8"?>
@@ -28,6 +28,12 @@ exports[`main GET $metadata 2`] = `
         <EntitySet Name="Country" EntityType="test.MainService.Country"/>
         <EntitySet Name="Currency" EntityType="test.MainService.Currency"/>
         <EntitySet Name="Header" EntityType="test.MainService.Header"/>
+        <FunctionImport Name="Header_boundEchoAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
+          <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
+          <Parameter Name="name" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="code" Type="Edm.String" Mode="In" Nullable="true"/>
+          <Parameter Name="age" Type="Edm.Int32" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <FunctionImport Name="Header_boundAction" ReturnType="test.MainService.Result" m:HttpMethod="POST" sap:action-for="test.MainService.Header">
           <Parameter Name="ID" Type="Edm.Guid" Nullable="false" Mode="In"/>
           <Parameter Name="num" Type="Edm.Int32" Mode="In" Nullable="true"/>

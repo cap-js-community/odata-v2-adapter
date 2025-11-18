@@ -400,7 +400,7 @@ describe("batch", () => {
     expect(responses.length).toEqual(1);
     expect(responses.filter((response) => response.statusCode === 200).length).toEqual(1);
     const [first] = responses;
-    expect(first.body.d.Header_boundEchoAction.name).toEqual(null)
+    expect(first.body.d.Header_boundEchoAction.name).toEqual(null);
   });
 
   it("GET with x-forwarded headers", async () => {

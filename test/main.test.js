@@ -4478,4 +4478,31 @@ describe("main", () => {
       ],
     });
   });
+
+  it("POST bound action request", async () => {
+    let response = await util.callWrite(
+      request,
+      "/odata/v2/main/Header_boundEchoAction?ID=e0582b6a-6d93-46d9-bd28-98723a285d40&name=null&code=abc2&age=2",
+      {},
+    );
+    expect(response.body).toMatchObject({
+      d: {
+        Header_boundEchoAction: {
+          name: null,
+        },
+      },
+    });
+    response = await util.callWrite(
+      request,
+      "/odata/v2/main/Header_boundEchoAction?ID=e0582b6a-6d93-46d9-bd28-98723a285d40&name='null'&code=abc2&age=2",
+      {},
+    );
+    expect(response.body).toMatchObject({
+      d: {
+        Header_boundEchoAction: {
+          name: "null",
+        },
+      },
+    });
+  });
 });
