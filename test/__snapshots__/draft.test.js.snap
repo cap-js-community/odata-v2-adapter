@@ -666,30 +666,38 @@ exports[`draft GET $metadata 1`] = `
       </Annotations>
       <Annotations Target="test.DraftService.DraftAdministrativeData/DraftUUID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
         <Annotation Term="Common.Label" String="Draft (Technical ID)"/>
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
       <Annotations Target="test.DraftService.DraftAdministrativeData/CreationDateTime" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Draft Created On"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
       </Annotations>
       <Annotations Target="test.DraftService.DraftAdministrativeData/CreatedByUser" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Draft Created By"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
       </Annotations>
       <Annotations Target="test.DraftService.DraftAdministrativeData/DraftIsCreatedByMe" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
         <Annotation Term="Common.Label" String="Draft Created By Me"/>
       </Annotations>
       <Annotations Target="test.DraftService.DraftAdministrativeData/LastChangeDateTime" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Draft Last Changed On"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
       </Annotations>
       <Annotations Target="test.DraftService.DraftAdministrativeData/LastChangedByUser" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Draft Last Changed By"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
       </Annotations>
       <Annotations Target="test.DraftService.DraftAdministrativeData/InProcessByUser" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Draft In Process By"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
       </Annotations>
       <Annotations Target="test.DraftService.DraftAdministrativeData/DraftIsProcessedByMe" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
         <Annotation Term="Common.Label" String="Draft In Process By Me"/>
       </Annotations>
       <Annotations Target="test.DraftService.EntityContainer/HeaderItem_texts" xmlns="http://docs.oasis-open.org/odata/ns/edm">
