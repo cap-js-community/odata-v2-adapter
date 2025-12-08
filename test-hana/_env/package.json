@@ -5,6 +5,7 @@
   "scripts": {
     "start": "cds-serve --production",
     "hdi": "cf cs hana hdi-shared cds-community-test-hana-cloud -c '{\"database_id\": \"fa8a6cbe-1cdc-4dea-84cf-877c09b0f651\"}'",
+    "hdi:sk:delete": "cf dsk cds-community-test-hana-cloud cds-community-test-hana-cloud-key",
     "hdi:sk:create": "cf csk cds-community-test-hana-cloud cds-community-test-hana-cloud-key",
     "hdi:sk:show": "cf service-key cds-community-test-hana-cloud cds-community-test-hana-cloud-key",
     "build": "cds build --production",

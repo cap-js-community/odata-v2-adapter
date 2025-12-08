@@ -60,7 +60,7 @@
   "dependencies": {
     "body-parser": "^2.2.1",
     "body-parser-xml": "^2.0.5",
-    "express": "^4.21.2",
+    "express": "^4.22.1",
     "express-fileupload": "^1.5.2",
     "http-proxy-middleware": "^3.0.5",
     "node-fetch": "^2.7.0",
@@ -74,8 +74,8 @@
     "@cap-js/sqlite": "^2.1.0",
     "@eslint/js": "^9.39.1",
     "@sap/cds": "^9.5.1",
-    "@sap/cds-dk": "^9.4.3",
-    "@types/express": "^5.0.5",
+    "@sap/cds-dk": "^9.5.0",
+    "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "compression": "^1.8.1",
     "eslint": "^9.39.1",
@@ -83,10 +83,10 @@
     "eslint-plugin-jest": "^29.2.1",
     "eslint-plugin-n": "^17.23.1",
     "jest": "^30.2.0",
-    "prettier": "^3.7.3",
+    "prettier": "^3.7.4",
     "supertest": "^7.1.4",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.0"
+    "typescript-eslint": "^8.49.0"
   },
   "license": "Apache-2.0",
   "repository": {
