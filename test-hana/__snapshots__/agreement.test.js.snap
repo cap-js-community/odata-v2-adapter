@@ -377,6 +377,13 @@ exports[`hana-agreement GET $metadata 1`] = `
             <PropertyValue Property="Rollup" EnumMember="Aggregation.RollupType/None"/>
           </Record>
         </Annotation>
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="ID"/>
+            </Record>
+          </Collection>
+        </Annotation>
         <Annotation Term="UI.SelectionFields">
           <Collection>
             <PropertyPath>keyDate</PropertyPath>
@@ -396,13 +403,6 @@ exports[`hana-agreement GET $metadata 1`] = `
             </Record>
             <Record Type="UI.DataField">
               <PropertyValue Property="Value" Path="validTo"/>
-            </Record>
-          </Collection>
-        </Annotation>
-        <Annotation Term="UI.Identification">
-          <Collection>
-            <Record Type="UI.DataField">
-              <PropertyValue Property="Value" Path="ID"/>
             </Record>
           </Collection>
         </Annotation>
