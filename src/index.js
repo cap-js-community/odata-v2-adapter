@@ -763,9 +763,10 @@ function cov2ap(options = {}) {
   }
 
   function bindRoutes() {
+    const wildcard = express.application.del ? '*' : '{*splat}'
     router.use(`/${path}`, routeBeforeRequest);
     router.use(`/${path}`, routeInitRequest);
-    router.get(`/${path}/*\\$metadata`, routeGetMetadata);
+    router.get(`/${path}/${wildcard}\\$metadata`, routeGetMetadata);
     router.use(`/${path}`, routeBodyParser, routeSetContext, routeFileUpload, createHttpProxyMiddleware());
   }
 
