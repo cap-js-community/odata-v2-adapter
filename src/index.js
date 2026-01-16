@@ -2660,7 +2660,7 @@ function cov2ap(options = {}) {
           elements: definition.params || {},
         };
       }
-      if (body.d && typeof body.d === "object") {
+      if (body?.d && typeof body.d === "object") {
         body = body.d;
       }
       convertRequestData(body, headers, definition, req);
