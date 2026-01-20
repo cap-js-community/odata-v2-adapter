@@ -763,7 +763,7 @@ function cov2ap(options = {}) {
   }
 
   function bindRoutes() {
-    const wildcard = express.application.del ? '*' : '{*splat}';
+    const wildcard = express.application.del ? "*" : "{*splat}";
     router.use(`/${path}`, routeBeforeRequest);
     router.use(`/${path}`, routeInitRequest);
     router.get(`/${path}/${wildcard}\\$metadata`, routeGetMetadata);
