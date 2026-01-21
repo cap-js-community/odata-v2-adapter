@@ -763,9 +763,10 @@ function cov2ap(options = {}) {
   }
 
   function bindRoutes() {
+    const wildcard = express.application.del ? "*" : "{*splat}";
     router.use(`/${path}`, routeBeforeRequest);
     router.use(`/${path}`, routeInitRequest);
-    router.get(`/${path}/*\\$metadata`, routeGetMetadata);
+    router.get(`/${path}/${wildcard}\\$metadata`, routeGetMetadata);
     router.use(`/${path}`, routeBodyParser, routeSetContext, routeFileUpload, createHttpProxyMiddleware());
   }
 
@@ -2659,7 +2660,7 @@ function cov2ap(options = {}) {
           elements: definition.params || {},
         };
       }
-      if (body.d && typeof body.d === "object") {
+      if (body && body.d && typeof body.d === "object") {
         body = body.d;
       }
       convertRequestData(body, headers, definition, req);
