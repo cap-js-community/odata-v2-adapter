@@ -51,21 +51,44 @@ module.exports = class COV2APBuildPlugin extends cds.build.Plugin {
 
   async generateEdmx(model) {
     const services = cds.reflect(model).services.filter((service) => this.isServedViaOData(service));
-    for (const service of services) {
-      if (model.definitions && model.definitions[service.name] && model.definitions[service.name]["@cov2ap.ignore"]) {
-        continue;
-      }
+    if (cds.env.cov2ap.build === "all") {
       try {
-        const result = await cds.compile.to.edmx(model, {
-          service: service.name,
+        const all = await cds.compile.to.edmx(model, {
+          service: "all",
           version: "v2",
         });
-        await this.write(result).to(`${service.name}.xml`);
+        for (let [edm, { file }] of all) {
+          if (
+            !services.find((service) => service.name === file) ||
+            (model.definitions && model.definitions[file] && model.definitions[file]["@cov2ap.ignore"])
+          ) {
+            continue;
+          }
+          await this.write(edm).to(`${file}.xml`);
+        }
       } catch (err) {
         this.pushMessage(
-          `EDMX V2 compilation failed. Service '${service.name}' is (probably) not compatible with OData V2: ` + err,
+          `EDMX V2 compilation failed. Some service are (probably) not compatible with OData V2: ` + err,
           COV2APBuildPlugin.INFO,
         );
+      }
+    } else {
+      for (const service of services) {
+        if (model.definitions && model.definitions[service.name] && model.definitions[service.name]["@cov2ap.ignore"]) {
+          continue;
+        }
+        try {
+          const result = await cds.compile.to.edmx(model, {
+            service: service.name,
+            version: "v2",
+          });
+          await this.write(result).to(`${service.name}.xml`);
+        } catch (err) {
+          this.pushMessage(
+            `EDMX V2 compilation failed. Service '${service.name}' is (probably) not compatible with OData V2: ` + err,
+            COV2APBuildPlugin.INFO,
+          );
+        }
       }
     }
   }

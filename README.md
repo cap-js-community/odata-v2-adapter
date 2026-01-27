@@ -49,7 +49,7 @@ using CDS Node.js module [@sap/cds](https://www.npmjs.com/package/@sap/cds) or C
 The OData V2 adapter for CDS instantiates an Express router. The following options are available:
 
 - **plugin**: OData V2 adapter is instantiated as part of the CDS plugin. Default is `true`.
-- **build**: In case of a plugin scenario, a build step is registered to prepare the OData V2 metadata. Default is `true`.
+- **build**: In case of a plugin scenario, a build step is registered to prepare the OData V2 metadata. Use 'all' to mass compile EDMX files. Default is `true`.
 - **base**: Base path under which the service is reachable. Default is `''`.
 - **path**: Path under which the service is reachable. Default is `'odata/v2'`. Default path is `'v2'` for CDS < 7 or `middlewares` deactivated.
 - **model**: CDS service model (path(s) or CSN). Default is `'all'`.
@@ -361,8 +361,15 @@ cds.on(
 ### Build Task
 
 CDS OData V2 adapter includes an CDS build task that allows preparing the OData V2 EDMX files for server and MTX sidecar app.
-The build task is only available when the adapter is bootstrapped via the CDS plugin mechanism (default).
+The build task is only automatically available when the adapter is bootstrapped via the CDS plugin mechanism (default).
 It is then automatically active but can be deactivated using option `cds.cov2ap.build: false`.
+
+The build task generates each OData V2 EDMX file one-by-one for each OData service, excluding services annotated with `@cov2ap.ignore`.
+For performance reasons all EDMX files can be compiled together, via configuration `cds.cov2ap.build: "all"`.
+Please note that in case of `all` mode, all services are compiled including none-OData services and those annotated with `@cov2ap.ignore`,
+but only not ignored OData services are written to disk.
+
+In case of a custom server bootstrap, the build task needs to be registered manually.
 
 ### Unit-Tests
 
