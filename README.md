@@ -360,16 +360,17 @@ cds.on(
 
 ### Build Task
 
-CDS OData V2 adapter includes an CDS build task that allows preparing the OData V2 EDMX files for server and MTX sidecar app.
+The CDS OData V2 adapter includes an CDS build task that allows preparing the OData V2 EDMX files for server and MTX sidecar app.
 The build task is only automatically available when the adapter is bootstrapped via the CDS plugin mechanism (default).
 It is then automatically active but can be deactivated using option `cds.cov2ap.build: false`.
+
+Please note that when project has own `cds.build.tasks` configuration, the CDS OData V2 adapter build task needs to be added manually as well.
+Also in case of a custom server bootstrap, the build task needs to be registered manually.
 
 The build task generates each OData V2 EDMX file one-by-one for each OData service, excluding services annotated with `@cov2ap.ignore`.
 For performance reasons all EDMX files can be compiled together, via configuration `cds.cov2ap.build: "all"`.
 Please note that in case of `all` mode, all services are compiled including none-OData services and those annotated with `@cov2ap.ignore`,
 but only not ignored OData services are written to disk.
-
-In case of a custom server bootstrap, the build task needs to be registered manually.
 
 ### Unit-Tests
 
