@@ -345,7 +345,8 @@ function cov2ap(options = {}) {
     // Protocol re-routing
     if (odataV2Path && protocolPath !== odataV2Path) {
       endpointPath = endpointPath.replace(protocolPath, odataV2Path);
-      router.all([`${odataV2Path}`, `${odataV2Path}/*`], (req, res, next) => {
+      const wildcard = express.application.del ? "*" : "{*splat}";
+      router.all([`${odataV2Path}`, `${odataV2Path}/${wildcard}`], (req, res, next) => {
         req.url = req.url.replace(odataV2Path, protocolPath);
         req.originalUrl = req.url;
         req.endpointRewrite = (url) => {
@@ -845,7 +846,7 @@ function cov2ap(options = {}) {
   }
 
   function serviceFromRequest(req) {
-    const servicePathUrl = normalizeSlashes(req.params["0"] || req.url); // wildcard or non-wildcard
+    const servicePathUrl = normalizeSlashes(req.params?.splat?.join("/") || req.params?.["0"] || req.url); // wildcard or non-wildcard
     const servicePath = targetPath ? `/${targetPath}${servicePathUrl}` : servicePathUrl;
     const service = {
       name: "",

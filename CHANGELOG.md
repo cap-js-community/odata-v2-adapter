@@ -5,10 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Version 1.15.9 - 2026-02-02
+## Version 1.15.9 - 2026-02-03
 
 ### Fixed
 
+- Fixes for Express 5 (with CDS 9.7)
 - Mass compile EDMX for all services on CDS build task, via env `cds.cov2ap.build: "all"`
 
 ## Version 1.15.8 - 2026-01-23
