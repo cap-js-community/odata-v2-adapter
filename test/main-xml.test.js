@@ -336,7 +336,7 @@ describe("main-xml", () => {
     expect(responses.length).toEqual(3);
     expect(responses.filter((response) => response.statusCode === 200).length).toEqual(3);
     const [first, second, third] = responses;
-    expect(first.headers["content-type"]).toEqual("application/json");
+    expect(first.headers["content-type"]).toEqual("application/json;charset=utf-8");
     expect(first.body.d.results.length).toEqual(9);
     expect(first.contentTransferEncoding).toEqual("binary");
     expect(second.headers["content-type"]).toEqual("application/atom+xml;charset=utf-8");
