@@ -454,4 +454,14 @@ describe("batch", () => {
     expect(first.body).toEqual("");
     expect(first.contentTransferEncoding).toEqual("binary");
   });
+
+  it("HEAD call and data call", async () => {
+    let response = await util.callHead(request, "/odata/v2/main/");
+    expect(response.status).toEqual(200);
+
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-GET-Multi.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
+    expect(response.statusCode).toEqual(202);
+  });
 });

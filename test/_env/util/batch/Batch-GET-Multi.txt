@@ -1,0 +1,70 @@
+--boundary
+Content-Type: application/http
+
+GET Header HTTP/1.1
+Accept: application/json
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
+--boundary
+Content-Type: application/http
+
+GET Header?$skip=0&$top=100&$orderby=name asc&$select=stock,name,name&$inlinecount=allpages HTTP/1.1
+sap-cancel-on-close: true
+sap-contextid-accept: header
+Accept: application/json
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
+--boundary
+Content-Type: application/http
+
+GET Header2 HTTP/1.1
+sap-cancel-on-close: true
+sap-contextid-accept: header
+Accept: application/json
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
+--boundary
+Content-Type: application/http
+
+GET Header?$filter=name eq 'Test'&$top=10 HTTP/1.1
+sap-cancel-on-close: true
+sap-contextid-accept: header
+Accept: application/json
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
+--boundary
+Content-Type: application/http
+
+GET Header?$expand=Items&$select=name,stock&$top=50 HTTP/1.1
+sap-cancel-on-close: true
+sap-contextid-accept: header
+Accept: application/json
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
+--boundary
+Content-Type: application/http
+
+GET Header/$count HTTP/1.1
+Accept: application/json
+Accept-Language: en
+DataServiceVersion: 2.0
+MaxDataServiceVersion: 2.0
+
+
+--boundary--
+

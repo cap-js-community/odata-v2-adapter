@@ -4505,4 +4505,11 @@ describe("main", () => {
       },
     });
   });
+
+  it("HEAD call and data call", async () => {
+    let response = await util.callHead(request, "/odata/v2/main");
+    expect(response.status).toEqual(200);
+    response = await util.callRead(request, "/odata/v2/main/Header");
+    expect(response.status).toEqual(200);
+  });
 });
