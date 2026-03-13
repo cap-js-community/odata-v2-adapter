@@ -3903,7 +3903,7 @@ function cov2ap(options = {}) {
       const columns = definitionQueryColumns(definition);
       Object.keys(elements).forEach((name) => {
         const param = columns.find((column) => column.as === name);
-        const paramName = (param ? param.ref.join("_") : "") || name;
+        const paramName = (param ? param.ref?.join("_") : "") || name;
         if (!definition.params[paramName]) {
           delete data[name];
         }
@@ -4181,7 +4181,7 @@ function cov2ap(options = {}) {
       const columns = definitionQueryColumns(entity);
       Object.keys(keys).forEach((key) => {
         const param = columns.find((column) => column.as === key);
-        const paramName = (param ? param.ref.join("_") : "") || key;
+        const paramName = (param ? param.ref?.join("_") : "") || key;
         if (!keyElements.find((keyElement) => keyElement.name === paramName)) {
           keyElements.push(keys[key]);
         }
