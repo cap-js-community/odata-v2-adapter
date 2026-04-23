@@ -20,6 +20,9 @@
     "odata": {
       "-structs": true
     },
+    "features": {
+      "ieee754compatible": true
+    },
     "cov2ap": {
       "caseInsensitive": true,
       "fixDraftRequests": true
