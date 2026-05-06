@@ -1,7 +1,8 @@
 "use strict";
 
 module.exports = (srv) => {
-  const { Header, HeaderItem, ["HeaderItem.texts"]: HeaderItemText } = srv.entities;
+  const { Header, HeaderItem } = srv.entities;
+  const HeaderItemText = HeaderItems.texts;
 
   srv.after("draftPrepare", Header.drafts, (data, req) => {
     const info1 = new Error("This is a Warning");
