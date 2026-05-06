@@ -3,7 +3,7 @@
 const globals = require("globals");
 const js = require("@eslint/js");
 
-const nodePlugin = require("eslint-plugin-n");
+const nodePlugin = require("eslint-plugin-n").default;
 const jestPlugin = require("eslint-plugin-jest");
 const configPrettier = require("eslint-config-prettier");
 // const typescriptPlugin = require("typescript-eslint");

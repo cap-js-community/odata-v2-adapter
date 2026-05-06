@@ -358,6 +358,8 @@ cds.on(
 );
 ```
 
+Ensure that `cds.xt.ModelProviderService` is served internally, to allow extended CSN and EDMX retrieval.
+
 ### Build Task
 
 The CDS OData V2 adapter includes an CDS build task that allows preparing the OData V2 EDMX files for server and MTX sidecar app.

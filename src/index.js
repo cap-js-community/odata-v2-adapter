@@ -18,11 +18,14 @@ const { HttpProxyMiddleware } = require("http-proxy-middleware/dist/http-proxy-m
 const bodyParser = require("body-parser");
 require("body-parser-xml")(bodyParser);
 const xml2js = require("xml2js");
+
 const xmlParser = new xml2js.Parser({
   async: false,
   tagNameProcessors: [xml2js.processors.stripPrefix],
 });
+
 const cacheSymbol = Symbol("cov2ap");
+const isExtendedSymbol = Symbol("isExtended");
 
 const CACHE_DIR = fs.realpathSync(os.tmpdir());
 
@@ -320,11 +323,14 @@ function cov2ap(options = {}) {
       const tenantCache = metadataCache[tenant];
       delete metadataCache[tenant];
       if (cacheDefinitions) {
-        const csn = await callCached(tenantCache, "csn");
-        if (csn) {
-          for (const name in csn.definitions) {
-            const definition = csn.definitions[name];
-            delete definition[cacheSymbol];
+        for (const key of Object.keys(tenantCache)) {
+          const partition = tenantCache[key];
+          const csn = await callCached(partition, "csn");
+          if (csn) {
+            for (const name in csn.definitions) {
+              const definition = csn.definitions[name];
+              delete definition[cacheSymbol];
+            }
           }
         }
       }
@@ -1019,10 +1025,10 @@ function cov2ap(options = {}) {
     if (req.tenant) {
       if (mtxRemote && mtxEndpoint) {
         metadata = await getTenantMetadataRemote(req, service);
+      } else if (cds.services["cds.xt.ModelProviderService"]) {
+        metadata = await getTenantMetadataStreamlined(req, service);
       } else if (cds.mtx && cds.env.requires && cds.env.requires.multitenancy) {
         metadata = await getTenantMetadataLocal(req, service);
-      } else if (cds.env.requires && cds.env.requires["cds.xt.ModelProviderService"]) {
-        metadata = await getTenantMetadataStreamlined(req, service);
       }
     }
     if (!metadata) {
@@ -1036,6 +1042,9 @@ function cov2ap(options = {}) {
       mtxEndpoint.startsWith("http://") || mtxEndpoint.startsWith("https://") ? mtxEndpoint : `${target}${mtxEndpoint}`;
     return await prepareMetadata(
       req.tenant,
+      [],
+      service,
+      determineLocale(req),
       async (tenant) => {
         const response = await fetch(`${mtxBasePath}/metadata/csn/${tenant}`, {
           agent: req.agent || httpAgent,
@@ -1047,7 +1056,7 @@ function cov2ap(options = {}) {
         }
         return response.json();
       },
-      async (tenant, service, locale) => {
+      async (tenant, toggles, service, locale) => {
         const response = await fetch(
           `${mtxBasePath}/metadata/edmx/${tenant}?name=${service}&language=${locale}&odataVersion=v2`,
           {
@@ -1061,62 +1070,63 @@ function cov2ap(options = {}) {
         }
         return response.text();
       },
-      service,
-      determineLocale(req),
     );
   }
 
   async function getTenantMetadataLocal(req, service) {
     metadataCache[req.tenant] = metadataCache[req.tenant] || {};
-    const isExtended = await callCached(metadataCache[req.tenant], "isExtended", () => {
+    const isExtended = await callCached(metadataCache[req.tenant], isExtendedSymbol, () => {
       return cds.mtx.isExtended(req.tenant);
     });
     if (isExtended) {
       return await prepareMetadata(
         req.tenant,
+        [],
+        service,
+        determineLocale(req),
         async (tenant) => {
           return await cds.mtx.getCsn(tenant);
         },
-        async (tenant, service, locale) => {
+        async (tenant, toggles, service, locale) => {
           return await cds.mtx.getEdmx(tenant, service, locale, "v2");
         },
-        service,
-        determineLocale(req),
       );
     }
   }
 
   async function getTenantMetadataStreamlined(req, service) {
-    metadataCache[req.tenant] = metadataCache[req.tenant] || {};
     const { "cds.xt.ModelProviderService": mps } = cds.services;
     if (mps) {
-      const isExtended = await callCached(metadataCache[req.tenant], "isExtended", () => {
+      metadataCache[req.tenant] = metadataCache[req.tenant] || {};
+      const isExtended = await callCached(metadataCache[req.tenant], isExtendedSymbol, () => {
         return mps.isExtended({
           tenant: req.tenant,
         });
       });
-      if (isExtended) {
+      const features = ensureArray(req.features);
+      if (isExtended || features.length > 0) {
         return await prepareMetadata(
           req.tenant,
-          async (tenant) => {
+          features,
+          service,
+          determineLocale(req),
+          async (tenant, toggles) => {
             return await mps.getCsn({
               tenant,
-              toggles: ensureArray(req.features),
+              toggles,
               for: "nodejs",
             });
           },
-          async (tenant, service, locale) => {
+          async (tenant, toggles, service, locale) => {
             return await mps.getEdmx({
               tenant,
-              toggles: ensureArray(req.features),
+              toggles,
               service,
               locale,
               flavor: "v2",
               for: "nodejs",
             });
           },
-          service,
-          determineLocale(req),
         );
       }
     }
@@ -1125,6 +1135,9 @@ function cov2ap(options = {}) {
   async function getDefaultMetadata(req, service) {
     return await prepareMetadata(
       DefaultTenant,
+      [],
+      service,
+      determineLocale(req),
       async () => {
         if (typeof model === "object" && !Array.isArray(model)) {
           return model;
@@ -1132,25 +1145,29 @@ function cov2ap(options = {}) {
         return await cds.load(model);
       },
       async () => {},
-      service,
-      determineLocale(req),
     );
   }
 
-  async function prepareMetadata(tenant, loadCsn, loadEdmx, service, locale) {
+  async function prepareMetadata(tenant, features, service, locale, loadCsn, loadEdmx) {
+    const featureKey = deriveFeatureKey(features);
     metadataCache[tenant] = metadataCache[tenant] || {};
-    const csn = await callCached(metadataCache[tenant], "csn", () => {
-      return prepareCSN(tenant, loadCsn);
+    metadataCache[tenant][featureKey] = metadataCache[tenant][featureKey] || {};
+    const partition = metadataCache[tenant][featureKey];
+    const csn = await callCached(partition, "csn", () => {
+      return prepareCSN(tenant, features, loadCsn);
     });
     if (!service) {
       return { csn };
     }
-    metadataCache[tenant].edmx = metadataCache[tenant].edmx || {};
-    metadataCache[tenant].edmx[service] = metadataCache[tenant].edmx[service] || {};
-    const edmx = await callCached(metadataCache[tenant].edmx[service], locale, async () => {
-      const edmx = await prepareEdmx(tenant, csn, loadEdmx, service, locale);
+    partition.edmx = partition.edmx || {};
+    partition.edmx[service] = partition.edmx[service] || {};
+    const edmx = await callCached(partition.edmx[service], locale, async () => {
+      const edmx = await prepareEdmx(tenant, features, service, locale, csn, loadEdmx);
       if (["disk", "stream"].includes(cacheMetadata)) {
-        const edmxFilename = fsPath.join(CACHE_DIR, `${tenant}$${service}$${locale}.edmx.xml`);
+        const edmxFilename = fsPath.join(
+          CACHE_DIR,
+          `${tenant}$${service}$${locale}${featureKey ? "$" + featureKey : ""}.edmx.xml`,
+        );
         await fs.promises.writeFile(edmxFilename, edmx);
         return edmxFilename;
       }
@@ -1159,12 +1176,12 @@ function cov2ap(options = {}) {
     return { csn, edmx };
   }
 
-  async function prepareCSN(tenant, loadCsn) {
+  async function prepareCSN(tenant, features, loadCsn) {
     let csnRaw;
     if (cds.server && cds.model && tenant === DefaultTenant) {
       csnRaw = cds.model;
     } else {
-      csnRaw = await loadCsn(tenant);
+      csnRaw = await loadCsn(tenant, features);
     }
     let csn;
     if (cds.compile.for.nodejs) {
@@ -1175,10 +1192,10 @@ function cov2ap(options = {}) {
     return csn;
   }
 
-  async function prepareEdmx(tenant, csn, loadEdmx, service, locale) {
+  async function prepareEdmx(tenant, features, service, locale, csn, loadEdmx) {
     let edmx;
     if (tenant !== DefaultTenant) {
-      edmx = await loadEdmx(tenant, service, locale);
+      edmx = await loadEdmx(tenant, features, service, locale);
     }
     if (!edmx) {
       edmx = await edmxFromFile(tenant, service);
@@ -4856,6 +4873,13 @@ function cov2ap(options = {}) {
         .sort();
     }
     return [];
+  };
+
+  const deriveFeatureKey = (features) => {
+    if (!features || features.length === 0) {
+      return "";
+    }
+    return [...features].sort().join("#");
   };
 
   function decodeBase64(b64String) {

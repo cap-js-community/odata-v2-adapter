@@ -12,7 +12,7 @@ cds.on("bootstrap", (app) => {
   }
   if (!(process.env.TEST_COV2AP_FEATURE_TOGGLES === "false")) {
     before.push((req, res, next) => {
-      req.features = req.features || ["advanced"];
+      req.features = req.features || ["advanced", "process"];
       next();
     });
   }
