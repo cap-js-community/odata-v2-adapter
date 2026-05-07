@@ -739,37 +739,48 @@ function cov2ap(options = {}) {
     }
   }
 
-  function routeBeforeRequest(req, res, next) {
+  function normalizeBeforeRoutes() {
     if (typeof router.before === "function") {
-      router.before(req, res, next);
-    } else if (Array.isArray(router.before) && router.before.length > 0) {
-      const routes = router.before.slice(0);
-
-      function call() {
-        try {
-          const route = routes.shift();
-          if (!route) {
-            return next(null);
-          }
-          route(req, res, (err) => {
-            if (err) {
-              next(err);
-            } else {
-              call();
-            }
-          });
-        } catch (err) {
-          next(err);
-        }
-      }
-
-      call();
+      router.before = [router.before];
+    } else if (Array.isArray(router.before)) {
+      router.before = router.before
+        .reduce((routes, route) => {
+          routes.push(...(Array.isArray(route) ? route : route ? [route] : []));
+          return routes;
+        }, [])
+        .filter((route) => !!route);
     } else {
-      next();
+      router.before = [];
     }
   }
 
+  function routeBeforeRequest(req, res, next) {
+    if (!router.before?.length) {
+      return next();
+    }
+    const routes = router.before.slice(0);
+    function call() {
+      try {
+        const route = routes.shift();
+        if (!route) {
+          return next(null);
+        }
+        route(req, res, (err) => {
+          if (err) {
+            next(err);
+          } else {
+            call();
+          }
+        });
+      } catch (err) {
+        next(err);
+      }
+    }
+    call();
+  }
+
   function bindRoutes() {
+    normalizeBeforeRoutes();
     const wildcard = express.application.del ? "*" : "{*splat}";
     router.use(`/${path}`, routeBeforeRequest);
     router.use(`/${path}`, routeInitRequest);

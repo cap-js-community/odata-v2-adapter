@@ -159,6 +159,18 @@ cds.on("bootstrap", (app) => {
 });
 ```
 
+#### CDS Middlewares
+
+The standard CDS before middlewares can be applied to the OData V2 adapter routes via the following configuration:
+
+```js
+const cds = require("@sap/cds");
+
+cds.on("bootstrap", (app) => {
+  cds.cov2ap.before = cds.middlewares.before;
+});
+```
+
 #### Dynamic HTTP Agent
 
 Using before middlewares, a dynamic HTTP(s) agent can be registered via `req.agent` as follows:
@@ -352,13 +364,28 @@ cds.on(
   "bootstrap",
   (app) =>
     (cds.cov2ap.before = (req, res, next) => {
-      req.features = req.features || ["advanced"];
+      req.features = ["advanced"];
       next();
     }),
 );
 ```
 
 Ensure that `cds.xt.ModelProviderService` is served internally, to allow extended CSN and EDMX retrieval.
+
+If features are tenant-specific, apply the CDS before middlewares, so that `cds.context.tenant` is accessible:
+
+```js
+const cds = require("@sap/cds");
+cds.middlewares.add((req, res, next) => {
+  if (cds.context.tenant === "t1") {
+    req.features = ["advanced"];
+  }
+  next();
+});
+cds.cov2ap.before = cds.middlewares.before;
+```
+
+Details see [CDS Middlewares](#cds-middlewares).
 
 ### Build Task
 

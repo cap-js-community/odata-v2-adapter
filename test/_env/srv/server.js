@@ -16,7 +16,7 @@ cds.on("bootstrap", (app) => {
       next();
     });
   }
-  cds.cov2ap.before = before;
+  cds.cov2ap.before = [...cds.middlewares.before, ...before];
 });
 
 cds.on("listening", ({ server }) => {
