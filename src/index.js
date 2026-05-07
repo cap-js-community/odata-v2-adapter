@@ -746,29 +746,31 @@ function cov2ap(options = {}) {
     if (typeof router.before === "function") {
       routes = [router.before];
     } else if (Array.isArray(router.before)) {
-      routes = router.before
-        .reduce((routes, route) => {
-          routes.push(...(Array.isArray(route) ? route : route ? [route] : []));
-          return routes;
-        }, [])
-        .filter((route) => !!route);
+      routes = router.before;
     } else if (!router.before && toggles) {
       routes = initTogglesBeforeRoutes();
     }
-    router.before = routes;
+    router.before = routes
+      .reduce((routes, route) => {
+        routes.push(...(Array.isArray(route) ? route : route ? [route] : []));
+        return routes;
+      }, [])
+      .filter((route) => !!route);
   }
 
   function initTogglesBeforeRoutes() {
-    const routes = [...cds.middlewares.before];
-    const featureToggleMiddleware = function (req, _, next) {
-      req.features ??= cds.context?.features;
+    function cov2ap_toggles(req, _, next) {
+      if (!req.features && cds.context?.features) {
+        req.features = cds.context?.features;
+      }
       next();
-    };
+    }
+    const routes = [...cds.middlewares.before];
     const ctxModelIndex = routes.findIndex((mw) => mw.factory === cds.middlewares.ctx_model);
     if (ctxModelIndex !== -1) {
-      routes.splice(ctxModelIndex, 0, featureToggleMiddleware);
+      routes.splice(ctxModelIndex, 0, cov2ap_toggles);
     } else {
-      routes.push(featureToggleMiddleware);
+      routes.push(cov2ap_toggles);
     }
     return routes;
   }

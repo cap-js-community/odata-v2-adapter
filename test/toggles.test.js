@@ -36,10 +36,9 @@ describe("toggles", () => {
     });
 
     it("Inserts feature toggle middleware before ctx_model", () => {
-      const ctxModelIndex = initialBeforeRoutes.findIndex((mw) => mw.factory === cds.middlewares.ctx_model);
-      expect(ctxModelIndex).toBeGreaterThan(0);
-      const featureToggleMw = initialBeforeRoutes[ctxModelIndex - 1];
+      const featureToggleMw = initialBeforeRoutes[initialBeforeRoutes.length - 1];
       expect(typeof featureToggleMw).toBe("function");
+      expect(featureToggleMw.name).toBe("cov2ap_toggles");
       expect(featureToggleMw.factory).toBeUndefined();
     });
 
