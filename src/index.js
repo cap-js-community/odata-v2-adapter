@@ -201,6 +201,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {boolean} [options.excludeNonSelectedKeys] Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is 'false'.
  * @param {Object} [options.httpAgent] Object to be passed to http(s).request (see Node's https agent and http agent objects). Default is 'null'.
  * @param {boolean} [options.jsonDateOffset] JSON date serialization includes timezone offset. Default is 'true'.
+ * @param {boolean} [options.toggles] Applies CDS before middlewares and feature toggle middleware, to propagate CDS toggles into `req.features`. Default is `false`.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
  */
 function cov2ap(options = {}) {
@@ -290,6 +291,7 @@ function cov2ap(options = {}) {
   const excludeNonSelectedKeys = optionWithFallback("excludeNonSelectedKeys", false);
   const httpAgent = optionWithFallback("httpAgent", undefined);
   const jsonDateOffset = optionWithFallback("jsonDateOffset", true);
+  const toggles = optionWithFallback("toggles", false);
 
   if (cds.env.protocols) {
     cds.env.protocols["odata-v2"] = {
@@ -739,19 +741,36 @@ function cov2ap(options = {}) {
     }
   }
 
-  function normalizeBeforeRoutes() {
+  function initBeforeRoutes() {
+    let routes = [];
     if (typeof router.before === "function") {
-      router.before = [router.before];
+      routes = [router.before];
     } else if (Array.isArray(router.before)) {
-      router.before = router.before
+      routes = router.before
         .reduce((routes, route) => {
           routes.push(...(Array.isArray(route) ? route : route ? [route] : []));
           return routes;
         }, [])
         .filter((route) => !!route);
-    } else {
-      router.before = [];
+    } else if (!router.before && toggles) {
+      routes = initTogglesBeforeRoutes();
     }
+    router.before = routes;
+  }
+
+  function initTogglesBeforeRoutes() {
+    const routes = [...cds.middlewares.before];
+    const featureToggleMiddleware = function (req, _, next) {
+      req.features ??= cds.context?.features;
+      next();
+    };
+    const ctxModelIndex = routes.findIndex((mw) => mw.factory === cds.middlewares.ctx_model);
+    if (ctxModelIndex !== -1) {
+      routes.splice(ctxModelIndex, 0, featureToggleMiddleware);
+    } else {
+      routes.push(featureToggleMiddleware);
+    }
+    return routes;
   }
 
   function routeBeforeRequest(req, res, next) {
@@ -780,7 +799,7 @@ function cov2ap(options = {}) {
   }
 
   function bindRoutes() {
-    normalizeBeforeRoutes();
+    initBeforeRoutes();
     const wildcard = express.application.del ? "*" : "{*splat}";
     router.use(`/${path}`, routeBeforeRequest);
     router.use(`/${path}`, routeInitRequest);

@@ -88,6 +88,7 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **excludeNonSelectedKeys**: Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is `false`.
 - **httpAgent**: Object to be passed to http(s) request (see Node's https agent and http agent objects). Default is `null`.
 - **jsonDateOffset**: JSON date serialization includes timezone offset. Default is `true`.
+- **toggles**: Applies CDS before middlewares and feature toggle middleware, to propagate CDS toggles into `req.features`. Default is `false`.
 
 ### CDS Env
 

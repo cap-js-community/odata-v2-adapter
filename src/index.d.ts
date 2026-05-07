@@ -187,7 +187,7 @@ type Options = {
   registerOnListening?: boolean | true;
 
   /**
-   * Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is `false`.
+   * Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is false.
    */
   excludeNonSelectedKeys?: boolean | false;
 
@@ -197,7 +197,12 @@ type Options = {
   httpAgent?: object | null;
 
   /**
-   * JSON date serialization includes timezone offset. Default is `true`.
+   * JSON date serialization includes timezone offset. Default is true.
    */
   jsonDateOffset?: boolean | true;
+
+  /**
+   * Applies CDS before middlewares and feature toggle middleware, to propagate CDS toggles into `req.features`. Default is false.
+   */
+  toggles?: boolean | false;
 };

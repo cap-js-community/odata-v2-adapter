@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Support `cds.middlewares.before` in adapter before middlewares
 
+### Added
+
+- Adapter option `cds.cov2ap.toggles: true` propagates CDS toggles into OData V2 request (applying `cds.middlewares.before`)
+
 ## Version 1.15.11 - 2026-05-06
 
 ### Fixed
