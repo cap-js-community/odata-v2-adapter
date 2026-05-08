@@ -5255,6 +5255,7 @@ function cov2ap(options = {}) {
     });
   }
 
+  router.router = router;
   return router;
 }
 
