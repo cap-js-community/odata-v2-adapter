@@ -355,6 +355,9 @@ OData V2 adapter for CDS supports multitenant scenarios. Basic extensibility is 
 [CDS MTX](https://www.npmjs.com/package/@sap/cds-mtx) module. More advanced extensibility scenarios and feature toggles
 are supported in combination with the [CDS Streamlined MTX services](https://www.npmjs.com/package/@sap/cds-mtxs).
 
+Out-of-the-box feature toggle support can be activated via adapter option: `cds.cov2ap.toggles: true`.
+When active, CDS before middlewares are automatically applied and feature toggle middleware propagates CDS toggles into `req.features`.
+
 To provide the feature toggle vector to be used to build up the corresponding `CSN` and `EDMX` metadata documents,
 the Express request object `req` needs to enhance by feature definitions.
 To add support for a specific feature toggles management, you can add simple Express middleware as follows, for example, in your `server.js`:
