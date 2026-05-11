@@ -355,12 +355,35 @@ OData V2 adapter for CDS supports multitenant scenarios. Basic extensibility is 
 [CDS MTX](https://www.npmjs.com/package/@sap/cds-mtx) module. More advanced extensibility scenarios and feature toggles
 are supported in combination with the [CDS Streamlined MTX services](https://www.npmjs.com/package/@sap/cds-mtxs).
 
-Out-of-the-box feature toggle support can be activated via adapter option: `cds.cov2ap.toggles: true`.
-When active, CDS before middlewares are automatically applied and feature toggle middleware propagates CDS toggles into `req.features`.
+Ensure that `cds.xt.ModelProviderService` is served internally, to allow extended CSN and EDMX retrieval.
+
+#### Out-of-the-box Feature Toggles
+
+Out-of-the-box Feature Toggles support can be activated via adapter option `cds.cov2ap.toggles: true`.
+When active, all CDS before middlewares (`cds.middlewares.before`) are automatically applied to `cds.cov2ap.before`
+and in addition another feature toggle middleware propagates CDS feature toggles `cds.context.features` into `req.features` of OData V2 request.
+
+For production scenarios, a custom feature toggle middleware can be registered to fill `cds.context.features`
+as follows on CDS boostrap, which is respected also by this module.
+
+```js
+const cds = require("@sap/cds");
+cds.middlewares.add(
+  (req, res, next) => {
+    if (cds.context.tenant === "t1") {
+      cds.context.features = ["advanced"];
+    }
+    next();
+  },
+  { before: "ctx_model" },
+);
+```
+
+#### Custom Feature Toggles
 
 To provide the feature toggle vector to be used to build up the corresponding `CSN` and `EDMX` metadata documents,
-the Express request object `req` needs to enhance by feature definitions.
-To add support for a specific feature toggles management, you can add simple Express middleware as follows, for example, in your `server.js`:
+the Express request object `req` needs to enhance by feature definitions. To add support for a specific feature toggles management,
+you can add simple Express middleware as follows, for example, in your `server.js`:
 
 ```js
 const cds = require("@sap/cds");
@@ -373,8 +396,6 @@ cds.on(
     }),
 );
 ```
-
-Ensure that `cds.xt.ModelProviderService` is served internally, to allow extended CSN and EDMX retrieval.
 
 If features are tenant-specific, apply the CDS before middlewares, so that `cds.context.tenant` is accessible:
 
