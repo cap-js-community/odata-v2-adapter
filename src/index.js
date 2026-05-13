@@ -422,15 +422,14 @@ function cov2ap(options = {}) {
             jwtBody = decodeJwtTokenBody(token);
             req.user = {
               id: jwtBody.user_name || jwtBody.client_id,
-            };
-            req.tenant = jwtBody.zid;
-            if (!req.authInfo) {
-              req.authInfo = {
+              authInfo: {
                 getSubdomain: () => {
                   return jwtBody.ext_attr && jwtBody.ext_attr.zdn;
                 },
-              };
-            }
+              },
+            };
+            req.tenant = jwtBody.zid;
+            req.authInfo ??= req.user.authInfo;
             break;
         }
       }
