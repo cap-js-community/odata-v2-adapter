@@ -2161,14 +2161,12 @@ describe("main", () => {
           additionalTargets: [
             "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
           ],
-          ContentID: "2",
         },
       ],
       message: "An Warning occurred",
       severity: expect.stringMatching(/info|warning/),
       target: "Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name",
       additionalTargets: ["Header(ID=guid'1b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description"],
-      ContentID: "1",
     });
   });
 
@@ -2468,14 +2466,12 @@ describe("main", () => {
           severity: expect.stringMatching(/info|warning/),
           target: "Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/description",
           additionalTargets: ["Items(ID=guid'2b750773-bb1b-4565-8a33-79c99440e4e8',IsActiveEntity=false)/name"],
-          ContentID: "2",
         },
       ],
       message: "An Warning occurred",
       severity: expect.stringMatching(/info|warning/),
       target: `Header(ID=guid'${id}',IsActiveEntity=false)/name`,
       additionalTargets: [`Header(ID=guid'${id}',IsActiveEntity=false)/description`],
-      ContentID: "1",
     });
   });
 

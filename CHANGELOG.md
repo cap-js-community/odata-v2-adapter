@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Propagate subdomain to logs (if available)
+- Align `sap-message` header with the specification
 
 ## Version 1.15.12 - 2026-05-08
 

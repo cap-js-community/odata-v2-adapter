@@ -3267,13 +3267,16 @@ function cov2ap(options = {}) {
     } else if (message.target === undefined && messageTargetDefault) {
       message.target = messageTargetDefault;
     }
-    if (Array.isArray(message["@Common.additionalTargets"])) {
-      message.additionalTargets = message["@Common.additionalTargets"].map((messageTarget) => {
+    if (Array.isArray(message["@Common.additionalTargets"]) || Array.isArray(message["additionalTargets"])) {
+      message.additionalTargets = [
+        ...(message["@Common.additionalTargets"] || []),
+        ...(message["additionalTargets"] || []),
+      ].map((messageTarget) => {
         return convertMessageTarget(messageTarget, req, definition);
       });
     }
     delete message["@Common.additionalTargets"];
-    contentID = message["@Core.ContentID"] || contentID;
+    contentID = message["@Core.ContentID"] || message.ContentID || contentID;
     message.ContentID = contentID;
     delete message["@Core.ContentID"];
     if (Array.isArray(message.details)) {

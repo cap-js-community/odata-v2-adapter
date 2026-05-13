@@ -222,19 +222,17 @@ module.exports = (srv) => {
     const info1 = new Error("This is a warning");
     info1.code = "WARN01";
     info1.target = `Header(ID=${req.params[0].ID},IsActiveEntity=false)/name`;
-    info1["@Common.additionalTargets"] = [`Header(ID=${req.params[0].ID},IsActiveEntity=false)/description`];
+    info1["additionalTargets"] = [`Header(ID=${req.params[0].ID},IsActiveEntity=false)/description`];
     info1.message = "An Warning occurred";
     info1.numericSeverity = 3;
-    info1["@Core.ContentID"] = "1";
     req.info(info1);
 
     const info2 = new Error("This is another warning");
     info2.code = "WARN02";
     info2.target = "Items(ID=2b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/description";
-    info2["@Common.additionalTargets"] = ["Items(ID=2b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name"];
+    info2["additionalTargets"] = ["Items(ID=2b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name"];
     info2.message = "Another Warning occurred";
     info2.numericSeverity = 3;
-    info2["@Core.ContentID"] = "2";
     req.info(info2);
 
     return {
@@ -508,24 +506,20 @@ module.exports = (srv) => {
     const info1 = new Error("This is a warning");
     info1.code = "WARN01";
     info1.target = "Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name";
-    info1["@Common.additionalTargets"] = [
-      "Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/description",
-    ];
+    info1["additionalTargets"] = ["Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/description"];
     info1.message = "An Warning occurred";
     info1.numericSeverity = 3;
-    info1["@Core.ContentID"] = "1";
     req.info(info1);
 
     const info2 = new Error("This is another warning");
     info2.code = "WARN02";
     info2.target =
       "Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/Items(ID=2b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/description";
-    info2["@Common.additionalTargets"] = [
+    info2["additionalTargets"] = [
       "Header(ID=1b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/Items(ID=2b750773-bb1b-4565-8a33-79c99440e4e8,IsActiveEntity=false)/name",
     ];
     info2.message = "Another Warning occurred";
     info2.numericSeverity = 3;
-    info2["@Core.ContentID"] = "2";
     req.info(info2);
 
     return {
