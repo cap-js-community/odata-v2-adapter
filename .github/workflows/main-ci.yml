@@ -4,7 +4,6 @@
 name: Main CI
 permissions:
   contents: read
-  pull-requests: write
 
 # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push
 on:

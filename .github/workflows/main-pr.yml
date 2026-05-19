@@ -4,7 +4,6 @@
 name: Main PR
 permissions:
   contents: read
-  pull-requests: write
 
 # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
 on:
