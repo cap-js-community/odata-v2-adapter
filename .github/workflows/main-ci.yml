@@ -14,12 +14,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    environment: default
     strategy:
       matrix:
         node-version: [20, 22, 24]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     name: test - node.js ${{ matrix.node-version }}
     steps:
       - uses: actions/checkout@v6

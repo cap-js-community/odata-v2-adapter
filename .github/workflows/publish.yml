@@ -12,6 +12,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: default
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
