@@ -14,7 +14,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: default
     strategy:
       matrix:
         node-version: [20, 22, 24]
