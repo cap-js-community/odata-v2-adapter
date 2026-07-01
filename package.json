@@ -4,7 +4,7 @@
   "description": "OData V2 adapter for CDS",
   "homepage": "https://cap.cloud.sap/",
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "author": "Oliver Klemenz <oliver.klemenz@sap.com>, Richard Lindner <richard.lindner@sap.com>",
   "keywords": [
@@ -32,15 +32,16 @@
     "start:hana:debug": "CDS_LOG_LEVELS_COV2AP=debug npm run start:hana",
     "start:postgres": "npm start --prefix=./test-postgres/_env",
     "start:postgres:debug": "CDS_LOG_LEVELS_COV2AP=debug npm start --prefix=./test-postgres/_env",
-    "test": "jest --selectProjects sqlite hana",
+    "jest": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "npm run jest -- --selectProjects sqlite hana",
     "test:update": "npm test -- -u",
     "test:debug": "CDS_LOG_LEVELS_COV2AP=debug npm run test",
     "test:external": "npm run test:sqlite -- --config=jest.external.config.js",
-    "test:sqlite": "jest --selectProjects sqlite --collectCoverage=false",
+    "test:sqlite": "npm run jest -- --selectProjects sqlite --collectCoverage=false",
     "test:sqlite:file": "CDS_ENV=testdb npm run test:sqlite",
-    "test:hana": "jest --selectProjects hana --collectCoverage=false",
-    "test:postgres": "jest --selectProjects postgres --collectCoverage=false",
-    "test:all": "jest --selectProjects sqlite hana postgres",
+    "test:hana": "npm run jest -- --selectProjects hana --collectCoverage=false",
+    "test:postgres": "npm run jest -- --selectProjects postgres --collectCoverage=false",
+    "test:all": "npm run jest -- --selectProjects sqlite hana postgres",
     "build:unit": "npm run build --prefix=./test/_env",
     "build:hana": "npm run build --prefix=./test-hana/_env",
     "build:postgres": "npm run build --prefix=./test-postgres/_env",
@@ -62,8 +63,8 @@
     "body-parser-xml": "^2.0.5",
     "express": "^4.22.1 || ^5.2.1",
     "express-fileupload": "^1.5.2",
-    "http-proxy-middleware": "^3.0.5",
-    "node-fetch": "^2.7.0",
+    "http-proxy-middleware": "^4.1.1",
+    "node-fetch": "^3.3.2",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {

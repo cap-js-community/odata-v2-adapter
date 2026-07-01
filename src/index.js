@@ -9,15 +9,19 @@ const fs = require("fs");
 const fsPath = require("path");
 const URL = require("url");
 const { pipeline } = require("stream/promises");
-const fetch = require("node-fetch");
 const express = require("express");
 const expressFileUpload = require("express-fileupload");
 const cds = require("@sap/cds");
 const { promisify } = require("util");
-const { HttpProxyMiddleware } = require("http-proxy-middleware/dist/http-proxy-middleware");
 const bodyParser = require("body-parser");
 require("body-parser-xml")(bodyParser);
 const xml2js = require("xml2js");
+
+const httpProxyMiddlewarePromise = import("http-proxy-middleware");
+const nodeFetchImport = import("node-fetch").then((module) => module.default);
+async function fetch(...args) {
+  return (cov2ap._fetch || (await nodeFetchImport))(...args);
+}
 
 const xmlParser = new xml2js.Parser({
   async: false,
@@ -809,25 +813,31 @@ function cov2ap(options = {}) {
   }
 
   function createHttpProxyMiddleware() {
-    const routeMiddleware = new HttpProxyMiddleware({
-      agent: httpAgent,
-      target: `${target}${rewritePath}`,
-      changeOrigin: true,
-      selfHandleResponse: true,
-      on: {
-        error: convertProxyError,
-        proxyReq: convertProxyRequest,
-        proxyRes: convertProxyResponse,
-      },
-      logger: cds.log("cov2ap/hpm"),
+    let middleware;
+    const middlewarePromise = httpProxyMiddlewarePromise.then(({ createProxyMiddleware }) => {
+      middleware = createProxyMiddleware({
+        agent: httpAgent,
+        target: `${target}${rewritePath}`,
+        changeOrigin: true,
+        selfHandleResponse: true,
+        router: (req, _res, options) => {
+          options.agent = req.agent || httpAgent;
+        },
+        on: {
+          error: convertProxyError,
+          proxyReq: convertProxyRequest,
+          proxyRes: convertProxyResponse,
+        },
+        logger: cds.log("cov2ap/hpm"),
+      });
+      return middleware;
     });
-    const basePrepareProxyRequest = routeMiddleware.prepareProxyRequest;
-    routeMiddleware.prepareProxyRequest = async function (req) {
-      const newProxyOptions = await basePrepareProxyRequest(req);
-      newProxyOptions.agent ??= req.agent || httpAgent;
-      return newProxyOptions;
+    return (req, res, next) => {
+      if (middleware) {
+        return middleware(req, res, next);
+      }
+      middlewarePromise.then((mw) => mw(req, res, next)).catch(next);
     };
-    return routeMiddleware.middleware;
   }
 
   if (registerOnListening) {

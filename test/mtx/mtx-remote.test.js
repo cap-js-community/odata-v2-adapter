@@ -3,8 +3,8 @@
 const cds = require("@sap/cds");
 const supertest = require("supertest");
 
-const fetch = require("node-fetch");
-jest.mock("node-fetch", () => jest.fn());
+const cov2ap = require("../../src");
+const fetch = (cov2ap._fetch = jest.fn());
 
 const util = require("../_env/util/request");
 
