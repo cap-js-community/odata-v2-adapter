@@ -17,7 +17,7 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == github.repository
     strategy:
       matrix:
-        node-version: [20, 22, 24]
+        node-version: [22, 24]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     name: test - node.js ${{ matrix.node-version }}
     steps:
@@ -36,7 +36,7 @@ jobs:
     if: github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       matrix:
-        node-version: [20, 22, 24]
+        node-version: [22, 24]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     name: test - node.js ${{ matrix.node-version }}
