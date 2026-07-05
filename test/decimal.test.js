@@ -7,6 +7,8 @@ cds.test(__dirname + "/_env");
 
 cds.env.cov2ap.ieee754Compatible = false;
 
+let request;
+
 describe("decimal", () => {
   beforeAll(async () => {
     await global._init;

@@ -3,8 +3,14 @@
 const cds = require("@sap/cds");
 const supertest = require("supertest");
 
-const fetch = require("node-fetch");
-jest.mock("node-fetch", () => jest.fn());
+const nodeFetchPath = require.resolve("node-fetch");
+const fetch = vi.fn();
+require.cache[nodeFetchPath] = {
+  id: nodeFetchPath,
+  filename: nodeFetchPath,
+  loaded: true,
+  exports: fetch,
+};
 
 const util = require("../_env/util/request");
 

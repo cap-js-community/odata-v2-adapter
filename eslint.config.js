@@ -4,7 +4,7 @@ const globals = require("globals");
 const js = require("@eslint/js");
 
 const nodePlugin = require("eslint-plugin-n");
-const jestPlugin = require("eslint-plugin-jest");
+const vitestPlugin = require("@vitest/eslint-plugin");
 const configPrettier = require("eslint-config-prettier");
 // const typescriptPlugin = require("typescript-eslint");
 
@@ -16,7 +16,7 @@ module.exports = [
   },
   js.configs.recommended,
   nodePlugin.configs["flat/recommended-script"],
-  jestPlugin.configs["flat/recommended"],
+  vitestPlugin.configs.recommended,
   configPrettier,
   /*...typescriptPlugin.configs["recommended"].map((config) => {
     return {
@@ -66,8 +66,8 @@ module.exports = [
       "n/no-unpublished-require": ["off"],
       "n/no-unsupported-features/node-builtins": ["off"],
       "n/no-deprecated-api": ["off"],
-      "jest/no-conditional-expect": ["off"],
-      "jest/no-disabled-tests": ["off"],
+      "vitest/no-conditional-expect": ["off"],
+      "vitest/no-disabled-tests": ["off"],
       "@typescript-eslint/no-unused-vars": ["off"],
       "@typescript-eslint/no-var-requires": ["off"],
     },

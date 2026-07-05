@@ -6,7 +6,7 @@ const supertest = require("supertest");
 const util = require("./_env/util/request");
 
 process.env.CDS_LOG_LEVELS_COV2AP = "debug";
-const consoleDebugSpy = jest.spyOn(global.console, "debug");
+const consoleDebugSpy = vi.spyOn(global.console, "debug");
 consoleDebugSpy.mockImplementation(() => {});
 
 cds.test(__dirname + "/_env");
@@ -55,7 +55,7 @@ describe("auth", () => {
   });
 
   it("GET $metadata invalid auth", async () => {
-    const consoleSpy = jest.spyOn(console, "error");
+    const consoleSpy = vi.spyOn(console, "error");
     let response = await util.callRead(request, "/odata/v2/auth/$metadata", {
       accept: "application/xml",
       Authorization: "Bearer xyz",
@@ -74,7 +74,7 @@ describe("auth", () => {
   });
 
   it("GET service root invalid auth", async () => {
-    const consoleSpy = jest.spyOn(console, "error");
+    const consoleSpy = vi.spyOn(console, "error");
     let response = await util.callRead(request, "/odata/v2/auth/", {
       accept: "application/xml",
       Authorization: "Bearer xyz",

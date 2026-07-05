@@ -1,5 +1,5 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`rest GET $metadata 1`] = `"Service is not exposed as OData V2 protocol"`;
+exports[`rest > GET $metadata 1`] = `"Service is not exposed as OData V2 protocol"`;
 
-exports[`rest GET data 1`] = `"Service is not exposed as OData V2 protocol"`;
+exports[`rest > GET data 1`] = `"Service is not exposed as OData V2 protocol"`;
