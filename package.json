@@ -76,7 +76,7 @@
     "@sap/cds": "^10.0.3",
     "@sap/cds-dk": "^10.0.3",
     "@types/express": "^5.0.6",
-    "@vitest/coverage-v8": "^4.1.9",
+    "@vitest/coverage-v8": "^4.1.10",
     "@vitest/eslint-plugin": "^1.6.21",
     "compression": "^1.8.1",
     "eslint": "^10.6.0",
@@ -86,7 +86,7 @@
     "supertest": "^7.2.2",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.62.1",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10"
   },
   "license": "Apache-2.0",
   "repository": {
