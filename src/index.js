@@ -814,7 +814,7 @@ function cov2ap(options = {}) {
       target: `${target}${rewritePath}`,
       changeOrigin: true,
       selfHandleResponse: true,
-      router: (req, _res, options) => {
+      router: (req, res, options) => {
         options.agent = req.agent || httpAgent;
       },
       on: {
