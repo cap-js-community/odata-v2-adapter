@@ -3012,12 +3012,10 @@ function cov2ap(options = {}) {
             resContentIdOrder,
             ProcessingDirection.Response,
           );
-          if (
-            !(
-              req.contentIdOrder.length === resContentIdOrder.length &&
-              req.contentIdOrder.every((contentId, index) => contentId === resContentIdOrder[index])
-            )
-          ) {
+          if (!(
+            req.contentIdOrder.length === resContentIdOrder.length &&
+            req.contentIdOrder.every((contentId, index) => contentId === resContentIdOrder[index])
+          )) {
             log(req, changesetDeviationLogLevel, "Batch", "Changeset order deviation", {
               req: req.contentIdOrder,
               res: resContentIdOrder,

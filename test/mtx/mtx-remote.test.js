@@ -3,8 +3,14 @@
 const cds = require("@sap/cds");
 const supertest = require("supertest");
 
-const cov2ap = require("../../src");
-const fetch = (cov2ap._fetch = jest.fn());
+const nodeFetchPath = require.resolve("node-fetch");
+const fetch = vi.fn();
+require.cache[nodeFetchPath] = {
+  id: nodeFetchPath,
+  filename: nodeFetchPath,
+  loaded: true,
+  exports: fetch,
+};
 
 const util = require("../_env/util/request");
 

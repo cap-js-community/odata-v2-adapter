@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`hana-main GET $metadata 1`] = `
+exports[`hana-main > GET $metadata 1`] = `
 "<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
   <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
@@ -376,7 +376,7 @@ exports[`hana-main GET $metadata 1`] = `
 </edmx:Edmx>"
 `;
 
-exports[`hana-main GET with parameters (header - full circle) - parameters 1`] = `
+exports[`hana-main > GET with parameters (header - full circle) - parameters 1`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -394,7 +394,7 @@ exports[`hana-main GET with parameters (header - full circle) - parameters 1`] =
 }
 `;
 
-exports[`hana-main GET with parameters (header - full circle) - parameters 2`] = `
+exports[`hana-main > GET with parameters (header - full circle) - parameters 2`] = `
 {
   "d": {
     "results": [
@@ -428,7 +428,7 @@ exports[`hana-main GET with parameters (header - full circle) - parameters 2`] =
 }
 `;
 
-exports[`hana-main GET with parameters (header - full circle) - parameters 3`] = `
+exports[`hana-main > GET with parameters (header - full circle) - parameters 3`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -458,7 +458,7 @@ exports[`hana-main GET with parameters (header - full circle) - parameters 3`] =
 }
 `;
 
-exports[`hana-main GET with parameters (header - full circle) - parameters 4`] = `
+exports[`hana-main > GET with parameters (header - full circle) - parameters 4`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -476,7 +476,7 @@ exports[`hana-main GET with parameters (header - full circle) - parameters 4`] =
 }
 `;
 
-exports[`hana-main GET with parameters (header - full circle) - set 1`] = `
+exports[`hana-main > GET with parameters (header - full circle) - set 1`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -494,7 +494,7 @@ exports[`hana-main GET with parameters (header - full circle) - set 1`] = `
 }
 `;
 
-exports[`hana-main GET with parameters (header - full circle) - set 2`] = `
+exports[`hana-main > GET with parameters (header - full circle) - set 2`] = `
 {
   "d": {
     "results": [
@@ -528,7 +528,7 @@ exports[`hana-main GET with parameters (header - full circle) - set 2`] = `
 }
 `;
 
-exports[`hana-main GET with parameters (header - full circle) - set 3`] = `
+exports[`hana-main > GET with parameters (header - full circle) - set 3`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -558,7 +558,7 @@ exports[`hana-main GET with parameters (header - full circle) - set 3`] = `
 }
 `;
 
-exports[`hana-main GET with parameters (header - full circle) - set 4`] = `
+exports[`hana-main > GET with parameters (header - full circle) - set 4`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -576,7 +576,7 @@ exports[`hana-main GET with parameters (header - full circle) - set 4`] = `
 }
 `;
 
-exports[`hana-main GET with parameters (union header - full circle) - set 1`] = `
+exports[`hana-main > GET with parameters (union header - full circle) - set 1`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -594,7 +594,7 @@ exports[`hana-main GET with parameters (union header - full circle) - set 1`] = 
 }
 `;
 
-exports[`hana-main GET with parameters (union header - full circle) - set 2`] = `
+exports[`hana-main > GET with parameters (union header - full circle) - set 2`] = `
 {
   "d": {
     "results": [
@@ -628,7 +628,7 @@ exports[`hana-main GET with parameters (union header - full circle) - set 2`] = 
 }
 `;
 
-exports[`hana-main GET with parameters (union header - full circle) - set 3`] = `
+exports[`hana-main > GET with parameters (union header - full circle) - set 3`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",
@@ -658,7 +658,7 @@ exports[`hana-main GET with parameters (union header - full circle) - set 3`] = 
 }
 `;
 
-exports[`hana-main GET with parameters (union header - full circle) - set 4`] = `
+exports[`hana-main > GET with parameters (union header - full circle) - set 4`] = `
 {
   "d": {
     "CURRENCY_PARAM": "EUR",

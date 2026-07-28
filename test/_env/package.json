@@ -14,7 +14,8 @@
     "@cap-js-community/odata-v2-adapter": "../../"
   },
   "devDependencies": {
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.2",
+    "@cap-js/sqlite": "*"
   },
   "cds": {
     "odata": {

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`main Entity with key including reserved/escaped uri characters 1`] = `
+exports[`main > Entity with key including reserved/escaped uri characters 1`] = `
 {
   "results": [
     {
@@ -231,7 +231,7 @@ exports[`main Entity with key including reserved/escaped uri characters 1`] = `
 }
 `;
 
-exports[`main Entity with string uuid key 1`] = `
+exports[`main > Entity with string uuid key 1`] = `
 {
   "results": [
     {
@@ -254,7 +254,7 @@ exports[`main Entity with string uuid key 1`] = `
 }
 `;
 
-exports[`main GET $metadata 1`] = `
+exports[`main > GET $metadata 1`] = `
 "<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
   <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
@@ -1806,7 +1806,7 @@ exports[`main GET $metadata 1`] = `
 </edmx:Edmx>"
 `;
 
-exports[`main GET $metadata etag 1`] = `
+exports[`main > GET $metadata etag 1`] = `
 "<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
   <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
@@ -3358,7 +3358,7 @@ exports[`main GET $metadata etag 1`] = `
 </edmx:Edmx>"
 `;
 
-exports[`main GET $metadata etag 2`] = `
+exports[`main > GET $metadata etag 2`] = `
 "<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
   <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
@@ -4910,7 +4910,7 @@ exports[`main GET $metadata etag 2`] = `
 </edmx:Edmx>"
 `;
 
-exports[`main GET $metadata localized 1`] = `
+exports[`main > GET $metadata localized 1`] = `
 "<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
   <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
@@ -6462,7 +6462,7 @@ exports[`main GET $metadata localized 1`] = `
 </edmx:Edmx>"
 `;
 
-exports[`main GET $metadata localized 2`] = `
+exports[`main > GET $metadata localized 2`] = `
 "<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
   <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
@@ -8014,7 +8014,7 @@ exports[`main GET $metadata localized 2`] = `
 </edmx:Edmx>"
 `;
 
-exports[`main GET $metadata with propagated headers 1`] = `
+exports[`main > GET $metadata with propagated headers 1`] = `
 "<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
   <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
@@ -9566,7 +9566,7 @@ exports[`main GET $metadata with propagated headers 1`] = `
 </edmx:Edmx>"
 `;
 
-exports[`main GET $metadata with query options 1`] = `
+exports[`main > GET $metadata with query options 1`] = `
 "<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
   <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
@@ -11118,7 +11118,7 @@ exports[`main GET $metadata with query options 1`] = `
 </edmx:Edmx>"
 `;
 
-exports[`main GET service JSON format 1`] = `
+exports[`main > GET service JSON format 1`] = `
 [
   "Book",
   "Country",
@@ -11158,7 +11158,7 @@ exports[`main GET service JSON format 1`] = `
 ]
 `;
 
-exports[`main GET service JSON format 2`] = `
+exports[`main > GET service JSON format 2`] = `
 [
   "Book",
   "Country",
@@ -11198,7 +11198,7 @@ exports[`main GET service JSON format 2`] = `
 ]
 `;
 
-exports[`main GET service JSON format 3`] = `
+exports[`main > GET service JSON format 3`] = `
 [
   "Book",
   "Country",
