@@ -12,7 +12,7 @@ module.exports = defineConfig({
   test: {
     globals: true,
     clearMocks: true,
-    testTimeout: 30000, // replaces jest.setup.js -> jest.setTimeout(30000)
+    testTimeout: 30000,
     hookTimeout: 30000,
     reporters: ["default"],
     pool: "forks",

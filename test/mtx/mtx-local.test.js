@@ -54,19 +54,19 @@ cds.mtx = {
   events: {
     TENANT_UPDATED: "TENANT_UPDATED",
   },
-  getCsn: jest.fn(async () => {
+  getCsn: vi.fn(async () => {
     if (errorCsn) {
       throw new Error("MTX getCsn Error");
     }
     return csn;
   }),
-  getEdmx: jest.fn(async () => {
+  getEdmx: vi.fn(async () => {
     if (errorEdmx) {
       throw new Error("MTX getEdmx Error");
     }
     return edmx;
   }),
-  isExtended: jest.fn(async () => {
+  isExtended: vi.fn(async () => {
     if (errorExtended) {
       throw new Error("MTX isExtended Error");
     }
@@ -99,7 +99,7 @@ describe("mtx", () => {
   });
 
   it("MTX $metadata error resilient", async () => {
-    const consoleSpy = jest.spyOn(console, "error");
+    const consoleSpy = vi.spyOn(console, "error");
 
     cds.env.requires.multitenancy = true;
     cds.env.requires.auth.users.alice.tenant = "t1";
