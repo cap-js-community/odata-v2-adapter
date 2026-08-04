@@ -51,13 +51,13 @@ function clearCache() {
 }
 
 cds.services["cds.xt.ModelProviderService"] = {
-  getCsn: jest.fn(async () => {
+  getCsn: vi.fn(async () => {
     return csn;
   }),
-  getEdmx: jest.fn(async () => {
+  getEdmx: vi.fn(async () => {
     return edmx;
   }),
-  isExtended: jest.fn(async () => {
+  isExtended: vi.fn(async () => {
     return true;
   }),
 };

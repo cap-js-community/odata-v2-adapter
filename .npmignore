@@ -11,6 +11,4 @@ test-postgres/
 .prettierignore
 .prettierrc.yml
 CONTRIBUTING.md
-jest.config.js
-jest.external.config.js
-jest.setup.js
+vi.config.js
