@@ -1,10 +1,10 @@
 {
   "name": "@cap-js-community/odata-v2-adapter",
-  "version": "1.16.2",
+  "version": "1.17.0",
   "description": "OData V2 adapter for CDS",
   "homepage": "https://cap.cloud.sap/",
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "author": "Oliver Klemenz <oliver.klemenz@sap.com>, Richard Lindner <richard.lindner@sap.com>",
   "keywords": [
@@ -62,8 +62,8 @@
     "body-parser-xml": "^2.0.5",
     "express": "^4.22.2 || ^5.2.1",
     "express-fileupload": "^1.5.2",
-    "http-proxy-middleware": "^3.0.7",
-    "node-fetch": "^2.7.0",
+    "http-proxy-middleware": "^4.2.0",
+    "node-fetch": "^3.3.2",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {

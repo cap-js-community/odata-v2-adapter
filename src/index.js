@@ -9,12 +9,12 @@ const fs = require("fs");
 const fsPath = require("path");
 const URL = require("url");
 const { pipeline } = require("stream/promises");
-const fetch = require("node-fetch");
+const fetch = require("node-fetch").default;
 const express = require("express");
 const expressFileUpload = require("express-fileupload");
 const cds = require("@sap/cds");
 const { promisify } = require("util");
-const { HttpProxyMiddleware } = require("http-proxy-middleware/dist/http-proxy-middleware");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 const bodyParser = require("body-parser");
 require("body-parser-xml")(bodyParser);
 const xml2js = require("xml2js");
@@ -809,11 +809,14 @@ function cov2ap(options = {}) {
   }
 
   function createHttpProxyMiddleware() {
-    const routeMiddleware = new HttpProxyMiddleware({
+    return createProxyMiddleware({
       agent: httpAgent,
       target: `${target}${rewritePath}`,
       changeOrigin: true,
       selfHandleResponse: true,
+      router: (req, res, options) => {
+        options.agent = req.agent || httpAgent;
+      },
       on: {
         error: convertProxyError,
         proxyReq: convertProxyRequest,
@@ -821,13 +824,6 @@ function cov2ap(options = {}) {
       },
       logger: cds.log("cov2ap/hpm"),
     });
-    const basePrepareProxyRequest = routeMiddleware.prepareProxyRequest;
-    routeMiddleware.prepareProxyRequest = async function (req) {
-      const newProxyOptions = await basePrepareProxyRequest(req);
-      newProxyOptions.agent ??= req.agent || httpAgent;
-      return newProxyOptions;
-    };
-    return routeMiddleware.middleware;
   }
 
   if (registerOnListening) {
