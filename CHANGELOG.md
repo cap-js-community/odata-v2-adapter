@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- tbd
+- Reduce invalid (sub-)definition log level to info
 
 ## Version 1.16.1 - 2026-08-04
 

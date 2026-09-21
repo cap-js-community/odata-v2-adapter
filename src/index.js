@@ -1670,7 +1670,7 @@ function cov2ap(options = {}) {
     return contextFromUrl(url, req);
   }
 
-  function contextFromUrl(url, req, context, suppressWarning) {
+  function contextFromUrl(url, req, context, logLevel) {
     let stop = false;
     return url.contextPath.split("/").reduce((context, part) => {
       if (stop || !part) {
@@ -1680,7 +1680,7 @@ function cov2ap(options = {}) {
       if (keyStart !== -1) {
         part = part.substring(0, keyStart);
       }
-      context = lookupContext(part, context, req, suppressWarning, url.contextPath);
+      context = lookupContext(part, context, req, logLevel, url.contextPath);
       if (!context) {
         stop = true;
       }
@@ -1688,14 +1688,14 @@ function cov2ap(options = {}) {
     }, context);
   }
 
-  function lookupContext(name, context, req, suppressWarning, path) {
+  function lookupContext(name, context, req, logLevel, path) {
     if (!name) {
       return context;
     }
     name = decodeURIComponent(name);
     if (!context) {
       if (name.startsWith("$") && req.contentId[name]) {
-        return contextFromUrl(req.contentId[name], req, undefined, suppressWarning);
+        return contextFromUrl(req.contentId[name], req, undefined, logLevel);
       } else {
         context = lookupDefinition(name, req);
         if (!context) {
@@ -1706,17 +1706,10 @@ function cov2ap(options = {}) {
         }
         enhanceParametersDefinition(context, req);
         if (!context) {
-          if (suppressWarning === "debug") {
-            logDebug(req, "Context", "Invalid definition", {
-              name,
-              path,
-            });
-          } else if (!suppressWarning) {
-            logWarn(req, "Context", "Invalid definition", {
-              name,
-              path,
-            });
-          }
+          log(req, logLevel || "info", "Context", "Invalid definition", {
+            name,
+            path,
+          });
         }
         if (context && (context.kind === "function" || context.kind === "action")) {
           req.lookupContext.operation = context;
@@ -1753,17 +1746,10 @@ function cov2ap(options = {}) {
       if (context && context.kind === "entity" && context.params && ["Set", "Parameters"].includes(name)) {
         return context;
       }
-      if (suppressWarning === "debug") {
-        logDebug(req, "Context", "Invalid sub-definition", {
-          name,
-          path,
-        });
-      } else if (!suppressWarning) {
-        logWarn(req, "Context", "Invalid sub-definition", {
-          name,
-          path,
-        });
-      }
+      log(req, logLevel || "info", "Context", "Invalid sub-definition", {
+        name,
+        path,
+      });
     }
   }
 
@@ -1849,7 +1835,7 @@ function cov2ap(options = {}) {
           name = part.substring(0, keyStart);
           keyPart = part.substring(keyStart + 1, keyEnd);
         }
-        context = lookupContext(name, context, req, false, url.contextPath);
+        context = lookupContext(name, context, req, undefined, url.contextPath);
         if (!context) {
           stop = true;
         }
@@ -2648,7 +2634,7 @@ function cov2ap(options = {}) {
           if (name === req.context.parameters.type) {
             name = req.context.parameters.entity;
           }
-          context = lookupContext(name, context, req, false, url.contextPath);
+          context = lookupContext(name, context, req, undefined, url.contextPath);
           if (!context) {
             stop = true;
           }
@@ -3333,7 +3319,7 @@ function cov2ap(options = {}) {
           },
           req,
           undefined,
-          true,
+          "debug",
         )
       ) {
         // Absolute target (no context)
@@ -3346,7 +3332,7 @@ function cov2ap(options = {}) {
           },
           req,
           context,
-          true,
+          "debug",
         )
       ) {
         // Relative target (valid context)
@@ -3362,7 +3348,7 @@ function cov2ap(options = {}) {
             },
             req,
             rootContext,
-            true,
+            "debug",
           )
         ) {
           // Relative target (composition root context)
