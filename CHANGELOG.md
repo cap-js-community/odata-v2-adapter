@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Version 1.17.0 - 2027-06-xx
+
+### Added
+
+- Include latest version of `node-fetch` and `http-proxy-middleware` via ESM
+
+### Removed
+
+- Drop Node 18 and Node 20 support. Minimum is Node 22
+
 ## Version 1.16.2 - 2026-xx-xx
 
 ### Fixed
