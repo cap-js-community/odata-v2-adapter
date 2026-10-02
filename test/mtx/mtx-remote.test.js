@@ -9,7 +9,7 @@ require.cache[nodeFetchPath] = {
   id: nodeFetchPath,
   filename: nodeFetchPath,
   loaded: true,
-  exports: fetch,
+  exports: { default: fetch },
 };
 
 const util = require("../_env/util/request");
