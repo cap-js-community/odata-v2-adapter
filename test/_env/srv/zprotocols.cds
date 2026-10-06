@@ -32,6 +32,14 @@ service AtODataAnnotationService {
 }
 
 @rest
+@odata
+@path: 'atodatamulti'
+service AtODataMultiAnnotationService {
+    entity Header     as projection on test.Header;
+    entity HeaderItem as projection on test.HeaderItem;
+}
+
+@rest
 @path: 'atrest'
 service AtRestAnnotationService {
     entity Header as projection on test.Header;

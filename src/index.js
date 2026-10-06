@@ -340,7 +340,7 @@ function cov2ap(options = {}) {
   }
 
   cds.on("serving", (service) => {
-    const isOData = isServedViaOData(service);
+    const isOData = isServedViaOData(service.definition);
     if (!isOData) {
       return;
     }
@@ -1044,9 +1044,11 @@ function cov2ap(options = {}) {
         return (typeof protocol === "string" ? protocol : protocol.kind).startsWith("odata");
       });
     }
-    const protocolDirect = Object.keys(cds.env.protocols || {}).find((protocol) => service["@" + protocol]);
-    if (protocolDirect) {
-      return protocolDirect.startsWith("odata");
+    const protocolsDirect = Object.keys(cds.env.protocols || {})
+      .concat("odata") // add 'odata' next to 'odata-v2' and 'odata-v4'
+      .filter((protocol) => service["@" + protocol]);
+    if (protocolsDirect.length > 0) {
+      return protocolsDirect.some((protocol) => protocol.startsWith("odata"));
     }
     return true;
   }
