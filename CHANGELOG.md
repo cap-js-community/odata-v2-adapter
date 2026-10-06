@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Reduce invalid (sub-)definition log level to info
+- Multiple protocol annotations like `@rest @odata` are now handled correctly.
 
 ## Version 1.16.1 - 2026-08-04
 
