@@ -662,12 +662,13 @@ function cov2ap(options = {}) {
           "content-type": "application/json",
         });
         delete postHeaders["transfer-encoding"];
+        delete postHeaders["content-length"];
+
+        const postBody = JSON.stringify(body);
 
         // Trace
         traceRequest(req, "ProxyRequest", "POST", postUrl, postHeaders, body);
 
-        const postBody = JSON.stringify(body);
-        postHeaders["content-length"] = postBody.length;
         const response = await fetch(postUrl, {
           dispatcher: getDispatcher(req.agent || httpAgent),
           method: "POST",
