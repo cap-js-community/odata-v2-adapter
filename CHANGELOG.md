@@ -9,17 +9,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Include latest version of `node-fetch` and `http-proxy-middleware` via ESM
+- Include latest version of `http-proxy-middleware` via ESM
 
 ### Removed
 
 - Drop Node 18 and Node 20 support. Minimum is Node 22
+- Replace `node-fetch` by Node native `fetch`
 
-## Version 1.16.2 - 2026-xx-xx
+## Version 1.16.2 - 2026-10-xx
 
 ### Fixed
 
 - Reduce invalid (sub-)definition log level to info
+- Multiple protocol annotations like `@rest @odata` are now handled correctly.
 
 ## Version 1.16.1 - 2026-08-04
 

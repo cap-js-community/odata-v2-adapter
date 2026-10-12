@@ -72,6 +72,8 @@ describe("CDS protocols", () => {
 
   it("service annotated with @odata", async () => expectGET(request, "/odata/v2/atodata"));
 
+  it("service annotated with @odata and @rest", async () => expectGET(request, "/odata/v2/atodatamulti"));
+
   it("reject service annotated with @rest", async () => expectRejectProtocol(request, "/odata/v2/rest/atrest"));
 
   it("service annotated with @protocol: 'odata'", async () => expectGET(request, "/odata/v2/atprotocolodata"));

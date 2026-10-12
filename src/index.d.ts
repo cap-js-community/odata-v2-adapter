@@ -192,7 +192,7 @@ type Options = {
   excludeNonSelectedKeys?: boolean | false;
 
   /**
-   * Object to be passed to http(s) request (see Node's https agent and http agent objects). Default is 'null'.
+   * Agent used for proxy fetch calls: either a Node http(s) agent or an Undici dispatcher instance. Default is 'null'.
    */
   httpAgent?: object | null;
 
