@@ -199,8 +199,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} [options.cacheMetadata] Specifies the caching and provisioning strategy of metadata (e.g., edmx) (memory, disk, stream). Default is 'memory'.
  * @param {string} [options.registerOnListening] Routes are registered on CDS `listening` event instead of registering routes immediately. Default is true.
  * @param {boolean} [options.excludeNonSelectedKeys] Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is 'false'.
- * @param {Object} [options.httpAgent] Object to be passed to http(s).request (see Node's https agent and http agent objects). Default is 'null'.
- * @param {Object} [options.undiciAgent] Undici dispatcher instance to be passed to native fetch as `dispatcher` (see Undici's Agent/ProxyAgent). Takes precedence over `httpAgent` for proxy fetch calls. Default is 'null'.
+ * @param {Object} [options.httpAgent] Agent used for proxy fetch calls: either a Node http(s) agent or an Undici dispatcher instance. Default is 'null'.
  * @param {boolean} [options.jsonDateOffset] JSON date serialization includes timezone offset. Default is 'true'.
  * @param {boolean} [options.toggles] Applies CDS before middlewares and feature toggle middleware, to propagate CDS toggles into `req.features`. Default is `false`.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
@@ -291,7 +290,6 @@ function cov2ap(options = {}) {
   const registerOnListening = optionWithFallback("registerOnListening", true);
   const excludeNonSelectedKeys = optionWithFallback("excludeNonSelectedKeys", false);
   const httpAgent = optionWithFallback("httpAgent", undefined);
-  const undiciAgent = optionWithFallback("undiciAgent", undefined);
   const jsonDateOffset = optionWithFallback("jsonDateOffset", true);
   const toggles = optionWithFallback("toggles", false);
 
@@ -470,7 +468,7 @@ function cov2ap(options = {}) {
 
       const result = await Promise.all([
         fetch(serviceUrl, {
-          dispatcher: getDispatcher(req.agent || undiciAgent || httpAgent),
+          dispatcher: getDispatcher(req.agent || httpAgent),
           method: "GET",
           headers: {
             ...propagateHeaders(req),
@@ -671,7 +669,7 @@ function cov2ap(options = {}) {
         const postBody = JSON.stringify(body);
         postHeaders["content-length"] = postBody.length;
         const response = await fetch(postUrl, {
-          dispatcher: getDispatcher(req.agent || undiciAgent || httpAgent),
+          dispatcher: getDispatcher(req.agent || httpAgent),
           method: "POST",
           headers: postHeaders,
           body: postBody,
@@ -1075,7 +1073,7 @@ function cov2ap(options = {}) {
       determineLocale(req),
       async (tenant) => {
         const response = await fetch(`${mtxBasePath}/metadata/csn/${tenant}`, {
-          dispatcher: getDispatcher(req.agent || undiciAgent || httpAgent),
+          dispatcher: getDispatcher(req.agent || httpAgent),
           method: "GET",
           headers: propagateHeaders(req),
         });
@@ -1088,7 +1086,7 @@ function cov2ap(options = {}) {
         const response = await fetch(
           `${mtxBasePath}/metadata/edmx/${tenant}?name=${service}&language=${locale}&odataVersion=v2`,
           {
-            dispatcher: getDispatcher(req.agent || undiciAgent || httpAgent),
+            dispatcher: getDispatcher(req.agent || httpAgent),
             method: "GET",
             headers: propagateHeaders(req),
           },
@@ -3073,7 +3071,7 @@ function cov2ap(options = {}) {
           findElementByAnnotation(context.definitionElements, "@Core.IsUrl");
         if (urlElement) {
           const mediaResponse = await fetch(target + parts.join("/"), {
-            dispatcher: getDispatcher(req.agent || undiciAgent || httpAgent),
+            dispatcher: getDispatcher(req.agent || httpAgent),
             method: "GET",
             headers: propagateHeaders(req, {
               accept: "application/json",
@@ -3088,7 +3086,7 @@ function cov2ap(options = {}) {
             if (mediaReadLink) {
               try {
                 const mediaResponse = await fetch(mediaReadLink, {
-                  dispatcher: getDispatcher(req.agent || undiciAgent || httpAgent),
+                  dispatcher: getDispatcher(req.agent || httpAgent),
                   method: "GET",
                   headers: propagateHeaders(req),
                 });
@@ -3121,7 +3119,7 @@ function cov2ap(options = {}) {
                 findElementValueByAnnotation(context.definitionElements, "@Common.ContentDisposition.Type") ||
                 contentDisposition;
               const response = await fetch(target + [...parts, contentDispositionFilenameElement, "$value"].join("/"), {
-                dispatcher: getDispatcher(req.agent || undiciAgent || httpAgent),
+                dispatcher: getDispatcher(req.agent || httpAgent),
                 method: "GET",
                 headers: propagateHeaders(req, {
                   accept: "application/json,*/*",
@@ -5136,6 +5134,16 @@ function cov2ap(options = {}) {
 
   const dispatcherCache = new WeakMap();
 
+  /**
+   * Resolve an Undici dispatcher for a native fetch call. A value that is already an Undici
+   * `Dispatcher` (e.g. an `httpAgent` set to an Undici Agent/ProxyAgent) is returned as-is. A
+   * Node http(s).Agent (or agent-like options object) is translated into an Undici `Agent`
+   * dispatcher, as native fetch ignores the `agent` option and only honors `dispatcher`.
+   * Translated dispatchers are cached per source agent, so one is built once instead of per
+   * request. A falsy input returns `undefined`, letting fetch use its global dispatcher.
+   * @param {object} [agent] Undici Dispatcher, Node http(s).Agent instance, or options object.
+   * @returns {import("undici").Dispatcher|undefined} Undici dispatcher or undefined.
+   */
   function getDispatcher(agent) {
     if (!agent) {
       return undefined;
