@@ -197,6 +197,11 @@ type Options = {
   httpAgent?: object | null;
 
   /**
+   * Undici dispatcher instance to be passed to native fetch as `dispatcher`. Default is 'null'.
+   */
+  undiciAgent?: object | null;
+
+  /**
    * JSON date serialization includes timezone offset. Default is true.
    */
   jsonDateOffset?: boolean | true;
