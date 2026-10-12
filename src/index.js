@@ -5133,17 +5133,6 @@ function cov2ap(options = {}) {
   }
 
   const dispatcherCache = new WeakMap();
-
-  /**
-   * Resolve an Undici dispatcher for a native fetch call. A value that is already an Undici
-   * `Dispatcher` (e.g. an `httpAgent` set to an Undici Agent/ProxyAgent) is returned as-is. A
-   * Node http(s).Agent (or agent-like options object) is translated into an Undici `Agent`
-   * dispatcher, as native fetch ignores the `agent` option and only honors `dispatcher`.
-   * Translated dispatchers are cached per source agent, so one is built once instead of per
-   * request. A falsy input returns `undefined`, letting fetch use its global dispatcher.
-   * @param {object} [agent] Undici Dispatcher, Node http(s).Agent instance, or options object.
-   * @returns {import("undici").Dispatcher|undefined} Undici dispatcher or undefined.
-   */
   function getDispatcher(agent) {
     if (!agent) {
       return undefined;
