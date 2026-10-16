@@ -187,6 +187,9 @@ cds.on("bootstrap", (app) => {
 });
 ```
 
+Analogous to the `httpAgent` option, `req.agent` can either be a Node http(s) agent or an Undici dispatcher instance.
+A dynamically registered `req.agent` takes precedence over the globally configured `httpAgent` option.
+
 ### Custom Bootstrap
 
 - Deactivate bootstrap via CDS plugin:
