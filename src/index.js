@@ -428,7 +428,7 @@ function cov2ap(options = {}) {
                 },
               },
             };
-            req.tenant = jwtBody.zid;
+            req.tenant = jwtBody.zid || jwtBody.app_tid;
             req.authInfo ??= req.user.authInfo;
             break;
         }

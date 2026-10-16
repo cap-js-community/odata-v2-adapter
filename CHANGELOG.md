@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Reduce invalid (sub-)definition log level to info
 - Multiple protocol annotations like `@rest @odata` are now handled correctly.
+- Resolve tenant from `app_tid` , if `zid` is missing in JWT token
 
 ## Version 1.16.1 - 2026-08-04
 
