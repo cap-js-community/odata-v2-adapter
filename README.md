@@ -86,7 +86,7 @@ The OData V2 adapter for CDS instantiates an Express router. The following optio
 - **cacheMetadata**: Specifies the caching and provisioning strategy of metadata (e.g., edmx) (memory, disk, stream). Default is `'memory'`.
 - **registerOnListening**: Routes are registered on CDS `listening` event instead of registering routes immediately. Default is `true`.
 - **excludeNonSelectedKeys**: Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is `false`.
-- **httpAgent**: Object to be passed to http(s) request (see Node's https agent and http agent objects). Default is `null`.
+- **httpAgent**: Agent used for proxy fetch calls: either a Node http(s) agent or an Undici dispatcher instance. Default is `null`.
 - **jsonDateOffset**: JSON date serialization includes timezone offset. Default is `true`.
 - **toggles**: Applies CDS before middlewares and feature toggle middleware, to propagate CDS toggles into `req.features`. Default is `false`.
 
@@ -186,6 +186,9 @@ cds.on("bootstrap", (app) => {
   };
 });
 ```
+
+Analogous to the `httpAgent` option, `req.agent` can either be a Node http(s) agent or an Undici dispatcher instance.
+A dynamically registered `req.agent` takes precedence over the globally configured `httpAgent` option.
 
 ### Custom Bootstrap
 

@@ -3,14 +3,8 @@
 const cds = require("@sap/cds");
 const supertest = require("supertest");
 
-const nodeFetchPath = require.resolve("node-fetch");
 const fetch = vi.fn();
-require.cache[nodeFetchPath] = {
-  id: nodeFetchPath,
-  filename: nodeFetchPath,
-  loaded: true,
-  exports: fetch,
-};
+vi.stubGlobal("fetch", fetch);
 
 const util = require("../_env/util/request");
 

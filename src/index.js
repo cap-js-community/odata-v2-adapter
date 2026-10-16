@@ -9,12 +9,12 @@ const fs = require("fs");
 const fsPath = require("path");
 const URL = require("url");
 const { pipeline } = require("stream/promises");
-const fetch = require("node-fetch");
+const { Agent, Dispatcher } = require("undici");
 const express = require("express");
 const expressFileUpload = require("express-fileupload");
 const cds = require("@sap/cds");
 const { promisify } = require("util");
-const { HttpProxyMiddleware } = require("http-proxy-middleware/dist/http-proxy-middleware");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 const bodyParser = require("body-parser");
 require("body-parser-xml")(bodyParser);
 const xml2js = require("xml2js");
@@ -199,7 +199,7 @@ function convertToNodeHeaders(webHeaders) {
  * @param {string} [options.cacheMetadata] Specifies the caching and provisioning strategy of metadata (e.g., edmx) (memory, disk, stream). Default is 'memory'.
  * @param {string} [options.registerOnListening] Routes are registered on CDS `listening` event instead of registering routes immediately. Default is true.
  * @param {boolean} [options.excludeNonSelectedKeys] Excludes non-selected keys from entity response (OData V4 auto-includes keys). Default is 'false'.
- * @param {Object} [options.httpAgent] Object to be passed to http(s).request (see Node's https agent and http agent objects). Default is 'null'.
+ * @param {Object} [options.httpAgent] Agent used for proxy fetch calls: either a Node http(s) agent or an Undici dispatcher instance. Default is 'null'.
  * @param {boolean} [options.jsonDateOffset] JSON date serialization includes timezone offset. Default is 'true'.
  * @param {boolean} [options.toggles] Applies CDS before middlewares and feature toggle middleware, to propagate CDS toggles into `req.features`. Default is `false`.
  * @returns {express.Router} OData V2 adapter for CDS Express Router
@@ -468,7 +468,7 @@ function cov2ap(options = {}) {
 
       const result = await Promise.all([
         fetch(serviceUrl, {
-          agent: req.agent || httpAgent,
+          dispatcher: getDispatcher(req.agent || httpAgent),
           method: "GET",
           headers: {
             ...propagateHeaders(req),
@@ -502,14 +502,7 @@ function cov2ap(options = {}) {
       setContentLength(headers, body);
 
       // Trace
-      traceResponse(
-        req,
-        "Proxy Response",
-        metadataResponse.status,
-        metadataResponse.statusMessage,
-        headers,
-        metadataBody,
-      );
+      traceResponse(req, "Proxy Response", metadataResponse.status, metadataResponse.statusText, headers, metadataBody);
 
       respond(req, res, metadataResponse.status, headers, body);
     } catch (err) {
@@ -669,14 +662,15 @@ function cov2ap(options = {}) {
           "content-type": "application/json",
         });
         delete postHeaders["transfer-encoding"];
+        delete postHeaders["content-length"];
+
+        const postBody = JSON.stringify(body);
 
         // Trace
         traceRequest(req, "ProxyRequest", "POST", postUrl, postHeaders, body);
 
-        const postBody = JSON.stringify(body);
-        postHeaders["content-length"] = postBody.length;
         const response = await fetch(postUrl, {
-          agent: req.agent || httpAgent,
+          dispatcher: getDispatcher(req.agent || httpAgent),
           method: "POST",
           headers: postHeaders,
           body: postBody,
@@ -809,11 +803,14 @@ function cov2ap(options = {}) {
   }
 
   function createHttpProxyMiddleware() {
-    const routeMiddleware = new HttpProxyMiddleware({
+    return createProxyMiddleware({
       agent: httpAgent,
       target: `${target}${rewritePath}`,
       changeOrigin: true,
       selfHandleResponse: true,
+      router: (req, res, options) => {
+        options.agent = req.agent || httpAgent;
+      },
       on: {
         error: convertProxyError,
         proxyReq: convertProxyRequest,
@@ -821,13 +818,6 @@ function cov2ap(options = {}) {
       },
       logger: cds.log("cov2ap/hpm"),
     });
-    const basePrepareProxyRequest = routeMiddleware.prepareProxyRequest;
-    routeMiddleware.prepareProxyRequest = async function (req) {
-      const newProxyOptions = await basePrepareProxyRequest(req);
-      newProxyOptions.agent ??= req.agent || httpAgent;
-      return newProxyOptions;
-    };
-    return routeMiddleware.middleware;
   }
 
   if (registerOnListening) {
@@ -1080,7 +1070,7 @@ function cov2ap(options = {}) {
       determineLocale(req),
       async (tenant) => {
         const response = await fetch(`${mtxBasePath}/metadata/csn/${tenant}`, {
-          agent: req.agent || httpAgent,
+          dispatcher: getDispatcher(req.agent || httpAgent),
           method: "GET",
           headers: propagateHeaders(req),
         });
@@ -1093,7 +1083,7 @@ function cov2ap(options = {}) {
         const response = await fetch(
           `${mtxBasePath}/metadata/edmx/${tenant}?name=${service}&language=${locale}&odataVersion=v2`,
           {
-            agent: req.agent || httpAgent,
+            dispatcher: getDispatcher(req.agent || httpAgent),
             method: "GET",
             headers: propagateHeaders(req),
           },
@@ -3078,7 +3068,7 @@ function cov2ap(options = {}) {
           findElementByAnnotation(context.definitionElements, "@Core.IsUrl");
         if (urlElement) {
           const mediaResponse = await fetch(target + parts.join("/"), {
-            agent: req.agent || httpAgent,
+            dispatcher: getDispatcher(req.agent || httpAgent),
             method: "GET",
             headers: propagateHeaders(req, {
               accept: "application/json",
@@ -3093,7 +3083,7 @@ function cov2ap(options = {}) {
             if (mediaReadLink) {
               try {
                 const mediaResponse = await fetch(mediaReadLink, {
-                  agent: req.agent || httpAgent,
+                  dispatcher: getDispatcher(req.agent || httpAgent),
                   method: "GET",
                   headers: propagateHeaders(req),
                 });
@@ -3126,7 +3116,7 @@ function cov2ap(options = {}) {
                 findElementValueByAnnotation(context.definitionElements, "@Common.ContentDisposition.Type") ||
                 contentDisposition;
               const response = await fetch(target + [...parts, contentDispositionFilenameElement, "$value"].join("/"), {
-                agent: req.agent || httpAgent,
+                dispatcher: getDispatcher(req.agent || httpAgent),
                 method: "GET",
                 headers: propagateHeaders(req, {
                   accept: "application/json,*/*",
@@ -5137,6 +5127,48 @@ function cov2ap(options = {}) {
       return path.substring(1);
     }
     return path;
+  }
+
+  const dispatcherCache = new WeakMap();
+  function getDispatcher(agent) {
+    if (!agent) {
+      return undefined;
+    }
+    if (agent instanceof Dispatcher) {
+      return agent;
+    }
+    if (dispatcherCache.has(agent)) {
+      return dispatcherCache.get(agent);
+    }
+    const options = agent.options || agent;
+    const connect = {};
+    if (options.ca !== undefined) {
+      connect.ca = options.ca;
+    }
+    if (options.cert !== undefined) {
+      connect.cert = options.cert;
+    }
+    if (options.key !== undefined) {
+      connect.key = options.key;
+    }
+    if (options.rejectUnauthorized !== undefined) {
+      connect.rejectUnauthorized = options.rejectUnauthorized;
+    }
+    const dispatcherOptions = {
+      pipelining: options.keepAlive ? 1 : 0,
+    };
+    if (options.keepAliveMsecs !== undefined) {
+      dispatcherOptions.keepAliveTimeout = options.keepAliveMsecs;
+    }
+    if (options.maxSockets !== undefined && options.maxSockets !== Infinity) {
+      dispatcherOptions.connections = options.maxSockets;
+    }
+    if (Object.keys(connect).length > 0) {
+      dispatcherOptions.connect = connect;
+    }
+    const dispatcher = new Agent(dispatcherOptions);
+    dispatcherCache.set(agent, dispatcher);
+    return dispatcher;
   }
 
   function traceRequest(req, name, method, url, headers, body) {
