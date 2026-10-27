@@ -58,7 +58,7 @@
     "audit": "npm audit --only=prod"
   },
   "dependencies": {
-    "body-parser": "^2.3.0",
+    "body-parser": "^2.4.0",
     "body-parser-xml": "^2.0.5",
     "express": "^4.22.3 || ^5.3.0",
     "express-fileupload": "^1.5.2",
@@ -77,7 +77,7 @@
     "@sap/cds-dk": "^10.2.0",
     "@types/express": "^5.0.6",
     "@vitest/coverage-v8": "^5.0.5",
-    "@vitest/eslint-plugin": "^1.6.27",
+    "@vitest/eslint-plugin": "^1.6.28",
     "compression": "^1.8.2",
     "eslint": "^10.13.0",
     "eslint-config-prettier": "^10.1.8",
@@ -85,7 +85,7 @@
     "prettier": "^3.9.10",
     "supertest": "^7.3.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.0",
+    "typescript-eslint": "^8.72.1",
     "vitest": "^5.0.5"
   },
   "license": "Apache-2.0",

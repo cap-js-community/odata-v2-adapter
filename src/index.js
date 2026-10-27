@@ -3423,28 +3423,26 @@ function cov2ap(options = {}) {
       }
       return body;
     }
-    if (body.error) {
-      if (body.error.message) {
-        body.error.message = {
-          lang: headers["content-language"] || "en",
-          value: body.error.message,
-        };
-      }
-      body.error = convertMessage(body.error, definition, req);
-      body.error.innererror = body.error.innererror || {};
-      body.error.innererror.errordetails = body.error.innererror.errordetails || [];
-      body.error.innererror.errordetails.push(...(body.error.details || []));
-      delete body.error.details;
-      if (body.error.innererror.errordetails.length === 0) {
-        const singleDetailError = Object.assign({}, body.error);
-        delete singleDetailError.innererror;
-        delete singleDetailError.details;
+    if (typeof body === "object") {
+      if (body.error) {
+        if (body.error.message) {
+          body.error.message = {
+            lang: headers["content-language"] || "en",
+            value: body.error.message,
+          };
+        }
+        body.error = convertMessage(body.error, definition, req);
+        body.error.innererror = body.error.innererror || {};
+        body.error.innererror.errordetails = body.error.innererror.errordetails || [];
+        body.error.innererror.errordetails.push(...(body.error.details || []));
+        delete body.error.details;
         if (body.error.innererror.errordetails.length === 0) {
+          const singleDetailError = Object.assign({}, body.error);
+          delete singleDetailError.innererror;
+          delete singleDetailError.details;
           body.error.innererror.errordetails.push(singleDetailError);
         }
       }
-    }
-    if (typeof body === "object") {
       if (req.context.serviceResponseAsXML) {
         body = convertResponseBodyToXML(body, req);
         headers["content-type"] = "application/atom+xml;charset=utf-8";
