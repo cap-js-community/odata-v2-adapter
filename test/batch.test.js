@@ -464,4 +464,21 @@ describe("batch", () => {
     response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
     expect(response.statusCode).toEqual(202);
   });
+
+  it("Batch inner URL path traversal does not crash the process", async () => {
+    let payload = fs.readFileSync(__dirname + "/_env/util/batch/Batch-GET-Traversal.txt", "utf8");
+    payload = payload.replace(/\r\n/g, "\n");
+    const response = await util.callMultipart(request, "/odata/v2/main/$batch", payload);
+    expect(response.statusCode).toEqual(400);
+    const body = Array.isArray(response.body) ? response.body.join("") : response.body;
+    expect(body).toMatch(/Unexpected start char in url/);
+    const error = JSON.parse(body).error;
+    expect(
+      error.innererror.errordetails.some(
+        (detail) => detail.message && detail.message.value === "Unexpected start char in url",
+      ),
+    ).toBe(true);
+    const followUp = await util.callRead(request, "/odata/v2/main/Header?$top=1");
+    expect(followUp.statusCode).toEqual(200);
+  });
 });

@@ -3425,15 +3425,31 @@ function cov2ap(options = {}) {
     }
     if (typeof body === "object") {
       if (body.error) {
+        if (typeof body.error !== "object") {
+          body.error = { message: `${body.error}` };
+        }
         if (body.error.message) {
           body.error.message = {
-            lang: headers["content-language"] || "en",
+            lang: determineLocale(req),
             value: body.error.message,
           };
         }
         body.error = convertMessage(body.error, definition, req);
-        body.error.innererror = body.error.innererror || {};
+        const innerErrorText =
+          body.error.innererror && typeof body.error.innererror !== "object" ? `${body.error.innererror}` : undefined;
+        if (!body.error.innererror || typeof body.error.innererror !== "object") {
+          body.error.innererror = {};
+        }
         body.error.innererror.errordetails = body.error.innererror.errordetails || [];
+        if (innerErrorText) {
+          body.error.innererror.errordetails.push({
+            message: {
+              lang: determineLocale(req),
+              value: innerErrorText,
+            },
+            severity: "error",
+          });
+        }
         body.error.innererror.errordetails.push(...(body.error.details || []));
         delete body.error.details;
         if (body.error.innererror.errordetails.length === 0) {

@@ -1,0 +1,7 @@
+--boundary
+Content-Type: application/http
+
+GET ../../../../some/other/path/Header?$top=1 HTTP/1.1
+Accept: application/json
+
+--boundary--
