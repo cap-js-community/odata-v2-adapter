@@ -1,12 +1,28 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":disableDependencyDashboard"],
+  "extends": [
+    "config:recommended",
+    ":disableDependencyDashboard",
+    "schedule:monthly",
+    ":automergeMinor",
+    ":maintainLockFilesMonthly",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "ignorePresets": ["group:recommended", "group:monorepos"],
+  "platformAutomerge": true,
+  "groupName": "all",
+  "minimumReleaseAge": "7 days",
+  "rangeStrategy": "bump",
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchCurrentVersion": "!/^0/",
-      "minimumReleaseAge": "7 days",
-      "automerge": true
+      "description": "manage npm overrides manually",
+      "matchDepTypes": ["overrides"],
+      "enabled": false
+    },
+    {
+      "description": "manage node upgrades manually",
+      "matchDepNames": ["node"],
+      "enabled": false
     }
   ]
 }

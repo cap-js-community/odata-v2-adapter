@@ -76,17 +76,17 @@
     "@sap/cds": "^10.2.2",
     "@sap/cds-dk": "^10.2.1",
     "@types/express": "^5.0.6",
-    "@vitest/coverage-v8": "^5.1.1",
+    "@vitest/coverage-v8": "^5.1.2",
     "@vitest/eslint-plugin": "^1.6.28",
     "compression": "^1.8.2",
     "eslint": "^10.15.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-n": "^18.5.0",
+    "eslint-config-prettier": "^10.1.9",
+    "eslint-plugin-n": "^18.6.0",
     "prettier": "^3.10.1",
     "supertest": "^7.3.2",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.74.0",
-    "vitest": "^5.1.1"
+    "vitest": "^5.1.2"
   },
   "license": "Apache-2.0",
   "repository": {
